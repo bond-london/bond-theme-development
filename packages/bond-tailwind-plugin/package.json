@@ -1,0 +1,43 @@
+{
+  "name": "@bond-london/bond-tailwind-plugin",
+  "sideEffects": false,
+  "version": "2.0.0-pre.1",
+  "description": "Tailwind configuration for Bond",
+  "author": "Nick Randell <nick.randell@bond.fi>",
+  "engines": {
+    "node": ">=16"
+  },
+  "license": "MIT",
+  "keywords": [
+    "bond",
+    "tailwind"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "custom.d.ts"
+  ],
+  "repository": {
+    "url": "https://github.com/bond-london/bond-london-theme",
+    "directory": "packages/bond-tailwind-plugin"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "build": "babel src --out-dir dist --ignore \"**/__tests__\" --extensions \".ts,.js\"",
+    "watch": "babel -w src --out-dir dist --ignore \"**/__tests__\" --extensions \".ts,.js\"",
+    "prepare": "cross-env NODE_ENV=production npm run build"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.15.4",
+    "@babel/core": "^7.15.5",
+    "babel-preset-gatsby-package": "^2.21.0",
+    "cross-env": "^7.0.3"
+  },
+  "dependencies": {
+    "tailwindcss": "^3.0.13"
+  }
+}

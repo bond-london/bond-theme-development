@@ -1,0 +1,60 @@
+{
+  "name": "@bond-london/graphcms-rich-text",
+  "sideEffects": false,
+  "version": "2.0.0-pre.1",
+  "description": "Rich text components",
+  "author": "Nick Randell <nick.randell@bond.fi>",
+  "engines": {
+    "node": ">=16"
+  },
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "gatsby",
+    "graphcms",
+    "rich-text"
+  ],
+  "repository": {
+    "url": "https://github.com/bond-london/bond-london-theme",
+    "directory": "packages/bond-graphcms-rich-text"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.module.js",
+  "esmodule": "dist/index.modern.js",
+  "browser": {
+    "dist/index.js": "dist/index.brower.js",
+    "dist/index.module.js": "dist/index.browser.modern.js"
+  },
+  "files": [
+    "dist",
+    "custom.d.ts"
+  ],
+  "scripts": {
+    "build": "npm-run-all -s clean -p build:*",
+    "build:server": "microbundle -i src/index.ts -f cjs,modern --jsx React.createElement --jsxFragment React.Fragment",
+    "build:browser": "microbundle -i src/index.ts -f cjs,modern --jsx React.createElement --jsxFragment React.Fragment -o dist/index.browser",
+    "watch": "npm-run-all --npm-path npm -s clean -p watch:*",
+    "watch:server": "yarn build:server --no-compress watch",
+    "watch:browser": "yarn build:browser --no-compress watch",
+    "prepare": "cross-env NODE_ENV=production npm run build",
+    "clean": "del-cli dist/*"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.15.4",
+    "@babel/core": "^7.15.5",
+    "@graphcms/rich-text-types": "^0.5.0",
+    "babel-preset-gatsby-package": "^2.21.0",
+    "cross-env": "^7.0.3",
+    "del-cli": "^5.0.0",
+    "microbundle": "^0.15.1",
+    "npm-run-all": "^4.1.5"
+  },
+  "peerDependencies": {
+    "react": "^18.x"
+  }
+}

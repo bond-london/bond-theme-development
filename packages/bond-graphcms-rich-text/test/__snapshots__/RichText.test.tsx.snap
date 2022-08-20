@@ -1,0 +1,262 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`@bond-london/graphcms-rich-text renders iframe 1`] = `
+<div>
+  <div
+    style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"
+  >
+    <iframe
+      allow="fullscreen"
+      frameborder="0"
+      loading="lazy"
+      referrerpolicy="no-referrer"
+      src="https://www.youtube.com/watch?v=Ylmd737tw5w"
+      style="position: absolute; top: 0px; bottom: 0px; right: 0px; left: 0px; width: 100%; height: 100%;"
+      title="https://www.youtube.com/watch?v=Ylmd737tw5w"
+    />
+  </div>
+</div>
+`;
+
+exports[`@bond-london/graphcms-rich-text renders inline content 1`] = `
+<div>
+  <p>
+    <b>
+      Hey, 
+    </b>
+    <i>
+      how
+    </i>
+    <u>
+      are
+    </u>
+    <code>
+      you?
+    </code>
+  </p>
+</div>
+`;
+
+exports[`@bond-london/graphcms-rich-text renders inline content with conditional renderer 1`] = `
+<div>
+  <p>
+    <b>
+      Hey, 
+    </b>
+    <i>
+      how
+    </i>
+    <u>
+      are
+    </u>
+    <code
+      style="font-style: italic;"
+    >
+      you?
+    </code>
+  </p>
+</div>
+`;
+
+exports[`@bond-london/graphcms-rich-text renders inline content with custom renderers 1`] = `
+<div>
+  <p>
+    <strong>
+      Hey, 
+    </strong>
+    <i
+      class="italic-class"
+      style="color: red;"
+    >
+      how
+    </i>
+    <u
+      role="button"
+    >
+      are
+    </u>
+    <code
+      style="font-style: italic;"
+    >
+      you?
+    </code>
+  </p>
+</div>
+`;
+
+exports[`@bond-london/graphcms-rich-text renders video 1`] = `
+<div>
+  <video
+    controls=""
+    height="400"
+    src="https://media.graphcms.com/oWd7OYr5Q5KGRJW9ujRO"
+    title="file_example_MP4_480_1_5MG.m4v"
+    width="400"
+  >
+    <p>
+      Your browser doesn't support HTML5 video. Here is a 
+      <a
+        href="https://media.graphcms.com/oWd7OYr5Q5KGRJW9ujRO"
+      >
+        link to the video
+      </a>
+       instead.
+    </p>
+  </video>
+</div>
+`;
+
+exports[`custom embeds and assets should render embed video, image, and audio assets 1`] = `
+<div>
+  <span
+    style="color: red;"
+  >
+    [RenderAsset]: No id found for embed node: ckrxv7b74g8il0d782lf66dup
+  </span>
+  <span
+    style="color: red;"
+  >
+    [RenderAsset]: No id found for embed node: ckrxv6otkg6ez0c8743xp9bzs
+  </span>
+  <img
+    loading="lazy"
+    src="https://media.graphcms.com/dsQtt0ARqO28baaXbVy9"
+  />
+  <video
+    controls=""
+    height="100%"
+    src="https://media.graphcms.com/7M0lXLdCQfeIDXnT2SVS"
+    width="100%"
+  >
+    <p>
+      Your browser doesn't support HTML5 video. Here is a 
+      <a
+        href="https://media.graphcms.com/7M0lXLdCQfeIDXnT2SVS"
+      >
+        link to the video
+      </a>
+       instead.
+    </p>
+  </video>
+  <audio
+    controls=""
+    src="https://media.graphcms.com/H9eZ7CISSBpAKxqdSwzg"
+    style="display: block; max-width: 100%; height: auto;"
+  >
+    <p>
+      Your browser doesn't support HTML5 audio. Here is a 
+      <a
+        href="https://media.graphcms.com/H9eZ7CISSBpAKxqdSwzg"
+      >
+        link to the audio
+      </a>
+       instead.
+    </p>
+  </audio>
+  <span
+    style="color: red;"
+  >
+    [RenderAsset]: No id found for embed node: cks2osfk8t19a0b32vahjhn36
+  </span>
+  <span
+    style="color: red;"
+  >
+    [RenderAsset]: No id found for embed node: ckq2eek7c00ek0d83iakzoxuh
+  </span>
+  <span
+    style="color: red;"
+  >
+    [RenderAsset]: No id found for embed node: model_example
+  </span>
+</div>
+`;
+
+exports[`custom embeds and assets should show a warning if embeds are found but there aren't any renderer for it 1`] = `
+<div>
+  <span
+    style="color: red;"
+  >
+    [RenderEmbed]: No renderer found for embed type: Post
+  </span>
+</div>
+`;
+
+exports[`custom embeds and assets should show warnings if the embed asset file isn't rendered by the package 1`] = `
+<div>
+  <span
+    style="color: red;"
+  >
+    [RenderAsset]: Unsupported mime type: text/plain
+  </span>
+  <span
+    style="color: red;"
+  >
+    [RenderAsset]: Unsupported mime type: application/pdf
+  </span>
+  <span
+    style="color: red;"
+  >
+    [RenderAsset]: No id found for embed node: cknjbzowggjo90b91kjisy03a
+  </span>
+  <span
+    style="color: red;"
+  >
+    [RenderAsset]: No id found for embed node: ckrus0f14ao760b32mz2dwvgx
+  </span>
+  <span
+    style="color: red;"
+  >
+    [RenderAsset]: No id found for embed node: ckryzom5si5vw0d78d13bnwix
+  </span>
+  <span
+    style="color: red;"
+  >
+    [RenderAsset]: Unsupported mime type: font/ttf
+  </span>
+  <span
+    style="color: red;"
+  >
+    [RenderAsset]: No id found for embed node: ckq2eek7c00ek0d83iakzoxuh
+  </span>
+  <span
+    style="color: red;"
+  >
+    [RenderAsset]: Unsupported mime type: model/example
+  </span>
+</div>
+`;
+
+exports[`custom embeds and assets shouldn't render embed assets due to missing mimeType or url 1`] = `
+<div>
+  <span
+    style="color: red;"
+  >
+    [RenderAsset]: No mimeType found for embed node: cknjbzowggjo90b91kjisy03a
+  </span>
+  <span
+    style="color: red;"
+  >
+    [RenderAsset]: No mimeType found for embed node: ckrus0f14ao760b32mz2dwvgx
+  </span>
+</div>
+`;
+
+exports[`custom embeds and assets shouldn't render embeds or assets if id is missing in references 1`] = `
+<div>
+  <span
+    style="color: red;"
+  >
+    [RenderAsset]: No id found for embed node: cknjbzowggjo90b91kjisy03a
+  </span>
+  <span
+    style="color: red;"
+  >
+    [RenderAsset]: No id found for embed node: ckrus0f14ao760b32mz2dwvgx
+  </span>
+  <span
+    style="color: red;"
+  >
+    [RenderEmbed]: No id found for embed node: custom_post_id
+  </span>
+</div>
+`;

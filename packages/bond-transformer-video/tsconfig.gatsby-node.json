@@ -1,0 +1,4 @@
+{
+  "extends": "../../tsconfig.json",
+  "files": ["src/gatsby-node.ts", "src/gatsby-worker.ts"]
+}

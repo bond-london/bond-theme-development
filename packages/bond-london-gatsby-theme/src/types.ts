@@ -7,6 +7,4 @@ export interface VisualCommon {
   dontCrop: Maybe<boolean>;
   horizontalCropPosition: Maybe<Horizontal>;
   verticalCropPosition: Maybe<Vertical>;
-  onLoad?: () => void;
-  onError?: () => void;
 }

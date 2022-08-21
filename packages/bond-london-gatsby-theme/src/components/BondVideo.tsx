@@ -2,28 +2,36 @@ import {
   GatsbyTransformedVideo,
   GatsbyVideo,
 } from "@bond-london/gatsby-transformer-video";
-import React from "react";
+import React, { VideoHTMLAttributes } from "react";
 import { VisualCommon } from "../types";
 import { calculateCropDetails } from "../utils";
 
-export interface IBondVideo extends VisualCommon {
+export type IBondVideo = VisualCommon & {
   video: GatsbyTransformedVideo;
-  loop?: boolean;
-  muted?: boolean;
-}
-export const Video: React.FC<{ props: IBondVideo }> = ({ props }) => {
-  const { video, loop, className, onLoad, onError } = props;
-  const { objectFit, objectPosition } = calculateCropDetails(props);
+  noPoster?: boolean;
+} & Omit<
+    VideoHTMLAttributes<HTMLVideoElement>,
+    "poster" | "objectFit" | "objectPosition"
+  >;
+
+export const BondVideo: React.FC<IBondVideo> = props => {
+  const {
+    dontCrop,
+    horizontalCropPosition,
+    verticalCropPosition,
+    ...videoProps
+  } = props;
+  const { objectFit, objectPosition } = calculateCropDetails({
+    dontCrop,
+    horizontalCropPosition,
+    verticalCropPosition,
+  });
 
   return (
     <GatsbyVideo
-      className={className}
-      loop={loop}
-      videoData={video}
+      {...videoProps}
       objectFit={objectFit}
       objectPosition={objectPosition}
-      onLoad={onLoad}
-      onError={onError}
     />
   );
 };

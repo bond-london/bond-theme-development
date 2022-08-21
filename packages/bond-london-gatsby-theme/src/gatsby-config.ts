@@ -1,11 +1,52 @@
 import type { GatsbyConfig } from "gatsby";
 import { isProduction, ProjectName } from "./gatsby-env";
+import { join } from "path";
+
+// Get paths of Gatsby's required rules, which as of writing is located at:
+// https://github.com/gatsbyjs/gatsby/tree/fbfe3f63dec23d279a27b54b4057dd611dce74bb/packages/
+// gatsby/src/utils/eslint-rules
+const gatsbyRequiredRules = join(
+  process.cwd(),
+  "node_modules",
+  "gatsby",
+  "dist",
+  "utils",
+  "eslint-rules"
+);
 
 const gatsbyConfig: GatsbyConfig = {
+  trailingSlash: "always",
   graphqlTypegen: {
     typesOutputPath: "gatsby-types.d.ts",
   },
+  flags: {
+    FAST_DEV: true,
+    DEV_SSR: false,
+  },
   plugins: [
+    "gatsby-plugin-postcss",
+    "gatsby-plugin-image",
+    {
+      resolve: "gatsby-plugin-webpack-bundle-analyser-v2",
+      options: {
+        analyzerMode: "static",
+        openAnalyzer: false,
+      },
+    },
+    {
+      resolve: "gatsby-plugin-eslint",
+      options: {
+        // Gatsby required rules directory
+        rulePaths: [gatsbyRequiredRules],
+        // Default settings that may be omitted or customized
+        stages: ["develop"],
+        extensions: ["js", "jsx", "ts", "tsx"],
+        exclude: ["node_modules", "bower_components", ".cache", "public"],
+        // Any additional eslint-webpack-plugin options below
+        // ...
+        overrideConfigFile: ".custom.eslintrc.json",
+      },
+    },
     {
       resolve: "gatsby-plugin-sharp",
 

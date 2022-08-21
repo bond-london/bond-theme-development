@@ -1,7 +1,7 @@
 import { CreateResolversArgs, Node } from "gatsby";
 import { FileSystemNode } from "gatsby-source-filesystem";
 import { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
-import { getVideoInformation } from "./ffpmeg";
+import { getVideoInformation } from "./ffmpeg";
 import { GatsbyVideoInformation } from "./types";
 
 type ResolverArgs = {

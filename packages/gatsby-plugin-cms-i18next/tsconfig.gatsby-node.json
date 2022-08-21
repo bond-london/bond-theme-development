@@ -1,4 +1,7 @@
 {
   "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS"
+  },
   "files": ["src/gatsby-node.ts", "src/gatsby-browser.ts"]
 }

@@ -3,7 +3,7 @@ import { RemoteCache } from "./remoteCache";
 import { PluginOptions } from "./types";
 import { Cache } from "./cache";
 import { join } from "path";
-import { setActions } from "./ffpmeg";
+import { setActions } from "./ffmpeg";
 
 export let videoCache: Cache;
 
@@ -15,7 +15,7 @@ export async function onPluginInit(
     remoteContainer,
     videoCacheFolder,
   }: PluginOptions
-) {
+): Promise<void> {
   const cacheFolder = join(process.cwd(), videoCacheFolder);
   setActions(actions);
 
@@ -37,4 +37,5 @@ export async function onPluginInit(
   } else {
     videoCache = new Cache(cacheFolder);
   }
+  return;
 }

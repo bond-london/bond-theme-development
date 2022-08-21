@@ -8,6 +8,7 @@ import {
   SingleVideoProcessingArgs,
   VideoProcessingArgs,
   VIDEO_PROCESSING_JOB_NAME,
+  VIDEO_INFORMATION_JOB_NAME,
 } from "./gatsby-worker";
 import { FfprobeData } from "fluent-ffmpeg";
 
@@ -17,7 +18,24 @@ export function setActions(_actions: Actions) {
   actions = _actions;
 }
 
-async function createJob(
+function createVideoInformationJob(
+  inputFileName: string,
+  reporter: Reporter
+): Promise<FfprobeData> {
+  if (!actions) {
+    return reporter.panic("Actions are not setup");
+  }
+
+  const result = actions.createJobV2({
+    name: VIDEO_INFORMATION_JOB_NAME,
+    inputPaths: [inputFileName],
+    outputDir: dirname(inputFileName),
+    args: {},
+  });
+  return result as Promise<FfprobeData>;
+}
+
+function createVideoProcessingJob(
   inputFileName: string,
   outputDir: string,
   args: VideoProcessingArgs,
@@ -31,7 +49,7 @@ async function createJob(
     name: VIDEO_PROCESSING_JOB_NAME,
     inputPaths: [inputFileName],
     outputDir,
-    args: args as Record<string, unknown>,
+    args: args as unknown as Record<string, unknown>,
   });
   return result;
 }
@@ -40,14 +58,9 @@ export async function getVideoInformation(
   videoPath: string,
   reporter: Reporter
 ): Promise<GatsbyVideoInformation> {
-  const data = (await createJob(
-    videoPath,
-    dirname(videoPath),
-    {},
-    reporter
-  )) as FfprobeData;
-  const videoStream = data.streams.find((s) => s.codec_type === "video");
-  const audioStream = data.streams.find((s) => s.codec_type === "audio");
+  const data = await createVideoInformationJob(videoPath, reporter);
+  const videoStream = data.streams.find(s => s.codec_type === "video");
+  const audioStream = data.streams.find(s => s.codec_type === "audio");
   if (!videoStream) {
     throw new Error(`Failed to find video stream in ${videoPath}`);
   }
@@ -91,6 +104,13 @@ export function createMp4VideoTransform(targetWidth?: number, muted?: boolean) {
   ];
 }
 
+interface JobInfo {
+  tempPublicFile: string;
+  publicFile: string;
+  outputName: string;
+  publicRelativeUrl: string;
+  key: string;
+}
 export async function transformVideo(
   args: NodePluginArgs,
   inputName: string,
@@ -105,7 +125,7 @@ export async function transformVideo(
 ) {
   const { reporter, createContentDigest, pathPrefix } = args;
   const instances: SingleVideoProcessingArgs[] = [];
-  const jobInfo = [];
+  const jobInfo: JobInfo[] = [];
   const results: {
     [key: string]: { publicFile: string; publicRelativeUrl: string };
   } = {};
@@ -145,7 +165,7 @@ export async function transformVideo(
       key,
     });
   }
-  await createJob(inputName, publicDir, { instances }, reporter);
+  await createVideoProcessingJob(inputName, publicDir, { instances }, reporter);
 
   for (const {
     tempPublicFile,

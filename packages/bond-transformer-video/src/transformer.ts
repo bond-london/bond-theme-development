@@ -7,7 +7,7 @@ import {
   createWebmVideoTransform,
   getVideoInformation,
   transformVideo,
-} from "./ffpmeg";
+} from "./ffmpeg";
 import { GatsbyTransformedVideo, TransformArgs } from "./types";
 
 async function internalCreateTransformedVideo(

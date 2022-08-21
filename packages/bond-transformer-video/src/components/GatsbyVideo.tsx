@@ -12,14 +12,14 @@ export function getGatsbyVideo(
 
 export const GatsbyVideo: React.FC<
   {
-    videoData: GatsbyTransformedVideo;
+    video: GatsbyTransformedVideo;
     noPoster?: boolean;
     objectFit?: CSSProperties["objectFit"];
     objectPosition?: CSSProperties["objectPosition"];
-  } & Omit<VideoHTMLAttributes<HTMLVideoElement>, "poster">
+  } & Omit<VideoHTMLAttributes<HTMLVideoElement>, "poster" | "src">
 > = allProps => {
   const {
-    videoData,
+    video,
     noPoster,
     muted,
     objectFit,
@@ -41,17 +41,17 @@ export const GatsbyVideo: React.FC<
   return (
     // eslint-disable-next-line jsx-a11y/media-has-caption
     <video
-      muted={!videoData.hasAudio || muted}
+      muted={!video.hasAudio || muted}
       controls={controls}
       {...otherProps}
       style={realStyle}
-      width={videoData.width}
-      height={videoData.height}
-      poster={noPoster ? undefined : videoData.poster}
+      width={video.width}
+      height={video.height}
+      poster={noPoster ? undefined : video.poster}
       className={className}
     >
-      <source type="video/webm" src={videoData.webm} />
-      <source type="video/mp4" src={videoData.mp4} />
+      <source type="video/webm" src={video.webm} />
+      <source type="video/mp4" src={video.mp4} />
     </video>
   );
 };

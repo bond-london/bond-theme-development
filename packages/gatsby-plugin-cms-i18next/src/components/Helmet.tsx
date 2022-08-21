@@ -1,5 +1,5 @@
-import React from "react";
-import { Helmet as ReactHelmet, HelmetProps } from "react-helmet";
+import React, { PropsWithChildren } from "react";
+// import { Helmet as ReactHelmet, HelmetProps } from "react-helmet";
 import { useI18next } from "./useI18next";
 
 function createUrlWithLang(
@@ -14,20 +14,22 @@ function createUrlWithLang(
   }
   return `${url}/`;
 }
-export const Helmet: React.FC<HelmetProps & { corePath: string }> = ({
+// export const Helmet: React.FC<HelmetProps & { corePath: string }> = ({
+export const Helmet: React.FC<PropsWithChildren<{ corePath: string }>> = ({
   children,
   corePath,
-  ...props
+  // ...props
 }) => {
   const { languages, currentLanguage, defaultLanguage, siteUrl } = useI18next();
   return (
-    <ReactHelmet {...props}>
+    // <ReactHelmet {...props}>
+    <>
       <html lang={currentLanguage} />
       <link
         rel="canonical"
         href={createUrlWithLang(siteUrl, corePath, currentLanguage)}
       />
-      {languages.map((lng) => (
+      {languages.map(lng => (
         <link
           rel="alternate"
           key={lng}
@@ -42,6 +44,7 @@ export const Helmet: React.FC<HelmetProps & { corePath: string }> = ({
         hrefLang="x-default"
       />
       {children}
-    </ReactHelmet>
+    </>
+    // </ReactHelmet>
   );
 };

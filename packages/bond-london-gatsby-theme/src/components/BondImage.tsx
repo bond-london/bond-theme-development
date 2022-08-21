@@ -1,25 +1,40 @@
-import React from "react";
+import React, { ImgHTMLAttributes } from "react";
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import { VisualCommon } from "../types";
 import { calculateCropDetails } from "../utils";
 
-export interface IBondImage extends VisualCommon {
+export type IBondImage = VisualCommon & {
   image: IGatsbyImageData;
   alt: string;
-}
-export const BondImage: React.FC<{ props: IBondImage }> = ({ props }) => {
-  const { image, className, alt, onLoad, onError } = props;
+  onLoad?: (props: { wasCached: boolean }) => void;
+  onStartLoad?: (props: { wasCached: boolean }) => void;
+} & Omit<
+    ImgHTMLAttributes<HTMLImageElement>,
+    | "placeholder"
+    | "onLoad"
+    | "src"
+    | "srcSet"
+    | "width"
+    | "height"
+    | "objectFit"
+    | "objectPosition"
+  >;
+
+export const BondImage: React.FC<IBondImage> = props => {
+  console.log("bond image props", props);
+  const {
+    dontCrop,
+    horizontalCropPosition,
+    verticalCropPosition,
+    ...imageProps
+  } = props;
   const { objectFit, objectPosition } = calculateCropDetails(props);
 
   return (
     <GatsbyImage
-      alt={alt}
-      className={className}
-      image={image}
+      {...imageProps}
       objectFit={objectFit}
       objectPosition={objectPosition}
-      onLoad={onLoad}
-      onError={onError}
     />
   );
 };

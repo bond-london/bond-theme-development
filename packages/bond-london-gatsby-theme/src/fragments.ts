@@ -5,6 +5,9 @@ export const GraphCmsImageAssetFragment = graphql`
   fragment GraphCmsImageAsset on GraphCMS_Asset {
     id
     localFile {
+      internal {
+        mediaType
+      }
       childImageSharp {
         gatsbyImageData
       }
@@ -21,6 +24,9 @@ export const GraphCmsVideoAssetFragment = graphql`
   fragment GraphCmsVideoAsset on GraphCMS_Asset {
     id
     localFile {
+      internal {
+        mediaType
+      }
       childGatsbyVideo {
         transformed
       }
@@ -33,6 +39,9 @@ export const GraphCmsAnimationAssetFragment = graphql`
   fragment GraphCmsAnimationAsset on GraphCMS_Asset {
     id
     localFile {
+      internal {
+        mediaType
+      }
       publicURL
       childExtractedLottie {
         width
@@ -51,6 +60,9 @@ export const SeoImageAssetFragment = graphql`
   fragment SeoImageAsset on GraphCMS_Asset {
     id
     localFile {
+      internal {
+        mediaType
+      }
       childImageSharp {
         gatsbyImageData(layout: FIXED, width: 1200, height: 630)
       }

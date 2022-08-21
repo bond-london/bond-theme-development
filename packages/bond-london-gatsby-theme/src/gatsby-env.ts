@@ -1,7 +1,10 @@
 import { config } from "dotenv";
+import { join } from "path";
+
+const currentDirectory = process.cwd();
 
 config({
-  path: `.env.${process.env.NODE_ENV || "development"}`,
+  path: join(currentDirectory, `.env.${process.env.NODE_ENV || "development"}`),
 });
 
 export function parseEnvBoolean(varName: string) {
@@ -21,6 +24,7 @@ export const PRODUCTION = parseEnvBoolean("PRODUCTION");
 export const PUBLISHED = "PUBLISHED" === process.env.GRAPHCMS_STAGE;
 export const ProjectName = process.env.PROJECT_NAME;
 export const isProduction = !NOT_PRODUCTION && (PRODUCTION || PUBLISHED);
+export const COOKIE_NAME = process.env.COOKIE_NAME;
 
 if (!ProjectName) {
   throw new Error("PROJECT_NAME must be set");

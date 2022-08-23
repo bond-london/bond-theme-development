@@ -1,7 +1,3 @@
 **/dist/*
 **/*.d.ts
 **/node_modules/**
-nick-test-site/
-packages/
-!packages/bond-transformer-video/
-!packages/bond-tailwind-plugin/

@@ -1,6 +1,7 @@
 import type { Node, NodePluginArgs } from "gatsby";
 import { FileSystemNode } from "gatsby-source-filesystem";
 import type { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
+import sharp from "sharp";
 import {
   createMp4VideoTransform,
   createScreenshotOptions,
@@ -9,6 +10,12 @@ import {
   transformVideo,
 } from "./ffmpeg";
 import { GatsbyTransformedVideo, TransformArgs } from "./types";
+
+function rgbToHex(red, green, blue) {
+  return `#${(blue | (green << 8) | (red << 16) | (1 << 24))
+    .toString(16)
+    .slice(1)}`;
+}
 
 async function internalCreateTransformedVideo(
   source: Node,
@@ -50,20 +57,6 @@ async function internalCreateTransformedVideo(
     ]
   );
   const { mp4, webm } = information;
-  // const mp4 = await transformVideoNode(
-  //   args,
-  //   details,
-  //   ".mp4",
-  //   createMp4VideoTransform(width, muted),
-  //   createLabel(details, transformArgs, "mp4")
-  // );
-  // const webm = await transformVideoNode(
-  //   args,
-  //   details,
-  //   ".webm",
-  //   createWebmVideoTransform(width, muted),
-  //   createLabel(details, transformArgs, "webm")
-  // );
   const { poster } = await transformVideo(
     args,
     webm.publicFile,
@@ -79,9 +72,17 @@ async function internalCreateTransformedVideo(
     ]
   );
   const info = await getVideoInformation(mp4.publicFile, reporter);
+  const { dominant } = await sharp(poster.publicFile)
+    .resize(200, 200, { fit: "inside", withoutEnlargement: true })
+    .stats();
+  const dominantColour = dominant
+    ? rgbToHex(dominant.r, dominant.g, dominant.b)
+    : "#000000";
 
   const result = {
     ...info,
+    dominantColour,
+    layout: transformArgs.layout || "constrained",
     mp4: mp4.publicRelativeUrl,
     webm: webm.publicRelativeUrl,
     poster: poster.publicRelativeUrl,

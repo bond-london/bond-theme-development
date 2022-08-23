@@ -42,7 +42,7 @@ export const AutoGatsbyVideo: React.FC<
 
   return (
     <GatsbyVideo
-      videoData={videoData}
+      video={videoData}
       noPoster={noPoster}
       style={fullStyles}
       autoPlay={true}

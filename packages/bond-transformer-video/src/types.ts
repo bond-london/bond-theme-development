@@ -1,6 +1,8 @@
+export type VideoLayout = "constrained" | "fixed" | "fullWidth";
 export interface TransformArgs {
   width?: number;
   muted: boolean;
+  layout?: VideoLayout;
 }
 
 export interface GatsbyVideoInformation {
@@ -11,6 +13,8 @@ export interface GatsbyVideoInformation {
 }
 
 export interface GatsbyTransformedVideo extends GatsbyVideoInformation {
+  dominantColour: string;
+  layout: VideoLayout;
   mp4: string;
   webm: string;
   poster: string;

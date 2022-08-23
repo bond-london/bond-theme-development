@@ -1,18 +1,18 @@
 import type { GatsbyConfig } from "gatsby";
 import { isProduction, ProjectName } from "./gatsby-env";
-import { join } from "path";
+// import { join, dirname } from "path";
+
+// const gatsbyPackage = require.resolve("gatsby/package.json");
 
 // Get paths of Gatsby's required rules, which as of writing is located at:
 // https://github.com/gatsbyjs/gatsby/tree/fbfe3f63dec23d279a27b54b4057dd611dce74bb/packages/
 // gatsby/src/utils/eslint-rules
-const gatsbyRequiredRules = join(
-  process.cwd(),
-  "node_modules",
-  "gatsby",
-  "dist",
-  "utils",
-  "eslint-rules"
-);
+// const gatsbyRequiredRules = join(
+//   dirname(gatsbyPackage),
+//   "dist",
+//   "utils",
+//   "eslint-rules"
+// );
 
 const gatsbyConfig: GatsbyConfig = {
   trailingSlash: "always",
@@ -33,20 +33,20 @@ const gatsbyConfig: GatsbyConfig = {
         openAnalyzer: false,
       },
     },
-    {
-      resolve: "gatsby-plugin-eslint",
-      options: {
-        // Gatsby required rules directory
-        rulePaths: [gatsbyRequiredRules],
-        // Default settings that may be omitted or customized
-        stages: ["develop"],
-        extensions: ["js", "jsx", "ts", "tsx"],
-        exclude: ["node_modules", "bower_components", ".cache", "public"],
-        // Any additional eslint-webpack-plugin options below
-        // ...
-        overrideConfigFile: ".custom.eslintrc.json",
-      },
-    },
+    // {
+    //   resolve: "gatsby-plugin-eslint",
+    //   options: {
+    //     // Gatsby required rules directory
+    //     rulePaths: [gatsbyRequiredRules],
+    //     // Default settings that may be omitted or customized
+    //     stages: ["develop"],
+    //     extensions: ["js", "jsx", "ts", "tsx"],
+    //     exclude: ["node_modules", "bower_components", ".cache", "public"],
+    //     // Any additional eslint-webpack-plugin options below
+    //     // ...
+    //     overrideConfigFile: ".custom.eslintrc.json",
+    //   },
+    // },
     {
       resolve: "gatsby-plugin-sharp",
 

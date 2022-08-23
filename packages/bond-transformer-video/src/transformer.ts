@@ -109,7 +109,12 @@ export function createTransformedVideo(
   context: IGatsbyResolverContext<Node, TransformArgs>,
   args: NodePluginArgs
 ): Promise<GatsbyTransformedVideo> {
-  const key = source.internal.contentDigest + source.id;
+  const keyObj = {
+    digest: source.internal.contentDigest,
+    id: source.id,
+    transformArgs
+  };
+  const key = args.createContentDigest(keyObj);
   const existing = transformMap.get(key);
   if (existing) return existing;
   const promise = new Promise<GatsbyTransformedVideo>((resolve, reject) => {

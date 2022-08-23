@@ -13,6 +13,14 @@ const config: GatsbyConfig = {
     logo: `${siteUrl}/icons/icon-512x512.png`,
     cookieName: COOKIE_NAME,
   },
+  trailingSlash: "always",
+  graphqlTypegen: {
+    typesOutputPath: "gatsby-types.d.ts",
+  },
+  flags: {
+    FAST_DEV: true,
+    DEV_SSR: false,
+  },
   plugins: [
     {
       resolve: "@bond-london/gatsby-theme",

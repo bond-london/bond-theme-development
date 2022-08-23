@@ -1,15 +1,15 @@
 import { graphql } from "gatsby";
 
 // eslint-disable-next-line import/no-unused-modules
-export const GraphCmsImageAssetFragment = graphql`
-  fragment GraphCmsImageAsset on GraphCMS_Asset {
+export const FullWidthImageAssetFragment = graphql`
+  fragment FullWidthImageAsset on GraphCMS_Asset {
     id
     localFile {
       internal {
         mediaType
       }
       childImageSharp {
-        gatsbyImageData
+        gatsbyImageData(layout: FULL_WIDTH)
       }
       svg {
         encoded
@@ -20,23 +20,140 @@ export const GraphCmsImageAssetFragment = graphql`
 `;
 
 // eslint-disable-next-line import/no-unused-modules
-export const GraphCmsVideoAssetFragment = graphql`
-  fragment GraphCmsVideoAsset on GraphCMS_Asset {
+export const FixedImageAssetFragment = graphql`
+  fragment FixedImageAsset on GraphCMS_Asset {
     id
     localFile {
       internal {
         mediaType
       }
-      childGatsbyVideo {
-        transformed
+      childImageSharp {
+        gatsbyImageData(layout: FIXED)
+      }
+      svg {
+        encoded
+        content
       }
     }
   }
 `;
 
 // eslint-disable-next-line import/no-unused-modules
-export const GraphCmsAnimationAssetFragment = graphql`
-  fragment GraphCmsAnimationAsset on GraphCMS_Asset {
+export const ConstrainedImageAssetFragment = graphql`
+  fragment ConstrainedImageAsset on GraphCMS_Asset {
+    id
+    localFile {
+      internal {
+        mediaType
+      }
+      childImageSharp {
+        gatsbyImageData(layout: CONSTRAINED)
+      }
+      svg {
+        encoded
+        content
+      }
+    }
+  }
+`;
+
+
+// eslint-disable-next-line import/no-unused-modules
+export const MutedConstrainedVideoAssetFragment = graphql`
+  fragment MutedConstrainedVideoAsset on GraphCMS_Asset {
+    id
+    localFile {
+      internal {
+        mediaType
+      }
+      childGatsbyVideo {
+        transformed(layout: CONSTRAINED, muted: true)
+      }
+    }
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const MutedFixedVideoAssetFragment = graphql`
+  fragment MutedFixedVideoAsset on GraphCMS_Asset {
+    id
+    localFile {
+      internal {
+        mediaType
+      }
+      childGatsbyVideo {
+        transformed(layout: FIXED, muted: true)
+      }
+    }
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const MutedFullWidthVideoAssetFragment = graphql`
+  fragment MutedFullWidthVideoAsset on GraphCMS_Asset {
+    id
+    localFile {
+      internal {
+        mediaType
+      }
+      childGatsbyVideo {
+        transformed(layout: FULL_WIDTH, muted: true)
+      }
+    }
+  }
+`;
+
+
+// eslint-disable-next-line import/no-unused-modules
+export const ConstrainedVideoAssetFragment = graphql`
+  fragment ConstrainedVideoAsset on GraphCMS_Asset {
+    id
+    localFile {
+      internal {
+        mediaType
+      }
+      childGatsbyVideo {
+        transformed(layout: CONSTRAINED, muted: false)
+      }
+    }
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const FixedVideoAssetFragment = graphql`
+  fragment FixedVideoAsset on GraphCMS_Asset {
+    id
+    localFile {
+      internal {
+        mediaType
+      }
+      childGatsbyVideo {
+        transformed(layout: FIXED, muted: false)
+      }
+    }
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const FullWidthVideoAssetFragment = graphql`
+  fragment FullWidthVideoAsset on GraphCMS_Asset {
+    id
+    localFile {
+      internal {
+        mediaType
+      }
+      childGatsbyVideo {
+        transformed(layout: FULL_WIDTH, muted: false)
+      }
+    }
+  }
+`;
+
+
+
+// eslint-disable-next-line import/no-unused-modules
+export const AnimationAssetFragment = graphql`
+  fragment AnimationAsset on GraphCMS_Asset {
     id
     localFile {
       internal {
@@ -80,7 +197,7 @@ export const ImageAssetFragment = graphql`
     verticalCropPosition
     remoteId
     image {
-      ...GraphCmsImageAsset
+      ...FullWidthImageAsset
     }
   }
 `;
@@ -94,28 +211,29 @@ export const VideoAssetFragment = graphql`
     verticalCropPosition
     remoteId
     preview {
-      ...GraphCmsVideoAsset
+      ...MutedFullWidthVideoAsset
     }
     poster {
-      ...GraphCmsImageAsset
+      ...FullWidthImageAsset
     }
     full {
-      ...GraphCmsVideoAsset
+      ...FullWidthVideoAsset
     }
     external
   }
 `;
 
 // eslint-disable-next-line import/no-unused-modules
-export const AnimationAssetFragment = graphql`
-  fragment AnimationAsset on GraphCMS_Animation {
+export const AnimationFragment = graphql`
+  fragment Animation on GraphCMS_Animation {
     id
     dontCrop
     horizontalCropPosition
     verticalCropPosition
     remoteId
     animation {
-      ...GraphCmsAnimationAsset
+      ...AnimationAsset
     }
   }
 `;
+

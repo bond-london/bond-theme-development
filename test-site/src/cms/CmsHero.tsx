@@ -5,9 +5,9 @@ import React from "react";
 import { Hero } from "../components/Hero";
 
 function getVideo(fragment: Queries.GraphCmsVideoAssetFragment) {
-  if (!fragment.localFile.internal.mediaType.startsWith("video/")) {
+  if (!fragment.localFile?.internal?.mediaType?.startsWith("video/")) {
     throw new Error(
-      `Video must be a video media type: '${fragment.localFile.internal.mediaType}`
+      `Video must be a video media type: '${fragment.localFile?.internal?.mediaType || "unknown"}`
     );
   }
 
@@ -72,7 +72,7 @@ export const CmsHeroFragment = graphql`
       ...ImageAsset
     }
     animation {
-      ...AnimationAsset
+      ...Animation
     }
     preHeader
     header

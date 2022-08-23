@@ -1,5 +1,11 @@
 import type { GatsbyConfig } from "gatsby";
+import { reporter } from "gatsby-cli/lib/reporter/reporter";
 import { isProduction, ProjectName } from "./gatsby-env";
+
+if (!process.env.GRAPHCMS_TOKEN) {
+  reporter.panic("Looks like there is no env file - cannot find GRAPHCMS_TOKEN");
+}
+
 // import { join, dirname } from "path";
 
 // const gatsbyPackage = require.resolve("gatsby/package.json");

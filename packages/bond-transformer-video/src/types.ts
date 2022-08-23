@@ -25,4 +25,5 @@ export interface PluginOptions {
   remoteConnectionString?: string;
   remoteContainer?: string;
   videoCacheFolder: string;
+  width?: number;
 }

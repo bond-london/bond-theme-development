@@ -1,9 +1,11 @@
 import type { GatsbyConfig } from "gatsby";
 import { reporter } from "gatsby-cli/lib/reporter/reporter";
-import { isProduction, ProjectName } from "./gatsby-env";
+import { isProduction, ProjectName, VIDEO_WIDTH } from "./gatsby-env";
 
 if (!process.env.GRAPHCMS_TOKEN) {
-  reporter.panic("Looks like there is no env file - cannot find GRAPHCMS_TOKEN");
+  reporter.panic(
+    "Looks like there is no env file - cannot find GRAPHCMS_TOKEN"
+  );
 }
 
 // import { join, dirname } from "path";
@@ -97,6 +99,7 @@ const gatsbyConfig: GatsbyConfig = {
         useRemoteCache: true,
         remoteContainer: ProjectName?.toLowerCase(),
         remoteConnectionString: process.env.VIDEO_CACHE_CONNECTION_STRING,
+        width: VIDEO_WIDTH,
       },
     },
   ],

@@ -14,5 +14,6 @@ export function pluginOptionsSchema(args: PluginOptionsSchemaArgs) {
       "Connection string for the remote cache"
     ),
     remoteContainer: Joi.string().description("Name of the container to use"),
+    width: Joi.number().description("Video width or unset to leave as source"),
   });
 }

@@ -57,7 +57,6 @@ export const ConstrainedImageAssetFragment = graphql`
   }
 `;
 
-
 // eslint-disable-next-line import/no-unused-modules
 export const MutedConstrainedVideoAssetFragment = graphql`
   fragment MutedConstrainedVideoAsset on GraphCMS_Asset {
@@ -102,7 +101,6 @@ export const MutedFullWidthVideoAssetFragment = graphql`
     }
   }
 `;
-
 
 // eslint-disable-next-line import/no-unused-modules
 export const ConstrainedVideoAssetFragment = graphql`
@@ -149,8 +147,6 @@ export const FullWidthVideoAssetFragment = graphql`
   }
 `;
 
-
-
 // eslint-disable-next-line import/no-unused-modules
 export const AnimationAssetFragment = graphql`
   fragment AnimationAsset on GraphCMS_Asset {
@@ -188,8 +184,8 @@ export const SeoImageAssetFragment = graphql`
 `;
 
 // eslint-disable-next-line import/no-unused-modules
-export const ImageAssetFragment = graphql`
-  fragment ImageAsset on GraphCMS_Image {
+export const FullWidthImageFragment = graphql`
+  fragment FullWidthImage on GraphCMS_Image {
     id
     alt
     dontCrop
@@ -203,8 +199,8 @@ export const ImageAssetFragment = graphql`
 `;
 
 // eslint-disable-next-line import/no-unused-modules
-export const VideoAssetFragment = graphql`
-  fragment VideoAsset on GraphCMS_Video {
+export const FullWidthVideoFragment = graphql`
+  fragment FullWidthVideo on GraphCMS_Video {
     id
     dontCrop
     horizontalCropPosition
@@ -224,6 +220,77 @@ export const VideoAssetFragment = graphql`
 `;
 
 // eslint-disable-next-line import/no-unused-modules
+export const FixedImageFragment = graphql`
+  fragment FixedImage on GraphCMS_Image {
+    id
+    alt
+    dontCrop
+    horizontalCropPosition
+    verticalCropPosition
+    remoteId
+    image {
+      ...FixedImageAsset
+    }
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const FixedVideoFragment = graphql`
+  fragment FixedVideo on GraphCMS_Video {
+    id
+    dontCrop
+    horizontalCropPosition
+    verticalCropPosition
+    remoteId
+    preview {
+      ...MutedFixedVideoAsset
+    }
+    poster {
+      ...FixedImageAsset
+    }
+    full {
+      ...FixedVideoAsset
+    }
+    external
+  }
+`;
+// eslint-disable-next-line import/no-unused-modules
+export const ConstrainedImageFragment = graphql`
+  fragment ConstrainedImage on GraphCMS_Image {
+    id
+    alt
+    dontCrop
+    horizontalCropPosition
+    verticalCropPosition
+    remoteId
+    image {
+      ...ConstrainedImageAsset
+    }
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const ConstrainedVideoFragment = graphql`
+  fragment ConstrainedVideo on GraphCMS_Video {
+    id
+    dontCrop
+    horizontalCropPosition
+    verticalCropPosition
+    remoteId
+    preview {
+      ...MutedConstrainedVideoAsset
+    }
+    poster {
+      ...ConstrainedImageAsset
+    }
+    full {
+      ...ConstrainedVideoAsset
+    }
+    external
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
 export const AnimationFragment = graphql`
   fragment Animation on GraphCMS_Animation {
     id
@@ -236,4 +303,3 @@ export const AnimationFragment = graphql`
     }
   }
 `;
-

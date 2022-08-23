@@ -9,7 +9,7 @@ import {
   GraphQLNonNull,
 } from "gatsby/graphql";
 import { createTransformedVideo } from "./transformer";
-import { TransformArgs } from "./types";
+import { PluginOptions, TransformArgs } from "./types";
 
 const VideoLayoutType = new GraphQLEnumType({
   name: `VideoLayout`,
@@ -20,7 +20,10 @@ const VideoLayoutType = new GraphQLEnumType({
   },
 });
 
-export function createSchemaCustomization(args: CreateSchemaCustomizationArgs) {
+export function createSchemaCustomization(
+  args: CreateSchemaCustomizationArgs,
+  options: PluginOptions
+) {
   const {
     actions: { createTypes },
     schema,
@@ -42,7 +45,7 @@ export function createSchemaCustomization(args: CreateSchemaCustomizationArgs) {
       transformed: {
         type: new GraphQLNonNull(GraphQLJSON),
         args: {
-          width: { type: GraphQLInt },
+          width: { type: GraphQLInt, defaultValue: options.width },
           muted: { type: GraphQLBoolean, defaultValue: true },
           layout: { type: VideoLayoutType, defaultValue: "constrained" },
         },

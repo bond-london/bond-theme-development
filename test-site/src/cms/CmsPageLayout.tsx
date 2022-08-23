@@ -24,11 +24,11 @@ export const PageFragment = graphql`
     slug
     topComponents {
       __typename
-      ...CmsHero
+      ...CmsHeroExperiment
     }
     content {
       __typename
-      ...CmsHero
+      ...CmsHeroExperiment
     }
   }
 `;

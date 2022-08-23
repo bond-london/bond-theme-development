@@ -8,6 +8,10 @@ function getVideo(
   fragment:
     | Queries.MutedFullWidthVideoAssetFragment
     | Queries.FullWidthVideoAssetFragment
+    | Queries.MutedFixedVideoAssetFragment
+    | Queries.FixedVideoAssetFragment
+    | Queries.MutedConstrainedVideoAssetFragment
+    | Queries.ConstrainedVideoAssetFragment
 ) {
   if (!fragment.localFile?.internal?.mediaType?.startsWith("video/")) {
     throw new Error(
@@ -58,24 +62,48 @@ function getBondImage(
   }
 }
 
-export const CmsHero: React.FC<{ fragment: Queries.CmsHeroFragment }> = ({
-  fragment,
-}) => {
-  const video = getBondVideo(fragment.video);
-  const image = getBondImage(fragment.image);
-
-  return <Hero video={video} image={image} />;
+export const CmsHeroExperiment: React.FC<{
+  fragment: Queries.CmsHeroExperimentFragment;
+}> = ({ fragment }) => {
+  return (
+    <>
+      <Hero
+        video={getBondVideo(fragment.fullWidthVideo)}
+        image={getBondImage(fragment.fullWidthImage)}
+      />
+      <Hero
+        video={getBondVideo(fragment.fixedVideo)}
+        image={getBondImage(fragment.fixedImage)}
+      />
+      <Hero
+        video={getBondVideo(fragment.constrainedVideo)}
+        image={getBondImage(fragment.constrainedImage)}
+      />
+    </>
+  );
 };
 
-export const CmsHeroFragment = graphql`
-  fragment CmsHero on GraphCMS_Hero {
+export const CmsHeroExperimentFragment = graphql`
+  fragment CmsHeroExperiment on GraphCMS_Hero {
     __typename
     id
-    video {
+    fullWidthVideo: video {
       ...FullWidthVideo
     }
-    image {
+    fullWidthImage: image {
       ...FullWidthImage
+    }
+    fixedVideo: video {
+      ...FixedVideo
+    }
+    fixedImage: image {
+      ...FixedImage
+    }
+    constrainedVideo: video {
+      ...ConstrainedVideo
+    }
+    constrainedImage: image {
+      ...ConstrainedImage
     }
     animation {
       ...Animation

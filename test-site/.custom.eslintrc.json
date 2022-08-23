@@ -1,0 +1,7 @@
+{
+  "extends": [".eslintrc"],
+  "rules": {
+    "no-anonymous-exports-page-templates": "error",
+    "limited-exports-page-templates": "error"
+  }
+}

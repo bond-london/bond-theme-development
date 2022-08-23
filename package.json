@@ -1,5 +1,6 @@
 {
   "private": true,
+  "license": "MIT",
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "format": "yarn run format:code",
@@ -12,7 +13,7 @@
   },
   "workspaces": [
     "packages/*",
-    "nick-test-site"
+    "test-site"
   ],
   "name": "bond-theme-development",
   "devDependencies": {

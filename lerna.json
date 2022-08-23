@@ -5,7 +5,7 @@
   "npmClient": "yarn",
   "registry": "https://registry.npmjs.org/",
   "version": "independent",
-  "packages": ["packages/*", "nick-test-site"],
+  "packages": ["packages/*", "test-site"],
   "command": {
     "publish": {
       "allowBranch": "release/*",

@@ -1,0 +1,101 @@
+{
+  "colorOptions": {
+    "black": "#0f0f0f",
+    "grey": "#e0e0e0",
+    "gray": "#f0f0f0",
+    "white": "#ffffff",
+    "green": "#0ff00f",
+    "green-hover": "#0fe00f",
+    "blue": "#0f0ff0",
+    "blue-hover": "#0f0fe0",
+    "red": "#f00f0f",
+    "yellow": "#fff34b",
+    "error": "#f0f00f"
+  },
+  "spacing": {
+    "xxxs": 8,
+    "xxs": 10,
+    "xs": 16,
+    "s": 32,
+    "m": 48,
+    "l": 96,
+    "xl": 192
+  },
+  "sizes": {
+    "mobile": {
+      "margin": 20,
+      "gap": 15,
+      "cols": 4
+    },
+    "tablet": {
+      "breakpoint": 768,
+      "margin": 45,
+      "gap": 15,
+      "cols": 8
+    },
+    "laptop": {
+      "breakpoint": 1024,
+      "margin": 75,
+      "gap": 15,
+      "cols": 12
+    },
+    "desktop": {
+      "breakpoint": 1440,
+      "margin": 75,
+      "gap": 15,
+      "cols": 12
+    },
+    "4k": {
+      "breakpoint": 1920,
+      "margin": 75,
+      "gap": 15,
+      "cols": 12,
+      "max": 1770
+    }
+  },
+  "fonts": [64, 56, 48, 40, 36, 28, 24, 20, 18, 16, 14, 12],
+  "lineHeight": 1.25,
+  "fontWeight": {
+    "light": 300,
+    "bold": 700
+  },
+  "fontTable": {
+    "h1": {
+      "font": "poppins",
+      "weight": "bold",
+      "default": 36,
+      "desktop": 56,
+      "4k": 64
+    },
+    "h2": {
+      "font": "poppins",
+      "weight": "bold",
+      "default": 28,
+      "desktop": 40,
+      "4k": 48
+    },
+    "h3": { "font": "poppins", "weight": "bold", "default": 18, "desktop": 36 },
+    "h4": { "font": "poppins", "weight": "bold", "default": 16, "desktop": 20 },
+    "p1": {
+      "font": "poppins",
+      "weight": "bold",
+      "default": 20,
+      "desktop": 24,
+      "4k": 28
+    },
+    "p2": {
+      "font": "poppins",
+      "weight": "light",
+      "default": 16,
+      "desktop": 20
+    },
+    "p3": { "font": "poppins", "weight": "bold", "default": 16, "desktop": 20 },
+    "p4": {
+      "font": "poppins",
+      "weight": "light",
+      "default": 12,
+      "tablet": 14,
+      "desktop": 16
+    }
+  }
+}

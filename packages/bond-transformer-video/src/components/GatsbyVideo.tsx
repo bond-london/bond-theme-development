@@ -1,15 +1,6 @@
 import React, { CSSProperties, VideoHTMLAttributes } from "react";
 import { GatsbyTransformedVideo } from "../types";
 
-export function getGatsbyVideo(
-  transformed: Record<string, unknown> | unknown | null
-) {
-  if (transformed) {
-    return transformed as GatsbyTransformedVideo;
-  }
-  return undefined;
-}
-
 function calculateSizes({ width, height, layout }: GatsbyTransformedVideo) {
   const aspectRatio = width / height;
   switch (layout) {

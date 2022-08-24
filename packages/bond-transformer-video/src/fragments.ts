@@ -28,7 +28,7 @@ export const MutedFullWidthVideoFragment = graphql`
 export const ConstrainedVideoFragment = graphql`
   fragment ConstrainedVideo on GatsbyVideo {
     id
-    transformed(layout: CONSTRAINED)
+    transformed(layout: CONSTRAINED, muted: false)
   }
 `;
 
@@ -36,7 +36,7 @@ export const ConstrainedVideoFragment = graphql`
 export const FixedVideoFragment = graphql`
   fragment FixedVideo on GatsbyVideo {
     id
-    transformed(layout: FIXED)
+    transformed(layout: FIXED, muted: false)
   }
 `;
 
@@ -44,7 +44,7 @@ export const FixedVideoFragment = graphql`
 export const FullWidthVideoFragment = graphql`
   fragment FullWidthVideo on GatsbyVideo {
     id
-    transformed(layout: FULL_WIDTH)
+    transformed(layout: FULL_WIDTH, muted: false)
   }
 `;
 

@@ -27,3 +27,13 @@ export interface PluginOptions {
   videoCacheFolder: string;
   width?: number;
 }
+
+export function GetTransformedVideo(entry: {
+  id: string;
+  transformed: Record<string, unknown>;
+}) {
+  if (entry.transformed) {
+    return entry.transformed as unknown as GatsbyTransformedVideo;
+  }
+  return undefined;
+}

@@ -12,15 +12,15 @@ export async function onCreateNode(args: CreateNodeArgs) {
   if (node.internal.type !== "File") return;
 
   const fsNode = node as FileSystemNode;
-  if (fsNode.internal.mediaType !== "application/json") return;
+  if (!fsNode.internal.mediaType?.startsWith("image/svg")) return;
 
   const animationNode: NodeInput = {
-    id: createNodeId(`${node.id} >> GatsbyAnimation`),
+    id: createNodeId(`${node.id} >> GatsbySvg`),
     children: [],
     parent: node.id,
     internal: {
       contentDigest: node.internal.contentDigest,
-      type: "GatsbyAnimation",
+      type: "GatsbySvg",
     },
   };
 

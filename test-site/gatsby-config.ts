@@ -21,11 +21,7 @@ const config: GatsbyConfig = {
     FAST_DEV: true,
     DEV_SSR: false,
   },
-  plugins: [
-    {
-      resolve: "@bond-london/gatsby-theme",
-    },
-  ],
+  plugins: ["@bond-london/gatsby-theme", "gatsby-plugin-postcss"],
 };
 
 export default config;

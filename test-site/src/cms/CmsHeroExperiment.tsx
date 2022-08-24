@@ -4,15 +4,25 @@ import { graphql } from "gatsby";
 import React from "react";
 import { Hero } from "../components/Hero";
 
-function getVideo(
-  fragment:
-    | Queries.MutedFullWidthVideoAssetFragment
-    | Queries.FullWidthVideoAssetFragment
-    | Queries.MutedFixedVideoAssetFragment
-    | Queries.FixedVideoAssetFragment
-    | Queries.MutedConstrainedVideoAssetFragment
-    | Queries.ConstrainedVideoAssetFragment
-) {
+type VideoAssetFragment =
+  | Queries.MutedFullWidthVideoAssetFragment
+  | Queries.FullWidthVideoAssetFragment
+  | Queries.MutedFixedVideoAssetFragment
+  | Queries.FixedVideoAssetFragment
+  | Queries.MutedConstrainedVideoAssetFragment
+  | Queries.ConstrainedVideoAssetFragment;
+
+type CmsVideoFragment =
+  | Queries.FixedCMSVideoFragment
+  | Queries.ConstrainedCMSVideoFragment
+  | Queries.FullWidthCMSVideoFragment;
+
+type CmsImageFragment =
+  | Queries.ConstrainedCMSImageFragment
+  | Queries.FixedCMSImageFragment
+  | Queries.FullWidthCMSImageFragment;
+
+function getVideo(fragment: VideoAssetFragment) {
   if (!fragment.localFile?.internal?.mediaType?.startsWith("video/")) {
     throw new Error(
       `Video must be a video media type: '${
@@ -30,7 +40,7 @@ function getVideo(
 }
 
 function getBondVideo(
-  fragment: Queries.VideoAssetFragment | null
+  fragment: CmsVideoFragment | null
 ): IBondVideo | undefined {
   if (fragment?.preview?.localFile?.childGatsbyVideo?.transformed) {
     const { dontCrop, verticalCropPosition, horizontalCropPosition } = fragment;
@@ -88,25 +98,22 @@ export const CmsHeroExperimentFragment = graphql`
     __typename
     id
     fullWidthVideo: video {
-      ...FullWidthVideo
+      ...FullWidthCMSVideo
     }
     fullWidthImage: image {
-      ...FullWidthImage
+      ...FullWidthCMSImage
     }
     fixedVideo: video {
-      ...FixedVideo
+      ...FixedCMSVideo
     }
     fixedImage: image {
-      ...FixedImage
+      ...FixedCMSImage
     }
     constrainedVideo: video {
-      ...ConstrainedVideo
+      ...ConstrainedCMSVideo
     }
     constrainedImage: image {
-      ...ConstrainedImage
-    }
-    animation {
-      ...Animation
+      ...ConstrainedCMSImage
     }
     preHeader
     header

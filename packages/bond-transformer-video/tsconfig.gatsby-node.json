@@ -3,5 +3,5 @@
   "compilerOptions": {
     "module": "CommonJS"
   },
-  "files": ["src/gatsby-node.ts", "src/gatsby-worker.ts"]
+  "files": ["src/gatsby-node.ts", "src/gatsby-worker.ts", "src/fragments.ts"]
 }

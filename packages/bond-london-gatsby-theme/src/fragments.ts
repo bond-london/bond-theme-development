@@ -1,39 +1,55 @@
 import { graphql } from "gatsby";
 
 // eslint-disable-next-line import/no-unused-modules
-export const FullWidthImageAssetFragment = graphql`
-  fragment FullWidthImageAsset on GraphCMS_Asset {
+export const ConstrainedImageFragment = graphql`
+  fragment ConstrainedImage on ImageSharp {
     id
-    localFile {
-      internal {
-        mediaType
-      }
-      childImageSharp {
-        gatsbyImageData(layout: FULL_WIDTH)
-      }
-      svg {
-        encoded
-        content
-      }
+    gatsbyImageData(layout: CONSTRAINED)
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const FixedImageFragment = graphql`
+  fragment FixedImage on ImageSharp {
+    id
+    gatsbyImageData(layout: FIXED)
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const FullWidthImageFragment = graphql`
+  fragment FullWidthImage on ImageSharp {
+    id
+    gatsbyImageData(layout: FULL_WIDTH)
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const ConstrainedImageFileFragment = graphql`
+  fragment ConstrainedImageFile on File {
+    id
+    childImageSharp {
+      ...ConstrainedImage
     }
   }
 `;
 
 // eslint-disable-next-line import/no-unused-modules
-export const FixedImageAssetFragment = graphql`
-  fragment FixedImageAsset on GraphCMS_Asset {
+export const FixedImageFileFragment = graphql`
+  fragment FixedImageFile on File {
     id
-    localFile {
-      internal {
-        mediaType
-      }
-      childImageSharp {
-        gatsbyImageData(layout: FIXED)
-      }
-      svg {
-        encoded
-        content
-      }
+    childImageSharp {
+      ...FixedImage
+    }
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const FullWidthImageFileFragment = graphql`
+  fragment FullWidthImageFile on File {
+    id
+    childImageSharp {
+      ...FullWidthImage
     }
   }
 `;
@@ -46,13 +62,36 @@ export const ConstrainedImageAssetFragment = graphql`
       internal {
         mediaType
       }
-      childImageSharp {
-        gatsbyImageData(layout: CONSTRAINED)
+      ...ConstrainedImageFile
+      ...ConstrainedSvgFile
+    }
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const FixedImageAssetFragment = graphql`
+  fragment FixedImageAsset on GraphCMS_Asset {
+    id
+    localFile {
+      internal {
+        mediaType
       }
-      svg {
-        encoded
-        content
+      ...FixedImageFile
+      ...FixedSvgFile
+    }
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const FullWidthImageAssetFragment = graphql`
+  fragment FullWidthImageAsset on GraphCMS_Asset {
+    id
+    localFile {
+      internal {
+        mediaType
       }
+      ...FullWidthImageFile
+      ...FullWidthSvgFile
     }
   }
 `;
@@ -65,9 +104,7 @@ export const MutedConstrainedVideoAssetFragment = graphql`
       internal {
         mediaType
       }
-      childGatsbyVideo {
-        transformed(layout: CONSTRAINED, muted: true)
-      }
+      ...MutedConstrainedVideoFile
     }
   }
 `;
@@ -80,9 +117,7 @@ export const MutedFixedVideoAssetFragment = graphql`
       internal {
         mediaType
       }
-      childGatsbyVideo {
-        transformed(layout: FIXED, muted: true)
-      }
+      ...MutedFixedVideoFile
     }
   }
 `;
@@ -95,9 +130,7 @@ export const MutedFullWidthVideoAssetFragment = graphql`
       internal {
         mediaType
       }
-      childGatsbyVideo {
-        transformed(layout: FULL_WIDTH, muted: true)
-      }
+      ...MutedFullWidthVideoFile
     }
   }
 `;
@@ -110,9 +143,7 @@ export const ConstrainedVideoAssetFragment = graphql`
       internal {
         mediaType
       }
-      childGatsbyVideo {
-        transformed(layout: CONSTRAINED, muted: false)
-      }
+      ...ConstrainedVideoFile
     }
   }
 `;
@@ -125,9 +156,7 @@ export const FixedVideoAssetFragment = graphql`
       internal {
         mediaType
       }
-      childGatsbyVideo {
-        transformed(layout: FIXED, muted: false)
-      }
+      ...FixedVideoFile
     }
   }
 `;
@@ -140,30 +169,46 @@ export const FullWidthVideoAssetFragment = graphql`
       internal {
         mediaType
       }
-      childGatsbyVideo {
-        transformed(layout: FULL_WIDTH, muted: false)
-      }
+      ...FullWidthVideoFile
     }
   }
 `;
 
 // eslint-disable-next-line import/no-unused-modules
-export const AnimationAssetFragment = graphql`
-  fragment AnimationAsset on GraphCMS_Asset {
+export const ConstrainedAnimationAssetFragment = graphql`
+  fragment ConstrainedAnimationAsset on GraphCMS_Asset {
     id
     localFile {
       internal {
         mediaType
       }
-      publicURL
-      childExtractedLottie {
-        width
-        height
-        encoded
-        encodedFile {
-          publicURL
-        }
+      ...ConstrainedSvgFile
+    }
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const FixedAnimationAssetFragment = graphql`
+  fragment FixedAnimationAsset on GraphCMS_Asset {
+    id
+    localFile {
+      internal {
+        mediaType
       }
+      ...FixedSvgFile
+    }
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const FullWidthAnimationAssetFragment = graphql`
+  fragment FullWidthAnimationAsset on GraphCMS_Asset {
+    id
+    localFile {
+      internal {
+        mediaType
+      }
+      ...FullWidthVideoFile
     }
   }
 `;
@@ -184,79 +229,8 @@ export const SeoImageAssetFragment = graphql`
 `;
 
 // eslint-disable-next-line import/no-unused-modules
-export const FullWidthImageFragment = graphql`
-  fragment FullWidthImage on GraphCMS_Image {
-    id
-    alt
-    dontCrop
-    horizontalCropPosition
-    verticalCropPosition
-    remoteId
-    image {
-      ...FullWidthImageAsset
-    }
-  }
-`;
-
-// eslint-disable-next-line import/no-unused-modules
-export const FullWidthVideoFragment = graphql`
-  fragment FullWidthVideo on GraphCMS_Video {
-    id
-    dontCrop
-    horizontalCropPosition
-    verticalCropPosition
-    remoteId
-    preview {
-      ...MutedFullWidthVideoAsset
-    }
-    poster {
-      ...FullWidthImageAsset
-    }
-    full {
-      ...FullWidthVideoAsset
-    }
-    external
-  }
-`;
-
-// eslint-disable-next-line import/no-unused-modules
-export const FixedImageFragment = graphql`
-  fragment FixedImage on GraphCMS_Image {
-    id
-    alt
-    dontCrop
-    horizontalCropPosition
-    verticalCropPosition
-    remoteId
-    image {
-      ...FixedImageAsset
-    }
-  }
-`;
-
-// eslint-disable-next-line import/no-unused-modules
-export const FixedVideoFragment = graphql`
-  fragment FixedVideo on GraphCMS_Video {
-    id
-    dontCrop
-    horizontalCropPosition
-    verticalCropPosition
-    remoteId
-    preview {
-      ...MutedFixedVideoAsset
-    }
-    poster {
-      ...FixedImageAsset
-    }
-    full {
-      ...FixedVideoAsset
-    }
-    external
-  }
-`;
-// eslint-disable-next-line import/no-unused-modules
-export const ConstrainedImageFragment = graphql`
-  fragment ConstrainedImage on GraphCMS_Image {
+export const ConstrainedCMSImageFragment = graphql`
+  fragment ConstrainedCMSImage on GraphCMS_Image {
     id
     alt
     dontCrop
@@ -270,8 +244,38 @@ export const ConstrainedImageFragment = graphql`
 `;
 
 // eslint-disable-next-line import/no-unused-modules
-export const ConstrainedVideoFragment = graphql`
-  fragment ConstrainedVideo on GraphCMS_Video {
+export const FixedCMSImageFragment = graphql`
+  fragment FixedCMSImage on GraphCMS_Image {
+    id
+    alt
+    dontCrop
+    horizontalCropPosition
+    verticalCropPosition
+    remoteId
+    image {
+      ...FixedImageAsset
+    }
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const FullWidthCMSImageFragment = graphql`
+  fragment FullWidthCMSImage on GraphCMS_Image {
+    id
+    alt
+    dontCrop
+    horizontalCropPosition
+    verticalCropPosition
+    remoteId
+    image {
+      ...FullWidthImageAsset
+    }
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const ConstrainedCMSVideoFragment = graphql`
+  fragment ConstrainedCMSVideo on GraphCMS_Video {
     id
     dontCrop
     horizontalCropPosition
@@ -291,15 +295,85 @@ export const ConstrainedVideoFragment = graphql`
 `;
 
 // eslint-disable-next-line import/no-unused-modules
-export const AnimationFragment = graphql`
-  fragment Animation on GraphCMS_Animation {
+export const FixedCMSVideoFragment = graphql`
+  fragment FixedCMSVideo on GraphCMS_Video {
+    id
+    dontCrop
+    horizontalCropPosition
+    verticalCropPosition
+    remoteId
+    preview {
+      ...MutedFixedVideoAsset
+    }
+    poster {
+      ...FixedImageAsset
+    }
+    full {
+      ...FixedVideoAsset
+    }
+    external
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const FullWidthCMSVideoFragment = graphql`
+  fragment FullWidthCMSVideo on GraphCMS_Video {
+    id
+    dontCrop
+    horizontalCropPosition
+    verticalCropPosition
+    remoteId
+    preview {
+      ...MutedFullWidthVideoAsset
+    }
+    poster {
+      ...FullWidthImageAsset
+    }
+    full {
+      ...FullWidthVideoAsset
+    }
+    external
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const ConstrainedCMSAnimationFragment = graphql`
+  fragment ConstrainedCMSAnimation on GraphCMS_Animation {
     id
     dontCrop
     horizontalCropPosition
     verticalCropPosition
     remoteId
     animation {
-      ...AnimationAsset
+      ...ConstrainedAnimationAsset
+    }
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const FixedCMSAnimationFragment = graphql`
+  fragment FixedCMSAnimation on GraphCMS_Animation {
+    id
+    dontCrop
+    horizontalCropPosition
+    verticalCropPosition
+    remoteId
+    animation {
+      ...FixedAnimationAsset
+    }
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const FullWidthCMSAnimationFragment = graphql`
+  fragment FullWidthCMSAnimation on GraphCMS_Animation {
+    id
+    dontCrop
+    horizontalCropPosition
+    verticalCropPosition
+    remoteId
+    animation {
+      ...FullWidthAnimationAsset
     }
   }
 `;

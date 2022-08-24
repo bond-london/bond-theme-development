@@ -72,13 +72,10 @@ export const CmsHeroFragment = graphql`
     __typename
     id
     video {
-      ...FullWidthVideo
+      ...FullWidthCMSVideo
     }
     image {
-      ...FullWidthImage
-    }
-    animation {
-      ...Animation
+      ...FullWidthCMSImage
     }
     preHeader
     header

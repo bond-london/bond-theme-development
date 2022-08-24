@@ -12,7 +12,14 @@
   ],
   "tailwindCSS.lint.cssConflict": "ignore",
   "files.exclude": {
-    "**/dist": true,
-    "**/node_modules": true
-  }
+    ".cache": true,
+    "node_modules": true,
+    "public": true
+  },
+  "svg.preview.background": "transparent",
+  "editor.formatOnSave": true,
+  "eslint.rules.customizations": [
+    { "rule": "limited-exports-page-templates", "severity": "off" },
+    { "rule": "no-anonymous-exports-page-templates", "severity": "off" }
+  ]
 }

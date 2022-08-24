@@ -1,7 +1,7 @@
 import type { CreateResolversArgs } from "gatsby";
 import type { FileSystemNode } from "gatsby-source-filesystem";
 import type { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
-import { GatsbyExtractedAnimation } from "./types";
+import { GatsbyExtractedSvg } from "./types";
 
 type ResolverArgs = {
   // no resolver args
@@ -12,14 +12,14 @@ export function createResolvers(args: CreateResolversArgs) {
 
   createResolvers({
     File: {
-      childGatsbyAnimation: {
+      childGatsbySvg: {
         async resolve(
           source: FileSystemNode,
           resolverArgs: ResolverArgs,
           context: IGatsbyResolverContext<Node, ResolverArgs>,
           info: unknown
         ) {
-          if (source.internal.mediaType !== "application/json") {
+          if (!source.internal.mediaType?.startsWith("image/svg")) {
             return null;
           }
           // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
@@ -28,7 +28,7 @@ export function createResolvers(args: CreateResolversArgs) {
             resolverArgs,
             context,
             info
-          )) as GatsbyExtractedAnimation;
+          )) as GatsbyExtractedSvg;
 
           return main;
         },

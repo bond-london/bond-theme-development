@@ -4,5 +4,5 @@
     "module": "CommonJS",
     "declaration": true
   },
-  "files": ["src/gatsby-config.ts"]
+  "files": ["src/gatsby-config.ts", "src/fragments.ts", "src/gatsby-browser.ts"]
 }

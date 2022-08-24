@@ -4,14 +4,14 @@ import { RenderBodyArgs } from "gatsby";
 export function onRenderBody({ setHeadComponents }: RenderBodyArgs) {
   setHeadComponents([
     <style
-      key="gatsby-video-style"
+      key="gatsby-svg-style"
       dangerouslySetInnerHTML={{
         __html: `
-.gatsby-video-wrapper {
+.gatsby-svg-wrapper {
     position: relative;
     overflow: hidden;
 }      
-.gatsby-video-wrapper video {
+.gatsby-svg-wrapper img {
     bottom: 0;
     height: 100%;
     left:0;
@@ -25,7 +25,7 @@ export function onRenderBody({ setHeadComponents }: RenderBodyArgs) {
     object-fit: cover;
 }
 
-.gatsby-video-wrapper-constrained {
+.gatsby-svg-wrapper-constrained {
     display: inline-block;
     vertical-align: top;
 }

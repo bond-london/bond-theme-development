@@ -1,12 +1,12 @@
 import { Node, CreateSchemaCustomizationArgs } from "gatsby";
 import { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
+import { createExtractedSvg } from "./transformer";
 
 import { GraphQLEnumType, GraphQLJSON, GraphQLNonNull } from "gatsby/graphql";
-import { createExtractedAnimation } from "./transformer";
 import { TransformArgs } from "./types";
 
-const AnimationLayoutType = new GraphQLEnumType({
-  name: `AnimationLayout`,
+const SvgLayoutType = new GraphQLEnumType({
+  name: `SvgLayout`,
   values: {
     FIXED: { value: `fixed` },
     FULL_WIDTH: { value: `fullWidth` },
@@ -19,8 +19,8 @@ export function createSchemaCustomization(args: CreateSchemaCustomizationArgs) {
     actions: { createTypes },
     schema,
   } = args;
-  const gatsbyAnimationType = schema.buildObjectType({
-    name: "GatsbyAnimation",
+  const gatsbySvgType = schema.buildObjectType({
+    name: "GatsbySvg",
     interfaces: ["Node"],
     extensions: {
       infer: true,
@@ -32,15 +32,15 @@ export function createSchemaCustomization(args: CreateSchemaCustomizationArgs) {
       extracted: {
         type: new GraphQLNonNull(GraphQLJSON),
         args: {
-          layout: { type: AnimationLayoutType, defaultValue: "constrained" },
+          layout: { type: SvgLayoutType, defaultValue: "constrained" },
         },
         resolve: (
           source: Node,
           transformArgs: TransformArgs,
           context: IGatsbyResolverContext<Node, TransformArgs>
-        ) => createExtractedAnimation(source, transformArgs, context, args),
+        ) => createExtractedSvg(source, transformArgs, context, args),
       },
     },
   });
-  createTypes([gatsbyAnimationType]);
+  createTypes([gatsbySvgType]);
 }

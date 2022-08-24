@@ -11,14 +11,11 @@
     "typescript",
     "svg"
   ],
-  "xmain": "dist/index.js",
-  "xtypes": "dist/index.d.ts",
-  "xmodule": "dist/index.module.js",
-  "xesmodule": "dist/index.modern.js",
-  "xbrowser": {
-    "dist/index.js": "dist/index.brower.js",
-    "dist/index.module.js": "dist/index.browser.modern.js"
-  },
+  "source": "./src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "module": "./dist/index.module.js",
+  "esmodule": "./dist/index.modern.js",
   "files": [
     "gatsby-node.js",
     "dist"
@@ -33,13 +30,13 @@
   },
   "scripts": {
     "build:gatsby-node": "tsc -p tsconfig.gatsby-node.json --outDir dist",
-    "xbuild:server": "microbundle -i src/index.ts -f cjs,modern --jsx React.createElement --jsxFragment React.Fragment",
-    "xbuild:browser": "microbundle -i src/index.ts -f cjs,modern --jsx React.createElement --jsxFragment React.Fragment -o dist/index.browser",
-    "build": "npm-run-all -s clean -p build:*",
+    "build:gatsby-ssr": "microbundle -i src/gatsby-ssr.tsx -f cjs -o ./[name].js --no-pkg-main --jsx React.createElement --jsxFragment React.Fragment --no-compress --external=common-tags,react --no-sourcemap",
+    "build:components": "microbundle --jsx React.createElement --jsxFragment React.Fragment",
+    "build": "npm-run-all -s clean build:*",
     "watch": "npm-run-all --npm-path npm -s clean -p watch:*",
     "watch:gatsby-node": "yarn build:gatsby-node --watch",
-    "xwatch:server": "yarn build:server --no-compress watch",
-    "xwatch:browser": "yarn build:browser --no-compress watch",
+    "watch:gatsby-ssr": "yarn build:gatsby-ssr watch",
+    "watch:components": "yarn build:components --no-compress watch",
     "prepare": "cross-env NODE_ENV=production npm run build",
     "clean": "del-cli dist/*"
   },

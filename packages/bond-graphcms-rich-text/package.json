@@ -35,13 +35,11 @@
     "custom.d.ts"
   ],
   "scripts": {
-    "build": "npm-run-all -s clean -p build:*",
-    "build:server": "microbundle -i src/index.ts -f cjs,modern --jsx React.createElement --jsxFragment React.Fragment",
-    "build:browser": "microbundle -i src/index.ts -f cjs,modern --jsx React.createElement --jsxFragment React.Fragment -o dist/index.browser",
-    "watch": "npm-run-all --npm-path npm -s clean -p watch:*",
-    "watch:server": "yarn build:server --no-compress watch",
-    "watch:browser": "yarn build:browser --no-compress watch",
-    "prepare": "cross-env NODE_ENV=production npm run build",
+    "build:all": "babel src --out-dir dist --extensions \".ts,.tsx\"",
+    "build": "npm-run-all -s clean build:all",
+    "watch": "npm-run-all -s clean watch:all",
+    "watch:all": "yarn build:all -w",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
     "clean": "del-cli dist/*"
   },
   "devDependencies": {
@@ -51,7 +49,6 @@
     "babel-preset-gatsby-package": "^2.21.0",
     "cross-env": "^7.0.3",
     "del-cli": "^5.0.0",
-    "microbundle": "^0.15.1",
     "npm-run-all": "^4.1.5"
   },
   "peerDependencies": {

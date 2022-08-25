@@ -1,6 +1,20 @@
-import { PageProps } from "gatsby";
-import React from "react";
+import { graphql } from "gatsby";
+import { AnimationsLayout } from "../../layouts/AnimationsLayout";
 
-const AnimationIndex: React.FC<PageProps> = () => {
-  return <h1>Animations</h1>;
-};
+export default AnimationsLayout;
+
+export const AnimationsQuery = graphql`
+  query AllAnimations {
+    allGatsbyAnimation {
+      constrained: nodes {
+        ...ConstrainedAnimation
+      }
+      fixed: nodes {
+        ...FixedAnimation
+      }
+      fullWidth: nodes {
+        ...FullWidthAnimation
+      }
+    }
+  }
+`;

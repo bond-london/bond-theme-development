@@ -27,9 +27,12 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "babel src --out-dir dist --ignore \"**/__tests__\" --extensions \".ts,.js\"",
-    "watch": "babel -w src --out-dir dist --ignore \"**/__tests__\" --extensions \".ts,.js\"",
-    "prepare": "cross-env NODE_ENV=production npm run build"
+    "build:all": "babel src --out-dir dist --extensions \".ts,.tsx\"",
+    "build": "npm-run-all -s clean build:all",
+    "watch": "npm-run-all -s clean watch:all",
+    "watch:all": "yarn build:all -w",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "clean": "del-cli dist/*"
   },
   "dependencies": {
     "@graphcms/rich-text-types": "^0.5.0",

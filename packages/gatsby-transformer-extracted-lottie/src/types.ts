@@ -4,10 +4,20 @@ export interface TransformArgs {
 }
 
 export interface GatsbyExtractedAnimation {
-  width: string;
-  height: string;
+  width: number;
+  height: number;
   layout: AnimationLayout;
   encoded?: string;
   encodedUrl?: string;
   animationUrl: string;
+}
+
+export function GetExtractedAnimation(entry: {
+  id: string;
+  extracted: Record<string, unknown>;
+}) {
+  if (entry.extracted) {
+    return entry.extracted as unknown as GatsbyExtractedAnimation;
+  }
+  return undefined;
 }

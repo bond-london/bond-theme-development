@@ -9,7 +9,7 @@
     "lerna": "lerna",
     "build": "lerna run build",
     "watch": "lerna run watch",
-    "build:packages": "lerna run --scope \"@bond-london/gatsby-theme\" --include-dependencies build --no-sort --stream --concurrency=0",
+    "build:packages": "lerna run --scope \"@bond-london/gatsby-theme\" --include-dependencies build --stream --concurrency=0",
     "watch:packages": "lerna run --scope \"@bond-london/gatsby-theme\" --include-dependencies watch --no-sort --stream --concurrency=999",
     "nx": "nx"
   },

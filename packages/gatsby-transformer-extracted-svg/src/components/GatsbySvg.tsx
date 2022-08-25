@@ -100,7 +100,13 @@ export const GatsbySvg: React.FC<
     >
       <Sizer svg={svg} />
       {imgSrc && (
-        <img {...otherProps} width={width} height={height} src={imgSrc} />
+        <img
+          {...otherProps}
+          style={{ objectFit, objectPosition }}
+          width={width}
+          height={height}
+          src={imgSrc}
+        />
       )}
     </div>
   );

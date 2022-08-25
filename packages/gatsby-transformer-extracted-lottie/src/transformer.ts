@@ -65,8 +65,8 @@ async function internalCreateExtractedAnimation(
       const publicPath = join(publicDir, fileName);
 
       const animation: GatsbyExtractedAnimation = {
-        width,
-        height,
+        width: parseFloat(width),
+        height: parseFloat(height),
         layout: transformArgs.layout,
         animationUrl: `${pathPrefix}/static/${details.internal.contentDigest}/${details.base}`,
       };

@@ -21,7 +21,6 @@ export type IBondImage = VisualCommon & {
   >;
 
 export const BondImage: React.FC<IBondImage> = props => {
-  console.log("bond image props", props);
   const {
     dontCrop,
     horizontalCropPosition,

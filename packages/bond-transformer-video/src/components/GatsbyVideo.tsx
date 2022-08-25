@@ -95,6 +95,7 @@ export const GatsbyVideo: React.FC<
       <video
         muted={!video.hasAudio || muted}
         {...otherProps}
+        style={{ objectFit, objectPosition }}
         controls={controls}
         width={width}
         height={height}

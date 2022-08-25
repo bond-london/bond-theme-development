@@ -11,13 +11,11 @@
     "typescript",
     "svg"
   ],
-  "source": "./src/index.ts",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "module": "./dist/index.module.js",
-  "esmodule": "./dist/index.modern.js",
   "files": [
     "gatsby-node.js",
+    "gatsby-ssr.js",
     "dist"
   ],
   "repository": {
@@ -29,15 +27,11 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build:gatsby-node": "tsc -p tsconfig.gatsby-node.json --outDir dist",
-    "build:gatsby-ssr": "microbundle -i src/gatsby-ssr.tsx -f cjs -o ./[name].js --no-pkg-main --jsx React.createElement --jsxFragment React.Fragment --no-compress --external=common-tags,react --no-sourcemap",
-    "build:components": "microbundle --jsx React.createElement --jsxFragment React.Fragment",
-    "build": "npm-run-all -s clean build:*",
-    "watch": "npm-run-all --npm-path npm -s clean -p watch:*",
-    "watch:gatsby-node": "yarn build:gatsby-node --watch",
-    "watch:gatsby-ssr": "yarn build:gatsby-ssr watch",
-    "watch:components": "yarn build:components --no-compress watch",
-    "prepare": "cross-env NODE_ENV=production npm run build",
+    "build:all": "babel src --out-dir dist --extensions \".ts,.tsx\"",
+    "build": "npm-run-all -s clean build:all",
+    "watch": "npm-run-all -s clean watch:all",
+    "watch:all": "yarn build:all -w",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
     "clean": "del-cli dist/*"
   },
   "dependencies": {
@@ -48,7 +42,6 @@
     "@types/svgo": "^2.6.0",
     "cross-env": "^7.0.3",
     "del-cli": "^5.0.0",
-    "microbundle": "^0.15.1",
     "npm-run-all": "^4.1.5",
     "typescript": "^4.7.4"
   },

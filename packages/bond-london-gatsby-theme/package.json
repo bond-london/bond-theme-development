@@ -17,13 +17,11 @@
     "dist"
   ],
   "scripts": {
-    "build:gatsby-config": "tsc -p tsconfig.gatsby-config.json --outDir dist",
-    "build:components": "microbundle -f cjs,modern --jsx React.createElement --jsxFragment React.Fragment",
-    "build": "npm-run-all -s clean -p build:*",
-    "watch": "npm-run-all --npm-path npm -s clean -p watch:*",
-    "watch:gatsby-config": "yarn build:gatsby-config --watch",
-    "watch:components": "yarn build:components --no-compress watch",
-    "prepare": "cross-env NODE_ENV=production npm run build",
+    "build:all": "babel src --out-dir dist --extensions \".ts,.tsx\"",
+    "build": "npm-run-all -s clean build:all",
+    "watch": "npm-run-all -s clean watch:all",
+    "watch:all": "yarn build:all -w",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
     "clean": "del-cli dist/*"
   },
   "peerDependencies": {

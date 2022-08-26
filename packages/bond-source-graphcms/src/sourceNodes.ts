@@ -33,7 +33,7 @@ function isAssetUsed(node: IGraphCmsAsset, usedAssetRemoteIds: Set<string>) {
   if (usedAssetRemoteIds.has(remoteId)) {
     return true;
   }
-  for (const [key, value] of fields) {
+  for (const [, value] of fields) {
     if (Array.isArray(value)) {
       for (const entry of value as IGraphCmsAsset[]) {
         if (entry.remoteId) {
@@ -47,8 +47,7 @@ function isAssetUsed(node: IGraphCmsAsset, usedAssetRemoteIds: Set<string>) {
 
 async function downloadAsset(
   context: ISourcingContext,
-  remoteAsset: IGraphCmsAsset,
-  reason: string
+  remoteAsset: IGraphCmsAsset
 ) {
   const { gatsbyApi } = context;
   const { actions, reporter, createNodeId, getCache, store } = gatsbyApi;
@@ -81,7 +80,7 @@ async function processDownloadableAssets(
   remoteNodes: AsyncIterable<IRemoteNode>,
   usedAssetRemoteIds: Set<string>
 ) {
-  const { concurrentDownloads, skipUnusedAssets, dontDownload } = pluginOptions;
+  const { concurrentDownloads } = pluginOptions;
   const allRemoteNodes: IRemoteNode[] = [];
 
   for await (const remoteNode of remoteNodes) {
@@ -90,7 +89,7 @@ async function processDownloadableAssets(
 
   const s = new Sema(concurrentDownloads);
   await Promise.all(
-    allRemoteNodes.map(async (remoteNode) => {
+    allRemoteNodes.map(async remoteNode => {
       await s.acquire();
       try {
         await createOrTouchAsset(
@@ -167,7 +166,7 @@ async function createOrTouchAsset(
     try {
       const localFileId = await (localCache
         ? createLocalFileNode(context, asset, reason, pluginOptions)
-        : downloadAsset(context, asset, reason));
+        : downloadAsset(context, asset));
       node.localFile = localFileId;
     } catch (error) {
       reporter.panic(
@@ -191,7 +190,7 @@ async function processNodesOfType(
 ) {
   const typeName = context.typeNameTransform.toGatsbyTypeName(remoteTypeName);
   const existing = context.gatsbyApi.getNodesByType(typeName);
-  const existingSet = new Set(existing.map((e) => e.id));
+  const existingSet = new Set(existing.map(e => e.id));
   let existingNodes = 0;
   let newNodes = 0;
   let touchedCount = 0;
@@ -216,8 +215,8 @@ async function processNodesOfType(
   let oldNodes = existingSet.size;
   let deletedNodes = 0;
   if (oldNodes) {
-    existingSet.forEach((id) => {
-      const oldNode = existing.find((n) => n.id === id);
+    existingSet.forEach(id => {
+      const oldNode = existing.find(n => n.id === id);
       if (oldNode) {
         context.gatsbyApi.actions.deleteNode(oldNode);
         deletedNodes++;
@@ -244,7 +243,7 @@ function addAssetReferences(
   usedAssetRemoteIds: Set<string>
 ) {
   if (field.references?.length) {
-    field.references.forEach((fieldRef) => {
+    field.references.forEach(fieldRef => {
       const remoteTypeName = fieldRef.remoteTypeName;
       if (remoteTypeName === "Asset") {
         usedAssetRemoteIds.add(fieldRef.remoteId as string);
@@ -262,12 +261,12 @@ function keepExistingNodeAlive(
   existingNode: BasicFieldType,
   namePrefix: string
 ) {
-  const { typePrefix, buildMarkdownNodes, cleanupRtf } = pluginOptions;
+  const { buildMarkdownNodes } = pluginOptions;
   const { gatsbyApi } = context;
-  const { actions, createContentDigest, getNode, reporter } = gatsbyApi;
-  const { touchNode, createNode } = actions;
+  const { actions, getNode, reporter } = gatsbyApi;
+  const { touchNode } = actions;
 
-  specialFields?.forEach((entry) => {
+  specialFields?.forEach(entry => {
     const name = entry.fieldName;
     const value = existingNode[name];
     if (!value) return;
@@ -280,43 +279,50 @@ function keepExistingNodeAlive(
           usedAssetRemoteIds.add((value as GraphCMS_Node).remoteId);
           break;
 
-        case "Markdown": {
-          const markdownNodeFieldName = `${field}MarkdownNode`;
-          const markdownNodeId = existingNode[markdownNodeFieldName] as string;
-          if (markdownNodeId) {
-            const markdownNode = getNode(markdownNodeId);
-            if (markdownNode) {
-              touchNode(markdownNode);
+        case "Markdown":
+          {
+            const markdownNodeFieldName = `${field}MarkdownNode`;
+            const markdownNodeId = existingNode[
+              markdownNodeFieldName
+            ] as string;
+            if (markdownNodeId) {
+              const markdownNode = getNode(markdownNodeId);
+              if (markdownNode) {
+                touchNode(markdownNode);
+              } else {
+                reporter.warn(`Failed to find markdown node ${markdownNodeId}`);
+              }
             } else {
-              reporter.warn(`Failed to find markdown node ${markdownNodeId}`);
+              reporter.warn(`No markdown node for ${field}`);
             }
-          } else {
-            reporter.warn(`No markdown node for ${field}`);
           }
-        }
-        case "RichText": {
-          const processField = (field: RichTextField) => {
-            addAssetReferences(field, usedAssetRemoteIds);
-            if (buildMarkdownNodes) {
-              const markdownNodeId = field.markdownNode;
-              if (markdownNodeId) {
-                const markdownNode = getNode(markdownNodeId);
-                if (markdownNode) {
-                  touchNode(markdownNode);
+          break;
+
+        case "RichText":
+          {
+            const processField = (field: RichTextField) => {
+              addAssetReferences(field, usedAssetRemoteIds);
+              if (buildMarkdownNodes) {
+                const markdownNodeId = field.markdownNode;
+                if (markdownNodeId) {
+                  const markdownNode = getNode(markdownNodeId);
+                  if (markdownNode) {
+                    touchNode(markdownNode);
+                  }
                 }
               }
+            };
+            if (Array.isArray(value)) {
+              value.forEach(field => processField(field as RichTextField));
+            } else {
+              processField(value as RichTextField);
             }
-          };
-          if (Array.isArray(value)) {
-            value.forEach((field) => processField(field as RichTextField));
-          } else {
-            processField(value as RichTextField);
           }
-        }
+          break;
       }
     } else if (isSpecialUnion(entry)) {
       const process = (value: any) => {
-        entry.value.forEach((fields) => {
+        entry.value.forEach(fields => {
           keepExistingNodeAlive(
             pluginOptions,
             context,
@@ -398,19 +404,18 @@ function createSpecialNodes(
   node: BasicFieldType,
   namePrefix: string
 ) {
-  const { typePrefix, buildMarkdownNodes, cleanupRtf } = pluginOptions;
+  const { typePrefix } = pluginOptions;
   const { gatsbyApi } = context;
-  const { actions, createContentDigest, getNode, reporter } = gatsbyApi;
-  const { touchNode, createNode } = actions;
+  const { actions, createContentDigest } = gatsbyApi;
+  const { createNode } = actions;
 
-  specialFields?.forEach((entry) => {
+  specialFields?.forEach(entry => {
     const name = entry.fieldName;
     const fullName = namePrefix + name;
     const value = node[name];
     if (!value) return;
 
     if (isSpecialField(entry)) {
-      const field = entry.field;
       switch (entry.type) {
         case "Asset":
           {
@@ -435,11 +440,12 @@ function createSpecialNodes(
             createNode(markdownNode);
             node[`${name}MarkdownNode`] = markdownNode.id;
           }
+          break;
         }
         case "RichText": {
           if (value) {
             if (Array.isArray(value)) {
-              value.forEach((field) =>
+              value.forEach(field =>
                 processRichTextField(
                   field as RichTextField,
                   fullName,
@@ -464,7 +470,7 @@ function createSpecialNodes(
       }
     } else if (isSpecialUnion(entry)) {
       const process = (value: any) => {
-        entry.value.forEach((fields, key) => {
+        entry.value.forEach(fields => {
           createSpecialNodes(
             pluginOptions,
             context,
@@ -512,9 +518,8 @@ function createOrTouchNode(
   specialFields: SpecialFieldEntry[] | undefined,
   usedAssetRemoteIds: Set<string>
 ) {
-  const { typePrefix, buildMarkdownNodes, cleanupRtf } = pluginOptions;
   const { gatsbyApi } = context;
-  const { actions, createContentDigest, getNode, reporter } = gatsbyApi;
+  const { actions, createContentDigest, getNode } = gatsbyApi;
   const { touchNode, createNode } = actions;
 
   const def = context.gatsbyNodeDefs.get(remoteTypeName);
@@ -569,8 +574,7 @@ function createOrTouchNode(
 export async function sourceNodes(
   gatsbyApi: SourceNodesArgs,
   pluginOptions: PluginOptions
-) {
-  const { downloadAllAssets } = pluginOptions;
+): Promise<void> {
   const { reporter } = gatsbyApi;
   const schemaConfig = stateCache.schemaInformation;
   if (!schemaConfig) {

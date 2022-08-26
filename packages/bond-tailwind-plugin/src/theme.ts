@@ -1,4 +1,4 @@
-import { TailwindConfig, TailwindValues } from "tailwindcss/tailwind-config";
+import { ThemeConfig } from "tailwindcss/types/config";
 import { BondConfigurationOptions } from ".";
 import { buildColours } from "./colours";
 import { buildGridSpacing, createGridCols } from "./grids";
@@ -28,7 +28,7 @@ function buildLetterSpacing(config: BondConfigurationOptions) {
   });
   const results: ConfigurationObj = {};
   if (letterSpacings.size > 0) {
-    letterSpacings.forEach((value) => {
+    letterSpacings.forEach(value => {
       results[`${value}`] = calculateRemSize(value);
     });
   }
@@ -37,29 +37,29 @@ function buildLetterSpacing(config: BondConfigurationOptions) {
 
 export function configureTheme(
   config: BondConfigurationOptions
-): Partial<TailwindConfig> {
+): Partial<ThemeConfig> {
   const maximumWidth = Math.max(
     ...Object.values(config.sizes)
-      .filter((v) => v.max)
+      .filter(v => v.max)
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      .map((v) => v.max!)
+      .map(v => v.max!)
   );
   const maximumColumns = Math.max(
     ...Object.values(config.sizes)
-      .map((v) => v.cols)
-      .filter((v) => v)
+      .map(v => v.cols)
+      .filter(v => v)
   );
 
   const theme = {
     theme: {
       screens: {
-        ...(mapObject(
+        ...mapObject(
           config.sizes,
           defaultKeyFn,
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          (v) => `${v.breakpoint!}px`,
+          v => `${v.breakpoint!}px`,
           ({ value }) => !!value.breakpoint
-        ) as TailwindValues),
+        ),
       },
       colors: buildColours(config),
       spacing: {
@@ -85,7 +85,7 @@ export function configureTheme(
           1,
           maximumColumns,
           defaultKeyFn,
-          (v) => `repeat(${v}, minmax(0, 1fr))`
+          v => `repeat(${v}, minmax(0, 1fr))`
         ),
         ...createGridCols(config),
       },
@@ -93,14 +93,14 @@ export function configureTheme(
         ...calculateNumbers(
           1,
           maximumColumns,
-          (v) => `span-${v}`,
-          (v) => `span ${v} / span ${v}`
+          v => `span-${v}`,
+          v => `span ${v} / span ${v}`
         ),
         "span-full": "1/-1",
         auto: "auto",
         ...mapObject(
           config.sizes,
-          (name) => `central-${name}`,
+          name => `central-${name}`,
           ({ cols }) => `2 / span ${cols}`
         ),
       },

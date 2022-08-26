@@ -1,11 +1,8 @@
-import { TailwindThemeColors } from "tailwindcss/tailwind-config";
 import { BondConfigurationOptions } from ".";
 import { ConfigurationObj } from "./plugin";
 import { forEachObject } from "./utils";
 
-export function buildColours(
-  config: BondConfigurationOptions
-): TailwindThemeColors {
+export function buildColours(config: BondConfigurationOptions) {
   const colors: ConfigurationObj = {
     transparent: "transparent",
     current: "currentColor",

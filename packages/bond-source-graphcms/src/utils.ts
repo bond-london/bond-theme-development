@@ -21,7 +21,6 @@ import {
   ExecutionResult,
   isNonNullType,
   isListType,
-  SelectionSetNode,
 } from "graphql";
 
 export const stateCache: PluginState = {};
@@ -72,7 +71,7 @@ function postprocessData(
   for (const key in data) {
     const values = data[key];
     if (Array.isArray(values)) {
-      const newValues = values.map((value) =>
+      const newValues = values.map(value =>
         postprocessValue(locale, stage, value)
       );
       updatedData[key] = newValues;
@@ -91,8 +90,7 @@ export function createExecutor(
   gatsbyApi: NodePluginArgs,
   pluginOptions: PluginOptions
 ): IQueryExecutor {
-  const { endpoint, fragmentsPath, locales, stages, token, typePrefix } =
-    pluginOptions;
+  const { endpoint, stages, token } = pluginOptions;
   const { reporter } = gatsbyApi;
   const defaultStage = stages[0];
   const execute = (args: IQueryExecutionArgs) => {
@@ -106,9 +104,9 @@ export function createExecutor(
         ...(token && { Authorization: `Bearer ${token}` }),
       },
     })
-      .then((response) => {
+      .then(response => {
         if (!response.ok) {
-          return response.text().then((t) => {
+          return response.text().then(() => {
             return reporter.panic(
               `gatsby-source-graphcms: Response not ok building GraphCMS nodes: "${query}"`,
               new Error(response.statusText)
@@ -118,7 +116,7 @@ export function createExecutor(
 
         return response.json() as GraphCMSResponse;
       })
-      .then((response) => {
+      .then(response => {
         if (response.errors) {
           return reporter.panic(
             `gatsby-source-graphcms: Response errors building GraphCMS nodes: "${query}" (${JSON.stringify(
@@ -130,11 +128,11 @@ export function createExecutor(
 
         return response as ExecutionResult;
       })
-      .then((response) => {
+      .then(response => {
         const post = postprocessData(gatsbyApi, args, response);
         return post;
       })
-      .catch((error) => {
+      .catch(error => {
         return reporter.panic(
           `gatsby-source-graphcms: Error postprocessing GraphCMS nodes: "${query}"`,
           new Error(error)
@@ -149,9 +147,7 @@ export async function createSourcingConfig(
   gatsbyApi: ParentSpanPluginArgs,
   pluginOptions: PluginOptions
 ): Promise<ISourcingConfig> {
-  const { fragmentsPath, stages, typePrefix, concurrency } = pluginOptions;
-  const { reporter } = gatsbyApi;
-  const defaultStage = stages[0];
+  const { fragmentsPath, typePrefix, concurrency } = pluginOptions;
 
   const execute = createExecutor(gatsbyApi, pluginOptions);
   const { schema, gatsbyNodeTypes } = schemaConfig;
@@ -167,6 +163,7 @@ export async function createSourcingConfig(
     if (["createdAt", "publishedAt", "updatedAt"].includes(field.name)) {
       return { variation: `COMBINED` };
     }
+    return undefined;
   };
 
   const fragmentsConfig = {
@@ -194,7 +191,7 @@ export async function createSourcingConfig(
 }
 
 async function timeout(ms: number) {
-  return new Promise<void>((resolve) => {
+  return new Promise<void>(resolve => {
     setTimeout(resolve, ms);
   });
 }
@@ -225,6 +222,7 @@ export async function retry<A>(
       ms += ms * options.factor;
     }
   }
+  return undefined;
 }
 
 export async function atomicCopyFile(
@@ -243,17 +241,13 @@ export async function atomicCopyFile(
 
 export function getRealType(
   valueType: GraphQLObjectType,
-  parentType?: GraphQLObjectType,
   level?: number
 ): GraphQLObjectType {
-  // if ((level || 0) > 2) {
-  //   console.log("get real type", valueType, parentType, level);
-  // }
   if (isListType(valueType)) {
-    return getRealType(valueType.ofType, valueType, (level || 0) + 1);
+    return getRealType(valueType.ofType, (level || 0) + 1);
   }
   if (isNonNullType(valueType)) {
-    return getRealType(valueType.ofType, valueType, (level || 0) + 1);
+    return getRealType(valueType.ofType, (level || 0) + 1);
   }
   return valueType;
 }

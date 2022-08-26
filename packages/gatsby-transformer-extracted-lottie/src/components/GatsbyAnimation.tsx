@@ -1,4 +1,11 @@
-import React, { CSSProperties, lazy, useEffect, useRef, useState } from "react";
+import React, {
+  CSSProperties,
+  lazy,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { GatsbyExtractedAnimation } from "../types";
 
 const LottiePlayer = lazy(() => import("./LottiePlayer"));
@@ -87,14 +94,25 @@ export const GatsbyAnimation: React.FC<{
   objectFit?: CSSProperties["objectFit"];
   objectPosition?: CSSProperties["objectPosition"];
   className?: string;
+  loop?: boolean;
+  loopDelay?: number;
 }> = allProps => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { animation, objectFit, objectPosition, className } = allProps;
+  const {
+    animation,
+    objectFit,
+    objectPosition,
+    className,
+    loop = false,
+    loopDelay,
+  } = allProps;
   const { width, height } = calculateSizes(animation);
   const { style: wrapperStyle, className: wrapperClassName } =
     getWrapperProps(animation);
   const [loadAnimation, setLoadAnimation] = useState(false);
   const [containerVisible, setContainerVisible] = useState(false);
+  const [showPoster, setShowPoster] = useState(true);
+  const onPlay = useCallback(() => setShowPoster(false), []);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -127,7 +145,7 @@ export const GatsbyAnimation: React.FC<{
       className={`${wrapperClassName}${className ? ` ${className}` : ``}`}
     >
       <Sizer animation={animation} />
-      {posterSrc && (
+      {showPoster && posterSrc && (
         <img
           style={{ objectFit, objectPosition }}
           width={width}
@@ -135,7 +153,18 @@ export const GatsbyAnimation: React.FC<{
           src={posterSrc}
         />
       )}
-      {loadAnimation && <LottiePlayer play={containerVisible} />}
+      {loadAnimation && (
+        <LottiePlayer
+          containerRef={containerRef}
+          objectFit={objectFit}
+          objectPosition={objectPosition}
+          loop={loop}
+          loopDelay={loopDelay}
+          animationUrl={animation.animationUrl}
+          play={containerVisible}
+          onPlay={onPlay}
+        />
+      )}
     </div>
   );
 };

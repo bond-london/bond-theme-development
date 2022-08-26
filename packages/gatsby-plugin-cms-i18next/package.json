@@ -20,19 +20,6 @@
     "translation",
     "translate"
   ],
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "module": "dist/index.module.js",
-  "esmodule": "dist/index.modern.js",
-  "browser": {
-    "dist/index.js": "dist/index.brower.js",
-    "dist/index.module.js": "dist/index.browser.modern.js"
-  },
-  "files": [
-    "gatsby-node.js",
-    "gatsby-worker.js",
-    "dist"
-  ],
   "repository": {
     "url": "https://github.com/bond-london/bond-london-theme",
     "directory": "packages/gatsby-plugin-cms-i18next"
@@ -41,11 +28,22 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "gatsby-node.js",
+    "gatsby-worker.js",
+    "gatsby-ssr.js",
+    "dist"
+  ],
   "scripts": {
-    "build:all": "babel src --out-dir dist --extensions \".ts,.tsx\"",
-    "build": "npm-run-all -s clean build:all",
-    "watch": "npm-run-all -s clean watch:all",
-    "watch:all": "yarn build:all -w",
+    "typegen": "tsc --emitDeclarationOnly --declaration --declarationDir dist/",
+    "xbuild:all": "babel src --out-dir dist --extensions \".ts,.tsx\"",
+    "build:tsc": "tsc --outDir dist/",
+    "build": "npm-run-all -s clean build:tsc",
+    "watch": "npm-run-all -s watch:tsc",
+    "xwatch:all": "yarn build:all -w",
+    "watch:tsc": "yarn build:tsc -w",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "clean": "del-cli dist/*"
   },

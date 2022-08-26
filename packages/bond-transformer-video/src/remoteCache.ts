@@ -1,5 +1,6 @@
 import { BlobServiceClient, ContainerClient } from "@azure/storage-blob";
 import { rename } from "fs-extra";
+import { Reporter } from "gatsby";
 
 export class RemoteCache {
   public static async create(connectionString: string, containerName: string) {
@@ -11,9 +12,15 @@ export class RemoteCache {
   }
   constructor(private readonly containerClient: ContainerClient) {}
 
-  public async getFromCache(name: string, targetFileName: string) {
+  public async getFromCache(
+    name: string,
+    targetFileName: string,
+    reporter: Reporter
+  ) {
     const blob = this.containerClient.getBlockBlobClient(name);
-    const tempTargetFileName = targetFileName + ".tmp";
+    const exists = await blob.exists();
+    reporter.info(`${name} exists = ${exists}`);
+    const tempTargetFileName = targetFileName + ".rtmp";
     await blob.downloadToFile(tempTargetFileName);
     await rename(tempTargetFileName, targetFileName);
   }

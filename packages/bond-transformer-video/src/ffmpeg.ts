@@ -137,23 +137,30 @@ export async function transformVideo(
     const digestObject = {
       parent: inputDigest,
       options,
+      label,
+      key,
     };
     const digest = createContentDigest(digestObject);
     const outputName = `${name}-${digest}${ext}`;
     const publicFile = join(publicDir, outputName);
     const publicRelativeUrl = `${pathPrefix}/static/${inputDigest}/${outputName}`;
 
-    reporter.verbose(`${label}: Transforming video`);
+    reporter.info(`${label}: Transforming video (${outputName})`);
     try {
-      await videoCache.getFromCache(outputName, publicFile);
-      reporter.verbose(`${label}: Used already cached file`);
+      await videoCache.getFromCache(outputName, publicFile, reporter);
+      reporter.info(`${label}: Used already cached file (${outputName})`);
       results[key] = { publicFile, publicRelativeUrl };
       continue;
     } catch (err) {
       /* do nothing as this basically means the file wasn't there */
+      reporter.info(
+        `${label}: Failed to get ${outputName} from cache (${err})`
+      );
     }
 
-    reporter.info(`${label}: Using ffmpeg to transform video ${inputFileName}`);
+    reporter.info(
+      `${label}: Using ffmpeg to transform video ${inputFileName} ${digest}`
+    );
     const tempName = `temp-${outputName}`;
     const tempPublicFile = join(publicDir, tempName);
     instances.push({ options, outputName: tempName, label });

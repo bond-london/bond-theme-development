@@ -28,11 +28,12 @@ export interface PluginOptions {
   width?: number;
 }
 
-export function GetTransformedVideo(entry: {
-  id: string;
-  transformed: Record<string, unknown>;
-}) {
-  if (entry.transformed) {
+export function GetTransformedVideo(
+  entry?: {
+    readonly transformed?: Record<string, unknown> | null;
+  } | null
+) {
+  if (entry?.transformed) {
     return entry.transformed as unknown as GatsbyTransformedVideo;
   }
   return undefined;

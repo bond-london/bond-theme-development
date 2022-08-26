@@ -1,6 +1,6 @@
 import {
   GatsbyTransformedVideo,
-  getGatsbyVideo,
+  GetTransformedVideo,
 } from "@bond-london/gatsby-transformer-video";
 import { IGatsbyImageData } from "gatsby-plugin-image";
 import { CSSProperties, useEffect, useState } from "react";
@@ -41,6 +41,7 @@ export interface ExtractedLottie {
 }
 
 interface File {
+  readonly id?: string | null;
   readonly childGatsbyVideo?: {
     readonly transformed: Record<string, unknown>;
   } | null;
@@ -111,7 +112,7 @@ export function getVideoUrl(
 export function getVideoFromFile(
   file?: File | null
 ): GatsbyTransformedVideo | undefined {
-  return getGatsbyVideo(file?.childGatsbyVideo?.transformed);
+  return GetTransformedVideo(file?.childGatsbyVideo);
 }
 
 export function getVideo(

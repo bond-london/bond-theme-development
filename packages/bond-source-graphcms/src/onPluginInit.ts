@@ -36,21 +36,21 @@ async function retrieveSchema(
 
   const pluralRootFieldName = (type: GraphQLObjectType) =>
     Object.keys(queryFields).find(
-      (fieldName) => String(queryFields[fieldName].type) === `[${type.name}!]!`
+      fieldName => String(queryFields[fieldName].type) === `[${type.name}!]!`
     );
 
   const hasLocaleField = (type: GraphQLObjectType) => type.getFields().locale;
 
-  const gatsbyNodeTypes: IGatsbyNodeConfig[] = possibleTypes.map((type) => {
+  const gatsbyNodeTypes: IGatsbyNodeConfig[] = possibleTypes.map(type => {
     const plural = pluralRootFieldName(type);
 
     const config: IGatsbyNodeConfig = {
       remoteTypeName: type.name,
       queries: [
-        ...locales.map((locale) => {
+        ...locales.map(locale => {
           const localeLabel = locale.replace("_", "");
           return stages.map(
-            (stage) => `
+            stage => `
             query LIST_${plural}_${localeLabel}_${stage} { ${plural}(first: $limit, ${
               hasLocaleField(type) ? `locales: [${locale}, ${locales[0]}]` : ""
             }, skip: $offset, stage: ${stage}) {
@@ -115,7 +115,6 @@ function walkType(
   markdownFieldsMap: { [key: string]: string[] },
   knownTypes: Set<string>,
   reporter: Reporter,
-  isTopLevel: boolean,
   topLevelTypeName: string
 ): SpecialFieldEntry[] | undefined {
   const specialFields: SpecialFieldEntry[] = [];
@@ -142,7 +141,7 @@ function walkType(
     } else if (!isKnown && isUnionType(fieldType)) {
       const map: SpecialFieldMap = new Map();
       const containedTypes = fieldType.getTypes();
-      containedTypes.forEach((type) => {
+      containedTypes.forEach(type => {
         const unionFieldType = getRealType(type);
         const isKnown = knownTypes.has(unionFieldType.name);
         if (!isKnown) {
@@ -151,7 +150,6 @@ function walkType(
             markdownFieldsMap,
             knownTypes,
             reporter,
-            false,
             topLevelTypeName
           );
           if (entries) {
@@ -168,7 +166,6 @@ function walkType(
         markdownFieldsMap,
         knownTypes,
         reporter,
-        false,
         topLevelTypeName
       );
       if (entries) {
@@ -185,6 +182,8 @@ function walkType(
   if (specialFields.length > 0) {
     return specialFields;
   }
+
+  return undefined;
 }
 
 function walkNodesToFindImportantFields(
@@ -194,17 +193,16 @@ function walkNodesToFindImportantFields(
 ) {
   const nodeInterface = schema.getType("Node") as GraphQLAbstractType;
   const possibleTypes = schema.getPossibleTypes(nodeInterface);
-  const knownTypes = new Set(possibleTypes.map((t) => t.name));
+  const knownTypes = new Set(possibleTypes.map(t => t.name));
 
   const specialFieldsMap = new Map<string, SpecialFieldEntry[]>();
 
-  possibleTypes.forEach((type) => {
+  possibleTypes.forEach(type => {
     const entries = walkType(
       type,
       markdownFieldsMap,
       knownTypes,
       reporter,
-      true,
       type.name
     );
     if (entries) {

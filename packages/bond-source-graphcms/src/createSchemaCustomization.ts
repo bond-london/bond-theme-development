@@ -17,7 +17,7 @@ function customiseSchema(
   { typePrefix }: PluginOptions,
   { gatsbyNodeTypes, schema }: ISchemaInformation
 ) {
-  gatsbyNodeTypes.forEach((gatsbyNodeType) => {
+  gatsbyNodeTypes.forEach(gatsbyNodeType => {
     const realType = schema.getType(
       gatsbyNodeType.remoteTypeName
     ) as GraphQLObjectType;
@@ -41,13 +41,12 @@ function walkSpecialFieldsEntries(
   typeName: string,
   specialsFieldsEntries: ReadonlyArray<SpecialFieldEntry>
 ) {
-  const { buildMarkdownNodes, cleanupRtf, typePrefix } = pluginOptions;
+  const { typePrefix } = pluginOptions;
   const {
     actions: { createTypes },
-    reporter,
   } = gatsbyApi;
   const additions: string[] = [];
-  specialsFieldsEntries.forEach((entry) => {
+  specialsFieldsEntries.forEach(entry => {
     if (isSpecialField(entry)) {
       switch (entry.type) {
         case "Markdown":
@@ -90,11 +89,6 @@ function walkSpecialFieldsMap(
   isTopLevel: boolean,
   specialsFieldsMap: SpecialFieldMap
 ) {
-  const { buildMarkdownNodes, cleanupRtf, typePrefix } = pluginOptions;
-  const {
-    actions: { createTypes },
-    reporter,
-  } = gatsbyApi;
   specialsFieldsMap.forEach((fields, typeName) => {
     walkSpecialFieldsEntries(
       gatsbyApi,
@@ -110,14 +104,8 @@ export async function createSchemaCustomization(
   gatsbyApi: CreateSchemaCustomizationArgs,
   pluginOptions: PluginOptions
 ): Promise<void> {
-  const {
-    buildMarkdownNodes,
-    markdownFields,
-    downloadAllAssets,
-    typePrefix,
-    cleanupRtf,
-  } = pluginOptions;
-  const { actions, schema, reporter } = gatsbyApi;
+  const { buildMarkdownNodes, downloadAllAssets, typePrefix } = pluginOptions;
+  const { actions, reporter } = gatsbyApi;
   const { createTypes } = actions;
 
   const schemaConfig = stateCache.schemaInformation;

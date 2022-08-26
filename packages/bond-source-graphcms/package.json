@@ -16,8 +16,6 @@
     "graphql",
     "source"
   ],
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "repository": {
     "url": "https://github.com/bond-london/bond-london-theme",
     "directory": "packages/bond-source-graphcms"
@@ -26,11 +24,20 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "gatsby-node.js"
+  ],
   "scripts": {
-    "build:all": "babel src --out-dir dist --extensions \".ts,.tsx\"",
-    "build": "npm-run-all -s clean build:all",
-    "watch": "npm-run-all -s clean watch:all",
-    "watch:all": "yarn build:all -w",
+    "typegen": "tsc --emitDeclarationOnly --declaration --declarationDir dist/",
+    "xbuild:all": "babel src --out-dir dist --extensions \".ts,.tsx\"",
+    "build:tsc": "tsc --outDir dist/",
+    "build": "npm-run-all -s clean build:tsc",
+    "watch": "npm-run-all -s watch:tsc",
+    "xwatch:all": "yarn build:all -w",
+    "watch:tsc": "yarn build:tsc -w",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "clean": "del-cli dist/*"
   },

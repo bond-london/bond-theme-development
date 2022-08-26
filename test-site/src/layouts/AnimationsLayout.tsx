@@ -2,8 +2,8 @@ import { PageProps } from "gatsby";
 import React, { CSSProperties, Fragment, useMemo } from "react";
 import classNames from "classnames";
 import {
-  GatsbyExtractedAnimation,
   GatsbyAnimation,
+  GatsbyExtractedAnimation,
   GetExtractedAnimation,
 } from "@bond-london/gatsby-transformer-extracted-lottie";
 
@@ -17,22 +17,39 @@ const AnimationCombinedLayout: React.FC<{
   combined: Combined;
   className: string;
   objectFit?: CSSProperties["objectFit"];
+  objectPosition?: CSSProperties["objectPosition"];
 }> = ({
   combined: { constrained, fixed, fullWidth },
   className,
   objectFit,
+  objectPosition,
 }) => {
   const divClassName = "col-span-1 border-2 border-red overflow-hidden";
   return (
     <>
       <div className={classNames(divClassName, className)}>
-        <GatsbyAnimation animation={constrained} objectFit={objectFit} />
+        <GatsbyAnimation
+          animation={constrained}
+          objectFit={objectFit}
+          objectPosition={objectPosition}
+          loop={true}
+        />
       </div>
       <div className={classNames(divClassName, className)}>
-        <GatsbyAnimation animation={fixed} objectFit={objectFit} />
+        <GatsbyAnimation
+          animation={fixed}
+          objectFit={objectFit}
+          objectPosition={objectPosition}
+          loop={true}
+          loopDelay={3000}
+        />
       </div>
       <div className={classNames(divClassName, className)}>
-        <GatsbyAnimation animation={fullWidth} objectFit={objectFit} />
+        <GatsbyAnimation
+          animation={fullWidth}
+          objectFit={objectFit}
+          objectPosition={objectPosition}
+        />
       </div>
     </>
   );
@@ -71,41 +88,49 @@ export const AnimationsLayout: React.FC<
               combined={combined}
               className=""
               objectFit="cover"
+              objectPosition="center left"
             />
             <AnimationCombinedLayout
               combined={combined}
               className=""
               objectFit="contain"
+              objectPosition="center left"
             />
             <AnimationCombinedLayout
               combined={combined}
               className="aspect-w-1 aspect-h-1"
               objectFit="cover"
+              objectPosition="center left"
             />
             <AnimationCombinedLayout
               combined={combined}
               className="aspect-w-1 aspect-h-1"
               objectFit="contain"
+              objectPosition="center left"
             />
             <AnimationCombinedLayout
               combined={combined}
               className="aspect-w-4 aspect-h-3"
               objectFit="cover"
+              objectPosition="center left"
             />
             <AnimationCombinedLayout
               combined={combined}
               className="aspect-w-4 aspect-h-3"
               objectFit="contain"
+              objectPosition="center left"
             />
             <AnimationCombinedLayout
               combined={combined}
               className="aspect-w-3 aspect-h-4"
               objectFit="cover"
+              objectPosition="center left"
             />
             <AnimationCombinedLayout
               combined={combined}
               className="aspect-w-3 aspect-h-4"
               objectFit="contain"
+              objectPosition="center left"
             />
           </Fragment>
         ))}

@@ -26,6 +26,7 @@ function makeValidTextString(text: string): string | undefined {
   if (despaced.length > 0) {
     return despaced.replace(/&nbsp;/g, "\u00a0").replace(/-/g, "\u2011");
   }
+  return undefined;
 }
 
 const keepEmpty: { [name: string]: boolean } = {
@@ -38,7 +39,7 @@ export function cleanupElementNode(
 ): ElementNode | undefined {
   const { children, ...rest } = elementNode;
   const newChildren: (ElementNode | Text)[] = [];
-  children.forEach((child) => {
+  children.forEach(child => {
     if (isText(child)) {
       const cleaned = makeValidTextString(child.text);
       if (cleaned) {
@@ -64,6 +65,7 @@ export function cleanupElementNode(
   if (isImage(elementNode)) {
     return { ...rest, children: [] };
   }
+  return undefined;
 }
 
 export function cleanupRTFContent(
@@ -71,7 +73,7 @@ export function cleanupRTFContent(
 ): Array<ElementNode> | undefined {
   const elements = Array.isArray(content) ? content : content.children;
   const newElements: ElementNode[] = [];
-  elements.forEach((element) => {
+  elements.forEach(element => {
     const cleanedElement = cleanupElementNode(element);
     if (cleanedElement) {
       newElements.push(cleanedElement);
@@ -81,4 +83,5 @@ export function cleanupRTFContent(
   if (newElements.length) {
     return newElements;
   }
+  return undefined;
 }

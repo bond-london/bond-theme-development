@@ -11,7 +11,7 @@ export function onRenderBody({ setHeadComponents }: RenderBodyArgs) {
     position: relative;
     overflow: hidden;
 }      
-.gatsby-animation-wrapper img {
+.gatsby-animation-wrapper img, .gatsby-animation-wrapper svg {
     bottom: 0;
     height: 100%;
     left:0;

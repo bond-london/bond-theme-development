@@ -1,4 +1,9 @@
-import React, { CSSProperties, VideoHTMLAttributes } from "react";
+import React, {
+  CSSProperties,
+  useEffect,
+  useRef,
+  VideoHTMLAttributes,
+} from "react";
 import { GatsbyTransformedVideo } from "../types";
 
 function calculateSizes({ width, height, layout }: GatsbyTransformedVideo) {
@@ -67,6 +72,7 @@ export const GatsbyVideo: React.FC<
   {
     video: GatsbyTransformedVideo;
     noPoster?: boolean;
+    loopDelay?: number;
     objectFit?: CSSProperties["objectFit"];
     objectPosition?: CSSProperties["objectPosition"];
   } & Omit<VideoHTMLAttributes<HTMLVideoElement>, "poster" | "src">
@@ -74,6 +80,8 @@ export const GatsbyVideo: React.FC<
   const {
     video,
     noPoster,
+    loopDelay,
+    loop,
     muted,
     objectFit,
     objectPosition,
@@ -82,9 +90,37 @@ export const GatsbyVideo: React.FC<
     controls = false,
     ...otherProps
   } = allProps;
+  const videoRef = useRef<HTMLVideoElement>(null);
   const { width, height } = calculateSizes(video);
   const { style: wrapperStyle, className: wrapperClassName } =
     getWrapperProps(video);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video && loop && loopDelay) {
+      let handle: number | undefined;
+      const handler = () => {
+        handle = window.setTimeout(() => {
+          handle = undefined;
+          video
+            .play()
+            .then(() => {
+              /*noop*/
+            })
+            .catch(err => console.log("Failed to restart video", err));
+        }, loopDelay);
+      };
+      video.addEventListener("ended", handler, false);
+      return () => {
+        video.removeEventListener("ended", handler, false);
+        if (handle) {
+          window.clearTimeout(handle);
+          handle = undefined;
+        }
+      };
+    }
+    return undefined;
+  }, [loop, loopDelay]);
 
   return (
     <div
@@ -93,8 +129,10 @@ export const GatsbyVideo: React.FC<
     >
       <Sizer video={video} />
       <video
-        muted={!video.hasAudio || muted}
+        ref={videoRef}
         {...otherProps}
+        loop={loopDelay ? false : loop}
+        muted={!video.hasAudio || muted}
         style={{ objectFit, objectPosition }}
         controls={controls}
         width={width}

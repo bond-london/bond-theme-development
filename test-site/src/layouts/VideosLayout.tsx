@@ -43,6 +43,7 @@ const VideoCombinedLayout: React.FC<{
           objectFit={objectFit}
           objectPosition={objectPosition}
           loop={true}
+          loopDelay={3000}
           autoPlay={true}
           controls={true}
         />
@@ -52,7 +53,6 @@ const VideoCombinedLayout: React.FC<{
           video={fullWidth}
           objectFit={objectFit}
           objectPosition={objectPosition}
-          loop={true}
           autoPlay={true}
           controls={true}
         />

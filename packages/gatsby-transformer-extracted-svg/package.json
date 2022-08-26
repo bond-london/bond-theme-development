@@ -27,12 +27,9 @@
     "dist"
   ],
   "scripts": {
-    "typegen": "tsc --emitDeclarationOnly --declaration --declarationDir dist/",
-    "xbuild:all": "babel src --out-dir dist --extensions \".ts,.tsx\"",
     "build:tsc": "tsc --outDir dist/",
     "build": "npm-run-all -s clean build:tsc",
     "watch": "npm-run-all -s watch:tsc",
-    "xwatch:all": "yarn build:all -w",
     "watch:tsc": "yarn build:tsc -w",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "clean": "del-cli dist/*"

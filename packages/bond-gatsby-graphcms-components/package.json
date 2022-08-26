@@ -28,23 +28,18 @@
     "dist"
   ],
   "scripts": {
-    "typegen": "tsc --emitDeclarationOnly --declaration --declarationDir dist/",
-    "xbuild:all": "babel src --out-dir dist --extensions \".ts,.tsx\"",
     "build:tsc": "tsc --outDir dist/",
     "build": "npm-run-all -s clean build:tsc",
     "watch": "npm-run-all -s watch:tsc",
-    "xwatch:all": "yarn build:all -w",
     "watch:tsc": "yarn build:tsc -w",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "clean": "del-cli dist/*"
   },
   "devDependencies": {
-    "@babel/cli": "^7.15.4",
-    "@babel/core": "^7.15.5",
-    "babel-preset-gatsby-package": "^2.21.0",
     "cross-env": "^7.0.3",
     "del-cli": "^5.0.0",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "typescript": "^4.7.4"
   },
   "peerDependencies": {
     "gatsby": "^4.21.1",

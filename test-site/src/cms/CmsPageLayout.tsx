@@ -1,11 +1,13 @@
 import { graphql, PageProps } from "gatsby";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CmsComponents } from "./CmsComponents";
+import { useClientOnly } from "@bond-london/gatsby-graphcms-components";
 
 export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
   props
 ) => {
   const page = props.data.graphCmsPage;
+  const isClient = useClientOnly();
   if (!page) {
     throw new Error("Page does not exist");
   }
@@ -13,7 +15,7 @@ export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
     <div>
       <CmsComponents fragments={page.topComponents as any} />
       <CmsComponents fragments={page.content as any} />
-      <pre>{JSON.stringify(props, undefined, 2)}</pre>
+      {isClient && <pre>{JSON.stringify(props, undefined, 2)}</pre>}
     </div>
   );
 };
@@ -24,11 +26,11 @@ export const PageFragment = graphql`
     slug
     topComponents {
       __typename
-      ...CmsHeroExperiment
+      ...CmsHero
     }
     content {
       __typename
-      ...CmsHeroExperiment
+      ...CmsHero
     }
   }
 `;

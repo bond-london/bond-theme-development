@@ -28,11 +28,10 @@ const gatsbyConfig: GatsbyConfig = {
     typesOutputPath: "gatsby-types.d.ts",
   },
   flags: {
-    FAST_DEV: true,
     DEV_SSR: false,
+    FAST_DEV: true,
   },
   plugins: [
-    "gatsby-plugin-postcss",
     "gatsby-plugin-image",
     {
       resolve: "gatsby-plugin-webpack-bundle-analyser-v2",

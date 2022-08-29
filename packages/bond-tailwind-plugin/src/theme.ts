@@ -1,6 +1,6 @@
 import { ThemeConfig } from "tailwindcss/types/config";
 import { BondConfigurationOptions } from ".";
-import { buildColours } from "./colours";
+import { buildColorTable, buildColours } from "./colours";
 import { buildGridSpacing, createGridCols } from "./grids";
 import { ConfigurationObj } from "./plugin";
 import { buildSpacing } from "./spacing";
@@ -38,6 +38,7 @@ function buildLetterSpacing(config: BondConfigurationOptions) {
 export function configureTheme(
   config: BondConfigurationOptions
 ): Partial<ThemeConfig> {
+  buildColorTable(config);
   const maximumWidth = Math.max(
     ...Object.values(config.sizes)
       .filter(v => v.max)

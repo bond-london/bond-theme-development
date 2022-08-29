@@ -3,7 +3,10 @@ import { rename } from "fs-extra";
 import { Reporter } from "gatsby";
 
 export class RemoteCache {
-  public static async create(connectionString: string, containerName: string) {
+  public static async create(
+    connectionString: string,
+    containerName: string
+  ): Promise<RemoteCache> {
     const blobServiceClient =
       BlobServiceClient.fromConnectionString(connectionString);
     const containerClient = blobServiceClient.getContainerClient(containerName);
@@ -16,7 +19,7 @@ export class RemoteCache {
     name: string,
     targetFileName: string,
     reporter: Reporter
-  ) {
+  ): Promise<void> {
     const blob = this.containerClient.getBlockBlobClient(name);
     const exists = await blob.exists();
     reporter.info(`${name} exists = ${exists}`);
@@ -25,7 +28,7 @@ export class RemoteCache {
     await rename(tempTargetFileName, targetFileName);
   }
 
-  public async addToCache(sourceFileName: string, name: string) {
+  public async addToCache(sourceFileName: string, name: string): Promise<void> {
     const blob = this.containerClient.getBlockBlobClient(name);
     await blob.uploadFile(sourceFileName);
   }

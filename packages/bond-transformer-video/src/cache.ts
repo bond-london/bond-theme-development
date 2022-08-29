@@ -3,7 +3,10 @@ import { RemoteCache } from "./remoteCache";
 import { join } from "path";
 import { Reporter } from "gatsby";
 
-async function atomicCopyFile(sourceFileName: string, targetFileName: string) {
+async function atomicCopyFile(
+  sourceFileName: string,
+  targetFileName: string
+): Promise<void> {
   const tempTargetFileName = targetFileName + ".tmp";
   await copy(sourceFileName, tempTargetFileName, { dereference: false });
   await rename(tempTargetFileName, targetFileName);
@@ -21,7 +24,7 @@ export class Cache {
     name: string,
     targetFileName: string,
     reporter: Reporter
-  ) {
+  ): Promise<void> {
     const key = `${name}#${targetFileName}`;
     const current = this.cachedPromised[key];
     if (current) {
@@ -42,7 +45,7 @@ export class Cache {
     name: string,
     targetFileName: string,
     reporter: Reporter
-  ) {
+  ): Promise<void> {
     const localFileName = join(this.cacheDir, name);
 
     try {
@@ -59,7 +62,7 @@ export class Cache {
     }
   }
 
-  public async addToCache(sourceFileName: string, name: string) {
+  public async addToCache(sourceFileName: string, name: string): Promise<void> {
     if (this.remoteCache) {
       await this.remoteCache.addToCache(sourceFileName, name);
     }

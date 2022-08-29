@@ -29,7 +29,9 @@ export interface FontTableEntry {
 }
 
 export interface BondConfigurationOptions {
+  colorFile?: string;
   colorOptions: { [color: string]: string };
+  colorOpposites?: { [color: string]: string };
   sizes: { [size: string]: SizeInformation };
   fontTable: {
     [font: string]: FontTableEntry & { [key: string]: string | number };

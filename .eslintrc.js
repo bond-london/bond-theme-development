@@ -1,21 +1,17 @@
 module.exports = {
-  parser: `@babel/eslint-parser`,
   extends: [
     `google`,
     `eslint:recommended`,
-    `plugin:flowtype/recommended`,
     `plugin:react/recommended`,
-    `prettier`,
+    `plugin:react-hooks/recommended`,
+    `plugin:prettier/recommended`,
   ],
-  plugins: [`flowtype`, `prettier`, `react`, `filenames`, `@babel`],
+  plugins: [`prettier`, `react`, `filenames`],
   parserOptions: {
-    ecmaVersion: 2016,
+    ecmaVersion: `2020`,
     sourceType: `module`,
     ecmaFeatures: {
       jsx: true,
-    },
-    babelOptions: {
-      configFile: `./.babelrc.js`,
     },
   },
   env: {
@@ -41,14 +37,7 @@ module.exports = {
     __TRAILING_SLASH__: true,
   },
   rules: {
-    "@babel/no-unused-expressions": [
-      `error`,
-      {
-        allowTaggedTemplates: true,
-      },
-    ],
     "no-unused-expressions": `off`,
-    "@babel/no-invalid-this": `error`,
     "no-invalid-this": `off`,
     "arrow-body-style": [
       `error`,
@@ -65,11 +54,9 @@ module.exports = {
       },
     ],
     "consistent-return": [`error`],
-    "filenames/match-regex": [`error`, `^[a-z-\\d\\.]+$`, true],
     "no-console": `off`,
     "no-inner-declarations": `off`,
     "prettier/prettier": `error`,
-    quotes: [`error`, `backtick`],
     "react/display-name": `off`,
     "react/jsx-key": `warn`,
     "react/no-unescaped-entities": `off`,
@@ -217,21 +204,6 @@ module.exports = {
         // using top-level imports via code reviews.
         "@typescript-eslint/no-var-requires": `off`,
         "@typescript-eslint/no-extra-semi": `off`,
-        // This rule ensures that typescript types do not have semicolons
-        // at the end of their lines, since our prettier setup is to have no semicolons
-        // e.g.,
-        // interface Foo {
-        // -  baz: string;
-        // +  baz: string
-        // }
-        "@typescript-eslint/member-delimiter-style": [
-          `error`,
-          {
-            multiline: {
-              delimiter: `none`,
-            },
-          },
-        ],
         "@typescript-eslint/no-empty-function": `off`,
         // This ensures that we always type the return type of functions
         // a high level focus of our TS setup is typing fn inputs and outputs.
@@ -248,20 +220,6 @@ module.exports = {
           `error`,
           { functions: false },
         ],
-        // Allows us to write unions like `type Foo = "baz" | "bar"`
-        // otherwise eslint will want to switch the strings to backticks,
-        // which then crashes the ts compiler
-        quotes: `off`,
-        "@typescript-eslint/quotes": [
-          2,
-          `backtick`,
-          {
-            avoidEscape: true,
-          },
-        ],
-        // bump to @typescript-eslint/parser started showing Flow related errors in ts(x) files
-        // so disabling them in .ts(x) files
-        "flowtype/no-types-missing-file-annotation": `off`,
         "@typescript-eslint/array-type": [`error`, { default: `generic` }],
       },
     },

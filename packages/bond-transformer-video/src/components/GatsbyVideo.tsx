@@ -4,18 +4,20 @@ import React, {
   useRef,
   VideoHTMLAttributes,
 } from "react";
-import { GatsbyTransformedVideo } from "../types";
+import { IGatsbyTransformedVideo } from "../types";
 
-function calculateSizes({ width, height, layout }: GatsbyTransformedVideo) {
+function calculateSizes({ width, height, layout }: IGatsbyTransformedVideo): {
+  width: number;
+  height: number;
+} {
   const aspectRatio = width / height;
   switch (layout) {
     case "fixed":
       return { width, height };
     case "fullWidth":
       return { width: 1, height: 1 / aspectRatio };
-    case "constrained":
-      return { width, height };
   }
+  return { width, height };
 }
 
 function getWrapperProps({
@@ -23,7 +25,7 @@ function getWrapperProps({
   height,
   layout,
   dominantColour,
-}: GatsbyTransformedVideo) {
+}: IGatsbyTransformedVideo): { className: string; style: CSSProperties } {
   let className = "gatsby-video-wrapper";
   const style: CSSProperties = {};
 
@@ -39,7 +41,7 @@ function getWrapperProps({
   return { className, style };
 }
 
-const Sizer: React.FC<{ video: GatsbyTransformedVideo }> = ({
+const Sizer: React.FC<{ video: IGatsbyTransformedVideo }> = ({
   video: { width, height, layout },
 }) => {
   if (layout === "fullWidth") {
@@ -70,7 +72,7 @@ const Sizer: React.FC<{ video: GatsbyTransformedVideo }> = ({
 
 export const GatsbyVideo: React.FC<
   {
-    video: GatsbyTransformedVideo;
+    video: IGatsbyTransformedVideo;
     noPoster?: boolean;
     loopDelay?: number;
     objectFit?: CSSProperties["objectFit"];
@@ -99,13 +101,13 @@ export const GatsbyVideo: React.FC<
     const video = videoRef.current;
     if (video && loop && loopDelay) {
       let handle: number | undefined;
-      const handler = () => {
+      const handler: () => void = () => {
         handle = window.setTimeout(() => {
           handle = undefined;
           video
             .play()
             .then(() => {
-              /*noop*/
+              /* noop */
             })
             .catch(err => console.log("Failed to restart video", err));
         }, loopDelay);

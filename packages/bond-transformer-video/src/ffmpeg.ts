@@ -2,11 +2,11 @@ import { join, dirname, basename } from "path";
 import { ensureDir, rename } from "fs-extra";
 
 import type { Actions, NodePluginArgs, Reporter } from "gatsby";
-import { GatsbyVideoInformation } from "./types";
+import { IGatsbyVideoInformation } from "./types";
 import { videoCache } from "./onPluginInit";
 import {
-  SingleVideoProcessingArgs,
-  VideoProcessingArgs,
+  ISingleVideoProcessingArgs,
+  IVideoProcessingArgs,
   VIDEO_PROCESSING_JOB_NAME,
   VIDEO_INFORMATION_JOB_NAME,
 } from "./gatsby-worker";
@@ -14,7 +14,7 @@ import { FfprobeData } from "fluent-ffmpeg";
 
 let actions: Actions;
 
-export function setActions(_actions: Actions) {
+export function setActions(_actions: Actions): void {
   actions = _actions;
 }
 
@@ -38,9 +38,9 @@ function createVideoInformationJob(
 function createVideoProcessingJob(
   inputFileName: string,
   outputDir: string,
-  args: VideoProcessingArgs,
+  args: IVideoProcessingArgs,
   reporter: Reporter
-) {
+): Promise<void> {
   if (!actions) {
     return reporter.panic("Actions are not setup");
   }
@@ -51,13 +51,13 @@ function createVideoProcessingJob(
     outputDir,
     args: args as unknown as Record<string, unknown>,
   });
-  return result;
+  return result as Promise<void>;
 }
 
 export async function getVideoInformation(
   videoPath: string,
   reporter: Reporter
-): Promise<GatsbyVideoInformation> {
+): Promise<IGatsbyVideoInformation> {
   const data = await createVideoInformationJob(videoPath, reporter);
   const videoStream = data.streams.find(s => s.codec_type === "video");
   const audioStream = data.streams.find(s => s.codec_type === "audio");
@@ -75,13 +75,13 @@ export async function getVideoInformation(
   };
 }
 
-export function createScreenshotOptions() {
+export function createScreenshotOptions(): Array<string> {
   return ["-vframes 1"];
 }
 export function createWebmVideoTransform(
   targetWidth?: number,
   muted?: boolean
-) {
+): Array<string> {
   return [
     "-c:v libvpx-vp9",
     "-crf 40",
@@ -91,7 +91,10 @@ export function createWebmVideoTransform(
   ];
 }
 
-export function createMp4VideoTransform(targetWidth?: number, muted?: boolean) {
+export function createMp4VideoTransform(
+  targetWidth?: number,
+  muted?: boolean
+): Array<string> {
   return [
     "-c:v libx265",
     "-crf 32",
@@ -104,7 +107,7 @@ export function createMp4VideoTransform(targetWidth?: number, muted?: boolean) {
   ];
 }
 
-interface JobInfo {
+interface IJobInfo {
   tempPublicFile: string;
   publicFile: string;
   outputName: string;
@@ -116,16 +119,18 @@ export async function transformVideo(
   inputName: string,
   inputDigest: string,
   name: string,
-  videos: {
+  videos: Array<{
     key: string;
     ext: string;
-    options: string[];
+    options: Array<string>;
     label: string;
-  }[]
-) {
+  }>
+): Promise<{
+  [key: string]: { publicFile: string; publicRelativeUrl: string };
+}> {
   const { reporter, createContentDigest, pathPrefix } = args;
-  const instances: SingleVideoProcessingArgs[] = [];
-  const jobInfo: JobInfo[] = [];
+  const instances: Array<ISingleVideoProcessingArgs> = [];
+  const jobInfo: Array<IJobInfo> = [];
   const results: {
     [key: string]: { publicFile: string; publicRelativeUrl: string };
   } = {};

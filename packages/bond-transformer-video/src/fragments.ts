@@ -1,6 +1,5 @@
 import { graphql } from "gatsby";
 
-// eslint-disable-next-line import/no-unused-modules
 export const MutedConstrainedVideoFragment = graphql`
   fragment MutedConstrainedVideo on GatsbyVideo {
     id
@@ -8,7 +7,6 @@ export const MutedConstrainedVideoFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const MutedFixedVideoFragment = graphql`
   fragment MutedFixedVideo on GatsbyVideo {
     id
@@ -16,7 +14,6 @@ export const MutedFixedVideoFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const MutedFullWidthVideoFragment = graphql`
   fragment MutedFullWidthVideo on GatsbyVideo {
     id
@@ -24,7 +21,6 @@ export const MutedFullWidthVideoFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const ConstrainedVideoFragment = graphql`
   fragment ConstrainedVideo on GatsbyVideo {
     id
@@ -32,7 +28,6 @@ export const ConstrainedVideoFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FixedVideoFragment = graphql`
   fragment FixedVideo on GatsbyVideo {
     id
@@ -40,7 +35,6 @@ export const FixedVideoFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FullWidthVideoFragment = graphql`
   fragment FullWidthVideo on GatsbyVideo {
     id
@@ -48,7 +42,6 @@ export const FullWidthVideoFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const MutedConstrainedVideoFileFragment = graphql`
   fragment MutedConstrainedVideoFile on File {
     id
@@ -58,7 +51,6 @@ export const MutedConstrainedVideoFileFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const MutedFixedVideoFileFragment = graphql`
   fragment MutedFixedVideoFile on File {
     id
@@ -68,7 +60,6 @@ export const MutedFixedVideoFileFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const MutedFullWidthVideoFileFragment = graphql`
   fragment MutedFullWidthVideoFile on File {
     id
@@ -78,7 +69,6 @@ export const MutedFullWidthVideoFileFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const ConstrainedVideoFileFragment = graphql`
   fragment ConstrainedVideoFile on File {
     id
@@ -88,7 +78,6 @@ export const ConstrainedVideoFileFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FixedVideoFileFragment = graphql`
   fragment FixedVideoFile on File {
     id
@@ -98,7 +87,6 @@ export const FixedVideoFileFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FullWidthVideoFileFragment = graphql`
   fragment FullWidthVideoFile on File {
     id

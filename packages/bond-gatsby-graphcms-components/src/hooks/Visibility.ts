@@ -23,7 +23,7 @@ export function onVisibleToUser(
   };
 
   const handle = (entries: IntersectionObserverEntry[]) => {
-    entries.forEach((entry) => {
+    entries.forEach(entry => {
       if (entry.target === element) {
         const aboveThreshold = realThreshold
           ? entry.intersectionRatio >= realThreshold
@@ -70,7 +70,7 @@ export function useFirstVisibleToUser<T extends HTMLElement>(
 
     const removeVisibility = onVisibleToUser(
       element,
-      (isVisible) => {
+      isVisible => {
         if (isVisible) {
           setVisible(true);
           callback?.();
@@ -116,7 +116,7 @@ export function useVisibleToUser<T extends HTMLElement = HTMLDivElement>(
     }
     const removeVisibility = onVisibleToUser(
       element,
-      (isVisible) => {
+      isVisible => {
         if (isVisible) {
           setFirstVisible(true);
         }
@@ -131,4 +131,10 @@ export function useVisibleToUser<T extends HTMLElement = HTMLDivElement>(
   }, [threshold, delay, callback]);
 
   return { elementRef, visible, firstVisible };
+}
+
+export function useClientOnly() {
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => setIsClient(true), []);
+  return isClient;
 }

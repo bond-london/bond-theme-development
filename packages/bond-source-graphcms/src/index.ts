@@ -1,5 +1,3 @@
-// export * from "./createResolvers";
-export * from "./createSchemaCustomization";
-export * from "./onPluginInit";
-export * from "./pluginOptionsSchema";
-export * from "./sourceNodes";
+import { makeValidTextString } from "./rtf";
+
+export { makeValidTextString };

@@ -12,6 +12,12 @@
     "yellow": "#fff34b",
     "error": "#f0f00f"
   },
+  "colorFile": "src/colors.ts",
+  "colorOpposites": {
+    "black": "white",
+    "green": "blue",
+    "red": "yellow"
+  },
   "spacing": {
     "xxxs": 8,
     "xxs": 10,
@@ -61,37 +67,37 @@
   },
   "fontTable": {
     "h1": {
-      "font": "poppins",
+      "font": "sans",
       "weight": "bold",
       "default": 36,
       "desktop": 56,
       "4k": 64
     },
     "h2": {
-      "font": "poppins",
+      "font": "sans",
       "weight": "bold",
       "default": 28,
       "desktop": 40,
       "4k": 48
     },
-    "h3": { "font": "poppins", "weight": "bold", "default": 18, "desktop": 36 },
-    "h4": { "font": "poppins", "weight": "bold", "default": 16, "desktop": 20 },
+    "h3": { "font": "sans", "weight": "bold", "default": 18, "desktop": 36 },
+    "h4": { "font": "sans", "weight": "bold", "default": 16, "desktop": 20 },
     "p1": {
-      "font": "poppins",
+      "font": "sans",
       "weight": "bold",
       "default": 20,
       "desktop": 24,
       "4k": 28
     },
     "p2": {
-      "font": "poppins",
+      "font": "sans",
       "weight": "light",
       "default": 16,
       "desktop": 20
     },
-    "p3": { "font": "poppins", "weight": "bold", "default": 16, "desktop": 20 },
+    "p3": { "font": "sans", "weight": "bold", "default": 16, "desktop": 20 },
     "p4": {
-      "font": "poppins",
+      "font": "sans",
       "weight": "light",
       "default": 12,
       "tablet": 14,

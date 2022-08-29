@@ -1,6 +1,11 @@
+@import "./fonts.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import "./fonts.css";
-@import "./site.css";
+@layer base {
+  body {
+    @apply bg-white font-light text-black;
+  }
+}

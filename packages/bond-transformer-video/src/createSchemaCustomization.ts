@@ -9,7 +9,7 @@ import {
   GraphQLNonNull,
 } from "gatsby/graphql";
 import { createTransformedVideo } from "./transformer";
-import { PluginOptions, TransformArgs } from "./types";
+import { IPluginOptions, ITransformArgs } from "./types";
 
 const VideoLayoutType = new GraphQLEnumType({
   name: `VideoLayout`,
@@ -22,8 +22,8 @@ const VideoLayoutType = new GraphQLEnumType({
 
 export function createSchemaCustomization(
   args: CreateSchemaCustomizationArgs,
-  options: PluginOptions
-) {
+  options: IPluginOptions
+): void {
   const {
     actions: { createTypes },
     schema,
@@ -51,8 +51,8 @@ export function createSchemaCustomization(
         },
         resolve: (
           source: Node,
-          transformArgs: TransformArgs,
-          context: IGatsbyResolverContext<Node, TransformArgs>
+          transformArgs: ITransformArgs,
+          context: IGatsbyResolverContext<Node, ITransformArgs>
         ) => createTransformedVideo(source, transformArgs, context, args),
       },
     },

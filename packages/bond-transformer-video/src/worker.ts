@@ -1,17 +1,17 @@
 import pathToFfmpeg from "ffmpeg-static";
 import { path as pathToFfprobe } from "ffprobe-static";
 
-import ffmpeg, { FfprobeData } from "fluent-ffmpeg";
+import ffmpeg, { FfmpegCommand, FfprobeData } from "fluent-ffmpeg";
 import { reporter } from "gatsby-cli/lib/reporter/reporter";
 
-function createCommandForVideo(videoPath: string) {
+function createCommandForVideo(videoPath: string): FfmpegCommand {
   const command = ffmpeg({ source: videoPath, logger: console });
   command.setFfmpegPath(pathToFfmpeg);
   command.setFfprobePath(pathToFfprobe);
   return command;
 }
 
-interface ProgressInformation {
+interface IProgressInformation {
   frames: number;
   currentFps: number;
   currentKbps: number;
@@ -23,16 +23,16 @@ interface ProgressInformation {
 async function runFfmpeg(
   input: string,
   output: string,
-  options: string[],
+  options: Array<string>,
   label: string
-) {
+): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     let lastPercent = 0;
     const activity = reporter.createProgress(label, 100);
     const command = createCommandForVideo(input)
       .addOutputOption(options)
       //   .on("start", console.log)
-      .on("error", (args) => {
+      .on("error", args => {
         activity.setStatus("Errored");
         activity.end();
         reject(args);
@@ -42,7 +42,7 @@ async function runFfmpeg(
         activity.end();
         resolve();
       })
-      .on("progress", (progress: ProgressInformation) => {
+      .on("progress", (progress: IProgressInformation) => {
         const percent = Math.floor(progress.percent);
         if (percent > lastPercent) {
           const delta = percent - lastPercent;
@@ -57,12 +57,12 @@ async function runFfmpeg(
 
 export async function workerTransformVideo(
   inputName: string,
-  instances: {
+  instances: Array<{
     output: string;
-    options: string[];
+    options: Array<string>;
     label: string;
-  }[]
-) {
+  }>
+): Promise<void> {
   for (const instance of instances) {
     await runFfmpeg(
       inputName,

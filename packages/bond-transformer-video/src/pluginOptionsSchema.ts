@@ -1,7 +1,9 @@
 import { PluginOptionsSchemaArgs } from "gatsby";
+import { ObjectSchema } from "gatsby-plugin-utils";
 
-// eslint-disable-next-line import/no-unused-modules
-export function pluginOptionsSchema(args: PluginOptionsSchemaArgs) {
+export function pluginOptionsSchema(
+  args: PluginOptionsSchemaArgs
+): ObjectSchema<unknown> {
   const { Joi } = args;
   return Joi.object({
     videoCacheFolder: Joi.string()

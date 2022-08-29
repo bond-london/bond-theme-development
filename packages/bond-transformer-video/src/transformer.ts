@@ -9,9 +9,9 @@ import {
   getVideoInformation,
   transformVideo,
 } from "./ffmpeg";
-import { GatsbyTransformedVideo, TransformArgs } from "./types";
+import { IGatsbyTransformedVideo, ITransformArgs } from "./types";
 
-function rgbToHex(red, green, blue) {
+function rgbToHex(red, green, blue): string {
   return `#${(blue | (green << 8) | (red << 16) | (1 << 24))
     .toString(16)
     .slice(1)}`;
@@ -19,10 +19,10 @@ function rgbToHex(red, green, blue) {
 
 async function internalCreateTransformedVideo(
   source: Node,
-  transformArgs: TransformArgs,
-  context: IGatsbyResolverContext<Node, TransformArgs>,
+  transformArgs: ITransformArgs,
+  context: IGatsbyResolverContext<Node, ITransformArgs>,
   args: NodePluginArgs
-): Promise<GatsbyTransformedVideo> {
+): Promise<IGatsbyTransformedVideo> {
   const { reporter, getNodeAndSavePathDependency } = args;
   if (!source.parent) {
     console.error("source missing", source);
@@ -92,9 +92,9 @@ async function internalCreateTransformedVideo(
 
 function createLabel(
   details: FileSystemNode,
-  transformArgs: TransformArgs,
+  transformArgs: ITransformArgs,
   stage: string
-) {
+): string {
   const widthInfo = transformArgs.width
     ? ` (width ${transformArgs.width})`
     : "";
@@ -102,22 +102,22 @@ function createLabel(
   return `${stage}: ${details.name}${widthInfo}${audioInfo}`;
 }
 
-const transformMap = new Map<string, Promise<GatsbyTransformedVideo>>();
+const transformMap = new Map<string, Promise<IGatsbyTransformedVideo>>();
 export function createTransformedVideo(
   source: Node,
-  transformArgs: TransformArgs,
-  context: IGatsbyResolverContext<Node, TransformArgs>,
+  transformArgs: ITransformArgs,
+  context: IGatsbyResolverContext<Node, ITransformArgs>,
   args: NodePluginArgs
-): Promise<GatsbyTransformedVideo> {
+): Promise<IGatsbyTransformedVideo> {
   const keyObj = {
     digest: source.internal.contentDigest,
     id: source.id,
-    transformArgs
+    transformArgs,
   };
   const key = args.createContentDigest(keyObj);
   const existing = transformMap.get(key);
   if (existing) return existing;
-  const promise = new Promise<GatsbyTransformedVideo>((resolve, reject) => {
+  const promise = new Promise<IGatsbyTransformedVideo>((resolve, reject) => {
     internalCreateTransformedVideo(source, transformArgs, context, args)
       .then(resolve)
       .catch(reject);

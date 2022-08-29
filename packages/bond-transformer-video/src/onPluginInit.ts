@@ -1,6 +1,6 @@
 import { NodePluginArgs } from "gatsby";
 import { RemoteCache } from "./remoteCache";
-import { PluginOptions } from "./types";
+import { IPluginOptions } from "./types";
 import { Cache } from "./cache";
 import { join } from "path";
 import { setActions } from "./ffmpeg";
@@ -14,7 +14,7 @@ export async function onPluginInit(
     remoteConnectionString,
     remoteContainer,
     videoCacheFolder,
-  }: PluginOptions
+  }: IPluginOptions
 ): Promise<void> {
   const cacheFolder = join(process.cwd(), videoCacheFolder);
   setActions(actions);
@@ -37,5 +37,6 @@ export async function onPluginInit(
   } else {
     videoCache = new Cache(cacheFolder);
   }
-  return;
+
+  return undefined;
 }

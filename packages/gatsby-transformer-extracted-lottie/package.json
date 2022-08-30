@@ -50,5 +50,6 @@
   "peerDependencies": {
     "gatsby": "^4",
     "gatsby-source-filesystem": "^4"
-  }
+  },
+  "gitHead": "0fb9341633ecdebe97265e8c6fa8a239ab2e5af3"
 }

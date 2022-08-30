@@ -63,5 +63,6 @@
     "gatsby": "^4",
     "i18next": "^21.x",
     "react": "^18"
-  }
+  },
+  "gitHead": "0fb9341633ecdebe97265e8c6fa8a239ab2e5af3"
 }

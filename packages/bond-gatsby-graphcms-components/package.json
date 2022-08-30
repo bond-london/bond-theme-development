@@ -50,5 +50,6 @@
     "@bond-london/gatsby-transformer-video": "^2.0.0-pre.2",
     "@bond-london/graphcms-rich-text": "^2.0.0-pre.2",
     "lottie-web": "^5.9.6"
-  }
+  },
+  "gitHead": "0fb9341633ecdebe97265e8c6fa8a239ab2e5af3"
 }

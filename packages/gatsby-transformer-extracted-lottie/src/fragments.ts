@@ -1,6 +1,5 @@
 import { graphql } from "gatsby";
 
-// eslint-disable-next-line import/no-unused-modules
 export const ConstrainedAnimationFragment = graphql`
   fragment ConstrainedAnimation on GatsbyAnimation {
     id
@@ -8,7 +7,6 @@ export const ConstrainedAnimationFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FixedAnimationFragment = graphql`
   fragment FixedAnimation on GatsbyAnimation {
     id
@@ -16,7 +14,6 @@ export const FixedAnimationFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FullWidthAnimationFragment = graphql`
   fragment FullWidthAnimation on GatsbyAnimation {
     id
@@ -24,7 +21,6 @@ export const FullWidthAnimationFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const ConstrainedAnimationFileFragment = graphql`
   fragment ConstrainedAnimationFile on File {
     id
@@ -34,7 +30,6 @@ export const ConstrainedAnimationFileFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FixedAnimationFileFragment = graphql`
   fragment FixedAnimationFile on File {
     id
@@ -44,7 +39,6 @@ export const FixedAnimationFileFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FullWidthAnimationFileFragment = graphql`
   fragment FullWidthAnimationFile on File {
     id

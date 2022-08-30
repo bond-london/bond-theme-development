@@ -1,8 +1,7 @@
 import type { CreateNodeArgs, NodeInput } from "gatsby";
 import { FileSystemNode } from "gatsby-source-filesystem";
 
-// eslint-disable-next-line import/no-unused-modules
-export async function onCreateNode(args: CreateNodeArgs) {
+export async function onCreateNode(args: CreateNodeArgs): Promise<void> {
   const {
     node,
     createNodeId,

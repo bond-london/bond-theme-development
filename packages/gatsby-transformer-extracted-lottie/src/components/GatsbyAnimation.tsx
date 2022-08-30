@@ -6,32 +6,41 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { GatsbyExtractedAnimation } from "../types";
+import { IGatsbyExtractedAnimation } from "../types";
 
 const LottiePlayer = lazy(() => import("./LottiePlayer"));
 
 export function getGatsbyAnimation(
   extracted: Record<string, unknown> | unknown | null
-) {
+): IGatsbyExtractedAnimation | undefined {
   if (extracted) {
-    return extracted as GatsbyExtractedAnimation;
+    return extracted as IGatsbyExtractedAnimation;
   }
   return undefined;
 }
 
-function calculateSizes({ width, height, layout }: GatsbyExtractedAnimation) {
+function calculateSizes({ width, height, layout }: IGatsbyExtractedAnimation): {
+  width: number;
+  height: number;
+} {
   const aspectRatio = width / height;
   switch (layout) {
     case "fixed":
       return { width, height };
     case "fullWidth":
       return { width: 1, height: 1 / aspectRatio };
-    case "constrained":
-      return { width, height };
   }
+  return { width, height };
 }
 
-function getWrapperProps({ width, height, layout }: GatsbyExtractedAnimation) {
+function getWrapperProps({
+  width,
+  height,
+  layout,
+}: IGatsbyExtractedAnimation): {
+  className: string;
+  style: React.CSSProperties;
+} {
   let className = "gatsby-animation-wrapper";
   const style: CSSProperties = {};
 
@@ -49,7 +58,7 @@ function getSizerStyle({
   width,
   height,
   layout,
-}: GatsbyExtractedAnimation): CSSProperties | undefined {
+}: IGatsbyExtractedAnimation): CSSProperties | undefined {
   if (layout === "fullWidth") {
     return { paddingTop: `${(height / width) * 100}%` };
   }
@@ -60,7 +69,7 @@ function getSizerStyle({
   return undefined;
 }
 
-const Sizer: React.FC<{ animation: GatsbyExtractedAnimation }> = ({
+const Sizer: React.FC<{ animation: IGatsbyExtractedAnimation }> = ({
   animation,
 }) => {
   const { width, height, layout } = animation;
@@ -90,7 +99,7 @@ const Sizer: React.FC<{ animation: GatsbyExtractedAnimation }> = ({
 };
 
 export const GatsbyAnimation: React.FC<{
-  animation: GatsbyExtractedAnimation;
+  animation: IGatsbyExtractedAnimation;
   objectFit?: CSSProperties["objectFit"];
   objectPosition?: CSSProperties["objectPosition"];
   className?: string;

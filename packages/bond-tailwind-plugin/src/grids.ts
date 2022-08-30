@@ -1,5 +1,6 @@
-import { BondConfigurationOptions } from ".";
-import { ConfigurationMap, ConfigurationObj, PluginHelpers } from "./plugin";
+/* eslint-disable @typescript-eslint/naming-convention */
+import { CSSRuleObject, PluginAPI } from "tailwindcss/types/config";
+import { IBondConfigurationOptions } from ".";
 import {
   calculateNumbers,
   calculateRemSize,
@@ -8,9 +9,9 @@ import {
 } from "./utils";
 
 function addContainerGrid(
-  helpers: PluginHelpers,
-  config: BondConfigurationOptions
-) {
+  helpers: PluginAPI,
+  config: IBondConfigurationOptions
+): void {
   const { addUtilities, addComponents } = helpers;
   addUtilities({
     ".grid-container": {
@@ -24,12 +25,12 @@ function addContainerGrid(
     },
   });
 
-  const utilities: ConfigurationMap = {};
-  const components: ConfigurationMap = {};
+  const utilities: CSSRuleObject = {};
+  const components: CSSRuleObject = {};
 
   for (let row = 1; row <= 6; row++) {
     Object.entries(config.spacing).forEach(([name, value]) => {
-      const properties: ConfigurationMap = {};
+      const properties: CSSRuleObject = {};
       properties[`--bond-container-row-${row}`] = calculateRemSize(value);
       utilities[`.bond-row-${row}-${name}`] = properties;
     });
@@ -62,14 +63,16 @@ function addContainerGrid(
 }
 
 export function buildGrid(
-  helpers: PluginHelpers,
-  config: BondConfigurationOptions
-) {
+  helpers: PluginAPI,
+  config: IBondConfigurationOptions
+): void {
   addContainerGrid(helpers, config);
 }
 
-export function buildGridSpacing(config: BondConfigurationOptions) {
-  const results: ConfigurationObj = {};
+export function buildGridSpacing(
+  config: IBondConfigurationOptions
+): CSSRuleObject {
+  const results: CSSRuleObject = {};
   const maximumWidth = Math.max(
     ...Object.values(config.sizes)
       .filter(v => v.max)
@@ -126,8 +129,10 @@ export function buildGridSpacing(config: BondConfigurationOptions) {
   return results;
 }
 
-export function createGridCols(config: BondConfigurationOptions) {
-  const grids: ConfigurationObj = {};
+export function createGridCols(
+  config: IBondConfigurationOptions
+): CSSRuleObject {
+  const grids: CSSRuleObject = {};
   let lastMargin: number | undefined;
   forEachObject(
     config.sizes,

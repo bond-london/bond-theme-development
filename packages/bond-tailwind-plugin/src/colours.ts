@@ -1,11 +1,11 @@
-import { BondConfigurationOptions } from ".";
-import { ConfigurationObj } from "./plugin";
+import { IBondConfigurationOptions } from ".";
 import { forEachObject } from "./utils";
 import { pascalCase } from "pascal-case";
 import { writeFileSync } from "fs-extra";
+import { CSSRuleObject } from "tailwindcss/types/config";
 
-export function buildColours(config: BondConfigurationOptions) {
-  const colors: ConfigurationObj = {
+export function buildColours(config: IBondConfigurationOptions): CSSRuleObject {
+  const colors: CSSRuleObject = {
     transparent: "transparent",
     current: "currentColor",
   };
@@ -19,9 +19,9 @@ export function buildColours(config: BondConfigurationOptions) {
   return colors;
 }
 
-export function buildColorTable(config: BondConfigurationOptions) {
+export function buildColorTable(config: IBondConfigurationOptions): void {
   const { colorFile, colorOpposites } = config;
-  if (!colorFile) return;
+  if (!colorFile) return undefined;
 
   const colors = buildColours(config);
 
@@ -115,4 +115,6 @@ export function lookupColourClassNames(backgroundColour?: ColourName | null, tex
   } catch {
     // ignore as this could be in linting
   }
+
+  return undefined;
 }

@@ -1,7 +1,7 @@
 import { InitOptions } from "i18next";
 import { NodeInput } from "gatsby";
 
-export interface PluginOptions {
+export interface IPluginOptions {
   languages: Array<string>;
   defaultLanguage: string;
   siteUrl: string;
@@ -16,14 +16,14 @@ export interface I18NextContext {
   siteUrl: string;
 }
 
-export interface InputPageContext {
+export interface IInputPageContext {
   id: string;
   language: string;
   corePath: string;
   resourcesJson: string;
   defaultLanguage: string;
 }
-export type PageContext = InputPageContext & {
+export type PageContext = IInputPageContext & {
   i18n: I18NextContext;
 };
 
@@ -37,7 +37,7 @@ export interface I18PagesContext {
 
 // Taken from https://github.com/gatsbyjs/gatsby/blob/master/packages/gatsby-source-filesystem/index.d.ts
 // No way to refer it without directly depending on gatsby-source-filesystem.
-export interface FileSystemNode extends Record<string, unknown> {
+export interface IFileSystemNode extends Record<string, unknown> {
   absolutePath: string;
   accessTime: string;
   birthTime: Date;
@@ -77,14 +77,14 @@ export interface FileSystemNode extends Record<string, unknown> {
   uid: number;
 }
 
-export interface LocaleNodeInput extends NodeInput {
+export interface ILocaleNodeInput extends NodeInput {
   language: string;
   ns: string;
   data: string;
   fileAbsolutePath: string;
 }
 
-export interface LocaleNode extends LocaleNodeInput {
+export interface ILocaleNode extends ILocaleNodeInput {
   parent: string;
   children: Array<string>;
   internal: NodeInput["internal"] & {

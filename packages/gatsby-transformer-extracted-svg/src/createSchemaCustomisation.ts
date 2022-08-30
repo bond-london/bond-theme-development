@@ -3,7 +3,7 @@ import { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
 import { createExtractedSvg } from "./transformer";
 
 import { GraphQLEnumType, GraphQLJSON, GraphQLNonNull } from "gatsby/graphql";
-import { TransformArgs } from "./types";
+import { ITransformArgs } from "./types";
 
 const SvgLayoutType = new GraphQLEnumType({
   name: `SvgLayout`,
@@ -14,7 +14,9 @@ const SvgLayoutType = new GraphQLEnumType({
   },
 });
 
-export function createSchemaCustomization(args: CreateSchemaCustomizationArgs) {
+export function createSchemaCustomization(
+  args: CreateSchemaCustomizationArgs
+): void {
   const {
     actions: { createTypes },
     schema,
@@ -36,8 +38,8 @@ export function createSchemaCustomization(args: CreateSchemaCustomizationArgs) {
         },
         resolve: (
           source: Node,
-          transformArgs: TransformArgs,
-          context: IGatsbyResolverContext<Node, TransformArgs>
+          transformArgs: ITransformArgs,
+          context: IGatsbyResolverContext<Node, ITransformArgs>
         ) => createExtractedSvg(source, transformArgs, context, args),
       },
     },

@@ -55,8 +55,9 @@
   },
   "dependencies": {
     "browser-lang": "^0.1.0",
-    "react-i18next": "^11.18.0",
-    "i18next-browser-languagedetector": "^6.1.4"
+    "i18next": "^21.9.1",
+    "i18next-browser-languagedetector": "^6.1.4",
+    "react-i18next": "^11.18.0"
   },
   "peerDependencies": {
     "gatsby": "^4",

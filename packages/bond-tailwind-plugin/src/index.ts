@@ -7,12 +7,12 @@ import { addAnimationUtilities } from "./animations";
 import { addBorderSpacing } from "./borders";
 import { addFontSizes } from "./fonts";
 import { buildGrid } from "./grids";
-import { PluginHelpers } from "./plugin";
 import { buildTypography } from "./typography";
 import { addExtraVariants } from "./variants";
 import { configureTheme } from "./theme";
+import { PluginAPI } from "tailwindcss/types/config";
 
-export interface SizeInformation {
+export interface ISizeInformation {
   breakpoint?: number;
   margin: number;
   gap: number;
@@ -20,7 +20,7 @@ export interface SizeInformation {
   max?: number;
 }
 
-export interface FontTableEntry {
+export interface IFontTableEntry {
   default: number;
   weight: string;
   font?: string;
@@ -28,13 +28,13 @@ export interface FontTableEntry {
   additional?: string;
 }
 
-export interface BondConfigurationOptions {
+export interface IBondConfigurationOptions {
   colorFile?: string;
   colorOptions: { [color: string]: string };
   colorOpposites?: { [color: string]: string };
-  sizes: { [size: string]: SizeInformation };
+  sizes: { [size: string]: ISizeInformation };
   fontTable: {
-    [font: string]: FontTableEntry & { [key: string]: string | number };
+    [font: string]: IFontTableEntry & { [key: string]: string | number };
   };
   spacing: { [spacing: string]: number };
   lineHeight?: number;
@@ -43,9 +43,11 @@ export interface BondConfigurationOptions {
 const plugin = require("tailwindcss/plugin");
 
 module.exports = plugin.withOptions(
-  (config: BondConfigurationOptions) => (helpers: PluginHelpers) => {
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  (config: IBondConfigurationOptions) => (helpers: PluginAPI) => {
     const { addBase } = helpers;
-    addBase({ ":root": { "--bond-vw": "1vw" } });
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    addBase({ ":root": { "--bond-vw": "1vw", "--bond-vh": "1vh" } });
     buildGrid(helpers, config);
     addFontSizes(helpers, config);
     addAnimationUtilities(helpers);
@@ -53,5 +55,5 @@ module.exports = plugin.withOptions(
     addExtraVariants(helpers);
     buildTypography(helpers, config);
   },
-  (config: BondConfigurationOptions) => configureTheme(config)
+  (config: IBondConfigurationOptions) => configureTheme(config)
 );

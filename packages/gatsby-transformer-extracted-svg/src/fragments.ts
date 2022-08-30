@@ -1,6 +1,5 @@
 import { graphql } from "gatsby";
 
-// eslint-disable-next-line import/no-unused-modules
 export const ConstrainedSvgFragment = graphql`
   fragment ConstrainedSvg on GatsbySvg {
     id
@@ -8,7 +7,6 @@ export const ConstrainedSvgFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FixedSvgFragment = graphql`
   fragment FixedSvg on GatsbySvg {
     id
@@ -16,7 +14,6 @@ export const FixedSvgFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FullWidthSvgFragment = graphql`
   fragment FullWidthSvg on GatsbySvg {
     id
@@ -24,7 +21,6 @@ export const FullWidthSvgFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const ConstrainedSvgFileFragment = graphql`
   fragment ConstrainedSvgFile on File {
     id
@@ -34,7 +30,6 @@ export const ConstrainedSvgFileFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FixedSvgFileFragment = graphql`
   fragment FixedSvgFile on File {
     id
@@ -44,7 +39,6 @@ export const FixedSvgFileFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FullWidthSvgFileFragment = graphql`
   fragment FullWidthSvgFile on File {
     id

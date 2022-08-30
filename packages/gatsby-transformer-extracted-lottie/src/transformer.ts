@@ -5,7 +5,7 @@ import { join } from "path";
 import { Node, NodePluginArgs } from "gatsby";
 import { FileSystemNode } from "gatsby-source-filesystem";
 import { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
-import { GatsbyExtractedAnimation, TransformArgs } from "./types";
+import { IGatsbyExtractedAnimation, ITransformArgs } from "./types";
 import renderToSvg from "lottie-to-svg";
 import svgToTinyDataUri from "mini-svg-data-uri";
 import { optimize, OptimizedError, OptimizedSvg } from "svgo";
@@ -16,7 +16,10 @@ function isOptimizedError(
   return !(a as OptimizedSvg).data;
 }
 
-async function parseLottie(fsNode: FileSystemNode, args: NodePluginArgs) {
+async function parseLottie(
+  fsNode: FileSystemNode,
+  args: NodePluginArgs
+): Promise<{ animationJson: string; result: OptimizedSvg }> {
   const { reporter } = args;
   const animationJson = await readFile(fsNode.absolutePath, "utf8");
   const animationData = JSON.parse(animationJson) as unknown;
@@ -30,10 +33,10 @@ async function parseLottie(fsNode: FileSystemNode, args: NodePluginArgs) {
 
 async function internalCreateExtractedAnimation(
   source: Node,
-  transformArgs: TransformArgs,
-  context: IGatsbyResolverContext<Node, TransformArgs>,
+  transformArgs: ITransformArgs,
+  context: IGatsbyResolverContext<Node, ITransformArgs>,
   args: NodePluginArgs
-) {
+): Promise<IGatsbyExtractedAnimation | undefined> {
   const { reporter, getNodeAndSavePathDependency, pathPrefix } = args;
   if (!source.parent) {
     console.error("source missing", source);
@@ -81,7 +84,7 @@ async function internalCreateExtractedAnimation(
         );
       }
 
-      const animation: GatsbyExtractedAnimation = {
+      const animation: IGatsbyExtractedAnimation = {
         width: parseFloat(width),
         height: parseFloat(height),
         layout: transformArgs.layout,
@@ -111,14 +114,14 @@ async function internalCreateExtractedAnimation(
 
 const transformMap = new Map<
   string,
-  Promise<GatsbyExtractedAnimation | undefined>
+  Promise<IGatsbyExtractedAnimation | undefined>
 >();
 export function createExtractedAnimation(
   source: Node,
-  transformArgs: TransformArgs,
-  context: IGatsbyResolverContext<Node, TransformArgs>,
+  transformArgs: ITransformArgs,
+  context: IGatsbyResolverContext<Node, ITransformArgs>,
   args: NodePluginArgs
-): Promise<GatsbyExtractedAnimation | undefined> {
+): Promise<IGatsbyExtractedAnimation | undefined> {
   const keyObj = {
     digest: source.internal.contentDigest,
     id: source.id,
@@ -128,7 +131,7 @@ export function createExtractedAnimation(
   const existing = transformMap.get(key);
   if (existing) return existing;
 
-  const promise = new Promise<GatsbyExtractedAnimation | undefined>(
+  const promise = new Promise<IGatsbyExtractedAnimation | undefined>(
     (resolve, reject) => {
       internalCreateExtractedAnimation(source, transformArgs, context, args)
         .then(resolve)

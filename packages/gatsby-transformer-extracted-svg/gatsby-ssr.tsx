@@ -1,9 +1,7 @@
 import React from "react";
 import { RenderBodyArgs } from "gatsby";
 
-console.log("Got tsx svg ssr");
-
-export function onRenderBody({ setHeadComponents }: RenderBodyArgs) {
+export function onRenderBody({ setHeadComponents }: RenderBodyArgs): void {
   console.log("rendering body from svg tsx");
   setHeadComponents([
     <style

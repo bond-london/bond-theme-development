@@ -1,8 +1,8 @@
-import { ThemeConfig } from "tailwindcss/types/config";
-import { BondConfigurationOptions } from ".";
+/* eslint-disable @typescript-eslint/naming-convention */
+import { CSSRuleObject, ThemeConfig } from "tailwindcss/types/config";
+import { IBondConfigurationOptions } from ".";
 import { buildColorTable, buildColours } from "./colours";
 import { buildGridSpacing, createGridCols } from "./grids";
-import { ConfigurationObj } from "./plugin";
 import { buildSpacing } from "./spacing";
 import {
   mapObject,
@@ -19,14 +19,14 @@ export const defaultNumbers = {
   unset: "unset",
 };
 
-function buildLetterSpacing(config: BondConfigurationOptions) {
+function buildLetterSpacing(config: IBondConfigurationOptions): CSSRuleObject {
   const letterSpacings = new Set<number>();
   forEachObject(config.fontTable, ({ value: { letterSpacing } }) => {
     if (letterSpacing) {
       letterSpacings.add(letterSpacing);
     }
   });
-  const results: ConfigurationObj = {};
+  const results: CSSRuleObject = {};
   if (letterSpacings.size > 0) {
     letterSpacings.forEach(value => {
       results[`${value}`] = calculateRemSize(value);
@@ -36,7 +36,7 @@ function buildLetterSpacing(config: BondConfigurationOptions) {
 }
 
 export function configureTheme(
-  config: BondConfigurationOptions
+  config: IBondConfigurationOptions
 ): Partial<ThemeConfig> {
   buildColorTable(config);
   const maximumWidth = Math.max(

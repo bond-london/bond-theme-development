@@ -1,12 +1,13 @@
-import { BondConfigurationOptions } from ".";
-import { ConfigurationMap, PluginHelpers } from "./plugin";
+/* eslint-disable @typescript-eslint/naming-convention */
+import { CSSRuleObject, PluginAPI } from "tailwindcss/types/config";
+import { IBondConfigurationOptions } from ".";
 import { calculateRemSize, forEachObject } from "./utils";
 
 export function addFontSizes(
-  { addUtilities }: PluginHelpers,
-  config: BondConfigurationOptions
+  { addUtilities }: PluginAPI,
+  config: IBondConfigurationOptions
 ): void {
-  const results: ConfigurationMap = {};
+  const results: CSSRuleObject = {};
   const fontRatios = new Set<string>();
   const fontSizes = new Set<number>();
   const sizes = ["default", ...Object.keys(config.sizes)];

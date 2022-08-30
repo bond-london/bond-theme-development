@@ -3,7 +3,7 @@ import { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
 
 import { GraphQLEnumType, GraphQLJSON, GraphQLNonNull } from "gatsby/graphql";
 import { createExtractedAnimation } from "./transformer";
-import { TransformArgs } from "./types";
+import { ITransformArgs } from "./types";
 
 const AnimationLayoutType = new GraphQLEnumType({
   name: `AnimationLayout`,
@@ -14,7 +14,9 @@ const AnimationLayoutType = new GraphQLEnumType({
   },
 });
 
-export function createSchemaCustomization(args: CreateSchemaCustomizationArgs) {
+export function createSchemaCustomization(
+  args: CreateSchemaCustomizationArgs
+): void {
   const {
     actions: { createTypes },
     schema,
@@ -36,8 +38,8 @@ export function createSchemaCustomization(args: CreateSchemaCustomizationArgs) {
         },
         resolve: (
           source: Node,
-          transformArgs: TransformArgs,
-          context: IGatsbyResolverContext<Node, TransformArgs>
+          transformArgs: ITransformArgs,
+          context: IGatsbyResolverContext<Node, ITransformArgs>
         ) => createExtractedAnimation(source, transformArgs, context, args),
       },
     },

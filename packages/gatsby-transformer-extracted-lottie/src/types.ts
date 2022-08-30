@@ -1,9 +1,9 @@
 export type AnimationLayout = "constrained" | "fixed" | "fullWidth";
-export interface TransformArgs {
+export interface ITransformArgs {
   layout: AnimationLayout;
 }
 
-export interface GatsbyExtractedAnimation {
+export interface IGatsbyExtractedAnimation {
   width: number;
   height: number;
   layout: AnimationLayout;
@@ -15,9 +15,9 @@ export interface GatsbyExtractedAnimation {
 export function GetExtractedAnimation(entry: {
   id: string;
   extracted: Record<string, unknown>;
-}) {
+}): IGatsbyExtractedAnimation | undefined {
   if (entry.extracted) {
-    return entry.extracted as unknown as GatsbyExtractedAnimation;
+    return entry.extracted as unknown as IGatsbyExtractedAnimation;
   }
   return undefined;
 }

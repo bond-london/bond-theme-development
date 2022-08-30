@@ -1,6 +1,8 @@
-import { PluginHelpers } from "./plugin";
+/* eslint-disable @typescript-eslint/naming-convention */
 
-export function addBorderSpacing({ addUtilities }: PluginHelpers): void {
+import { PluginAPI } from "tailwindcss/types/config";
+
+export function addBorderSpacing({ addUtilities }: PluginAPI): void {
   addUtilities({
     ".border-spacing-0": { "border-spacing": "0" },
   });

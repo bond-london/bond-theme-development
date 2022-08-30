@@ -6,7 +6,7 @@ function createUrlWithLang(
   siteUrl: string,
   corePath: string,
   otherLanguage: string
-) {
+): string {
   const newPath = `/${otherLanguage}${corePath}`;
   const url = `${siteUrl}${newPath}`;
   if (url.endsWith("/")) {

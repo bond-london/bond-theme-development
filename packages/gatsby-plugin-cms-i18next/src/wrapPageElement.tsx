@@ -3,16 +3,16 @@ import { WrapPageElementBrowserArgs } from "gatsby";
 import {
   I18NextContext,
   PageContext,
-  PluginOptions,
-  LocaleNode,
+  IPluginOptions,
+  ILocaleNode,
 } from "./types";
 import i18next, { InitOptions, Resource } from "i18next";
 import { I18nextProvider } from "react-i18next";
 import { I18nextContext } from "./components/i18nextContext";
 
-interface LocalesInformation {
+interface ILocalesInformation {
   _locales: {
-    edges: Array<{ node: LocaleNode }>;
+    edges: Array<{ node: ILocaleNode }>;
   };
 }
 
@@ -60,8 +60,8 @@ export const wrapPageElement = (
   {
     element,
     props,
-  }: WrapPageElementBrowserArgs<LocalesInformation, PageContext>,
-  { i18nextOptions }: PluginOptions
+  }: WrapPageElementBrowserArgs<ILocalesInformation, PageContext>,
+  { i18nextOptions }: IPluginOptions
 ): JSX.Element | null | undefined => {
   const { pageContext } = props;
   const i18nextContext = pageContext.i18n;

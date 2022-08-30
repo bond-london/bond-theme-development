@@ -1,7 +1,7 @@
 import React from "react";
 import { RenderBodyArgs } from "gatsby";
 
-export function onRenderBody({ setHeadComponents }: RenderBodyArgs) {
+export function onRenderBody({ setHeadComponents }: RenderBodyArgs): void {
   setHeadComponents([
     <style
       key="gatsby-animation-style"

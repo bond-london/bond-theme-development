@@ -1,28 +1,33 @@
 import React, { CSSProperties, ImgHTMLAttributes } from "react";
-import { GatsbyExtractedSvg } from "../types";
+import { IGatsbyExtractedSvg } from "../types";
 
 export function getGatsbySvg(
   extracted: Record<string, unknown> | unknown | null
-) {
+): IGatsbyExtractedSvg | undefined {
   if (extracted) {
-    return extracted as GatsbyExtractedSvg;
+    return extracted as IGatsbyExtractedSvg;
   }
   return undefined;
 }
 
-function calculateSizes({ width, height, layout }: GatsbyExtractedSvg) {
+function calculateSizes({ width, height, layout }: IGatsbyExtractedSvg): {
+  width: number;
+  height: number;
+} {
   const aspectRatio = width / height;
   switch (layout) {
     case "fixed":
       return { width, height };
     case "fullWidth":
       return { width: 1, height: 1 / aspectRatio };
-    case "constrained":
-      return { width, height };
   }
+  return { width, height };
 }
 
-function getWrapperProps({ width, height, layout }: GatsbyExtractedSvg) {
+function getWrapperProps({ width, height, layout }: IGatsbyExtractedSvg): {
+  className: string;
+  style: React.CSSProperties;
+} {
   let className = "gatsby-svg-wrapper";
   const style: CSSProperties = {};
 
@@ -40,7 +45,7 @@ function getSizerStyle({
   width,
   height,
   layout,
-}: GatsbyExtractedSvg): CSSProperties | undefined {
+}: IGatsbyExtractedSvg): CSSProperties | undefined {
   if (layout === "fullWidth") {
     return { paddingTop: `${(height / width) * 100}%` };
   }
@@ -51,7 +56,7 @@ function getSizerStyle({
   return undefined;
 }
 
-const Sizer: React.FC<{ svg: GatsbyExtractedSvg }> = ({ svg }) => {
+const Sizer: React.FC<{ svg: IGatsbyExtractedSvg }> = ({ svg }) => {
   const { width, height, layout } = svg;
   const sizerStyle = getSizerStyle(svg);
   if (layout === "fullWidth") {
@@ -80,7 +85,7 @@ const Sizer: React.FC<{ svg: GatsbyExtractedSvg }> = ({ svg }) => {
 
 export const GatsbySvg: React.FC<
   {
-    svg: GatsbyExtractedSvg;
+    svg: IGatsbyExtractedSvg;
     objectFit?: CSSProperties["objectFit"];
     objectPosition?: CSSProperties["objectPosition"];
   } & Omit<ImgHTMLAttributes<HTMLImageElement>, "poster" | "src">

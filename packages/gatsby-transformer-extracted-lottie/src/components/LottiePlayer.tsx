@@ -15,7 +15,7 @@ async function loadAnimation(url: string): Promise<unknown> {
 
 function convertObjectPosition(
   objectPosition?: CSSProperties["objectPosition"]
-) {
+): string {
   if (typeof objectPosition === "string") {
     const split = objectPosition.split(" ");
     if (split.length === 1) {
@@ -79,7 +79,7 @@ function convertObjectPosition(
 function convertObjectFitAndPositionToPreserveAspectRatio(
   objectFit?: CSSProperties["objectFit"],
   objectPosition?: CSSProperties["objectPosition"]
-) {
+): string {
   const sliceOrMeet = objectFit === "cover" ? "slice" : "meet";
   const position = convertObjectPosition(objectPosition);
   return `${position} ${sliceOrMeet}`;
@@ -141,13 +141,14 @@ const LottiePlayer: React.FC<{
       };
     }
     return undefined;
-  }, []);
+  }, [animationUrl, containerRef, loop, loopDelay, objectFit, objectPosition]);
 
   useEffect(() => {
     if (animationItem && loopDelay) {
+      const current = state.current;
       let handle: number | undefined;
-      const handler = () => {
-        state.current.isLoopPause = true;
+      const handler = (): void => {
+        current.isLoopPause = true;
         handle = window.setTimeout(() => {
           handle = undefined;
           state.current.isLoopPause = false;
@@ -160,7 +161,7 @@ const LottiePlayer: React.FC<{
       };
       const remove = animationItem.addEventListener("complete", handler);
       return () => {
-        state.current.isLoopPause = false;
+        current.isLoopPause = false;
         if (handle) {
           window.clearTimeout(handle);
           handle = undefined;

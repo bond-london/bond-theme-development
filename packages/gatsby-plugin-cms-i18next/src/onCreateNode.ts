@@ -1,6 +1,7 @@
 import { CreateNodeArgs, Node } from "gatsby";
-import { FileSystemNode, PluginOptions, LocaleNodeInput } from "./types";
+import { IFileSystemNode, IPluginOptions, ILocaleNodeInput } from "./types";
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export function unstable_shouldOnCreateNode({ node }: { node: Node }): boolean {
   // We only care about JSON content.
   return node.internal.mediaType === `application/json`;
@@ -14,8 +15,8 @@ export const onCreateNode = async (
     createNodeId,
     createContentDigest,
     reporter,
-  }: CreateNodeArgs<FileSystemNode>,
-  { localeJsonSourceName }: PluginOptions
+  }: CreateNodeArgs<IFileSystemNode>,
+  { localeJsonSourceName }: IPluginOptions
 ): Promise<void> => {
   if (!unstable_shouldOnCreateNode({ node })) {
     return;
@@ -66,7 +67,7 @@ export const onCreateNode = async (
 
   const { createNode, createParentChildLink } = actions;
 
-  const localeNode: LocaleNodeInput = {
+  const localeNode: ILocaleNodeInput = {
     id: createNodeId(`${id} >>> Locale`),
     children: [],
     parent: id,

@@ -1,9 +1,9 @@
 export type SvgLayout = "constrained" | "fixed" | "fullWidth";
-export interface TransformArgs {
+export interface ITransformArgs {
   layout: SvgLayout;
 }
 
-export interface GatsbyExtractedSvg {
+export interface IGatsbyExtractedSvg {
   width: number;
   height: number;
   layout: SvgLayout;
@@ -14,9 +14,9 @@ export interface GatsbyExtractedSvg {
 export function GetExtractedSvg(entry: {
   id: string;
   extracted: Record<string, unknown>;
-}) {
+}): IGatsbyExtractedSvg | undefined {
   if (entry.extracted) {
-    return entry.extracted as unknown as GatsbyExtractedSvg;
+    return entry.extracted as unknown as IGatsbyExtractedSvg;
   }
   return undefined;
 }

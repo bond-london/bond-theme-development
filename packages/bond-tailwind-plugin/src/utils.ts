@@ -1,4 +1,4 @@
-import { ConfigurationMap, ConfigurationObj } from "./plugin";
+import { CSSRuleObject } from "tailwindcss/types/config";
 
 export const remSize = 16;
 
@@ -20,7 +20,7 @@ export function remValueFn(value: number): string {
 
 export type KeyFunction<T> = (key: T) => string;
 export type ValueFunction<V, R = string> = (value: V) => R;
-export type ConfigurationFunction<V> = (value: V) => ConfigurationMap;
+export type ConfigurationFunction<V> = (value: V) => CSSRuleObject;
 export type FilterFunction<V> = (entry: { key: string; value: V }) => boolean;
 export type EntryFunction<V, R> = (entry: {
   key: string;
@@ -32,8 +32,8 @@ export function mapNumbers(
   numbers: Array<number>,
   keyFn: KeyFunction<number>,
   valueFn: ValueFunction<number>
-) {
-  const result: ConfigurationObj = {};
+): CSSRuleObject {
+  const result: CSSRuleObject = {};
   numbers.forEach(i => {
     result[keyFn(i)] = valueFn(i);
   });
@@ -45,8 +45,8 @@ export function mapObject<V>(
   keyFn: KeyFunction<string>,
   valueFn: ValueFunction<V>,
   filterFn?: FilterFunction<V>
-) {
-  const results: ConfigurationObj = {};
+): CSSRuleObject {
+  const results: CSSRuleObject = {};
   forEachObject(
     obj,
     ({ key, value }) => {
@@ -61,7 +61,7 @@ export function forEachObject<V, R>(
   obj: { [key: string]: V },
   entryFn: EntryFunction<V, R>,
   filterFn?: FilterFunction<V>
-) {
+): void {
   Object.entries(obj).forEach(([key, value], index) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const entry = { key, value, index };
@@ -71,8 +71,8 @@ export function forEachObject<V, R>(
   });
 }
 
-export function createApplyEntry(classes: Array<string>): ConfigurationMap {
-  const nameEntry: ConfigurationMap = {};
+export function createApplyEntry(classes: Array<string>): CSSRuleObject {
+  const nameEntry: CSSRuleObject = {};
   nameEntry[`@apply ${classes.join(" ")}`] = {};
   return nameEntry;
 }
@@ -83,8 +83,8 @@ export function calculateNumbers(
   keyFn: KeyFunction<number>,
   valueFn: ValueFunction<number>,
   by = 1
-) {
-  const result: ConfigurationObj = {};
+): CSSRuleObject {
+  const result: CSSRuleObject = {};
   for (let i = min; i <= max; i += by) {
     result[keyFn(i)] = valueFn(i);
   }
@@ -95,10 +95,10 @@ export function calculateNumbersMap(
   min: number,
   max: number,
   keyFn: KeyFunction<number>,
-  valueFn: ValueFunction<number, ConfigurationObj>,
+  valueFn: ValueFunction<number, CSSRuleObject>,
   by = 1
-) {
-  const result: ConfigurationMap = {};
+): CSSRuleObject {
+  const result: CSSRuleObject = {};
   for (let i = min; i <= max; i += by) {
     result[keyFn(i)] = valueFn(i);
   }

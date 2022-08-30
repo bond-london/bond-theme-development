@@ -1,7 +1,8 @@
-import { PluginHelpers } from "./plugin";
+/* eslint-disable @typescript-eslint/naming-convention */
+import { PluginAPI } from "tailwindcss/types/config";
 import { calculateNumbersMap } from "./utils";
 
-export function addAnimationUtilities({ addUtilities }: PluginHelpers): void {
+export function addAnimationUtilities({ addUtilities }: PluginAPI): void {
   addUtilities(
     calculateNumbersMap(
       100,

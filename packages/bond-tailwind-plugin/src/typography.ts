@@ -1,12 +1,12 @@
-import { BondConfigurationOptions } from ".";
-import { ConfigurationMap, PluginHelpers } from "./plugin";
+import { CSSRuleObject, PluginAPI } from "tailwindcss/types/config";
+import { IBondConfigurationOptions } from ".";
 import { createApplyEntry, forEachObject } from "./utils";
 
 export function buildTypography(
-  { addComponents }: PluginHelpers,
-  config: BondConfigurationOptions
+  { addComponents }: PluginAPI,
+  config: IBondConfigurationOptions
 ): void {
-  const components: ConfigurationMap = {};
+  const components: CSSRuleObject = {};
   forEachObject(
     config.fontTable,
     ({

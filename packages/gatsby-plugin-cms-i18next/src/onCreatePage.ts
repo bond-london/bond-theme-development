@@ -1,9 +1,9 @@
 import { CreatePageArgs, Page } from "gatsby";
-import { InputPageContext, PageContext, PluginOptions } from "./types";
+import { IInputPageContext, PageContext, IPluginOptions } from "./types";
 
 function generatePage(
-  page: Page<InputPageContext>,
-  { languages, siteUrl, defaultLanguage }: PluginOptions
+  page: Page<IInputPageContext>,
+  { languages, siteUrl, defaultLanguage }: IPluginOptions
 ): Page<PageContext> {
   return {
     ...page,
@@ -19,8 +19,8 @@ function generatePage(
   };
 }
 export function onCreatePage(
-  { page, actions, reporter }: CreatePageArgs<InputPageContext>,
-  pluginOptions: PluginOptions
+  { page, actions, reporter }: CreatePageArgs<IInputPageContext>,
+  pluginOptions: IPluginOptions
 ): void {
   // Exit if the page has already been processed.
   if (typeof (page.context as unknown as PageContext).i18n === "object") {

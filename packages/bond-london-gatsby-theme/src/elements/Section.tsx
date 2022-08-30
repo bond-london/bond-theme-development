@@ -43,7 +43,7 @@ const CoreSection: React.FC<
       data-component={componentName}
       className={classNames(
         withinModalPopup ? "modal-container-grid" : "container-grid",
-        "relative grid-container",
+        "grid-container relative",
         className
       )}
     >
@@ -123,4 +123,3 @@ export const Section: React.FC<
     </CoreSection>
   );
 };
-

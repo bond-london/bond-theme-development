@@ -1,29 +1,26 @@
 import React, { useMemo } from "react";
 import { defaultRenderers } from "./Renderers";
 import { RenderElements } from "./RenderNode";
-import { InternalRichTextProps, NodeRenderer, RichTextProps } from "./types";
+import { IInternalRichTextProps, INodeRenderer, IRichTextProps } from "./types";
 
-export const InternalRichText: React.FC<InternalRichTextProps> = ({
+export const InternalRichText: React.FC<IInternalRichTextProps> = ({
   content,
   renderers,
   ...rest
-}) => {
-  return (
-    <RenderElements
-      {...rest}
-      renderers={renderers}
-      contents={content}
-      index={0}
-      parentIndex={0}
-    />
-  );
-};
+}) => (
+  <RenderElements
+    {...rest}
+    renderers={renderers}
+    contents={content}
+    index={0}
+    parentIndex={0}
+  />
+);
 
-export const RichText: React.FC<RichTextProps> = ({ renderers, ...rest }) => {
-  const realRenderers: NodeRenderer = useMemo(
-    () => ({ ...defaultRenderers, ...renderers }),
-    [renderers]
-  );
+export const RichText: React.FC<IRichTextProps> = ({ renderers, ...rest }) => {
+  const realRenderers: INodeRenderer = useMemo(() => {
+    return { ...defaultRenderers, ...renderers };
+  }, [renderers]);
 
   return <InternalRichText {...rest} renderers={realRenderers} />;
 };

@@ -1,28 +1,28 @@
 import { InitOptions } from "i18next";
 import { NodeInput } from "gatsby";
 
-export type PluginOptions = {
-  languages: string[];
+export interface PluginOptions {
+  languages: Array<string>;
   defaultLanguage: string;
   siteUrl: string;
   i18nextOptions: InitOptions;
   localeJsonSourceName: string;
-};
+}
 
-export type I18NextContext = {
+export interface I18NextContext {
   currentLanguage: string;
   defaultLanguage: string;
-  languages: string[];
+  languages: Array<string>;
   siteUrl: string;
-};
+}
 
-export type InputPageContext = {
+export interface InputPageContext {
   id: string;
   language: string;
   corePath: string;
   resourcesJson: string;
   defaultLanguage: string;
-};
+}
 export type PageContext = InputPageContext & {
   i18n: I18NextContext;
 };
@@ -32,7 +32,7 @@ export interface I18SitePage {
 }
 
 export interface I18PagesContext {
-  sitePages: readonly I18SitePage[];
+  sitePages: ReadonlyArray<I18SitePage>;
 }
 
 // Taken from https://github.com/gatsbyjs/gatsby/blob/master/packages/gatsby-source-filesystem/index.d.ts
@@ -86,7 +86,7 @@ export interface LocaleNodeInput extends NodeInput {
 
 export interface LocaleNode extends LocaleNodeInput {
   parent: string;
-  children: string[];
+  children: Array<string>;
   internal: NodeInput["internal"] & {
     owner: string;
   };

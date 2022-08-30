@@ -3,10 +3,10 @@ import {
   GatsbyVideo,
 } from "@bond-london/gatsby-transformer-video";
 import React, { VideoHTMLAttributes } from "react";
-import { VisualCommon } from "../types";
+import { IVisualCommon } from "../types";
 import { calculateCropDetails } from "../utils";
 
-export type IBondVideo = VisualCommon & {
+export type IBondVideo = IVisualCommon & {
   video: GatsbyTransformedVideo;
   noPoster?: boolean;
 } & Omit<

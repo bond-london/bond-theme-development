@@ -1,33 +1,33 @@
 import { getSrc, IGatsbyImageData } from "gatsby-plugin-image";
 import React, { useMemo } from "react";
 
-export interface SiteBuildMetadata {
+export interface ISiteBuildMetadata {
   readonly buildTime?: unknown | string | null;
   readonly buildYear: string | null;
 }
 
-export interface SiteMetadata {
+export interface ISiteMetadata {
   readonly siteName: string | null;
   readonly siteUrl: string | null;
   readonly logo?: string | null;
   readonly sameAs?: ReadonlyArray<string | null> | null;
 }
 
-export interface Seo {
+export interface ISeo {
   title: string;
   description?: string | null;
   image?: IGatsbyImageData | null;
   keywords?: string | null;
   noIndex?: boolean | null;
 }
-interface Props {
-  siteBuildMetadata: SiteBuildMetadata;
-  siteMetadata: SiteMetadata;
-  pageMetadata: Seo;
+interface IProps {
+  siteBuildMetadata: ISiteBuildMetadata;
+  siteMetadata: ISiteMetadata;
+  pageMetadata: ISeo;
   pagePath: string;
   pageTitle: string;
-  schemaOrgs?: unknown[];
-  additionalSchemas?: unknown[];
+  schemaOrgs?: Array<unknown>;
+  additionalSchemas?: Array<unknown>;
 }
 
 export function buildOrganizationSchema(
@@ -35,8 +35,16 @@ export function buildOrganizationSchema(
   url: string,
   logo?: string | null,
   sameAs?: ReadonlyArray<string | null> | null
-) {
+): {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  "@type": string;
+  name: string;
+  url: string;
+  logo: string | undefined;
+  sameAs: ReadonlyArray<string | null> | undefined;
+} {
   return {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     "@type": "Organization",
     name,
     url,
@@ -45,11 +53,16 @@ export function buildOrganizationSchema(
   };
 }
 
-export function buildWebsiteSchema(name: string, url: string) {
+export function buildWebsiteSchema(
+  name: string,
+  url: string
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+): { "@type": string; name: string; url: string } {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   return { "@type": "WebSite", name, url };
 }
 
-export const SEO: React.FC<Props> = ({
+export const SEO: React.FC<IProps> = ({
   siteBuildMetadata: { buildTime },
   siteMetadata: {
     siteName: possibleSiteName,
@@ -81,6 +94,7 @@ export const SEO: React.FC<Props> = ({
       schemas.push(...additionalSchemas);
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     return { "@context": "http://schema.org", "@graph": schemas };
   }, [schemaOrgs, siteName, siteUrl, logo, sameAs, additionalSchemas]);
 

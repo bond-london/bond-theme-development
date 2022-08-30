@@ -2,17 +2,17 @@ import { IGatsbyImageData } from "gatsby-plugin-image";
 import React from "react";
 import { AutoVideo } from "./AutoVideo";
 import { AutoVideoAndThumbnail } from "./AutoVideoAndThumbnail";
-import { InternalVisualComponentProps } from "./AutoVisualNoLottie";
+import { IInternalVisualComponentProps } from "./AutoVisualNoLottie";
 import { Thumbnail } from "./Thumbnail";
 
-interface Props extends Partial<InternalVisualComponentProps> {
+interface IProps extends Partial<IInternalVisualComponentProps> {
   videoSrc?: string;
   alt: string;
   thumbnail?: IGatsbyImageData;
   loop?: boolean;
 }
 
-export const AutoVideoOrThumbnail: React.FC<Props> = ({
+export const AutoVideoOrThumbnail: React.FC<IProps> = ({
   videoSrc,
   alt,
   thumbnail,

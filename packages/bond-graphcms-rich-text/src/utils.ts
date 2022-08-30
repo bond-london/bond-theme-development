@@ -7,13 +7,13 @@ import {
 import React from "react";
 import { CleanedRTF } from ".";
 import {
-  ElementsRendererProps,
-  GenericRichTextNode,
+  IElementsRendererProps,
+  IGenericRichTextNode,
   RTFContent,
   RTFReferences,
 } from "./types";
 
-export function getElements(content: RTFContent): ElementNode[] {
+export function getElements(content: RTFContent): Array<ElementNode> {
   return Array.isArray(content) ? content : content.children;
 }
 
@@ -26,7 +26,7 @@ export function rtfFromText(text: string): CleanedRTF {
 }
 
 export function getCleanedRTF(
-  node: GenericRichTextNode | undefined | null
+  node: IGenericRichTextNode | undefined | null
 ): CleanedRTF | undefined {
   if (node) {
     return node.cleaned as CleanedRTF;
@@ -35,17 +35,17 @@ export function getCleanedRTF(
 }
 
 export function getRTFReferences(
-  node: GenericRichTextNode | undefined | null
+  node: IGenericRichTextNode | undefined | null
 ): RTFReferences | undefined {
   return node?.references;
 }
 
-export type TableCell = Node[];
-export type TableRow = TableCell[];
+export type TableCell = Array<Node>;
+export type TableRow = Array<TableCell>;
 
-export interface TableInformation {
+export interface ITableInformation {
   header: TableRow;
-  body: TableRow[];
+  body: Array<TableRow>;
 }
 
 function getTableRow(node: ElementNode): TableRow | undefined {
@@ -60,7 +60,7 @@ function getTableRow(node: ElementNode): TableRow | undefined {
   }
 }
 
-function getTable(node: CleanedRTF): TableInformation {
+function getTable(node: CleanedRTF): ITableInformation {
   const rows = node
     .filter(n => {
       switch (n.type) {
@@ -74,20 +74,20 @@ function getTable(node: CleanedRTF): TableInformation {
     .flatMap(e => e.children.filter(isElement).map(getTableRow))
     .filter(e => e);
 
-  const [header, ...body] = rows as TableRow[];
+  const [header, ...body] = rows as Array<TableRow>;
   return { header, body };
 }
 
-export function buildTableInformation(contents: CleanedRTF): TableInformation {
+export function buildTableInformation(contents: CleanedRTF): ITableInformation {
   return getTable(contents);
 }
 
 export function buildTableInformationFromChildren(
   children: React.ReactNode
-): TableInformation {
-  const element = children as React.ReactElement<ElementsRendererProps>;
+): ITableInformation {
+  const element = children as React.ReactElement<IElementsRendererProps>;
   const { props } = element;
   const { contents } = props;
-  const table = buildTableInformation(contents as ElementNode[]);
+  const table = buildTableInformation(contents as Array<ElementNode>);
   return table;
 }

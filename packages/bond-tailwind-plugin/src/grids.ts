@@ -37,7 +37,7 @@ function addContainerGrid(
 
   const containerGrid = ["w-full", "grid"];
   const contentGrid = ["grid"];
-  const gridGap: string[] = [];
+  const gridGap: Array<string> = [];
   forEachObject(config.sizes, ({ key, value: { cols, gap, max }, index }) => {
     const prefix = index === 0 ? "" : `${key}:`;
     if (cols || max) {
@@ -72,9 +72,9 @@ export function buildGridSpacing(config: BondConfigurationOptions) {
   const results: ConfigurationObj = {};
   const maximumWidth = Math.max(
     ...Object.values(config.sizes)
-      .filter((v) => v.max)
+      .filter(v => v.max)
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      .map((v) => v.max!)
+      .map(v => v.max!)
   );
 
   const maxWidthRem = calculateRemSize(maximumWidth);
@@ -141,8 +141,8 @@ export function createGridCols(config: BondConfigurationOptions) {
           calculateNumbers(
             1,
             cols,
-            (v) => `${name}-left-${v}`,
-            (v) => `${marginRem} repeat(${v}, 1fr)`
+            v => `${name}-left-${v}`,
+            v => `${marginRem} repeat(${v}, 1fr)`
           )
         );
         Object.assign(
@@ -150,8 +150,8 @@ export function createGridCols(config: BondConfigurationOptions) {
           calculateNumbers(
             1,
             cols,
-            (v) => `${name}-right-${v}`,
-            (v) => `repeat(${v}, 1fr) ${marginRem}`
+            v => `${name}-right-${v}`,
+            v => `repeat(${v}, 1fr) ${marginRem}`
           )
         );
 

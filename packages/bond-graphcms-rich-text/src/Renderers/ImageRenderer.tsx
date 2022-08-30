@@ -1,8 +1,8 @@
 import React from "react";
 import { calculateClassName } from "./utils";
-import { ImageNodeRendererProps } from "../types";
+import { IImageNodeRendererProps } from "../types";
 
-export const ImageRenderer: React.FC<ImageNodeRendererProps> = ({
+export const ImageRenderer: React.FC<IImageNodeRendererProps> = ({
   src,
   width,
   height,

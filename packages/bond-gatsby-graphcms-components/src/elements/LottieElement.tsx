@@ -10,11 +10,11 @@ import React, {
 
 const LottiePlayer = lazy(() => import("./LottiePlayer"));
 
-import { InternalVisualComponentProps } from ".";
-import { LottieInformation } from "../utils";
+import { IInternalVisualComponentProps } from ".";
+import { ILottieInformation } from "../utils";
 
-interface Props extends Partial<InternalVisualComponentProps> {
-  animation: LottieInformation;
+interface IProps extends Partial<IInternalVisualComponentProps> {
+  animation: ILottieInformation;
   rendererSettings?: SVGRendererConfig;
   placeholderClassName?: string;
   loop?: boolean;
@@ -24,7 +24,7 @@ interface Props extends Partial<InternalVisualComponentProps> {
   loopDelay?: number;
 }
 
-export const LottieElement: React.FC<Props> = (props) => {
+export const LottieElement: React.FC<IProps> = props => {
   const {
     animation,
     className,

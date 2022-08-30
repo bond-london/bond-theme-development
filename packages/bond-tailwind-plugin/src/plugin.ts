@@ -1,5 +1,9 @@
-export type ConfigurationMap = { [key: string]: ConfigurationMap | string };
-export type ConfigurationObj = { [key: string]: string };
+export interface ConfigurationMap {
+  [key: string]: ConfigurationMap | string;
+}
+export interface ConfigurationObj {
+  [key: string]: string;
+}
 
 export interface PluginHelpers {
   addUtilities: (map: ConfigurationMap) => void;
@@ -7,7 +11,7 @@ export interface PluginHelpers {
   addBase: (map: ConfigurationMap) => void;
   addDefaults: (
     group: string,
-    declarations: Record<string, string | string[]>
+    declarations: Record<string, string | Array<string>>
   ) => void;
   addVariant: (
     name: string,

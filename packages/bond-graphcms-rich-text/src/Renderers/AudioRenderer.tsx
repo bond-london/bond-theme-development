@@ -1,8 +1,8 @@
 import React from "react";
 import { calculateClassName } from "./utils";
-import { AudioNodeRendererProps } from "../types";
+import { IAudioNodeRendererProps } from "../types";
 
-export const AudioRenderer: React.FC<AudioNodeRendererProps> = ({
+export const AudioRenderer: React.FC<IAudioNodeRendererProps> = ({
   url,
   classNameOverrides,
   additionalClassName,
@@ -22,7 +22,6 @@ export const AudioRenderer: React.FC<AudioNodeRendererProps> = ({
   };
 
   return (
-    // eslint-disable-next-line jsx-a11y/media-has-caption
     <audio
       className={calculateClassName(
         "audio",

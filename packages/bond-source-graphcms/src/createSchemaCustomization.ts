@@ -4,7 +4,7 @@ import {
   isSpecialField,
   isSpecialObject,
   isSpecialUnion,
-  PluginOptions,
+  IPluginOptions,
   SpecialFieldEntry,
   SpecialFieldMap,
 } from "./types";
@@ -14,9 +14,9 @@ import { GraphQLObjectType } from "graphql";
 
 function customiseSchema(
   { createTypes }: Actions,
-  { typePrefix }: PluginOptions,
+  { typePrefix }: IPluginOptions,
   { gatsbyNodeTypes, schema }: ISchemaInformation
-) {
+): void {
   gatsbyNodeTypes.forEach(gatsbyNodeType => {
     const realType = schema.getType(
       gatsbyNodeType.remoteTypeName
@@ -36,16 +36,16 @@ function customiseSchema(
 
 function walkSpecialFieldsEntries(
   gatsbyApi: CreateSchemaCustomizationArgs,
-  pluginOptions: PluginOptions,
+  pluginOptions: IPluginOptions,
   isTopLevel: boolean,
   typeName: string,
   specialsFieldsEntries: ReadonlyArray<SpecialFieldEntry>
-) {
+): void {
   const { typePrefix } = pluginOptions;
   const {
     actions: { createTypes },
   } = gatsbyApi;
-  const additions: string[] = [];
+  const additions: Array<string> = [];
   specialsFieldsEntries.forEach(entry => {
     if (isSpecialField(entry)) {
       switch (entry.type) {
@@ -85,10 +85,10 @@ function walkSpecialFieldsEntries(
 }
 function walkSpecialFieldsMap(
   gatsbyApi: CreateSchemaCustomizationArgs,
-  pluginOptions: PluginOptions,
+  pluginOptions: IPluginOptions,
   isTopLevel: boolean,
   specialsFieldsMap: SpecialFieldMap
-) {
+): void {
   specialsFieldsMap.forEach((fields, typeName) => {
     walkSpecialFieldsEntries(
       gatsbyApi,
@@ -102,7 +102,7 @@ function walkSpecialFieldsMap(
 
 export async function createSchemaCustomization(
   gatsbyApi: CreateSchemaCustomizationArgs,
-  pluginOptions: PluginOptions
+  pluginOptions: IPluginOptions
 ): Promise<void> {
   const { buildMarkdownNodes, downloadAllAssets, typePrefix } = pluginOptions;
   const { actions, reporter } = gatsbyApi;
@@ -145,4 +145,5 @@ export async function createSchemaCustomization(
   }
 
   walkSpecialFieldsMap(gatsbyApi, pluginOptions, true, specialFields);
+  return undefined;
 }

@@ -1,10 +1,10 @@
 import React, { CSSProperties } from "react";
-import { calculateCropDetails, VisualAsset } from "../utils";
+import { calculateCropDetails, IVisualAsset } from "../utils";
 import { AutoGatsbyVideo } from "./AutoGatsbyVideo";
 import { AutoVideoOrThumbnail } from "./AutoVideoOrThumbnail";
 import { SvgIcon } from "./SvgIcon";
 
-export interface VisualComponentProps {
+export interface IVisualComponentProps {
   className: string;
   fitParent: boolean;
   noStyle: boolean;
@@ -15,16 +15,16 @@ export interface VisualComponentProps {
   width?: number;
   height?: number;
 }
-export interface AutoVisualProps extends VisualComponentProps {
-  visual: VisualAsset;
+export interface IAutoVisualProps extends IVisualComponentProps {
+  visual: IVisualAsset;
   dontCrop: boolean;
 }
-export interface InternalVisualComponentProps extends VisualComponentProps {
+export interface IInternalVisualComponentProps extends IVisualComponentProps {
   objectFit: CSSProperties["objectFit"];
   objectPosition: CSSProperties["objectPosition"];
 }
 
-export const AutoVisualNoLottie: React.FC<Partial<AutoVisualProps>> = ({
+export const AutoVisualNoLottie: React.FC<Partial<IAutoVisualProps>> = ({
   visual,
   dontCrop,
   className,

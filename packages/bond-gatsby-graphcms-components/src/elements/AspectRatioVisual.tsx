@@ -1,10 +1,10 @@
 import React, { CSSProperties, PropsWithChildren } from "react";
-import { VisualAsset } from "../utils";
+import { IVisualAsset } from "../utils";
 import { AutoVisual } from "./AutoVisual";
 
 export const AspectRatioVisual: React.FC<
   PropsWithChildren<{
-    visual?: VisualAsset;
+    visual?: IVisualAsset;
     className?: string;
     aspectRatioClassName: string;
     visualClassName?: string;

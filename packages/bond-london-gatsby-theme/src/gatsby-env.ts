@@ -7,7 +7,7 @@ config({
   path: join(currentDirectory, `.env.${process.env.NODE_ENV || "development"}`),
 });
 
-export function parseEnvBoolean(varName: string) {
+export function parseEnvBoolean(varName: string): boolean {
   const value = process.env[varName];
   if (typeof value === "string") {
     return value.toLowerCase() === "true";
@@ -15,7 +15,7 @@ export function parseEnvBoolean(varName: string) {
   return false;
 }
 
-export function parseEnvNumber(varName: string) {
+export function parseEnvNumber(varName: string): number | undefined {
   const value = process.env[varName];
   if (typeof value === "string") {
     const num = Number.parseFloat(value);

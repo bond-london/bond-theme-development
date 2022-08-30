@@ -1,8 +1,8 @@
 import { Text } from "@graphcms/rich-text-types";
 import React from "react";
-import { NodeRendererProps } from "./types";
+import { INodeRendererProps } from "./types";
 
-export const RenderText: React.FC<NodeRendererProps<Text>> = ({
+export const RenderText: React.FC<INodeRendererProps<Text>> = ({
   node,
   ...rest
 }) => {

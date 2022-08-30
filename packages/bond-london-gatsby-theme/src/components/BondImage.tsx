@@ -1,9 +1,9 @@
 import React, { ImgHTMLAttributes } from "react";
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
-import { VisualCommon } from "../types";
+import { IVisualCommon } from "../types";
 import { calculateCropDetails } from "../utils";
 
-export type IBondImage = VisualCommon & {
+export type IBondImage = IVisualCommon & {
   image: IGatsbyImageData;
   alt: string;
   onLoad?: (props: { wasCached: boolean }) => void;
@@ -27,7 +27,11 @@ export const BondImage: React.FC<IBondImage> = props => {
     verticalCropPosition,
     ...imageProps
   } = props;
-  const { objectFit, objectPosition } = calculateCropDetails(props);
+  const { objectFit, objectPosition } = calculateCropDetails({
+    dontCrop,
+    horizontalCropPosition,
+    verticalCropPosition,
+  });
 
   return (
     <GatsbyImage

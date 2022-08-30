@@ -13,7 +13,7 @@ import {
   IQueryExecutor,
   ISourcingConfig,
 } from "gatsby-graphql-source-toolkit/dist/types";
-import { ISchemaInformation, PluginOptions, PluginState } from "./types";
+import { ISchemaInformation, IPluginOptions, IPluginState } from "./types";
 import { copyFile, rename, rm } from "fs-extra";
 import {
   GraphQLObjectType,
@@ -23,19 +23,26 @@ import {
   isListType,
 } from "graphql";
 
-export const stateCache: PluginState = {};
+export const stateCache: IPluginState = {};
 
-function postprocessValue(locale: String, stage: string, value: any) {
+function postprocessValue(
+  locale: string,
+  stage: string,
+  value: { locale?: string; stage: string } & unknown
+): {
+  locale?: string;
+  stage: string;
+  actualLocale?: string;
+  actualStage: string;
+} & unknown {
   const { locale: actualLocale, stage: actualStage, ...rest } = value;
   const newValue = {
     ...rest,
     stage,
+    locale,
     actualStage,
+    actualLocale,
   };
-  if (actualLocale) {
-    newValue.actualLocale = actualLocale;
-    newValue.locale = locale;
-  }
   return newValue;
 }
 
@@ -67,7 +74,8 @@ function postprocessData(
     return result;
   }
 
-  const updatedData: { [key: string]: any } = {};
+  const updatedData: { [key: string]: unknown } = {};
+  // eslint-disable-next-line guard-for-in
   for (const key in data) {
     const values = data[key];
     if (Array.isArray(values)) {
@@ -82,39 +90,47 @@ function postprocessData(
   return { ...result, data: updatedData };
 }
 
-interface GraphCMSResponse {
-  errors?: string[];
+interface IGraphCMSResponse {
+  errors?: Array<string>;
 }
 
 export function createExecutor(
   gatsbyApi: NodePluginArgs,
-  pluginOptions: PluginOptions
+  pluginOptions: IPluginOptions
 ): IQueryExecutor {
   const { endpoint, stages, token } = pluginOptions;
   const { reporter } = gatsbyApi;
   const defaultStage = stages[0];
-  const execute = (args: IQueryExecutionArgs) => {
+  const execute = (
+    args: IQueryExecutionArgs
+  ): Promise<
+    ExecutionResult<{ [key: string]: unknown }, { [key: string]: unknown }>
+  > => {
     const { operationName, query, variables = {} } = args;
     return fetch(endpoint, {
       method: "POST",
       body: JSON.stringify({ query, variables, operationName }),
       headers: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         "Content-Type": "application/json",
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         ...(defaultStage && { "gcms-stage": defaultStage }),
         ...(token && { Authorization: `Bearer ${token}` }),
       },
     })
       .then(response => {
         if (!response.ok) {
-          return response.text().then(() => {
-            return reporter.panic(
-              `gatsby-source-graphcms: Response not ok building GraphCMS nodes: "${query}"`,
-              new Error(response.statusText)
+          return response
+            .text()
+            .then(() =>
+              reporter.panic(
+                `gatsby-source-graphcms: Response not ok building GraphCMS nodes: "${query}"`,
+                new Error(response.statusText)
+              )
             );
-          });
         }
 
-        return response.json() as GraphCMSResponse;
+        return response.json() as IGraphCMSResponse;
       })
       .then(response => {
         if (response.errors) {
@@ -122,7 +138,7 @@ export function createExecutor(
             `gatsby-source-graphcms: Response errors building GraphCMS nodes: "${query}" (${JSON.stringify(
               response.errors
             )})`,
-            new Error(response.errors as any)
+            response.errors as unknown as Array<Error>
           );
         }
 
@@ -132,12 +148,12 @@ export function createExecutor(
         const post = postprocessData(gatsbyApi, args, response);
         return post;
       })
-      .catch(error => {
-        return reporter.panic(
+      .catch(error =>
+        reporter.panic(
           `gatsby-source-graphcms: Error postprocessing GraphCMS nodes: "${query}"`,
           new Error(error)
-        );
-      });
+        )
+      );
   };
   return execute;
 }
@@ -145,7 +161,7 @@ export function createExecutor(
 export async function createSourcingConfig(
   schemaConfig: ISchemaInformation,
   gatsbyApi: ParentSpanPluginArgs,
-  pluginOptions: PluginOptions
+  pluginOptions: IPluginOptions
 ): Promise<ISourcingConfig> {
   const { fragmentsPath, typePrefix, concurrency } = pluginOptions;
 
@@ -159,7 +175,9 @@ export async function createSourcingConfig(
     await mkdir(fragmentsDir, { recursive: true });
   }
 
-  const addSystemFieldArguments = (field: GraphQLField<any, any>) => {
+  const addSystemFieldArguments = (
+    field: GraphQLField<unknown, unknown>
+  ): { variation: string } | undefined => {
     if (["createdAt", "publishedAt", "updatedAt"].includes(field.name)) {
       return { variation: `COMBINED` };
     }
@@ -190,7 +208,7 @@ export async function createSourcingConfig(
   };
 }
 
-async function timeout(ms: number) {
+async function timeout(ms: number): Promise<void> {
   return new Promise<void>(resolve => {
     setTimeout(resolve, ms);
   });

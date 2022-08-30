@@ -7,10 +7,20 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { InternalVisualComponentProps } from ".";
+import { IInternalVisualComponentProps } from ".";
 import { onVisibleToUser } from "../hooks/Visibility";
 
-export function useStyles(props: Partial<InternalVisualComponentProps>) {
+export function useStyles(props: Partial<IInternalVisualComponentProps>):
+  | {
+      videoStyle: React.CSSProperties;
+      standaloneStyle: undefined;
+      wrapperStyle: undefined;
+    }
+  | {
+      videoStyle: React.CSSProperties;
+      standaloneStyle: React.CSSProperties;
+      wrapperStyle: React.CSSProperties;
+    } {
   const { noStyle, objectFit, objectPosition, fitParent, style, visualStyle } =
     props;
   return useMemo(() => {
@@ -68,19 +78,19 @@ export function useStyles(props: Partial<InternalVisualComponentProps>) {
   }, [noStyle, objectFit, objectPosition, fitParent, style, visualStyle]);
 }
 
-function playVideo(videoElement: HTMLVideoElement) {
+function playVideo(videoElement: HTMLVideoElement): void {
   videoElement
     .play()
     .then(() => {
       videoElement.controls = false;
     })
-    .catch((err) => {
+    .catch(err => {
       console.error(`cannot play ${videoElement.src}`, err);
       videoElement.controls = true;
     });
 }
 
-interface Props extends Partial<InternalVisualComponentProps> {
+interface IProps extends Partial<IInternalVisualComponentProps> {
   src: string;
   loop?: boolean;
   width?: number;
@@ -122,7 +132,7 @@ const Sizer: React.FC<{ width?: number; height?: number; layout?: Layout }> = ({
   return null;
 };
 
-export const AutoVideo: React.FC<Props> = (props) => {
+export const AutoVideo: React.FC<IProps> = props => {
   const {
     src,
     onLoad,
@@ -139,12 +149,12 @@ export const AutoVideo: React.FC<Props> = (props) => {
   const [hasPlayed, setHasPlayed] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
+  useEffect((): (() => void) | undefined => {
     const videoElement = videoRef.current;
-    if (!videoElement) return;
+    if (!videoElement) return undefined;
     const removeVisibility = onVisibleToUser(
       videoElement,
-      (isVisible) => {
+      isVisible => {
         if (isVisible) {
           if (videoElement.src && videoElement.paused) {
             playVideo(videoElement);

@@ -1,8 +1,8 @@
 import React from "react";
 import { RenderEmbed } from "../RenderEmbed";
-import { LinkNodeRendererProps, EmbedNodeRendererProps } from "../types";
+import { ILinkNodeRendererProps, IEmbedNodeRendererProps } from "../types";
 
-export const LinkRenderer: React.FC<LinkNodeRendererProps> = props => {
+export const LinkRenderer: React.FC<ILinkNodeRendererProps> = props => {
   const {
     href,
     rel,
@@ -19,7 +19,7 @@ export const LinkRenderer: React.FC<LinkNodeRendererProps> = props => {
   if (props.nodeType) {
     return (
       <RenderEmbed
-        {...(props as unknown as EmbedNodeRendererProps)}
+        {...(props as unknown as IEmbedNodeRendererProps)}
         isInline={true}
       />
     );

@@ -1,8 +1,8 @@
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import React, { CSSProperties, useCallback, useMemo } from "react";
-import { InternalVisualComponentProps } from ".";
+import { IInternalVisualComponentProps } from ".";
 
-interface Props extends Partial<InternalVisualComponentProps> {
+interface IProps extends Partial<IInternalVisualComponentProps> {
   image: IGatsbyImageData;
   alt: string;
   onLoad?: () => void;
@@ -10,7 +10,7 @@ interface Props extends Partial<InternalVisualComponentProps> {
   imgClassName?: string;
 }
 
-export const Thumbnail: React.FC<Props> = (props) => {
+export const Thumbnail: React.FC<IProps> = props => {
   const {
     image,
     onLoad,

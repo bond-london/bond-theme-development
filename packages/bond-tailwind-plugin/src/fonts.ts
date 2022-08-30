@@ -23,7 +23,7 @@ export function addFontSizes(
       }
     }
   });
-  fontRatios.forEach((fontSize) => {
+  fontRatios.forEach(fontSize => {
     const split = fontSize.split("-");
     const pixels = parseInt(split[0]);
     const lineHeight = parseInt(split[1]) || pixels;
@@ -40,7 +40,7 @@ export function addFontSizes(
   });
 
   const lineHeight = config.lineHeight || 1;
-  fontSizes.forEach((size) => {
+  fontSizes.forEach(size => {
     const sizeRem = calculateRemSize(size);
     const lineHeightRem = calculateRemSize(size * lineHeight);
     const bottomFontOffsetRem = calculateRemSize(

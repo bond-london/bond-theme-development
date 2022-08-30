@@ -58,7 +58,7 @@ export const InternalLink: React.FC<LinkNodeRendererProps> = ({
   );
 };
 
-export const RTFLink: React.FC<LinkNodeRendererProps> = (props) => {
+export const RTFLink: React.FC<LinkNodeRendererProps> = props => {
   const { href } = props;
   if (href?.startsWith("/")) {
     return <InternalLink {...props} />;

@@ -1,8 +1,8 @@
 import React from "react";
 import { calculateClassName } from "./utils";
-import { VideoNodeRendererProps } from "../types";
+import { IVideoNodeRendererProps } from "../types";
 
-export const VideoRenderer: React.FC<VideoNodeRendererProps> = ({
+export const VideoRenderer: React.FC<IVideoNodeRendererProps> = ({
   src,
   width,
   height,
@@ -19,7 +19,6 @@ export const VideoRenderer: React.FC<VideoNodeRendererProps> = ({
   }
 
   return (
-    // eslint-disable-next-line jsx-a11y/media-has-caption
     <video
       className={calculateClassName(
         "video",

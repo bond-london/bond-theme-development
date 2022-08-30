@@ -1,12 +1,12 @@
 import React, { CSSProperties, useMemo } from "react";
-import { InternalVisualComponentProps } from ".";
+import { IInternalVisualComponentProps } from ".";
 
-interface Props extends Partial<InternalVisualComponentProps> {
+interface IProps extends Partial<IInternalVisualComponentProps> {
   encoded: string;
   alt: string;
 }
 
-export const SvgIcon: React.FC<Props> = (props) => {
+export const SvgIcon: React.FC<IProps> = props => {
   const {
     encoded,
     alt,
@@ -35,10 +35,9 @@ export const SvgIcon: React.FC<Props> = (props) => {
     return { ...conditional, ...style };
   }, [fitParent, noStyle, style]);
 
-  const imgStyle: CSSProperties = useMemo(
-    () => ({ objectFit, objectPosition, ...visualStyle }),
-    [objectFit, objectPosition, visualStyle]
-  );
+  const imgStyle: CSSProperties = useMemo(() => {
+    return { objectFit, objectPosition, ...visualStyle };
+  }, [objectFit, objectPosition, visualStyle]);
 
   return (
     <div className={className} style={fullStyles}>

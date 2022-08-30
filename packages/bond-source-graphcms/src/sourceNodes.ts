@@ -10,13 +10,13 @@ import {
   ISourcingContext,
 } from "gatsby-graphql-source-toolkit/dist/types";
 import {
-  BasicFieldType,
+  IBasicFieldType,
   GraphCMS_Node,
   IGraphCmsAsset,
   isSpecialField,
   isSpecialObject,
   isSpecialUnion,
-  PluginOptions,
+  IPluginOptions,
   SpecialFieldEntry,
 } from "./types";
 import { createSourcingConfig, stateCache } from "./utils";
@@ -26,7 +26,10 @@ import { ElementNode, RichTextContent } from "@graphcms/rich-text-types";
 import { cleanupRTFContent } from "./rtf";
 import { createLocalFileNode, getLocalFileName } from "./cacheGraphCmsAsset";
 
-function isAssetUsed(node: IGraphCmsAsset, usedAssetRemoteIds: Set<string>) {
+function isAssetUsed(
+  node: IGraphCmsAsset,
+  usedAssetRemoteIds: Set<string>
+): boolean {
   const fields = Object.entries(node);
   const remoteId = node.remoteId as string;
   if (!remoteId) return false;
@@ -35,7 +38,7 @@ function isAssetUsed(node: IGraphCmsAsset, usedAssetRemoteIds: Set<string>) {
   }
   for (const [, value] of fields) {
     if (Array.isArray(value)) {
-      for (const entry of value as IGraphCmsAsset[]) {
+      for (const entry of value as Array<IGraphCmsAsset>) {
         if (entry.remoteId) {
           return true;
         }
@@ -48,9 +51,9 @@ function isAssetUsed(node: IGraphCmsAsset, usedAssetRemoteIds: Set<string>) {
 async function downloadAsset(
   context: ISourcingContext,
   remoteAsset: IGraphCmsAsset
-) {
+): Promise<string> {
   const { gatsbyApi } = context;
-  const { actions, reporter, createNodeId, getCache, store } = gatsbyApi;
+  const { actions, reporter, createNodeId, getCache } = gatsbyApi;
   const { createNode } = actions;
   const url = remoteAsset.url;
   const fileName = getLocalFileName(remoteAsset, reporter);
@@ -63,11 +66,9 @@ async function downloadAsset(
     createNodeId,
     getCache,
     cache: undefined,
-    store,
-    reporter,
     name,
     ext,
-  } as any);
+  });
   reporter.verbose(
     `Downloaded asset ${fileName} from ${url} with id ${fileNode.id}`
   );
@@ -75,13 +76,13 @@ async function downloadAsset(
 }
 
 async function processDownloadableAssets(
-  pluginOptions: PluginOptions,
+  pluginOptions: IPluginOptions,
   context: ISourcingContext,
   remoteNodes: AsyncIterable<IRemoteNode>,
   usedAssetRemoteIds: Set<string>
-) {
+): Promise<void> {
   const { concurrentDownloads } = pluginOptions;
-  const allRemoteNodes: IRemoteNode[] = [];
+  const allRemoteNodes: Array<IRemoteNode> = [];
 
   for await (const remoteNode of remoteNodes) {
     allRemoteNodes.push(remoteNode);
@@ -107,10 +108,10 @@ async function processDownloadableAssets(
 
 async function createOrTouchAsset(
   context: ISourcingContext,
-  pluginOptions: PluginOptions,
+  pluginOptions: IPluginOptions,
   remoteNode: IRemoteNode,
   usedAssetRemoteIds: Set<string>
-) {
+): Promise<void> {
   const { skipUnusedAssets, dontDownload, localCache } = pluginOptions;
   const { gatsbyApi } = context;
   const { actions, createContentDigest, getNode, reporter } = gatsbyApi;
@@ -181,13 +182,13 @@ async function createOrTouchAsset(
 }
 
 async function processNodesOfType(
-  pluginOptions: PluginOptions,
+  pluginOptions: IPluginOptions,
   context: ISourcingContext,
   remoteTypeName: string,
   remoteNodes: AsyncIterable<IRemoteNode>,
-  specialFields: SpecialFieldEntry[] | undefined,
+  specialFields: Array<SpecialFieldEntry> | undefined,
   usedAssetRemoteIds: Set<string>
-) {
+): Promise<void> {
   const typeName = context.typeNameTransform.toGatsbyTypeName(remoteTypeName);
   const existing = context.gatsbyApi.getNodesByType(typeName);
   const existingSet = new Set(existing.map(e => e.id));
@@ -212,7 +213,7 @@ async function processNodesOfType(
       newNodes++;
     }
   }
-  let oldNodes = existingSet.size;
+  const oldNodes = existingSet.size;
   let deletedNodes = 0;
   if (oldNodes) {
     existingSet.forEach(id => {
@@ -228,20 +229,20 @@ async function processNodesOfType(
   );
 }
 
-interface RichTextField {
+interface IRichTextField {
   markdown?: string;
   remoteTypeName: string;
   markdownNode?: string;
-  references: IRemoteId[];
+  references: Array<IRemoteId>;
   cleaned?: Array<ElementNode>;
   raw?: RichTextContent;
   json?: RichTextContent;
 }
 
 function addAssetReferences(
-  field: RichTextField,
+  field: IRichTextField,
   usedAssetRemoteIds: Set<string>
-) {
+): void {
   if (field.references?.length) {
     field.references.forEach(fieldRef => {
       const remoteTypeName = fieldRef.remoteTypeName;
@@ -253,14 +254,14 @@ function addAssetReferences(
 }
 
 function keepExistingNodeAlive(
-  pluginOptions: PluginOptions,
+  pluginOptions: IPluginOptions,
   context: ISourcingContext,
   remoteTypeName: string,
-  specialFields: SpecialFieldEntry[] | undefined,
+  specialFields: Array<SpecialFieldEntry> | undefined,
   usedAssetRemoteIds: Set<string>,
-  existingNode: BasicFieldType,
+  existingNode: IBasicFieldType,
   namePrefix: string
-) {
+): void {
   const { buildMarkdownNodes } = pluginOptions;
   const { gatsbyApi } = context;
   const { actions, getNode, reporter } = gatsbyApi;
@@ -300,7 +301,7 @@ function keepExistingNodeAlive(
 
         case "RichText":
           {
-            const processField = (field: RichTextField) => {
+            const processField = (field: IRichTextField): void => {
               addAssetReferences(field, usedAssetRemoteIds);
               if (buildMarkdownNodes) {
                 const markdownNodeId = field.markdownNode;
@@ -313,15 +314,15 @@ function keepExistingNodeAlive(
               }
             };
             if (Array.isArray(value)) {
-              value.forEach(field => processField(field as RichTextField));
+              value.forEach(field => processField(field as IRichTextField));
             } else {
-              processField(value as RichTextField);
+              processField(value as IRichTextField);
             }
           }
           break;
       }
     } else if (isSpecialUnion(entry)) {
-      const process = (value: any) => {
+      const process = (value: unknown): void => {
         entry.value.forEach(fields => {
           keepExistingNodeAlive(
             pluginOptions,
@@ -329,7 +330,7 @@ function keepExistingNodeAlive(
             remoteTypeName,
             fields,
             usedAssetRemoteIds,
-            value as BasicFieldType,
+            value as IBasicFieldType,
             fullName
           );
         });
@@ -340,14 +341,14 @@ function keepExistingNodeAlive(
         process(value);
       }
     } else if (isSpecialObject(entry)) {
-      const process = (value: any) => {
+      const process = (value: unknown): void => {
         keepExistingNodeAlive(
           pluginOptions,
           context,
           remoteTypeName,
           entry.value,
           usedAssetRemoteIds,
-          value as BasicFieldType,
+          value as IBasicFieldType,
           fullName
         );
       };
@@ -361,13 +362,13 @@ function keepExistingNodeAlive(
 }
 
 function processRichTextField(
-  field: RichTextField,
+  field: IRichTextField,
   fieldName: string,
   parentId: string,
   usedAssetRemoteIds: Set<string>,
-  { cleanupRtf, buildMarkdownNodes, typePrefix }: PluginOptions,
+  { cleanupRtf, buildMarkdownNodes, typePrefix }: IPluginOptions,
   { actions: { createNode }, createContentDigest }: NodePluginArgs
-) {
+): void {
   addAssetReferences(field, usedAssetRemoteIds);
   if (cleanupRtf) {
     const raw = field.raw || field.json;
@@ -395,15 +396,15 @@ function processRichTextField(
 }
 
 function createSpecialNodes(
-  pluginOptions: PluginOptions,
+  pluginOptions: IPluginOptions,
   context: ISourcingContext,
   remoteTypeName: string,
-  specialFields: SpecialFieldEntry[] | undefined,
+  specialFields: Array<SpecialFieldEntry> | undefined,
   usedAssetRemoteIds: Set<string>,
   id: string,
-  node: BasicFieldType,
+  node: IBasicFieldType,
   namePrefix: string
-) {
+): void {
   const { typePrefix } = pluginOptions;
   const { gatsbyApi } = context;
   const { actions, createContentDigest } = gatsbyApi;
@@ -447,7 +448,7 @@ function createSpecialNodes(
             if (Array.isArray(value)) {
               value.forEach(field =>
                 processRichTextField(
-                  field as RichTextField,
+                  field as IRichTextField,
                   fullName,
                   id,
                   usedAssetRemoteIds,
@@ -457,7 +458,7 @@ function createSpecialNodes(
               );
             } else {
               processRichTextField(
-                value as RichTextField,
+                value as IRichTextField,
                 fullName,
                 id,
                 usedAssetRemoteIds,
@@ -469,7 +470,7 @@ function createSpecialNodes(
         }
       }
     } else if (isSpecialUnion(entry)) {
-      const process = (value: any) => {
+      const process = (value: unknown): void => {
         entry.value.forEach(fields => {
           createSpecialNodes(
             pluginOptions,
@@ -478,7 +479,7 @@ function createSpecialNodes(
             fields,
             usedAssetRemoteIds,
             id,
-            value as BasicFieldType,
+            value as IBasicFieldType,
             fullName
           );
         });
@@ -489,7 +490,7 @@ function createSpecialNodes(
         process(value);
       }
     } else if (isSpecialObject(entry)) {
-      const process = (value: any) => {
+      const process = (value: unknown): void => {
         createSpecialNodes(
           pluginOptions,
           context,
@@ -497,7 +498,7 @@ function createSpecialNodes(
           entry.value,
           usedAssetRemoteIds,
           id,
-          value as BasicFieldType,
+          value as IBasicFieldType,
           fullName
         );
       };
@@ -511,13 +512,13 @@ function createSpecialNodes(
 }
 
 function createOrTouchNode(
-  pluginOptions: PluginOptions,
+  pluginOptions: IPluginOptions,
   context: ISourcingContext,
   remoteTypeName: string,
   remoteNode: IRemoteNode,
-  specialFields: SpecialFieldEntry[] | undefined,
+  specialFields: Array<SpecialFieldEntry> | undefined,
   usedAssetRemoteIds: Set<string>
-) {
+): { id: string; touched: boolean } {
   const { gatsbyApi } = context;
   const { actions, createContentDigest, getNode } = gatsbyApi;
   const { touchNode, createNode } = actions;
@@ -573,7 +574,7 @@ function createOrTouchNode(
 
 export async function sourceNodes(
   gatsbyApi: SourceNodesArgs,
-  pluginOptions: PluginOptions
+  pluginOptions: IPluginOptions
 ): Promise<void> {
   const { reporter } = gatsbyApi;
   const schemaConfig = stateCache.schemaInformation;
@@ -587,7 +588,7 @@ export async function sourceNodes(
   );
   const context = createSourcingContext(config);
 
-  const promises: Promise<void>[] = [];
+  const promises: Array<Promise<void>> = [];
 
   const specialFields = stateCache.specialFields;
   if (!specialFields) {
@@ -620,4 +621,5 @@ export async function sourceNodes(
     remoteAssets,
     usedAssetRemoteIds
   );
+  return undefined;
 }

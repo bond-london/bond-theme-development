@@ -22,7 +22,7 @@ export function onCreatePage(
   { page, actions, reporter }: CreatePageArgs<InputPageContext>,
   pluginOptions: PluginOptions
 ): void {
-  //Exit if the page has already been processed.
+  // Exit if the page has already been processed.
   if (typeof (page.context as unknown as PageContext).i18n === "object") {
     reporter.panic(`On create page for ${page.path} has been called twice`);
     return;

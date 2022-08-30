@@ -1,7 +1,9 @@
 import { CSSProperties } from "react";
-import { Horizontal, Maybe, Vertical, VisualCommon } from "./types";
+import { Horizontal, Maybe, Vertical, IVisualCommon } from "./types";
 
-function caclulateVertical(position: Maybe<Vertical>) {
+function caclulateVertical(
+  position: Maybe<Vertical>
+): "bottom" | "center" | "top" {
   switch (position) {
     case "Bottom":
       return "bottom";
@@ -12,7 +14,9 @@ function caclulateVertical(position: Maybe<Vertical>) {
   }
 }
 
-function calculateHorizontal(position: Maybe<Horizontal>) {
+function calculateHorizontal(
+  position: Maybe<Horizontal>
+): "left" | "right" | "center" {
   switch (position) {
     case "Left":
       return "left";
@@ -24,7 +28,7 @@ function calculateHorizontal(position: Maybe<Horizontal>) {
 }
 
 export function calculateCropDetails(
-  details: VisualCommon
+  details: IVisualCommon
 ): Pick<CSSProperties, "objectFit" | "objectPosition"> {
   const { verticalCropPosition, horizontalCropPosition, dontCrop } = details;
 

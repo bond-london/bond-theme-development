@@ -6,8 +6,10 @@ export function addAnimationUtilities({ addUtilities }: PluginHelpers): void {
     calculateNumbersMap(
       100,
       10000,
-      (v) => `.animation-delay-${v}`,
-      (v) => ({ "animation-delay": `${v}ms` }),
+      v => `.animation-delay-${v}`,
+      v => {
+        return { "animation-delay": `${v}ms` };
+      },
       100
     )
   );
@@ -21,8 +23,10 @@ export function addAnimationUtilities({ addUtilities }: PluginHelpers): void {
     calculateNumbersMap(
       100,
       10000,
-      (v) => `.animation-duration-${v}`,
-      (v) => ({ "animation-duration": `${v}ms` }),
+      v => `.animation-duration-${v}`,
+      v => {
+        return { "animation-duration": `${v}ms` };
+      },
       100
     )
   );
@@ -30,8 +34,10 @@ export function addAnimationUtilities({ addUtilities }: PluginHelpers): void {
     calculateNumbersMap(
       100,
       10000,
-      (v) => `.transition-duration-${v}`,
-      (v) => ({ "transition-duration": `${v}ms` }),
+      v => `.transition-duration-${v}`,
+      v => {
+        return { "transition-duration": `${v}ms` };
+      },
       100
     )
   );

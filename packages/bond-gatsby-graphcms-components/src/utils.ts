@@ -5,10 +5,10 @@ import {
 import { IGatsbyImageData } from "gatsby-plugin-image";
 import { CSSProperties, useEffect, useState } from "react";
 
-export interface GenericAsset {
+export interface IGenericAsset {
   alt?: string | null;
   id?: string | null;
-  localFile?: File | null;
+  localFile?: IFile | null;
   alternateText?: string | null;
   dontCrop?: boolean | null;
   verticalCropPosition?: VerticalPosition | null;
@@ -16,16 +16,16 @@ export interface GenericAsset {
   handle?: string | null;
 }
 
-interface ImageSharp {
+interface IImageSharp {
   readonly gatsbyImageData: IGatsbyImageData;
 }
 
-export interface SvgInformation {
+export interface ISvgInformation {
   readonly content: string;
   readonly encoded: string;
 }
 
-export interface LottieInformation {
+export interface ILottieInformation {
   readonly animationUrl: string;
   readonly encoded?: string;
   readonly encodedUrl?: string;
@@ -33,35 +33,35 @@ export interface LottieInformation {
   height?: string;
 }
 
-export interface ExtractedLottie {
+export interface IExtractedLottie {
   width?: string | null;
   height?: string | null;
   encoded?: string | null;
-  encodedFile?: File | null;
+  encodedFile?: IFile | null;
 }
 
-interface File {
+interface IFile {
   readonly id?: string | null;
   readonly childGatsbyVideo?: {
     readonly transformed: Record<string, unknown>;
   } | null;
-  readonly childImageSharp?: ImageSharp | null;
+  readonly childImageSharp?: IImageSharp | null;
   readonly publicURL?: string | null;
-  readonly svg?: SvgInformation | null;
-  readonly childExtractedLottie?: ExtractedLottie | null;
+  readonly svg?: ISvgInformation | null;
+  readonly childExtractedLottie?: IExtractedLottie | null;
   readonly name?: string | null;
 }
 
 export type VerticalPosition = "Top" | "Middle" | "Bottom";
 export type HorizontalPosition = "Left" | "Middle" | "Right";
 
-export interface VisualAsset {
+export interface IVisualAsset {
   video?: GatsbyTransformedVideo;
   image?: IGatsbyImageData;
   videoUrl?: string;
   alt: string;
-  svg?: SvgInformation;
-  animation?: LottieInformation;
+  svg?: ISvgInformation;
+  animation?: ILottieInformation;
   loop?: boolean;
   dontCrop?: boolean;
   verticalCropPosition?: VerticalPosition;
@@ -69,7 +69,7 @@ export interface VisualAsset {
 }
 
 export function validateAssetHasFile(
-  asset: GenericAsset | undefined | null
+  asset: IGenericAsset | undefined | null
 ): boolean {
   if (asset && !asset.localFile) {
     console.error(`Asset ${asset.id || "??"} has no local file`);
@@ -79,51 +79,51 @@ export function validateAssetHasFile(
 }
 
 export function getImageFromFile(
-  file?: File | null
+  file?: IFile | null
 ): IGatsbyImageData | undefined {
   return file?.childImageSharp?.gatsbyImageData;
 }
 
 export function getImage(
-  node: GenericAsset | undefined | null
+  node: IGenericAsset | undefined | null
 ): IGatsbyImageData | undefined {
-  if (!validateAssetHasFile(node)) return;
+  if (!validateAssetHasFile(node)) return undefined;
   return getImageFromFile(node?.localFile);
 }
 
 export function getAlt(
-  node: GenericAsset | undefined | null,
+  node: IGenericAsset | undefined | null,
   defaultValue: string
 ): string {
   return node?.alternateText || defaultValue;
 }
 
-export function getVideoUrlFromFile(file?: File | null): string | undefined {
+export function getVideoUrlFromFile(file?: IFile | null): string | undefined {
   return file?.publicURL || undefined;
 }
 
 export function getVideoUrl(
-  node: GenericAsset | undefined | null
+  node: IGenericAsset | undefined | null
 ): string | undefined {
-  if (!validateAssetHasFile(node)) return;
+  if (!validateAssetHasFile(node)) return undefined;
   return getVideoUrlFromFile(node?.localFile);
 }
 
 export function getVideoFromFile(
-  file?: File | null
+  file?: IFile | null
 ): GatsbyTransformedVideo | undefined {
   return GetTransformedVideo(file?.childGatsbyVideo);
 }
 
 export function getVideo(
-  node: GenericAsset | undefined | null
+  node: IGenericAsset | undefined | null
 ): GatsbyTransformedVideo | undefined {
   return getVideoFromFile(node?.localFile);
 }
 
 export function getLottieFromFile(
-  file?: File | null
-): LottieInformation | undefined {
+  file?: IFile | null
+): ILottieInformation | undefined {
   if (file?.childExtractedLottie && file?.publicURL) {
     return {
       encoded: file.childExtractedLottie.encoded || undefined,
@@ -138,37 +138,39 @@ export function getLottieFromFile(
 }
 
 export function getLottie(
-  node: GenericAsset | undefined | null
-): LottieInformation | undefined {
-  if (!validateAssetHasFile(node)) return;
+  node: IGenericAsset | undefined | null
+): ILottieInformation | undefined {
+  if (!validateAssetHasFile(node)) return undefined;
   return getLottieFromFile(node?.localFile);
 }
 
-export function getSvgFromFile(file?: File | null): SvgInformation | undefined {
+export function getSvgFromFile(
+  file?: IFile | null
+): ISvgInformation | undefined {
   return file?.svg || undefined;
 }
 
 export function getExtractedSvg(
-  node: GenericAsset | undefined | null
-): SvgInformation | undefined {
-  if (!validateAssetHasFile(node)) return;
+  node: IGenericAsset | undefined | null
+): ISvgInformation | undefined {
+  if (!validateAssetHasFile(node)) return undefined;
   return getSvgFromFile(node?.localFile);
 }
 
 export function getSvg(
-  node: GenericAsset | undefined | null
+  node: IGenericAsset | undefined | null
 ): string | undefined {
   return getExtractedSvg(node)?.encoded;
 }
 
 export function getVisual(
-  asset: GenericAsset | undefined | null,
+  asset: IGenericAsset | undefined | null,
   loop?: boolean | null,
-  preview?: GenericAsset | null,
+  preview?: IGenericAsset | null,
   defaultAlt?: string | null
-): VisualAsset | undefined {
+): IVisualAsset | undefined {
   if (!asset) {
-    return;
+    return undefined;
   }
 
   const { dontCrop, verticalCropPosition, horizontalCropPosition } = asset;
@@ -179,7 +181,7 @@ export function getVisual(
   const possibleVideoUrl = getVideoUrl(asset);
   const animation = getLottie(asset);
   if (!image && !svg && !possibleVideoUrl && !animation && !video) {
-    return;
+    return undefined;
   }
 
   const videoUrl =
@@ -211,15 +213,15 @@ export function getVisual(
 }
 
 export function getVisualFromFile(
-  file: File | undefined,
+  file: IFile | undefined,
   loop = false,
   defaultAlt = "",
   dontCrop?: boolean,
   verticalCropPosition?: VerticalPosition,
   horizontalCropPosition?: HorizontalPosition
-): VisualAsset | undefined {
+): IVisualAsset | undefined {
   if (!file) {
-    return;
+    return undefined;
   }
 
   const alt = defaultAlt || "";
@@ -229,7 +231,7 @@ export function getVisualFromFile(
   const possibleVideoUrl = getVideoUrlFromFile(file);
   const animation = getLottieFromFile(file);
   if (!image && !svg && !possibleVideoUrl && !animation && !video) {
-    return;
+    return undefined;
   }
 
   const videoUrl =
@@ -259,7 +261,9 @@ export function getVisualFromFile(
   };
 }
 
-function caclulateVertical(position?: VerticalPosition) {
+function caclulateVertical(
+  position?: VerticalPosition
+): "center" | "bottom" | "top" {
   switch (position) {
     case "Bottom":
       return "bottom";
@@ -270,7 +274,9 @@ function caclulateVertical(position?: VerticalPosition) {
   }
 }
 
-function calculateHorizontal(position?: HorizontalPosition) {
+function calculateHorizontal(
+  position?: HorizontalPosition
+): "left" | "right" | "center" {
   switch (position) {
     case "Left":
       return "left";
@@ -282,7 +288,7 @@ function calculateHorizontal(position?: HorizontalPosition) {
 }
 
 export function calculateCropDetails(
-  visual: VisualAsset,
+  visual: IVisualAsset,
   dontCrop?: boolean
 ): Pick<CSSProperties, "objectFit" | "objectPosition"> {
   const { verticalCropPosition, horizontalCropPosition } = visual;
@@ -299,11 +305,14 @@ export function calculateCropDetails(
   };
 }
 
-export function useMediaQuery(mediaQuery: string, initialValue = true) {
+export function useMediaQuery(
+  mediaQuery: string,
+  initialValue = true
+): boolean {
   const [matches, setMatches] = useState(initialValue);
 
   useEffect(() => {
-    const handleChange = (list: MediaQueryListEvent) => {
+    const handleChange = (list: MediaQueryListEvent): void => {
       setMatches(list.matches);
     };
 

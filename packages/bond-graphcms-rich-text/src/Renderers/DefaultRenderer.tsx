@@ -1,9 +1,9 @@
 import React from "react";
 import { calculateClassName } from "./utils";
-import { DefaultNodeRendererProps } from "../types";
+import { IDefaultNodeRendererProps } from "../types";
 
 export const DefaultRenderer: React.FC<
-  DefaultNodeRendererProps & {
+  IDefaultNodeRendererProps & {
     element: keyof JSX.IntrinsicElements;
   }
 > = props => {

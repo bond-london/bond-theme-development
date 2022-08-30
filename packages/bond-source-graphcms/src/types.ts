@@ -5,19 +5,19 @@ import {
 } from "gatsby-graphql-source-toolkit/dist/types";
 import { GraphQLSchema, GraphQLField } from "graphql";
 
-export interface PluginOptions {
+export interface IPluginOptions {
   buildMarkdownNodes: boolean;
   downloadAllAssets: boolean;
   skipUnusedAssets: boolean;
   endpoint: string;
   fragmentsPath?: string;
-  stages: string[];
+  stages: Array<string>;
   token: string;
   typePrefix: string;
-  locales: string[];
+  locales: Array<string>;
   concurrency: number;
   concurrentDownloads: number;
-  markdownFields: { [key: string]: string[] };
+  markdownFields: { [key: string]: Array<string> };
   cleanupRtf: boolean;
   dontDownload: boolean;
   localCache: boolean;
@@ -26,14 +26,15 @@ export interface PluginOptions {
 
 export interface ISchemaInformation {
   schema: GraphQLSchema;
-  gatsbyNodeTypes: IGatsbyNodeConfig[];
+  gatsbyNodeTypes: Array<IGatsbyNodeConfig>;
 }
 
-export interface PluginState {
+export interface IPluginState {
   schemaInformation?: ISchemaInformation;
   specialFields?: SpecialFieldMap;
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export type GraphCMS_Node = Node & {
   remoteTypeName?: string;
   remoteId: string;
@@ -41,6 +42,7 @@ export type GraphCMS_Node = Node & {
   locale: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export type GraphCMS_Asset = GraphCMS_Node & {
   mimeType: string;
   url: string;
@@ -50,10 +52,12 @@ export type GraphCMS_Asset = GraphCMS_Node & {
   size: number;
 };
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export type GraphCMS_FileLink = Node & {
   downloadedAsset: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export type GraphCMS_Markdown = GraphCMS_Node & {
   markdown?: string;
 };
@@ -67,46 +71,48 @@ export interface IGraphCmsAsset extends IRemoteNode {
   size: number;
 }
 
-export type BasicFieldType = { [key: string]: unknown };
+export interface IBasicFieldType {
+  [key: string]: unknown;
+}
 
-export type SpecialFieldType = {
+export interface ISpecialFieldType {
   type: "Asset" | "RichText" | "Markdown";
   fieldName: string;
-  field: GraphQLField<any, any>;
-};
+  field: GraphQLField<unknown, unknown>;
+}
 
-export type SpecialFieldUnion = {
+export interface ISpecialFieldUnion {
   type: "Union";
   fieldName: string;
   value: SpecialFieldMap;
-};
+}
 
-export type SpecialFieldObject = {
+export interface ISpecialFieldObject {
   type: "Object";
   fieldName: string;
-  value: SpecialFieldEntry[];
-};
+  value: Array<SpecialFieldEntry>;
+}
 
 export type SpecialFieldEntry =
-  | SpecialFieldUnion
-  | SpecialFieldType
-  | SpecialFieldObject;
-export type SpecialFieldMap = Map<string, SpecialFieldEntry[]>;
+  | ISpecialFieldUnion
+  | ISpecialFieldType
+  | ISpecialFieldObject;
+export type SpecialFieldMap = Map<string, Array<SpecialFieldEntry>>;
 
 export function isSpecialField(
   type: SpecialFieldEntry
-): type is SpecialFieldType {
-  return typeof (type as SpecialFieldType).field !== "undefined";
+): type is ISpecialFieldType {
+  return typeof (type as ISpecialFieldType).field !== "undefined";
 }
 
 export function isSpecialUnion(
   type: SpecialFieldEntry
-): type is SpecialFieldUnion {
+): type is ISpecialFieldUnion {
   return type.type === "Union";
 }
 
 export function isSpecialObject(
   type: SpecialFieldEntry
-): type is SpecialFieldObject {
+): type is ISpecialFieldObject {
   return type.type === "Object";
 }

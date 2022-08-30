@@ -1,12 +1,12 @@
 import { SVGRendererConfig } from "lottie-web";
 import React from "react";
 import { calculateCropDetails } from "../utils";
-import { AutoVisualNoLottie, AutoVisualProps } from "./AutoVisualNoLottie";
+import { AutoVisualNoLottie, IAutoVisualProps } from "./AutoVisualNoLottie";
 import { LottieElement } from "./LottieElement";
 
 export const AutoVisual: React.FC<
   Partial<
-    AutoVisualProps & {
+    IAutoVisualProps & {
       loopDelay?: number;
       rendererSettings?: SVGRendererConfig;
     }

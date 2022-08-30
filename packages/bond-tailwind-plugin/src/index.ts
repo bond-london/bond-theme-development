@@ -53,7 +53,5 @@ module.exports = plugin.withOptions(
     addExtraVariants(helpers);
     buildTypography(helpers, config);
   },
-  (config: BondConfigurationOptions) => {
-    return configureTheme(config);
-  }
+  (config: BondConfigurationOptions) => configureTheme(config)
 );

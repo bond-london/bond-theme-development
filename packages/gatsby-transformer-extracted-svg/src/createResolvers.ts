@@ -3,9 +3,9 @@ import type { FileSystemNode } from "gatsby-source-filesystem";
 import type { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
 import { GatsbyExtractedSvg } from "./types";
 
-type ResolverArgs = {
+interface ResolverArgs {
   // no resolver args
-};
+}
 
 export function createResolvers(args: CreateResolversArgs) {
   const { createResolvers } = args;

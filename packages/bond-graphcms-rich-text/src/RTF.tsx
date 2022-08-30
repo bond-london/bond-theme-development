@@ -2,9 +2,9 @@
 import React, { useMemo } from "react";
 import { defaultRenderers } from "./Renderers";
 import { RichText } from "./RichText";
-import { ClassNameOverrides, RealRTFProps, NodeRenderer } from "./types";
+import { ClassNameOverrides, RealRTFProps, INodeRenderer } from "./types";
 
-const headingClasses: (keyof ClassNameOverrides)[] = [
+const headingClasses: Array<keyof ClassNameOverrides> = [
   "h1",
   "h2",
   "h3",
@@ -44,10 +44,9 @@ export const RealRTF: React.FC<RealRTFProps> = ({
     fixedHeadingClassName,
   ]);
 
-  const realRenderers: NodeRenderer = useMemo(
-    () => ({ ...defaultRenderers, ...projectRenderers, ...renderers }),
-    [projectRenderers, renderers]
-  );
+  const realRenderers: INodeRenderer = useMemo(() => {
+    return { ...defaultRenderers, ...projectRenderers, ...renderers };
+  }, [projectRenderers, renderers]);
 
   return (
     <div className={className}>

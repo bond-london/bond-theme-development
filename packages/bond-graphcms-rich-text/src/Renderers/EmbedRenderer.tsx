@@ -1,9 +1,9 @@
 import React from "react";
 import { RenderAsset } from "../RenderAsset";
 import { RenderEmbed } from "../RenderEmbed";
-import { EmbedNodeRendererProps } from "../types";
+import { IEmbedNodeRendererProps } from "../types";
 
-export const EmbedRenderer: React.FC<EmbedNodeRendererProps> = props => {
+export const EmbedRenderer: React.FC<IEmbedNodeRendererProps> = props => {
   if (props.nodeType === "Asset") {
     return <RenderAsset {...props} />;
   }

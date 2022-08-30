@@ -1,8 +1,8 @@
 import React from "react";
 import { calculateClassName } from "./utils";
-import { ClassNodeRendererProps } from "../types";
+import { IClassNodeRendererProps } from "../types";
 
-export const ClassRenderer: React.FC<ClassNodeRendererProps> = ({
+export const ClassRenderer: React.FC<IClassNodeRendererProps> = ({
   className,
   additionalClassName,
   classNameOverrides,

@@ -1,6 +1,5 @@
 import { graphql } from "gatsby";
 
-// eslint-disable-next-line import/no-unused-modules
 export const ConstrainedImageFragment = graphql`
   fragment ConstrainedImage on ImageSharp {
     id
@@ -8,7 +7,6 @@ export const ConstrainedImageFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FixedImageFragment = graphql`
   fragment FixedImage on ImageSharp {
     id
@@ -16,7 +14,6 @@ export const FixedImageFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FullWidthImageFragment = graphql`
   fragment FullWidthImage on ImageSharp {
     id
@@ -24,7 +21,6 @@ export const FullWidthImageFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const ConstrainedImageFileFragment = graphql`
   fragment ConstrainedImageFile on File {
     id
@@ -34,7 +30,6 @@ export const ConstrainedImageFileFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FixedImageFileFragment = graphql`
   fragment FixedImageFile on File {
     id
@@ -44,7 +39,6 @@ export const FixedImageFileFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FullWidthImageFileFragment = graphql`
   fragment FullWidthImageFile on File {
     id
@@ -54,7 +48,6 @@ export const FullWidthImageFileFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const ConstrainedImageAssetFragment = graphql`
   fragment ConstrainedImageAsset on GraphCMS_Asset {
     id
@@ -68,7 +61,6 @@ export const ConstrainedImageAssetFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FixedImageAssetFragment = graphql`
   fragment FixedImageAsset on GraphCMS_Asset {
     id
@@ -82,7 +74,6 @@ export const FixedImageAssetFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FullWidthImageAssetFragment = graphql`
   fragment FullWidthImageAsset on GraphCMS_Asset {
     id
@@ -96,7 +87,6 @@ export const FullWidthImageAssetFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const MutedConstrainedVideoAssetFragment = graphql`
   fragment MutedConstrainedVideoAsset on GraphCMS_Asset {
     id
@@ -109,7 +99,6 @@ export const MutedConstrainedVideoAssetFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const MutedFixedVideoAssetFragment = graphql`
   fragment MutedFixedVideoAsset on GraphCMS_Asset {
     id
@@ -122,7 +111,6 @@ export const MutedFixedVideoAssetFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const MutedFullWidthVideoAssetFragment = graphql`
   fragment MutedFullWidthVideoAsset on GraphCMS_Asset {
     id
@@ -135,7 +123,6 @@ export const MutedFullWidthVideoAssetFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const ConstrainedVideoAssetFragment = graphql`
   fragment ConstrainedVideoAsset on GraphCMS_Asset {
     id
@@ -148,7 +135,6 @@ export const ConstrainedVideoAssetFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FixedVideoAssetFragment = graphql`
   fragment FixedVideoAsset on GraphCMS_Asset {
     id
@@ -161,7 +147,6 @@ export const FixedVideoAssetFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FullWidthVideoAssetFragment = graphql`
   fragment FullWidthVideoAsset on GraphCMS_Asset {
     id
@@ -174,7 +159,6 @@ export const FullWidthVideoAssetFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const ConstrainedAnimationAssetFragment = graphql`
   fragment ConstrainedAnimationAsset on GraphCMS_Asset {
     id
@@ -187,7 +171,6 @@ export const ConstrainedAnimationAssetFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FixedAnimationAssetFragment = graphql`
   fragment FixedAnimationAsset on GraphCMS_Asset {
     id
@@ -200,7 +183,6 @@ export const FixedAnimationAssetFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FullWidthAnimationAssetFragment = graphql`
   fragment FullWidthAnimationAsset on GraphCMS_Asset {
     id
@@ -213,7 +195,6 @@ export const FullWidthAnimationAssetFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const SeoImageAssetFragment = graphql`
   fragment SeoImageAsset on GraphCMS_Asset {
     id
@@ -228,7 +209,6 @@ export const SeoImageAssetFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const ConstrainedCMSImageFragment = graphql`
   fragment ConstrainedCMSImage on GraphCMS_Image {
     id
@@ -243,7 +223,6 @@ export const ConstrainedCMSImageFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FixedCMSImageFragment = graphql`
   fragment FixedCMSImage on GraphCMS_Image {
     id
@@ -258,7 +237,6 @@ export const FixedCMSImageFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FullWidthCMSImageFragment = graphql`
   fragment FullWidthCMSImage on GraphCMS_Image {
     id
@@ -273,7 +251,6 @@ export const FullWidthCMSImageFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const ConstrainedCMSVideoFragment = graphql`
   fragment ConstrainedCMSVideo on GraphCMS_Video {
     id
@@ -294,7 +271,6 @@ export const ConstrainedCMSVideoFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FixedCMSVideoFragment = graphql`
   fragment FixedCMSVideo on GraphCMS_Video {
     id
@@ -315,7 +291,6 @@ export const FixedCMSVideoFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FullWidthCMSVideoFragment = graphql`
   fragment FullWidthCMSVideo on GraphCMS_Video {
     id
@@ -336,7 +311,6 @@ export const FullWidthCMSVideoFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const ConstrainedCMSAnimationFragment = graphql`
   fragment ConstrainedCMSAnimation on GraphCMS_Animation {
     id
@@ -350,7 +324,6 @@ export const ConstrainedCMSAnimationFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FixedCMSAnimationFragment = graphql`
   fragment FixedCMSAnimation on GraphCMS_Animation {
     id
@@ -364,7 +337,6 @@ export const FixedCMSAnimationFragment = graphql`
   }
 `;
 
-// eslint-disable-next-line import/no-unused-modules
 export const FullWidthCMSAnimationFragment = graphql`
   fragment FullWidthCMSAnimation on GraphCMS_Animation {
     id

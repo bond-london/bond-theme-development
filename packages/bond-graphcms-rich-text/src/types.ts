@@ -19,7 +19,7 @@ export type RTFReferences = ReadonlyArray<
 
 export type CleanedRTF = ReadonlyArray<ElementNode>;
 
-export interface GenericRichTextNode {
+export interface IGenericRichTextNode {
   readonly raw?: unknown;
   readonly html?: string;
   readonly markdown?: string;
@@ -29,11 +29,11 @@ export interface GenericRichTextNode {
   readonly cleaned?: unknown;
 }
 
-export interface AssetRenderer {
+export interface IAssetRenderer {
   [key: string]: EmbedNodeRenderer | undefined;
 }
 
-export interface NodeRenderer {
+export interface INodeRenderer {
   p: DefaultNodeRenderer;
   bold: DefaultNodeRenderer;
   italic: DefaultNodeRenderer;
@@ -63,32 +63,32 @@ export interface NodeRenderer {
   blockquote: DefaultNodeRenderer;
   code_block: DefaultNodeRenderer;
   embed: EmbedNodeRenderer;
-  embed_asset: AssetRenderer;
-  embed_node: AssetRenderer;
+  embed_asset: IAssetRenderer;
+  embed_node: IAssetRenderer;
 }
 
 export type ClassNameOverrides = {
   [key in keyof JSX.IntrinsicElements]?: string;
 };
 export type ElementTypeMap = {
-  [key in keyof NodeRenderer]?: boolean;
+  [key in keyof INodeRenderer]?: boolean;
 };
 
-export interface BaseRendererProps {
-  renderers: NodeRenderer;
+export interface IBaseRendererProps {
+  renderers: INodeRenderer;
   references?: RTFReferences;
   context?: unknown;
   disabledElements?: ElementTypeMap;
   classNameOverrides?: ClassNameOverrides;
   renderDisabledElement?: (
     elementName: string,
-    htmlElementName: keyof NodeRenderer
+    htmlElementName: keyof INodeRenderer
   ) => JSX.Element;
   contents?: ReadonlyArray<Node>;
 }
 
-export interface DefaultNodeRendererProps {
-  renderers: NodeRenderer;
+export interface IDefaultNodeRendererProps {
+  renderers: INodeRenderer;
   references?: RTFReferences;
   context?: unknown;
   disabledElements?: ElementTypeMap;
@@ -104,101 +104,101 @@ export interface DefaultNodeRendererProps {
   contents?: Array<Node>;
 }
 
-export interface RTFProps extends Omit<BaseRendererProps, "renderers"> {
+export interface IRTFProps extends Omit<IBaseRendererProps, "renderers"> {
   content?: RTFContent;
-  renderers?: Partial<NodeRenderer>;
+  renderers?: Partial<INodeRenderer>;
   className?: string;
   fixedParagraphClassName?: string;
   fixedHeadingClassName?: string;
-  projectRenderers?: Partial<NodeRenderer>;
+  projectRenderers?: Partial<INodeRenderer>;
   projectClassNameOverrides?: ClassNameOverrides;
 }
 
-export type RealRTFProps = Omit<RTFProps, "content"> & { content: CleanedRTF };
+export type RealRTFProps = Omit<IRTFProps, "content"> & { content: CleanedRTF };
 
-export interface RichTextProps extends Omit<BaseRendererProps, "renderers"> {
+export interface IRichTextProps extends Omit<IBaseRendererProps, "renderers"> {
   content: CleanedRTF;
-  renderers?: Partial<NodeRenderer>;
+  renderers?: Partial<INodeRenderer>;
 }
 
-export interface InternalRichTextProps extends BaseRendererProps {
+export interface IInternalRichTextProps extends IBaseRendererProps {
   content: CleanedRTF;
-  renderers: NodeRenderer;
+  renderers: INodeRenderer;
 }
 
-export interface ElementsRendererProps extends BaseRendererProps {
-  renderers: NodeRenderer;
+export interface IElementsRendererProps extends IBaseRendererProps {
+  renderers: INodeRenderer;
   index: number;
   parentIndex: number;
 }
 
-export interface NodeRendererProps<N = Node> extends BaseRendererProps {
+export interface INodeRendererProps<N = Node> extends IBaseRendererProps {
   node: N;
-  renderers: NodeRenderer;
+  renderers: INodeRenderer;
   index: number;
   parentIndex: number;
 }
 
-export interface EmbedNodeRendererProps extends ElementsRendererProps {
+export interface IEmbedNodeRendererProps extends IElementsRendererProps {
   type: "embed";
   nodeId: string;
   nodeType: string;
   isInline?: boolean;
 }
 
-export type CustomEmbedRendererProps<T = unknown> = ElementsRendererProps & {
+export type CustomEmbedRendererProps<T = unknown> = IElementsRendererProps & {
   nodeId: string;
   nodeType: string;
   isInline?: boolean;
 } & T;
 
-export type EmbedNodeRenderer = (props: EmbedNodeRendererProps) => JSX.Element;
+export type EmbedNodeRenderer = (props: IEmbedNodeRendererProps) => JSX.Element;
 
 export type DefaultNodeRenderer = (
-  props: DefaultNodeRendererProps
+  props: IDefaultNodeRendererProps
 ) => JSX.Element;
 
-export interface LinkNodeRendererProps
-  extends DefaultNodeRendererProps,
+export interface ILinkNodeRendererProps
+  extends IDefaultNodeRendererProps,
     Partial<LinkProps> {
   nodeType: string;
 }
 
-export type LinkNodeRenderer = (props: LinkNodeRendererProps) => JSX.Element;
+export type LinkNodeRenderer = (props: ILinkNodeRendererProps) => JSX.Element;
 
-export interface IframeNodeRendererProps
-  extends DefaultNodeRendererProps,
+export interface IIframeNodeRendererProps
+  extends IDefaultNodeRendererProps,
     Partial<IFrameProps> {
   title?: string;
 }
 export type IframeNodeRenderer = (
-  props: IframeNodeRendererProps
+  props: IIframeNodeRendererProps
 ) => JSX.Element;
 
-export interface ClassNodeRendererProps
-  extends DefaultNodeRendererProps,
+export interface IClassNodeRendererProps
+  extends IDefaultNodeRendererProps,
     Partial<ClassProps> {}
-export type ClassNodeRenderer = (props: ClassNodeRendererProps) => JSX.Element;
+export type ClassNodeRenderer = (props: IClassNodeRendererProps) => JSX.Element;
 
-export interface ImageNodeRendererProps
-  extends DefaultNodeRendererProps,
+export interface IImageNodeRendererProps
+  extends IDefaultNodeRendererProps,
     Partial<ImageProps> {}
 
-export type ImageNodeRenderer = (props: ImageNodeRendererProps) => JSX.Element;
+export type ImageNodeRenderer = (props: IImageNodeRendererProps) => JSX.Element;
 
-export interface AudioProps {
+export interface IAudioProps {
   url: string;
 }
-export interface AudioNodeRendererProps
-  extends DefaultNodeRendererProps,
-    Partial<AudioProps> {}
-export type AudioNodeRenderer = (props: AudioNodeRendererProps) => JSX.Element;
+export interface IAudioNodeRendererProps
+  extends IDefaultNodeRendererProps,
+    Partial<IAudioProps> {}
+export type AudioNodeRenderer = (props: IAudioNodeRendererProps) => JSX.Element;
 
-export interface VideoNodeRendererProps
-  extends DefaultNodeRendererProps,
+export interface IVideoNodeRendererProps
+  extends IDefaultNodeRendererProps,
     Partial<VideoProps> {}
-export type VideoNodeRenderer = (props: VideoNodeRendererProps) => JSX.Element;
+export type VideoNodeRenderer = (props: IVideoNodeRendererProps) => JSX.Element;
 
-export interface AssetProps {
+export interface IAssetProps {
   url?: string;
 }

@@ -13,7 +13,7 @@ export function onVisibleToUser(
   let isVisible: boolean | undefined;
   let lastNotified: boolean | undefined;
 
-  const notify = () => {
+  const notify = (): void => {
     const isPageVisible = document.visibilityState === "visible";
     const isFullyVisible = isVisible && isPageVisible;
     if (isFullyVisible !== lastNotified) {
@@ -22,7 +22,7 @@ export function onVisibleToUser(
     }
   };
 
-  const handle = (entries: IntersectionObserverEntry[]) => {
+  const handle = (entries: Array<IntersectionObserverEntry>): void => {
     entries.forEach(entry => {
       if (entry.target === element) {
         const aboveThreshold = realThreshold
@@ -66,7 +66,7 @@ export function useFirstVisibleToUser<T extends HTMLElement>(
 
   useEffect(() => {
     const element = elementRef.current;
-    if (!element) return;
+    if (!element) return undefined;
 
     const removeVisibility = onVisibleToUser(
       element,
@@ -112,7 +112,7 @@ export function useVisibleToUser<T extends HTMLElement = HTMLDivElement>(
   useEffect(() => {
     const element = elementRef.current;
     if (!element) {
-      return;
+      return undefined;
     }
     const removeVisibility = onVisibleToUser(
       element,
@@ -133,7 +133,7 @@ export function useVisibleToUser<T extends HTMLElement = HTMLDivElement>(
   return { elementRef, visible, firstVisible };
 }
 
-export function useClientOnly() {
+export function useClientOnly(): boolean {
   const [isClient, setIsClient] = useState(false);
   useEffect(() => setIsClient(true), []);
   return isClient;

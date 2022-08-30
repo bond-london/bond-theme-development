@@ -53,7 +53,7 @@ export function useDelayedOneShot(trigger: boolean, delay: number): boolean {
 
 export function useComponentSize<T extends HTMLElement>(): [
   React.RefObject<T>,
-  number[]
+  Array<number>
 ] {
   const componentRef = useRef<T>(null);
   const [size, setSize] = useState([375, 667]);

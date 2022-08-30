@@ -42,7 +42,7 @@ export function cleanupElementNode(
   elementNode: ElementNode
 ): ElementNode | undefined {
   const { children, ...rest } = elementNode;
-  const newChildren: (ElementNode | Text)[] = [];
+  const newChildren: Array<ElementNode | Text> = [];
   children.forEach(child => {
     if (isText(child)) {
       const cleaned = makeValidTextString(child.text);
@@ -76,7 +76,7 @@ export function cleanupRTFContent(
   content: RichTextContent
 ): Array<ElementNode> | undefined {
   const elements = Array.isArray(content) ? content : content.children;
-  const newElements: ElementNode[] = [];
+  const newElements: Array<ElementNode> = [];
   elements.forEach(element => {
     const cleanedElement = cleanupElementNode(element);
     if (cleanedElement) {

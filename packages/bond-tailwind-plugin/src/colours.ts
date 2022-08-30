@@ -25,7 +25,7 @@ export function buildColorTable(config: BondConfigurationOptions) {
 
   const colors = buildColours(config);
 
-  const code: string[] = [
+  const code: Array<string> = [
     `import classNames from "classnames";`,
     "export const colourTable = {",
   ];

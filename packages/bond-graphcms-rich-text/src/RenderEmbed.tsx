@@ -1,7 +1,7 @@
 import React from "react";
-import { EmbedNodeRendererProps } from "./types";
+import { IEmbedNodeRendererProps } from "./types";
 
-export const RenderEmbed: React.FC<EmbedNodeRendererProps> = props => {
+export const RenderEmbed: React.FC<IEmbedNodeRendererProps> = props => {
   const { nodeId, nodeType, ...rest } = props;
   const { references, renderers } = rest;
 

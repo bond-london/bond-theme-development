@@ -2,7 +2,7 @@ import { NodePluginArgs, ParentSpanPluginArgs, Reporter } from "gatsby";
 import { loadSchema } from "gatsby-graphql-source-toolkit";
 import {
   ISchemaInformation,
-  PluginOptions,
+  IPluginOptions,
   SpecialFieldEntry,
   SpecialFieldMap,
 } from "./types";
@@ -23,7 +23,7 @@ const specialNames = new Set(["stage", "locale", "localizations"]);
 
 async function retrieveSchema(
   gatsbyApi: NodePluginArgs,
-  pluginOptions: PluginOptions
+  pluginOptions: IPluginOptions
 ): Promise<ISchemaInformation> {
   const { locales, stages } = pluginOptions;
   const execute = createExecutor(gatsbyApi, pluginOptions);
@@ -34,14 +34,15 @@ async function retrieveSchema(
   const queryFields = query.getFields();
   const possibleTypes = schema.getPossibleTypes(nodeInterface);
 
-  const pluralRootFieldName = (type: GraphQLObjectType) =>
+  const pluralRootFieldName = (type: GraphQLObjectType): string | undefined =>
     Object.keys(queryFields).find(
       fieldName => String(queryFields[fieldName].type) === `[${type.name}!]!`
     );
 
-  const hasLocaleField = (type: GraphQLObjectType) => type.getFields().locale;
+  const hasLocaleField = (type: GraphQLObjectType): boolean =>
+    type.getFields().locale ? true : false;
 
-  const gatsbyNodeTypes: IGatsbyNodeConfig[] = possibleTypes.map(type => {
+  const gatsbyNodeTypes: Array<IGatsbyNodeConfig> = possibleTypes.map(type => {
     const plural = pluralRootFieldName(type);
 
     const config: IGatsbyNodeConfig = {
@@ -66,11 +67,13 @@ async function retrieveSchema(
           stage
         }`,
       ].join("\n"),
-      nodeQueryVariables: ({ id, locale, stage }) => ({
-        where: { id },
-        locales: [locale],
-        stage,
-      }),
+      nodeQueryVariables: ({ id, locale, stage }) => {
+        return {
+          where: { id },
+          locales: [locale],
+          stage,
+        };
+      },
     };
     return config;
   });
@@ -78,7 +81,7 @@ async function retrieveSchema(
   return { schema, gatsbyNodeTypes };
 }
 
-function calculatePluginInit() {
+function calculatePluginInit(): "stable" | "unstable" | "unsupported" {
   try {
     if (isGatsbyNodeLifecycleSupported("onPluginInit")) {
       return "stable";
@@ -90,20 +93,20 @@ function calculatePluginInit() {
   return "unsupported";
 }
 
-function isRichTextField(type: GraphQLObjectType) {
+function isRichTextField(type: GraphQLObjectType): boolean {
   const name = type?.toString();
   return name?.endsWith("RichText");
 }
 
-function isAssetField(type: GraphQLObjectType) {
+function isAssetField(type: GraphQLObjectType): boolean {
   const name = type?.toString();
   return name === "Asset";
 }
 
 function isMarkdownField(
   fieldName: string | undefined,
-  markdownFields: string[] | undefined
-) {
+  markdownFields: Array<string> | undefined
+): boolean {
   if (markdownFields && fieldName) {
     return markdownFields.includes(fieldName);
   }
@@ -112,12 +115,12 @@ function isMarkdownField(
 
 function walkType(
   type: GraphQLObjectType,
-  markdownFieldsMap: { [key: string]: string[] },
+  markdownFieldsMap: { [key: string]: Array<string> },
   knownTypes: Set<string>,
   reporter: Reporter,
   topLevelTypeName: string
-): SpecialFieldEntry[] | undefined {
-  const specialFields: SpecialFieldEntry[] = [];
+): Array<SpecialFieldEntry> | undefined {
+  const specialFields: Array<SpecialFieldEntry> = [];
 
   const typeMarkdownFields = markdownFieldsMap[type.name];
   Object.entries(type.getFields()).forEach(([fieldName, field]) => {
@@ -188,14 +191,14 @@ function walkType(
 
 function walkNodesToFindImportantFields(
   { schema }: ISchemaInformation,
-  markdownFieldsMap: { [key: string]: string[] },
+  markdownFieldsMap: { [key: string]: Array<string> },
   reporter: Reporter
-) {
+): Map<string, Array<SpecialFieldEntry>> {
   const nodeInterface = schema.getType("Node") as GraphQLAbstractType;
   const possibleTypes = schema.getPossibleTypes(nodeInterface);
   const knownTypes = new Set(possibleTypes.map(t => t.name));
 
-  const specialFieldsMap = new Map<string, SpecialFieldEntry[]>();
+  const specialFieldsMap = new Map<string, Array<SpecialFieldEntry>>();
 
   possibleTypes.forEach(type => {
     const entries = walkType(
@@ -215,8 +218,8 @@ function walkNodesToFindImportantFields(
 
 async function initializeGlobalState(
   args: ParentSpanPluginArgs,
-  options: PluginOptions
-) {
+  options: IPluginOptions
+): Promise<void> {
   const { reporter } = args;
   const { stages } = options;
   const defaultStage = stages[0];

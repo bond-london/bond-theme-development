@@ -11,7 +11,7 @@ import React, {
 } from "react";
 import { onVisibleToUser } from "../hooks";
 
-interface InternalState {
+interface IInternalState {
   animation?: AnimationItem;
   cancelled?: boolean;
   loaded?: boolean;
@@ -20,9 +20,7 @@ interface InternalState {
 }
 
 async function loadAnimation(url: string): Promise<unknown> {
-  return await fetch(url).then(
-    (response) => response.json() as Promise<unknown>
-  );
+  return await fetch(url).then(response => response.json() as Promise<unknown>);
 }
 
 const LottiePlayer: React.FC<{
@@ -54,17 +52,17 @@ const LottiePlayer: React.FC<{
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
-    const state: InternalState = {};
+    if (!container) return undefined;
+    const state: IInternalState = {};
 
     const removeVisibility = onVisibleToUser(
       container,
-      (isVisible) => {
+      isVisible => {
         if (isVisible) {
           if (!state.loaded) {
             debug && console.log("Loading");
             loadAnimation(animationUrl)
-              .then((animationData) => {
+              .then(animationData => {
                 if (!state.cancelled) {
                   const realRendererSettings: SVGRendererConfig = {
                     ...(rendererSettings ? rendererSettings : {}),
@@ -101,7 +99,7 @@ const LottiePlayer: React.FC<{
                   state.loaded = true;
                 }
               })
-              .catch((error) => console.error("Error loading", error));
+              .catch(error => console.error("Error loading", error));
           }
         }
         setVisible(isVisible);

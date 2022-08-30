@@ -69,7 +69,7 @@ describe("@bond-london/graphcms-rich-text", () => {
       <RichText
         content={content}
         disabledElements={{ p: true }}
-        renderDisabledElement={(elementName, htmlElementName) => (
+        renderDisabledElement={(elementName, htmlElementName): JSX.Element => (
           <p>{`${elementName} (${htmlElementName}) is disabled`}</p>
         )}
       />
@@ -154,8 +154,10 @@ describe("@bond-london/graphcms-rich-text", () => {
       <RichText
         content={content}
         renderers={{
-          p: ({ children }) => <p className="text-white">{children}</p>,
-          bold: ({ children }) => (
+          p: ({ children }): JSX.Element => (
+            <p className="text-white">{children}</p>
+          ),
+          bold: ({ children }): JSX.Element => (
             <strong className="text-black">{children}</strong>
           ),
         }}
@@ -188,7 +190,7 @@ describe("@bond-london/graphcms-rich-text", () => {
       <RichText
         content={inlineContent}
         renderers={{
-          code: (props) => (
+          code: (props): JSX.Element => (
             <DefaultRenderer
               {...props}
               element="code"
@@ -207,8 +209,10 @@ describe("@bond-london/graphcms-rich-text", () => {
       <RichText
         content={inlineContent}
         renderers={{
-          bold: (props) => <DefaultRenderer {...props} element="strong" />,
-          italic: (props) => (
+          bold: (props): JSX.Element => (
+            <DefaultRenderer {...props} element="strong" />
+          ),
+          italic: (props): JSX.Element => (
             <DefaultRenderer
               {...props}
               element="i"
@@ -216,10 +220,10 @@ describe("@bond-london/graphcms-rich-text", () => {
               style={{ color: "red" }}
             />
           ),
-          underline: (props) => (
+          underline: (props): JSX.Element => (
             <DefaultRenderer {...props} element="u" role="button" />
           ),
-          code: (props) => (
+          code: (props): JSX.Element => (
             <DefaultRenderer
               {...props}
               element="code"
@@ -308,7 +312,7 @@ describe("@bond-london/graphcms-rich-text", () => {
       <RichText
         content={iframeContent}
         renderers={{
-          class: (props) => (
+          class: (props): JSX.Element => (
             <DefaultRenderer
               {...props}
               additionalClassName="bg-white"
@@ -354,7 +358,7 @@ describe("@bond-london/graphcms-rich-text", () => {
       <RichText
         content={imageContent}
         renderers={{
-          img: ({ src, altText }) => (
+          img: ({ src, altText }): JSX.Element => (
             <img src={src || "/"} alt={altText || ""} />
           ),
         }}
@@ -458,8 +462,9 @@ describe("custom embeds and assets", () => {
         references={references}
         renderers={{
           embed_asset: {
-            video: () => <div>custom video</div>,
-            "video/mp4": () => <div>custom video/mp4</div>,
+            video: (): JSX.Element => <div>custom video</div>,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            "video/mp4": (): JSX.Element => <div>custom video/mp4</div>,
           },
         }}
       />
@@ -622,8 +627,8 @@ describe("custom embeds and assets", () => {
         references={references}
         renderers={{
           embed_asset: {
-            video: () => <div>custom VIDEO</div>,
-            image: () => <div>custom IMAGE</div>,
+            video: (): JSX.Element => <div>custom VIDEO</div>,
+            image: (): JSX.Element => <div>custom IMAGE</div>,
           },
         }}
       />
@@ -741,7 +746,7 @@ describe("custom embeds and assets", () => {
         references={references}
         renderers={{
           embed_node: {
-            Post: (props) => {
+            Post: (props): JSX.Element => {
               const embedProps = props as unknown as CustomEmbedRendererProps<{
                 title: string;
               }>;

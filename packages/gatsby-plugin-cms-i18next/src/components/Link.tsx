@@ -12,7 +12,7 @@ export function removePathPrefix(pathname: string): string {
   return pathname;
 }
 
-export const Link: React.FC<Props<unknown>> = (props) => {
+export const Link: React.FC<Props<unknown>> = props => {
   const { to, ...rest } = props;
   const { currentLanguage } = useContext(I18nextContext);
   const realPath = `/${currentLanguage}${to}`;

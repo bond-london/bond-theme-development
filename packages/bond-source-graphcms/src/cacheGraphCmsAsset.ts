@@ -1,4 +1,4 @@
-import { IGraphCmsAsset, PluginOptions } from "./types";
+import { IGraphCmsAsset, IPluginOptions } from "./types";
 import { ensureDir, readFile } from "fs-extra";
 import { join, extname, basename, dirname } from "path";
 import { ISourcingContext } from "gatsby-graphql-source-toolkit/dist/types";
@@ -25,7 +25,7 @@ async function internalCreateLocalFileNode(
   context: ISourcingContext,
   remoteAsset: IGraphCmsAsset,
   reason: string,
-  pluginOptions: PluginOptions
+  pluginOptions: IPluginOptions
 ): Promise<string> {
   const { gatsbyApi } = context;
   const { actions, reporter, createNodeId, getCache, store, cache } = gatsbyApi;
@@ -76,7 +76,7 @@ async function internalCreateLocalFileNode(
       retries: 3,
       factor: 1.1,
       minTimeout: 5000,
-      onRetry: (error) => {
+      onRetry: error => {
         reporter.warn(
           `Error downloading url ${url}: ${
             typeof error === "string" ? error : error.message
@@ -94,7 +94,7 @@ async function internalCreateLocalFileNode(
     await ensureDir(dirname(fullPath));
     await atomicCopyFile(remoteFileNode.absolutePath, fullPath);
   } catch (e) {
-    reporter.panic(e as any);
+    reporter.panic("Failed to copy asset", e);
   }
   reporter.verbose(`Downloaded asset ${fileName} from ${url}`);
 
@@ -107,7 +107,7 @@ export async function createLocalFileNode(
   context: ISourcingContext,
   remoteAsset: IGraphCmsAsset,
   reason: string,
-  pluginOptions: PluginOptions
+  pluginOptions: IPluginOptions
 ): Promise<string> {
   const {
     gatsbyApi: { reporter },

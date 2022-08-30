@@ -2,9 +2,9 @@ import { ElementNode, isElement, isText } from "@graphcms/rich-text-types";
 import React, { Fragment } from "react";
 import { elementKeys } from "./constants";
 import { RenderText } from "./RenderText";
-import { ElementsRendererProps, NodeRendererProps } from "./types";
+import { IElementsRendererProps, INodeRendererProps } from "./types";
 
-export const RenderNode: React.FC<NodeRendererProps> = props => {
+export const RenderNode: React.FC<INodeRendererProps> = props => {
   const { node, ...rest } = props;
   if (isText(node)) {
     return <RenderText {...rest} node={node} />;
@@ -19,13 +19,14 @@ export const RenderNode: React.FC<NodeRendererProps> = props => {
       }
       return <Fragment />;
     }
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     return <RenderElement {...rest} node={node} />;
   }
 
   return <div>Cannot render {JSON.stringify(node)}</div>;
 };
 
-export const RenderElements: React.FC<ElementsRendererProps> = props => {
+export const RenderElements: React.FC<IElementsRendererProps> = props => {
   const {
     contents,
     index: parentIndex,
@@ -52,7 +53,7 @@ export const RenderElements: React.FC<ElementsRendererProps> = props => {
 };
 
 export const RenderElement: React.FC<
-  NodeRendererProps<ElementNode>
+  INodeRendererProps<ElementNode>
 > = props => {
   const { node: element, ...rest } = props;
   const { type, ...elementProps } = element;

@@ -29,12 +29,12 @@ export type EntryFunction<V, R> = (entry: {
 }) => R;
 
 export function mapNumbers(
-  numbers: number[],
+  numbers: Array<number>,
   keyFn: KeyFunction<number>,
   valueFn: ValueFunction<number>
 ) {
   const result: ConfigurationObj = {};
-  numbers.forEach((i) => {
+  numbers.forEach(i => {
     result[keyFn(i)] = valueFn(i);
   });
   return result;
@@ -71,7 +71,7 @@ export function forEachObject<V, R>(
   });
 }
 
-export function createApplyEntry(classes: string[]): ConfigurationMap {
+export function createApplyEntry(classes: Array<string>): ConfigurationMap {
   const nameEntry: ConfigurationMap = {};
   nameEntry[`@apply ${classes.join(" ")}`] = {};
   return nameEntry;
@@ -105,8 +105,8 @@ export function calculateNumbersMap(
   return result;
 }
 
-export function unique<T>(values: T[]): Set<T> {
+export function unique<T>(values: Array<T>): Set<T> {
   const result = new Set<T>();
-  values.forEach((v) => result.add(v));
+  values.forEach(v => result.add(v));
   return result;
 }

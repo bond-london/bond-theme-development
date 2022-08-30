@@ -8,7 +8,7 @@
   "packages": ["packages/*", "test-site"],
   "command": {
     "publish": {
-      "allowBranch": "main/*",
+      "allowBranch": "main",
       "bump": "patch",
       "conventionalCommits": true,
       "changelog": false,

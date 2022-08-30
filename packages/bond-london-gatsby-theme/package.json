@@ -8,6 +8,14 @@
     "gatsby",
     "gatsby-theme"
   ],
+  "repository": {
+    "url": "https://github.com/bond-london/bond-london-theme",
+    "directory": "packages/bond-london-gatsby-theme"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -49,5 +57,5 @@
     "npm-run-all": "^4.1.5",
     "typescript": "^4.7.4"
   },
-  "gitHead": "0fb9341633ecdebe97265e8c6fa8a239ab2e5af3"
+  "gitHead": "faa516d4f56c2432f0c6209c452fd1fd4114c415"
 }

@@ -1,8 +1,10 @@
-import { graphql, PageProps } from "gatsby";
+import { graphql } from "gatsby";
 import { VideosLayout } from "../../layouts/VideosLayout";
 
+// eslint-disable-next-line import/no-unused-modules
 export default VideosLayout;
 
+// eslint-disable-next-line import/no-unused-modules
 export const VideosQuery = graphql`
   query AllVideos {
     allGatsbyVideo {

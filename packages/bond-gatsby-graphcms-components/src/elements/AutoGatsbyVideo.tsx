@@ -1,5 +1,5 @@
 import {
-  GatsbyTransformedVideo,
+  IGatsbyTransformedVideo,
   GatsbyVideo,
 } from "@bond-london/gatsby-transformer-video";
 import React, { CSSProperties, useMemo } from "react";
@@ -7,7 +7,7 @@ import { IInternalVisualComponentProps } from "./AutoVisualNoLottie";
 
 export const AutoGatsbyVideo: React.FC<
   Partial<IInternalVisualComponentProps> & {
-    videoData: GatsbyTransformedVideo;
+    videoData: IGatsbyTransformedVideo;
     noPoster?: boolean;
   } & React.DetailedHTMLProps<
       React.VideoHTMLAttributes<HTMLVideoElement>,

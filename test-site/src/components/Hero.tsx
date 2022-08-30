@@ -8,7 +8,6 @@ import {
 import React from "react";
 import { ColourName, lookupColourClassNames } from "../colors";
 
-
 const HeroBackground: React.FC<{ video?: IBondVideo; image?: IBondImage }> = ({
   video,
   image,
@@ -59,12 +58,9 @@ export const Hero: React.FC<{
   backgroundColour,
   textColour,
 }) => {
-
-  
-
   return (
     <Section
-    className={lookupColourClassNames(backgroundColour, textColour)}
+      className={lookupColourClassNames(backgroundColour, textColour)}
       componentName="Hero"
       preChildren={<HeroBackground video={video} image={image} />}
     >

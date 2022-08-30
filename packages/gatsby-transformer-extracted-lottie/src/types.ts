@@ -12,7 +12,7 @@ export interface IGatsbyExtractedAnimation {
   animationUrl: string;
 }
 
-export function GetExtractedAnimation(entry: {
+export function getExtractedAnimation(entry: {
   id: string;
   extracted: Record<string, unknown>;
 }): IGatsbyExtractedAnimation | undefined {

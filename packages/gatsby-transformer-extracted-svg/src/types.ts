@@ -11,7 +11,7 @@ export interface IGatsbyExtractedSvg {
   encodedUrl?: string;
 }
 
-export function GetExtractedSvg(entry: {
+export function getExtractedSvg(entry: {
   id: string;
   extracted: Record<string, unknown>;
 }): IGatsbyExtractedSvg | undefined {

@@ -3,14 +3,14 @@ import React, { CSSProperties, Fragment, useMemo } from "react";
 import classNames from "classnames";
 import {
   GatsbyAnimation,
-  GatsbyExtractedAnimation,
-  GetExtractedAnimation,
+  IGatsbyExtractedAnimation,
+  getExtractedAnimation,
 } from "@bond-london/gatsby-transformer-extracted-lottie";
 
 interface Combined {
-  constrained: GatsbyExtractedAnimation;
-  fixed: GatsbyExtractedAnimation;
-  fullWidth: GatsbyExtractedAnimation;
+  constrained: IGatsbyExtractedAnimation;
+  fixed: IGatsbyExtractedAnimation;
+  fullWidth: IGatsbyExtractedAnimation;
 }
 
 const AnimationCombinedLayout: React.FC<{
@@ -65,9 +65,9 @@ export const AnimationsLayout: React.FC<
     const allFixed = all.fixed;
     const allFullWidth = all.fullWidth;
     for (let i = 0; i < allConstrained.length; i++) {
-      const constrained = GetExtractedAnimation(allConstrained[i]);
-      const fixed = GetExtractedAnimation(allFixed[i]);
-      const fullWidth = GetExtractedAnimation(allFullWidth[i]);
+      const constrained = getExtractedAnimation(allConstrained[i]);
+      const fixed = getExtractedAnimation(allFixed[i]);
+      const fullWidth = getExtractedAnimation(allFullWidth[i]);
       if (constrained && fixed && fullWidth) {
         combined.push({ constrained, fixed, fullWidth });
       }

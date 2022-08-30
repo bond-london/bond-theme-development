@@ -2,7 +2,7 @@ import { PageProps } from "gatsby";
 import React, { CSSProperties, Fragment, useMemo } from "react";
 import classNames from "classnames";
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
-import { GetGatsbyImage } from "@bond-london/gatsby-theme";
+import { getGatsbyImage } from "@bond-london/gatsby-theme";
 
 interface Combined {
   constrained: IGatsbyImageData;
@@ -45,9 +45,9 @@ export const ImagesLayout: React.FC<PageProps<Queries.AllImagesQuery>> = (
     const allFixed = all.fixed;
     const allFullWidth = all.fullWidth;
     for (let i = 0; i < allConstrained.length; i++) {
-      const constrained = GetGatsbyImage(allConstrained[i]);
-      const fixed = GetGatsbyImage(allFixed[i]);
-      const fullWidth = GetGatsbyImage(allFullWidth[i]);
+      const constrained = getGatsbyImage(allConstrained[i]);
+      const fixed = getGatsbyImage(allFixed[i]);
+      const fullWidth = getGatsbyImage(allFullWidth[i]);
       if (constrained && fixed && fullWidth) {
         combined.push({ constrained, fixed, fullWidth });
       }

@@ -65,7 +65,7 @@ And it starts working! If you have long videos it will take a long time to do th
 
 Not much to say apart from the types of data
 
-The transformed video is a `GatsbyTransformedVideo` which is:
+The transformed video is a `IGatsbyTransformedVideo` which is:
 
 ```
   width: number;

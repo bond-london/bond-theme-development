@@ -56,12 +56,7 @@
             "ignoreExports": ["gatsby-*.ts", "src/**/index.ts"]
           }
         ],
-        "import/no-extraneous-dependencies": [
-          "error",
-          {
-            "devDependencies": true
-          }
-        ]
+        "require-jsdoc": "off"
       }
     },
     {

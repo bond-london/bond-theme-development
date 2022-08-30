@@ -2,15 +2,15 @@ import { PageProps } from "gatsby";
 import React, { CSSProperties, Fragment, useMemo } from "react";
 import classNames from "classnames";
 import {
-  GatsbyTransformedVideo,
+  IGatsbyTransformedVideo,
   GatsbyVideo,
-  GetTransformedVideo,
+  getTransformedVideo,
 } from "@bond-london/gatsby-transformer-video";
 
 interface Combined {
-  constrained: GatsbyTransformedVideo;
-  fixed: GatsbyTransformedVideo;
-  fullWidth: GatsbyTransformedVideo;
+  constrained: IGatsbyTransformedVideo;
+  fixed: IGatsbyTransformedVideo;
+  fullWidth: IGatsbyTransformedVideo;
 }
 
 const VideoCombinedLayout: React.FC<{
@@ -75,17 +75,17 @@ export const VideosLayout: React.FC<PageProps<Queries.AllVideosQuery>> = (
     const allMutedFullWidth = all.mutedFullWidth;
     for (let i = 0; i < allConstrained.length; i++) {
       {
-        const constrained = GetTransformedVideo(allConstrained[i]);
-        const fixed = GetTransformedVideo(allFixed[i]);
-        const fullWidth = GetTransformedVideo(allFullWidth[i]);
+        const constrained = getTransformedVideo(allConstrained[i]);
+        const fixed = getTransformedVideo(allFixed[i]);
+        const fullWidth = getTransformedVideo(allFullWidth[i]);
         if (constrained && fixed && fullWidth) {
           combined.push({ constrained, fixed, fullWidth });
         }
       }
       {
-        const constrained = GetTransformedVideo(allMutedConstrained[i]);
-        const fixed = GetTransformedVideo(allMutedFixed[i]);
-        const fullWidth = GetTransformedVideo(allMutedFullWidth[i]);
+        const constrained = getTransformedVideo(allMutedConstrained[i]);
+        const fixed = getTransformedVideo(allMutedFixed[i]);
+        const fullWidth = getTransformedVideo(allMutedFullWidth[i]);
         if (constrained && fixed && fullWidth) {
           combined.push({ constrained, fixed, fullWidth });
         }

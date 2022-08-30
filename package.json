@@ -7,8 +7,8 @@
     "format:code": "yarn run lint:code --fix",
     "lint:code": "eslint --ext .js,.jsx,.ts,.tsx --quiet packages",
     "lerna": "lerna",
-    "build": "lerna run build",
-    "watch": "lerna run watch",
+    "build": "lerna run build  --stream --concurrency=0",
+    "watch": "lerna run watch --no-sort --stream --concurrency=999",
     "build:packages": "lerna run --scope \"@bond-london/gatsby-theme\" --include-dependencies build --stream --concurrency=0",
     "watch:packages": "lerna run --scope \"@bond-london/gatsby-theme\" --include-dependencies watch --no-sort --stream --concurrency=999",
     "nx": "nx"

@@ -1,5 +1,5 @@
 import { IBondImage, IBondVideo } from "@bond-london/gatsby-theme";
-import { GatsbyTransformedVideo } from "@bond-london/gatsby-transformer-video";
+import { IGatsbyTransformedVideo } from "@bond-london/gatsby-transformer-video";
 import { graphql } from "gatsby";
 import React from "react";
 import { Hero } from "../components/Hero";
@@ -36,7 +36,7 @@ function getVideo(fragment: VideoAssetFragment) {
     throw new Error("Transformed video does not exist");
   }
 
-  return transformed as unknown as GatsbyTransformedVideo;
+  return transformed as unknown as IGatsbyTransformedVideo;
 }
 
 function getBondVideo(
@@ -57,7 +57,7 @@ function getBondVideo(
 }
 
 function getBondImage(
-  fragment: Queries.ImageAssetFragment | null
+  fragment: CmsImageFragment | null
 ): IBondImage | undefined {
   if (fragment?.image?.localFile?.childImageSharp?.gatsbyImageData) {
     const { dontCrop, verticalCropPosition, horizontalCropPosition, alt } =
@@ -72,6 +72,7 @@ function getBondImage(
   }
 }
 
+// eslint-disable-next-line import/no-unused-modules
 export const CmsHeroExperiment: React.FC<{
   fragment: Queries.CmsHeroExperimentFragment;
 }> = ({ fragment }) => {
@@ -93,6 +94,7 @@ export const CmsHeroExperiment: React.FC<{
   );
 };
 
+// eslint-disable-next-line import/no-unused-modules
 export const CmsHeroExperimentFragment = graphql`
   fragment CmsHeroExperiment on GraphCMS_Hero {
     __typename

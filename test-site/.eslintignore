@@ -1,3 +1,4 @@
 *.js
 *.d.ts
 .cache
+src/colors.ts

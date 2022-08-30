@@ -1,3 +1,4 @@
 import React from "react";
 
-export const PageLayout: React.FC = () => {};
+// eslint-disable-next-line import/no-unused-modules
+export const PageLayout: React.FC = () => null;

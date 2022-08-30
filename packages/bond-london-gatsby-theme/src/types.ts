@@ -11,7 +11,7 @@ export interface IVisualCommon {
   verticalCropPosition: Maybe<Vertical>;
 }
 
-export function GetGatsbyImage(entry: {
+export function getGatsbyImage(entry: {
   id: string;
   gatsbyImageData: Record<string, unknown> | IGatsbyImageData;
 }): IGatsbyImageData | undefined {

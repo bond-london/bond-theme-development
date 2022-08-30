@@ -28,7 +28,7 @@ export interface IPluginOptions {
   width?: number;
 }
 
-export function GetTransformedVideo(
+export function getTransformedVideo(
   entry?: {
     readonly transformed?: Record<string, unknown> | null;
   } | null

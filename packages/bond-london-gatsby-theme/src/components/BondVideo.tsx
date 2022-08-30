@@ -1,5 +1,5 @@
 import {
-  GatsbyTransformedVideo,
+  IGatsbyTransformedVideo,
   GatsbyVideo,
 } from "@bond-london/gatsby-transformer-video";
 import React, { VideoHTMLAttributes } from "react";
@@ -7,7 +7,7 @@ import { IVisualCommon } from "../types";
 import { calculateCropDetails } from "../utils";
 
 export type IBondVideo = IVisualCommon & {
-  video: GatsbyTransformedVideo;
+  video: IGatsbyTransformedVideo;
   noPoster?: boolean;
 } & Omit<
     VideoHTMLAttributes<HTMLVideoElement>,

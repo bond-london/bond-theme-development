@@ -1,6 +1,6 @@
 import {
-  GatsbyTransformedVideo,
-  GetTransformedVideo,
+  IGatsbyTransformedVideo,
+  getTransformedVideo,
 } from "@bond-london/gatsby-transformer-video";
 import { IGatsbyImageData } from "gatsby-plugin-image";
 import { CSSProperties, useEffect, useState } from "react";
@@ -56,7 +56,7 @@ export type VerticalPosition = "Top" | "Middle" | "Bottom";
 export type HorizontalPosition = "Left" | "Middle" | "Right";
 
 export interface IVisualAsset {
-  video?: GatsbyTransformedVideo;
+  video?: IGatsbyTransformedVideo;
   image?: IGatsbyImageData;
   videoUrl?: string;
   alt: string;
@@ -111,13 +111,13 @@ export function getVideoUrl(
 
 export function getVideoFromFile(
   file?: IFile | null
-): GatsbyTransformedVideo | undefined {
-  return GetTransformedVideo(file?.childGatsbyVideo);
+): IGatsbyTransformedVideo | undefined {
+  return getTransformedVideo(file?.childGatsbyVideo);
 }
 
 export function getVideo(
   node: IGenericAsset | undefined | null
-): GatsbyTransformedVideo | undefined {
+): IGatsbyTransformedVideo | undefined {
   return getVideoFromFile(node?.localFile);
 }
 

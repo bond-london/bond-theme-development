@@ -6,6 +6,9 @@ import { reporter } from "gatsby-cli/lib/reporter/reporter";
 
 function createCommandForVideo(videoPath: string): FfmpegCommand {
   const command = ffmpeg({ source: videoPath, logger: console });
+  if (!pathToFfmpeg || !pathToFfprobe) {
+    throw new Error("No ffmpeg installed");
+  }
   command.setFfmpegPath(pathToFfmpeg);
   command.setFfprobePath(pathToFfprobe);
   return command;

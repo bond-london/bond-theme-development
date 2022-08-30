@@ -4,7 +4,7 @@ type variantFunction = (
   name: string,
   definition: (a: {
     separator: string;
-    modifySelectors: (a: ({ className: string }) => string) => string;
+    modifySelectors: (a: (a: { className: string }) => string) => string;
   }) => string
 ) => void;
 

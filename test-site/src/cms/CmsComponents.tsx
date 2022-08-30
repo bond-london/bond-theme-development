@@ -2,7 +2,7 @@ import React from "react";
 import { CmsComponent, ComponentFragment } from "./CmsComponent";
 
 export const CmsComponents: React.FC<{
-  fragments: ComponentFragment[] | null;
+  readonly fragments: ReadonlyArray<ComponentFragment> | null;
 }> = ({ fragments }) => {
   if (!fragments) return null;
   return (

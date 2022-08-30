@@ -12,7 +12,8 @@
       "bump": "patch",
       "conventionalCommits": true,
       "changelog": false,
-      "message": "chore(release): Publish"
+      "message": "chore(release): Publish",
+      "private": false
     }
   }
 }

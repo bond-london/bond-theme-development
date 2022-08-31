@@ -17,7 +17,8 @@
   "files": [
     "gatsby-node.js",
     "gatsby-ssr.tsx",
-    "dist"
+    "dist",
+    "src/fragments.ts"
   ],
   "repository": {
     "url": "https://github.com/bond-london/gatsby-transformer-extracted-lottie"

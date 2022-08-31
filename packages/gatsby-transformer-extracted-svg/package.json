@@ -24,7 +24,8 @@
   "files": [
     "gatsby-node.js",
     "gatsby-ssr.tsx",
-    "dist"
+    "dist",
+    "src/fragments.ts"
   ],
   "scripts": {
     "build:tsc": "tsc --outDir dist/",

@@ -1,6 +1,6 @@
 {
   "name": "@bond-london/gatsby-plugin-cms-i18next",
-  "version": "3.0.0-pre.2",
+  "version": "3.0.0-pre.3",
   "description": "Use CMS languages to generate your Gatsby website",
   "author": "Nick Randell <nick.randell@bond.fi>",
   "license": "MIT",

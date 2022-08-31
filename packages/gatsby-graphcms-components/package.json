@@ -1,7 +1,7 @@
 {
   "name": "@bond-london/gatsby-graphcms-components",
   "sideEffects": false,
-  "version": "5.0.0-pre.2",
+  "version": "5.0.0-pre.3",
   "description": "Components shared across various Bond London projects",
   "author": "Nick Randell <nick.randell@bond.fi>",
   "engines": {
@@ -47,8 +47,8 @@
     "react": "^18.x"
   },
   "dependencies": {
-    "@bond-london/gatsby-transformer-video": "^2.0.0-pre.2",
-    "@bond-london/graphcms-rich-text": "^2.0.0-pre.2",
+    "@bond-london/gatsby-transformer-video": "^2.0.0-pre.3",
+    "@bond-london/graphcms-rich-text": "^2.0.0-pre.3",
     "lottie-web": "^5.9.6"
   },
   "gitHead": "5c1e8033f5b218b11ccfec5b579df6b6a657449e"

@@ -6,7 +6,7 @@ module.exports = {
     `plugin:react-hooks/recommended`,
     `plugin:prettier/recommended`,
   ],
-  plugins: [`prettier`, `react`, `filenames`],
+  plugins: [`prettier`, `react`, `filenames`, "node"],
   parserOptions: {
     ecmaVersion: `2020`,
     sourceType: `module`,
@@ -37,6 +37,7 @@ module.exports = {
     __TRAILING_SLASH__: true,
   },
   rules: {
+    "node/no-process-env": "error",
     "no-unused-expressions": `off`,
     "no-invalid-this": `off`,
     "arrow-body-style": [

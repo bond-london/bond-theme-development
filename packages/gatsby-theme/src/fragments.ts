@@ -262,7 +262,11 @@ export const ConstrainedCMSVideoFragment = graphql`
       ...MutedConstrainedVideoAsset
     }
     poster {
-      ...ConstrainedImageAsset
+      id
+      localFile {
+        id
+        publicURL
+      }
     }
     full {
       ...ConstrainedVideoAsset
@@ -282,7 +286,11 @@ export const FixedCMSVideoFragment = graphql`
       ...MutedFixedVideoAsset
     }
     poster {
-      ...FixedImageAsset
+      id
+      localFile {
+        id
+        publicURL
+      }
     }
     full {
       ...FixedVideoAsset
@@ -302,7 +310,11 @@ export const FullWidthCMSVideoFragment = graphql`
       ...MutedFullWidthVideoAsset
     }
     poster {
-      ...FullWidthImageAsset
+      id
+      localFile {
+        id
+        publicURL
+      }
     }
     full {
       ...FullWidthVideoAsset

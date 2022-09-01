@@ -277,7 +277,7 @@ function keepExistingNodeAlive(
       const field = entry.field;
       switch (entry.type) {
         case "Asset":
-          usedAssetRemoteIds.add((value as GraphCMS_Node).remoteId);
+          usedAssetRemoteIds.add((value as GraphCMS_Node).remoteId as string);
           break;
 
         case "Markdown":
@@ -420,7 +420,7 @@ function createSpecialNodes(
       switch (entry.type) {
         case "Asset":
           {
-            const remoteId = (value as GraphCMS_Node).remoteId;
+            const remoteId = (value as GraphCMS_Node).remoteId as string;
             usedAssetRemoteIds.add(remoteId);
           }
           break;

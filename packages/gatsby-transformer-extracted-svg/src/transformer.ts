@@ -64,8 +64,8 @@ async function internalCreateExtractedSvg(
       const publicPath = join(publicDir, fileName);
 
       const svg: IGatsbyExtractedSvg = {
-        width: parseFloat(width),
-        height: parseFloat(height),
+        width: width ? parseFloat(width) : 1,
+        height: height ? parseFloat(height) : 1,
         layout: transformArgs.layout,
       };
 

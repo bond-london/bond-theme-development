@@ -37,7 +37,7 @@ export interface IPluginState {
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export type GraphCMS_Node = Node & {
   remoteTypeName?: string;
-  remoteId: string;
+  remoteId?: string;
   stage: string;
   locale: string;
 };

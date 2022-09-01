@@ -1,3 +1,4 @@
+import { IPluginRefOptions } from "gatsby";
 import { IGatsbyImageData } from "gatsby-plugin-image";
 
 export type Maybe<T> = T | null;
@@ -19,4 +20,18 @@ export function getGatsbyImage(entry: {
     return entry.gatsbyImageData as unknown as IGatsbyImageData;
   }
   return undefined;
+}
+
+export interface IBondThemeOptions extends IPluginRefOptions {
+  videoWidth?: number;
+  videoCacheConnectionString?: string;
+  useVideoCache?: boolean;
+  enableEslint?: boolean;
+  isProduction?: boolean;
+  projectName: string;
+  graphCMSToken: string;
+  graphCMSEndpoint: string;
+  graphCMSStage: string;
+  productionImageBreakpoints?: Array<number>;
+  developmentImageBreakpoints?: Array<number>;
 }

@@ -2,7 +2,6 @@ import React from "react";
 import { RenderBodyArgs } from "gatsby";
 
 export function onRenderBody({ setHeadComponents }: RenderBodyArgs): void {
-  console.log("rendering body from svg tsx");
   setHeadComponents([
     <style
       key="gatsby-svg-style"

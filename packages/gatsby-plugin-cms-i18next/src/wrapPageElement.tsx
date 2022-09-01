@@ -66,6 +66,7 @@ export const wrapPageElement = (
   const { pageContext } = props;
   const i18nextContext = pageContext.i18n;
   if (!i18nextContext || !pageContext.resourcesJson) {
+    // eslint-disable-next-line node/no-process-env
     if (process.env.NODE_ENV === "development") {
       console.warn("Page has no i18n or resources");
     }

@@ -85,7 +85,7 @@ export function createWebmVideoTransform(
   return [
     "-c:v libvpx-vp9",
     "-crf 40",
-    targetWidth ? `-vf scale=${targetWidth}:-2` : `-vf scale=0:0`,
+    targetWidth ? `-vf scale='min(${targetWidth},iw)':-2` : `-vf scale=0:0`,
     "-deadline best",
     muted ? "-an" : "-c:a libvorbis",
   ];
@@ -98,7 +98,7 @@ export function createMp4VideoTransform(
   return [
     "-c:v libx265",
     "-crf 32",
-    targetWidth ? `-vf scale=${targetWidth}:-2` : `-vf scale=0:0`,
+    targetWidth ? `-vf scale='min(${targetWidth},iw)':-2` : `-vf scale=0:0`,
     "-preset veryslow",
     "-tag:v hvc1",
     "-movflags",

@@ -166,7 +166,7 @@ export const ConstrainedAnimationAssetFragment = graphql`
       internal {
         mediaType
       }
-      ...ConstrainedSvgFile
+      ...ConstrainedAnimationFile
     }
   }
 `;
@@ -178,7 +178,7 @@ export const FixedAnimationAssetFragment = graphql`
       internal {
         mediaType
       }
-      ...FixedSvgFile
+      ...FixedAnimationFile
     }
   }
 `;
@@ -190,7 +190,7 @@ export const FullWidthAnimationAssetFragment = graphql`
       internal {
         mediaType
       }
-      ...FullWidthVideoFile
+      ...FullWidthAnimationFile
     }
   }
 `;

@@ -34,7 +34,7 @@ async function runFfmpeg(
     const activity = reporter.createProgress(label, 100);
     const command = createCommandForVideo(input)
       .addOutputOption(options)
-      //   .on("start", console.log)
+      .on("start", reporter.info)
       .on("error", args => {
         activity.setStatus("Errored");
         activity.end();

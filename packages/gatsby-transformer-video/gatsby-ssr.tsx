@@ -11,7 +11,7 @@ export function onRenderBody({ setHeadComponents }: RenderBodyArgs): void {
     position: relative;
     overflow: hidden;
 }      
-.gatsby-video-wrapper video {
+.gatsby-video-wrapper video, .gatsby-video-wrapper .inside {
     bottom: 0;
     height: 100%;
     left:0;

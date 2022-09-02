@@ -3,13 +3,19 @@ import {
   GatsbyVideo,
   getTransformedVideo,
 } from "@bond-london/gatsby-transformer-video";
-import React, { VideoHTMLAttributes } from "react";
+import React, {
+  CSSProperties,
+  PropsWithChildren,
+  VideoHTMLAttributes,
+} from "react";
 import { Horizontal, IVisualCommon, Vertical } from "../types";
 import { calculateCropDetails } from "../utils";
 
 export type IBondVideo = IVisualCommon & {
   video: IGatsbyTransformedVideo;
   noPoster?: boolean;
+  videoClassName?: string;
+  videoStyle?: CSSProperties;
 } & Omit<
     VideoHTMLAttributes<HTMLVideoElement>,
     "poster" | "objectFit" | "objectPosition"
@@ -72,8 +78,9 @@ export function convertCMSVideoToBondVideo(cms: ICMSVideo): IBondVideo {
   };
 }
 
-export const BondVideo: React.FC<IBondVideo> = props => {
+export const BondVideo: React.FC<PropsWithChildren<IBondVideo>> = props => {
   const {
+    children,
     dontCrop,
     horizontalCropPosition,
     verticalCropPosition,
@@ -90,6 +97,8 @@ export const BondVideo: React.FC<IBondVideo> = props => {
       {...videoProps}
       objectFit={objectFit}
       objectPosition={objectPosition}
-    />
+    >
+      {children}
+    </GatsbyVideo>
   );
 };

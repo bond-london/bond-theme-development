@@ -88,10 +88,20 @@ export const GatsbySvg: React.FC<
     svg: IGatsbyExtractedSvg;
     objectFit?: CSSProperties["objectFit"];
     objectPosition?: CSSProperties["objectPosition"];
+    svgStyle?: CSSProperties;
+    svgClassName?: string;
   } & Omit<ImgHTMLAttributes<HTMLImageElement>, "poster" | "src">
 > = allProps => {
-  const { svg, objectFit, objectPosition, style, className, ...otherProps } =
-    allProps;
+  const {
+    svg,
+    objectFit,
+    objectPosition,
+    style,
+    className,
+    svgStyle,
+    svgClassName,
+    ...otherProps
+  } = allProps;
   const { width, height } = calculateSizes(svg);
   const { style: wrapperStyle, className: wrapperClassName } =
     getWrapperProps(svg);
@@ -107,7 +117,8 @@ export const GatsbySvg: React.FC<
       {imgSrc && (
         <img
           {...otherProps}
-          style={{ objectFit, objectPosition }}
+          style={{ ...svgStyle, objectFit, objectPosition }}
+          className={svgClassName}
           width={width}
           height={height}
           src={imgSrc}

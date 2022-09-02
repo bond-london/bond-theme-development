@@ -1,4 +1,4 @@
-import React, { ImgHTMLAttributes } from "react";
+import React, { CSSProperties, ImgHTMLAttributes } from "react";
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import { getGatsbyImage, Horizontal, IVisualCommon, Vertical } from "../types";
 import { calculateCropDetails } from "../utils";
@@ -12,6 +12,8 @@ export type IBondImage = IVisualCommon & {
   image?: IGatsbyImageData;
   svg?: IGatsbyExtractedSvg;
   alt: string;
+  imgClassName?: string;
+  imgStyle?: CSSProperties;
   onLoad?: (props: { wasCached: boolean }) => void;
   onStartLoad?: (props: { wasCached: boolean }) => void;
 } & Omit<
@@ -75,6 +77,8 @@ export const BondImage: React.FC<IBondImage> = props => {
     svg,
     onLoad,
     onStartLoad,
+    imgClassName,
+    imgStyle,
     ...imageProps
   } = props;
   const { objectFit, objectPosition } = calculateCropDetails({
@@ -92,6 +96,8 @@ export const BondImage: React.FC<IBondImage> = props => {
         image={image}
         objectFit={objectFit}
         objectPosition={objectPosition}
+        imgClassName={imgClassName}
+        imgStyle={imgStyle}
       />
     );
   }
@@ -103,6 +109,8 @@ export const BondImage: React.FC<IBondImage> = props => {
         svg={svg}
         objectFit={objectFit}
         objectPosition={objectPosition}
+        svgClassName={imgClassName}
+        svgStyle={imgStyle}
       />
     );
   }

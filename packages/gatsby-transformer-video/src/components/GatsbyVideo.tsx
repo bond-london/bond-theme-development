@@ -1,5 +1,8 @@
 import React, {
   CSSProperties,
+  DetailedHTMLProps,
+  PropsWithChildren,
+  RefObject,
   useEffect,
   useRef,
   VideoHTMLAttributes,
@@ -70,16 +73,40 @@ const Sizer: React.FC<{ video: IGatsbyTransformedVideo }> = ({
   return null;
 };
 
-export const GatsbyVideo: React.FC<
+export const GatsbyInternalVideo: React.FC<
   {
     video: IGatsbyTransformedVideo;
-    noPoster?: boolean;
-    loopDelay?: number;
-    objectFit?: CSSProperties["objectFit"];
-    objectPosition?: CSSProperties["objectPosition"];
-  } & Omit<VideoHTMLAttributes<HTMLVideoElement>, "poster" | "src">
+    videoRef?: RefObject<HTMLVideoElement>;
+  } & Omit<
+    DetailedHTMLProps<VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement>,
+    "src" | "ref" | "width" | "height"
+  >
+> = ({ video, videoRef, ...otherProps }) => {
+  const { width, height } = calculateSizes(video);
+
+  return (
+    <video {...otherProps} ref={videoRef} width={width} height={height}>
+      <source type="video/webm" src={video.webm} />
+      <source type="video/mp4" src={video.mp4} />
+    </video>
+  );
+};
+
+export const GatsbyVideo: React.FC<
+  PropsWithChildren<
+    {
+      video: IGatsbyTransformedVideo;
+      noPoster?: boolean;
+      loopDelay?: number;
+      objectFit?: CSSProperties["objectFit"];
+      objectPosition?: CSSProperties["objectPosition"];
+      videoClassName?: string;
+      videoStyle?: CSSProperties;
+    } & Omit<VideoHTMLAttributes<HTMLVideoElement>, "poster" | "src">
+  >
 > = allProps => {
   const {
+    children,
     video,
     noPoster,
     loopDelay,
@@ -89,11 +116,12 @@ export const GatsbyVideo: React.FC<
     objectPosition,
     style,
     className,
+    videoClassName,
+    videoStyle,
     controls = false,
     ...otherProps
   } = allProps;
   const videoRef = useRef<HTMLVideoElement>(null);
-  const { width, height } = calculateSizes(video);
   const { style: wrapperStyle, className: wrapperClassName } =
     getWrapperProps(video);
 
@@ -130,20 +158,18 @@ export const GatsbyVideo: React.FC<
       className={`${wrapperClassName}${className ? ` ${className}` : ``}`}
     >
       <Sizer video={video} />
-      <video
-        ref={videoRef}
+      <GatsbyInternalVideo
+        video={video}
+        videoRef={videoRef}
         {...otherProps}
         loop={loopDelay ? false : loop}
         muted={!video.hasAudio || muted}
-        style={{ objectFit, objectPosition }}
+        style={{ ...videoStyle, objectFit, objectPosition }}
+        className={videoClassName}
         controls={controls}
-        width={width}
-        height={height}
         poster={noPoster ? undefined : video.poster}
-      >
-        <source type="video/webm" src={video.webm} />
-        <source type="video/mp4" src={video.mp4} />
-      </video>
+      />
+      {children}
     </div>
   );
 };

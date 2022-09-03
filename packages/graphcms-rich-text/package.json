@@ -36,7 +36,6 @@
     "clean": "del-cli dist/*"
   },
   "devDependencies": {
-    "@graphcms/rich-text-types": "^0.5.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "cross-env": "^7.0.3",
@@ -49,5 +48,8 @@
   "peerDependencies": {
     "react": "^18.x"
   },
-  "gitHead": "5c1e8033f5b218b11ccfec5b579df6b6a657449e"
+  "gitHead": "5c1e8033f5b218b11ccfec5b579df6b6a657449e",
+  "dependencies": {
+    "@graphcms/rich-text-types": "^0.5.0"
+  }
 }

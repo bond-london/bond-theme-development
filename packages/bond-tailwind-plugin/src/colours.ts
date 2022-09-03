@@ -26,6 +26,7 @@ export function buildColorTable(config: IBondConfigurationOptions): void {
   const colors = buildColours(config);
 
   const code: Array<string> = [
+    `/* eslint-disable */`,
     `import classNames from "classnames";`,
     "export const colourTable = {",
   ];

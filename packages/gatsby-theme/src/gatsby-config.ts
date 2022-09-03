@@ -46,14 +46,6 @@ function buildConfig(
 ): GatsbyConfig {
   const options = validateOptions(specifiedOptions);
   const gatsbyConfig: GatsbyConfig = {
-    trailingSlash: "always",
-    graphqlTypegen: {
-      typesOutputPath: "gatsby-types.d.ts",
-    },
-    flags: {
-      DEV_SSR: false,
-      FAST_DEV: true,
-    },
     plugins: [
       "gatsby-plugin-image",
       {

@@ -37,9 +37,6 @@ function getBondVideo(
     const { dontCrop, verticalCropPosition, horizontalCropPosition } = fragment;
     return {
       video: getVideo(fragment.preview),
-      autoPlay: true,
-      loop: true,
-      muted: true,
       dontCrop,
       verticalCropPosition,
       horizontalCropPosition,

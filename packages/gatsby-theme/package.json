@@ -40,24 +40,39 @@
   },
   "dependencies": {
     "@bond-london/bond-tailwind-plugin": "^2.0.0-pre.3",
+    "@bond-london/eslint-config-bond-gatsby": "^1.0.0-pre.1",
     "@bond-london/gatsby-graphcms-components": "^5.0.0-pre.5",
     "@bond-london/gatsby-transformer-extracted-lottie": "^4.0.0-pre.3",
     "@bond-london/gatsby-transformer-extracted-svg": "^3.0.0-pre.5",
     "@bond-london/gatsby-transformer-video": "^2.0.0-pre.5",
     "@bond-london/graphcms-rich-text": "^2.0.0-pre.3",
     "@bond-london/simple-gatsby-source-graphcms": "^7.0.0-pre.4",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.3",
+    "autoprefixer": "^10.4.8",
     "classnames": "^2.3.1",
     "dotenv": "^16.0.1",
+    "gatsby-plugin-canonical-urls": "^4.22.0",
+    "gatsby-plugin-eslint": "^4.0.2",
+    "gatsby-plugin-image": "^2.22.0",
+    "gatsby-plugin-manifest": "^4.22.0",
+    "gatsby-plugin-page-creator": "^4.22.0",
+    "gatsby-plugin-postcss": "^5.22.0",
+    "gatsby-plugin-robots-txt": "^1.7.1",
     "gatsby-plugin-sharp": "^4.21.0",
-    "gatsby-source-filesystem": "^4.21.1",
-    "gatsby-transformer-sharp": "^4.21.0",
-    "no-case": "^3.0.4"
+    "gatsby-plugin-sitemap": "^5.22.0",
+    "gatsby-plugin-webpack-bundle-analyser-v2": "^1.1.27",
+    "gatsby-source-filesystem": "^4.22.0",
+    "gatsby-transformer-sharp": "^4.22.0",
+    "no-case": "^3.0.4",
+    "tailwindcss": "^3.1.8",
+    "tailwindcss-debug-screens": "^2.2.1",
+    "typescript": "^4.8.2"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
     "del-cli": "^5.0.0",
-    "npm-run-all": "^4.1.5",
-    "typescript": "^4.7.4"
+    "npm-run-all": "^4.1.5"
   },
   "gitHead": "5c1e8033f5b218b11ccfec5b579df6b6a657449e"
 }

@@ -12,21 +12,7 @@ export type IBondImage = IVisualCommon & {
   image?: IGatsbyImageData;
   svg?: IGatsbyExtractedSvg;
   alt: string;
-  imgClassName?: string;
-  imgStyle?: CSSProperties;
-  onLoad?: (props: { wasCached: boolean }) => void;
-  onStartLoad?: (props: { wasCached: boolean }) => void;
-} & Omit<
-    ImgHTMLAttributes<HTMLImageElement>,
-    | "placeholder"
-    | "onLoad"
-    | "src"
-    | "srcSet"
-    | "width"
-    | "height"
-    | "objectFit"
-    | "objectPosition"
-  >;
+};
 
 export interface ICMSImage {
   readonly id: string;
@@ -68,7 +54,24 @@ export function convertCMSImageToBondImage(cms: ICMSImage): IBondImage {
   };
 }
 
-export const BondImage: React.FC<IBondImage> = props => {
+export const BondImage: React.FC<
+  IBondImage & {
+    imgClassName?: string;
+    imgStyle?: CSSProperties;
+    onLoad?: (props: { wasCached: boolean }) => void;
+    onStartLoad?: (props: { wasCached: boolean }) => void;
+  } & Omit<
+      ImgHTMLAttributes<HTMLImageElement>,
+      | "placeholder"
+      | "onLoad"
+      | "src"
+      | "srcSet"
+      | "width"
+      | "height"
+      | "objectFit"
+      | "objectPosition"
+    >
+> = props => {
   const {
     dontCrop,
     horizontalCropPosition,

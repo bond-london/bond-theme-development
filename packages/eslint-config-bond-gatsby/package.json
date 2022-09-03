@@ -1,0 +1,41 @@
+{
+  "name": "@bond-london/eslint-config-bond-gatsby",
+  "sideEffects": false,
+  "version": "1.0.0-pre.1",
+  "description": "Bond London ESlint config for Gatsby",
+  "author": "Nick Randell <nick.randell@bond.fi>",
+  "engines": {
+    "node": ">=16"
+  },
+  "license": "MIT",
+  "keywords": [
+    "bond",
+    "gatsby",
+    "eslint"
+  ],
+  "repository": {
+    "url": "https://github.com/bond-london/bond-london-theme",
+    "directory": "packages/eslint-config-bond-gatsby"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "dependencies": {
+    "@graphql-eslint/eslint-plugin": "^3.10.7",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "eslint": "^8.23.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.7.1"
+  }
+}

@@ -1,8 +1,11 @@
 import type { GatsbyConfig } from "gatsby";
 import { noCase } from "no-case";
+import { Joi } from "gatsby-plugin-utils";
+import reporter from "gatsby-cli/lib/reporter";
 
-import { join, dirname } from "path";
+import { resolve, join, dirname } from "path";
 import { IBondThemeOptions } from "./types";
+import { pluginOptionsSchema } from "./pluginOptionsSchema";
 
 const gatsbyPackage = require.resolve("gatsby/package.json");
 
@@ -16,15 +19,32 @@ const gatsbyRequiredRules = join(
   "eslint-rules"
 );
 
-const defaultThemeOptions: Partial<IBondThemeOptions> = {
-  enableEslint: true,
-  productionImageBreakpoints: [320, 400, 750, 1080, 1366, 1920],
-  developmentImageBreakpoints: [1920],
-  useVideoCache: true,
-};
+function validateOptions(
+  options: Partial<IBondThemeOptions>
+): IBondThemeOptions {
+  const schema = pluginOptionsSchema({ Joi });
+  const warnSchema = schema.pattern(/.*/, Joi.any().warning("any.unknown"));
+  const validated = warnSchema.validate(options, {
+    abortEarly: false,
+    externals: false,
+  });
 
-function buildConfig(specifiedOptions: IBondThemeOptions): GatsbyConfig {
-  const options = { ...defaultThemeOptions, ...specifiedOptions };
+  const errors = validated.error || validated.warning;
+  if (errors) {
+    return reporter.panic(
+      `Configuration errors: ${errors.details
+        .map(e => `${e.message} @ ${e.path.join(".")}`)
+        .join(", ")}`
+    );
+  }
+
+  return validated.value;
+}
+
+function buildConfig(
+  specifiedOptions: Partial<IBondThemeOptions>
+): GatsbyConfig {
+  const options = validateOptions(specifiedOptions);
   const gatsbyConfig: GatsbyConfig = {
     trailingSlash: "always",
     graphqlTypegen: {
@@ -43,6 +63,55 @@ function buildConfig(specifiedOptions: IBondThemeOptions): GatsbyConfig {
           openAnalyzer: false,
         },
       },
+      {
+        resolve: "gatsby-plugin-robots-txt",
+        options: {
+          resolveEnv: (): string => {
+            const robotsEnv = options.allowIndex ? "production" : "development";
+            return robotsEnv;
+          },
+          env: {
+            development: {
+              policy: [{ userAgent: "*", disallow: ["/"] }],
+            },
+            production: {
+              policy: [{ userAgent: "*", allow: "/", disallow: ["/dev/"] }],
+            },
+          },
+        },
+      },
+      {
+        resolve: "gatsby-plugin-postcss",
+        options: {
+          postCssPlugins: [require("tailwindcss"), require("autoprefixer")],
+        },
+      },
+      {
+        resolve: "gatsby-plugin-canonical-urls",
+        options: {
+          siteUrl: options.siteUrl,
+        },
+      },
+      {
+        resolve: "gatsby-plugin-page-creator",
+        options: {
+          path: resolve("src/pages"),
+          ignore: options.showDevPages
+            ? undefined
+            : {
+                patterns: [`dev/**`],
+                options: { nocase: true },
+              },
+        },
+      },
+      "gatsby-plugin-sitemap",
+      {
+        resolve: "gatsby-plugin-manifest",
+        options: {
+          icon: options.icon,
+        },
+      },
+
       {
         resolve: "gatsby-plugin-sharp",
 

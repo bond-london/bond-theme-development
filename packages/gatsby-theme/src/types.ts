@@ -6,7 +6,6 @@ export type Vertical = "Top" | "Middle" | "Bottom";
 export type Horizontal = "Left" | "Middle" | "Right";
 
 export interface IVisualCommon {
-  className?: string;
   dontCrop: Maybe<boolean>;
   horizontalCropPosition: Maybe<Horizontal>;
   verticalCropPosition: Maybe<Vertical>;
@@ -34,4 +33,8 @@ export interface IBondThemeOptions extends IPluginRefOptions {
   graphCMSStage: string;
   productionImageBreakpoints?: Array<number>;
   developmentImageBreakpoints?: Array<number>;
+  allowIndex: boolean;
+  siteUrl: string;
+  showDevPages: boolean;
+  icon: string;
 }

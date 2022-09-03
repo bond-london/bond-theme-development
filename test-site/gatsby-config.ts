@@ -15,6 +15,8 @@ const themeOptions: IBondThemeOptions = {
   graphCMSEndpoint: readEnvVar("GRAPHCMS_ENDPOINT"),
   graphCMSStage: readEnvVar("GRAPHCMS_STAGE"),
   enableEslint: false,
+  siteUrl,
+  icon: "src/images/icon.png",
 };
 
 const config: GatsbyConfig = {
@@ -38,7 +40,6 @@ const config: GatsbyConfig = {
       resolve: "@bond-london/gatsby-theme",
       options: themeOptions,
     },
-    "gatsby-plugin-postcss",
   ],
 };
 

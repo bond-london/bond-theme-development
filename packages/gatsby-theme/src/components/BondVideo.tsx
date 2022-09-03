@@ -13,13 +13,7 @@ import { calculateCropDetails } from "../utils";
 
 export type IBondVideo = IVisualCommon & {
   video: IGatsbyTransformedVideo;
-  noPoster?: boolean;
-  videoClassName?: string;
-  videoStyle?: CSSProperties;
-} & Omit<
-    VideoHTMLAttributes<HTMLVideoElement>,
-    "poster" | "objectFit" | "objectPosition"
-  >;
+};
 
 export interface ICMSVideo {
   readonly id: string;
@@ -78,7 +72,18 @@ export function convertCMSVideoToBondVideo(cms: ICMSVideo): IBondVideo {
   };
 }
 
-export const BondVideo: React.FC<PropsWithChildren<IBondVideo>> = props => {
+export const BondVideo: React.FC<
+  PropsWithChildren<
+    IBondVideo & {
+      videoClassName?: string;
+      videoStyle?: CSSProperties;
+      noPoster?: boolean;
+    } & Omit<
+        VideoHTMLAttributes<HTMLVideoElement>,
+        "poster" | "objectFit" | "objectPosition"
+      >
+  >
+> = props => {
   const {
     children,
     dontCrop,

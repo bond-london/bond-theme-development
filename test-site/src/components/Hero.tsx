@@ -14,7 +14,15 @@ const HeroBackground: React.FC<{ video?: IBondVideo; image?: IBondImage }> = ({
 }) => {
   const className = "relative col-span-full row-span-full";
   if (video) {
-    return <BondVideo className={className} {...video} />;
+    return (
+      <BondVideo
+        className={className}
+        {...video}
+        autoPlay={true}
+        muted={true}
+        loop={true}
+      />
+    );
   }
   if (image) {
     return <BondImage className={className} {...image} />;

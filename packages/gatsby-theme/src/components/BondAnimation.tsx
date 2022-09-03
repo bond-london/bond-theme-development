@@ -9,8 +9,6 @@ import { calculateCropDetails } from "../utils";
 
 export type IBondAnimation = IVisualCommon & {
   animation: IGatsbyExtractedAnimation;
-  loop?: boolean;
-  loopDelay?: number;
 };
 
 export interface ICMSAnimation {
@@ -33,9 +31,7 @@ export interface ICMSAnimation {
 }
 
 export function convertCMSAnimationToBondAnimation(
-  cms: ICMSAnimation,
-  loop?: boolean,
-  loopDelay?: number
+  cms: ICMSAnimation
 ): IBondAnimation {
   const animation = cms.animation.localFile?.childGatsbyAnimation
     ? getExtractedAnimation(cms.animation.localFile.childGatsbyAnimation)
@@ -48,12 +44,12 @@ export function convertCMSAnimationToBondAnimation(
     dontCrop: cms.dontCrop,
     verticalCropPosition: cms.verticalCropPosition,
     horizontalCropPosition: cms.horizontalCropPosition,
-    loop,
-    loopDelay,
   };
 }
 
-export const BondAnimation: React.FC<IBondAnimation> = props => {
+export const BondAnimation: React.FC<
+  IBondAnimation & { loop?: boolean; loopDelay?: number }
+> = props => {
   const {
     dontCrop,
     horizontalCropPosition,

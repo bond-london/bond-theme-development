@@ -62,6 +62,7 @@ module.exports = {
     "react/jsx-key": `warn`,
     "react/no-unescaped-entities": `off`,
     "react/prop-types": `off`,
+    "react/no-unknown-property": "off",
     "require-jsdoc": `off`,
     "valid-jsdoc": `off`,
     "prefer-promise-reject-errors": `warn`,

@@ -48,13 +48,16 @@ export function convertCMSAnimationToBondAnimation(
 }
 
 export const BondAnimation: React.FC<
-  IBondAnimation & { loop?: boolean; loopDelay?: number }
+  IBondAnimation & { loop?: boolean; loopDelay?: number; className?: string }
 > = props => {
   const {
     dontCrop,
     horizontalCropPosition,
     verticalCropPosition,
-    ...animationProps
+    animation,
+    loop,
+    loopDelay,
+    className,
   } = props;
   const { objectFit, objectPosition } = calculateCropDetails({
     dontCrop,
@@ -64,7 +67,10 @@ export const BondAnimation: React.FC<
 
   return (
     <GatsbyAnimation
-      {...animationProps}
+      animation={animation}
+      loop={loop}
+      loopDelay={loopDelay}
+      className={className}
       objectFit={objectFit}
       objectPosition={objectPosition}
     />

@@ -13,7 +13,7 @@ import { calculateCropDetails } from "../utils";
 import { ICMSVideo } from "./BondVideo";
 
 export type IBondSimpleVideo = IVisualCommon & {
-  video: IGatsbyTransformedVideo;
+  videoData: IGatsbyTransformedVideo;
 };
 
 export function convertCMSVideoToBondSimpleVideo(
@@ -30,7 +30,7 @@ export function convertCMSVideoToBondSimpleVideo(
   const posterFile = cms.poster?.localFile?.publicURL || undefined;
 
   return {
-    video: posterFile ? { ...preview, poster: posterFile } : preview,
+    videoData: posterFile ? { ...preview, poster: posterFile } : preview,
     dontCrop: cms.dontCrop,
     verticalCropPosition: cms.verticalCropPosition,
     horizontalCropPosition: cms.horizontalCropPosition,
@@ -39,23 +39,20 @@ export function convertCMSVideoToBondSimpleVideo(
 
 export const BondSimpleVideo: React.FC<
   PropsWithChildren<
-    IBondSimpleVideo & {
+    {
+      video: IBondSimpleVideo;
       videoClassName?: string;
       videoStyle?: CSSProperties;
       noPoster?: boolean;
     } & Omit<
-        VideoHTMLAttributes<HTMLVideoElement>,
-        "poster" | "objectFit" | "objectPosition"
-      >
+      VideoHTMLAttributes<HTMLVideoElement>,
+      "poster" | "objectFit" | "objectPosition"
+    >
   >
 > = props => {
-  const {
-    children,
-    dontCrop,
-    horizontalCropPosition,
-    verticalCropPosition,
-    ...videoProps
-  } = props;
+  const { children, video, ...videoProps } = props;
+  const { dontCrop, horizontalCropPosition, verticalCropPosition, videoData } =
+    video;
   const { objectFit, objectPosition } = calculateCropDetails({
     dontCrop,
     horizontalCropPosition,
@@ -65,6 +62,7 @@ export const BondSimpleVideo: React.FC<
   return (
     <GatsbyVideo
       {...videoProps}
+      video={videoData}
       objectFit={objectFit}
       objectPosition={objectPosition}
     >

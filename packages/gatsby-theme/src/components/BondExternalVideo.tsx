@@ -38,7 +38,7 @@ export function convertCMSVideoToBondExternalVideo(
   const posterFile = cms.poster?.localFile?.publicURL || undefined;
 
   return {
-    video: posterFile ? { ...preview, poster: posterFile } : preview,
+    videoData: posterFile ? { ...preview, poster: posterFile } : preview,
     external,
     dontCrop: cms.dontCrop,
     verticalCropPosition: cms.verticalCropPosition,
@@ -47,14 +47,20 @@ export function convertCMSVideoToBondExternalVideo(
 }
 
 export const BondExternalVideo: React.FC<
-  IBondExternalVideo & {
+  {
+    video: IBondExternalVideo;
     videoClassName?: string;
     videoStyle?: CSSProperties;
     noPoster?: boolean;
+    playButton?: React.FC<{ playVideo: () => void }>;
+    pauseButton?: React.FC<{ pauseVideo: () => void }>;
+    muteButton?: React.FC<{ muteVideo: () => void }>;
+    unmuteButton?: React.FC<{ unmuteVideo: () => void }>;
+    showAudioControls?: boolean;
   } & Omit<
-      VideoHTMLAttributes<HTMLVideoElement>,
-      "poster" | "objectFit" | "objectPosition"
-    >
+    VideoHTMLAttributes<HTMLVideoElement>,
+    "poster" | "objectFit" | "objectPosition"
+  >
 > = props => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -70,13 +76,21 @@ export const BondExternalVideo: React.FC<
   const unmuteVideo = useCallback(() => setIsMuted(false), []);
 
   const {
+    video,
+    playButton,
+    pauseButton,
+    muteButton,
+    unmuteButton,
+    showAudioControls,
+    ...videoProps
+  } = props;
+  const {
     dontCrop,
     horizontalCropPosition,
     verticalCropPosition,
     external,
-    video,
-    ...videoProps
-  } = props;
+    videoData,
+  } = video;
   const { objectFit, objectPosition } = calculateCropDetails({
     dontCrop,
     horizontalCropPosition,
@@ -86,7 +100,7 @@ export const BondExternalVideo: React.FC<
   return (
     <GatsbyVideo
       {...videoProps}
-      video={video}
+      video={videoData}
       onTimeUpdate={!previewHasStarted ? onPreviewHasStarted : undefined}
       pause={fullHasStarted ? true : undefined}
       objectFit={objectFit}
@@ -115,6 +129,11 @@ export const BondExternalVideo: React.FC<
           pauseVideo={pauseVideo}
           muteVideo={muteVideo}
           unmuteVideo={unmuteVideo}
+          playButton={playButton}
+          pauseButton={pauseButton}
+          muteButton={muteButton}
+          unmuteButton={unmuteButton}
+          showAudioControls={showAudioControls}
         />
       )}
     </GatsbyVideo>

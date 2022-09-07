@@ -68,7 +68,7 @@ export function convertCMSVideoToBondVideo(cms: ICMSVideo): IBondVideo {
     : undefined;
 
   const posterFile = cms.poster?.localFile?.publicURL || undefined;
-  const video = posterFile ? { ...preview, poster: posterFile } : preview;
+  const videoData = posterFile ? { ...preview, poster: posterFile } : preview;
   const { dontCrop, verticalCropPosition, horizontalCropPosition } = cms;
 
   const external = cms.external || undefined;
@@ -78,7 +78,7 @@ export function convertCMSVideoToBondVideo(cms: ICMSVideo): IBondVideo {
 
   if (external) {
     return {
-      video,
+      videoData,
       external,
       dontCrop,
       verticalCropPosition,
@@ -88,7 +88,7 @@ export function convertCMSVideoToBondVideo(cms: ICMSVideo): IBondVideo {
 
   if (full) {
     return {
-      video,
+      videoData,
       full,
       dontCrop,
       verticalCropPosition,
@@ -97,7 +97,7 @@ export function convertCMSVideoToBondVideo(cms: ICMSVideo): IBondVideo {
   }
 
   return {
-    video,
+    videoData,
     dontCrop,
     verticalCropPosition,
     horizontalCropPosition,
@@ -105,20 +105,54 @@ export function convertCMSVideoToBondVideo(cms: ICMSVideo): IBondVideo {
 }
 
 export const BondVideo: React.FC<
-  IBondVideo & {
+  {
+    video: IBondVideo;
     videoClassName?: string;
     videoStyle?: CSSProperties;
     noPoster?: boolean;
+    playButton?: React.FC<{ playVideo: () => void }>;
+    pauseButton?: React.FC<{ pauseVideo: () => void }>;
+    muteButton?: React.FC<{ muteVideo: () => void }>;
+    unmuteButton?: React.FC<{ unmuteVideo: () => void }>;
+    showAudioControls?: boolean;
   } & Omit<
-      VideoHTMLAttributes<HTMLVideoElement>,
-      "poster" | "objectFit" | "objectPosition"
-    >
-> = props => {
-  if (isBondFullVideo(props)) {
-    return <BondFullVideo {...props} />;
+    VideoHTMLAttributes<HTMLVideoElement>,
+    "poster" | "objectFit" | "objectPosition"
+  >
+> = ({
+  video,
+  playButton,
+  pauseButton,
+  muteButton,
+  unmuteButton,
+  showAudioControls,
+  ...props
+}) => {
+  if (isBondFullVideo(video)) {
+    return (
+      <BondFullVideo
+        {...props}
+        video={video}
+        playButton={playButton}
+        pauseButton={pauseButton}
+        muteButton={muteButton}
+        unmuteButton={unmuteButton}
+        showAudioControls={showAudioControls}
+      />
+    );
   }
-  if (isBondExternalVideo(props)) {
-    return <BondExternalVideo {...props} />;
+  if (isBondExternalVideo(video)) {
+    return (
+      <BondExternalVideo
+        {...props}
+        video={video}
+        playButton={playButton}
+        pauseButton={pauseButton}
+        muteButton={muteButton}
+        unmuteButton={unmuteButton}
+        showAudioControls={showAudioControls}
+      />
+    );
   }
-  return <BondSimpleVideo {...props} />;
+  return <BondSimpleVideo {...props} video={video} />;
 };

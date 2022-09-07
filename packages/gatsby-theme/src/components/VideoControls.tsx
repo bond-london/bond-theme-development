@@ -8,14 +8,15 @@ export const VideoControls: React.FC<{
   muteUnmuteClassName?: string;
   isPlaying?: boolean;
   isMuted?: boolean;
-  playVideo?: () => void;
-  pauseVideo?: () => void;
-  muteVideo?: () => void;
-  unmuteVideo?: () => void;
-  PlayButton?: React.FC<{ playVideo?: () => void }>;
-  PauseButton?: React.FC<{ pauseVideo?: () => void }>;
-  MuteButton?: React.FC<{ muteVideo?: () => void }>;
-  UnmuteButton?: React.FC<{ unmuteVideo?: () => void }>;
+  playVideo: () => void;
+  pauseVideo: () => void;
+  muteVideo: () => void;
+  unmuteVideo: () => void;
+  playButton?: React.FC<{ playVideo: () => void }>;
+  pauseButton?: React.FC<{ pauseVideo: () => void }>;
+  muteButton?: React.FC<{ muteVideo: () => void }>;
+  unmuteButton?: React.FC<{ unmuteVideo: () => void }>;
+  showAudioControls?: boolean;
 }> = ({
   className,
   insideClassName,
@@ -27,10 +28,11 @@ export const VideoControls: React.FC<{
   pauseVideo,
   muteVideo,
   unmuteVideo,
-  PlayButton,
-  PauseButton,
-  MuteButton,
-  UnmuteButton,
+  playButton: PlayButton,
+  pauseButton: PauseButton,
+  muteButton: MuteButton,
+  unmuteButton: UnmuteButton,
+  showAudioControls,
 }) => {
   const [isActive, setIsActive] = useState(false);
   const onMouseEnter = useCallback(() => setIsActive(true), []);
@@ -55,7 +57,7 @@ export const VideoControls: React.FC<{
         </div>
       )}
 
-      {(MuteButton || UnmuteButton) && (
+      {showAudioControls && isPlaying && (MuteButton || UnmuteButton) && (
         <div className={muteUnmuteClassName}>
           {isMuted
             ? UnmuteButton && <UnmuteButton unmuteVideo={unmuteVideo} />
@@ -67,12 +69,13 @@ export const VideoControls: React.FC<{
 };
 
 VideoControls.defaultProps = {
+  showAudioControls: true,
   insideClassName: "inside grid grid-cols-3 grid-rows-3",
   playPauseClassName: "col-start-2 row-start-2 self-center justify-self-center",
   muteUnmuteClassName:
     "col-start-3 row-start-3 self-end justify-self-end p-[1rem]",
 
-  PlayButton: ({ playVideo }): JSX.Element => (
+  playButton: ({ playVideo }): JSX.Element => (
     <button
       onClick={playVideo}
       className="text-[white] p-[0.5rem] bg-[black] text-[3rem]"
@@ -80,7 +83,7 @@ VideoControls.defaultProps = {
       Play
     </button>
   ),
-  PauseButton: ({ pauseVideo }): JSX.Element => (
+  pauseButton: ({ pauseVideo }): JSX.Element => (
     <button
       onClick={pauseVideo}
       className="text-[white] p-[0.5rem] bg-[black] text-[3rem]"
@@ -88,7 +91,7 @@ VideoControls.defaultProps = {
       Pause
     </button>
   ),
-  MuteButton: ({ muteVideo }): JSX.Element => (
+  muteButton: ({ muteVideo }): JSX.Element => (
     <button
       onClick={muteVideo}
       className="text-[white] p-[0.5rem] bg-[black] text-[3rem]"
@@ -96,7 +99,7 @@ VideoControls.defaultProps = {
       Mute
     </button>
   ),
-  UnmuteButton: ({ unmuteVideo }): JSX.Element => (
+  unmuteButton: ({ unmuteVideo }): JSX.Element => (
     <button
       onClick={unmuteVideo}
       className="text-[white] p-[0.5rem] bg-[black] text-[3rem]"

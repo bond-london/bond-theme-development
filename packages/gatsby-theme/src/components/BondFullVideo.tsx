@@ -40,7 +40,7 @@ export function convertCMSVideoToBondFullVideo(cms: ICMSVideo): IBondFullVideo {
   const posterFile = cms.poster?.localFile?.publicURL || undefined;
 
   return {
-    video: posterFile ? { ...preview, poster: posterFile } : preview,
+    videoData: posterFile ? { ...preview, poster: posterFile } : preview,
     full,
     dontCrop: cms.dontCrop,
     verticalCropPosition: cms.verticalCropPosition,
@@ -49,14 +49,20 @@ export function convertCMSVideoToBondFullVideo(cms: ICMSVideo): IBondFullVideo {
 }
 
 export const BondFullVideo: React.FC<
-  IBondFullVideo & {
+  {
+    video: IBondFullVideo;
     videoClassName?: string;
     videoStyle?: CSSProperties;
     noPoster?: boolean;
+    playButton?: React.FC<{ playVideo: () => void }>;
+    pauseButton?: React.FC<{ pauseVideo: () => void }>;
+    muteButton?: React.FC<{ muteVideo: () => void }>;
+    unmuteButton?: React.FC<{ unmuteVideo: () => void }>;
+    showAudioControls?: boolean;
   } & Omit<
-      VideoHTMLAttributes<HTMLVideoElement>,
-      "poster" | "objectFit" | "objectPosition"
-    >
+    VideoHTMLAttributes<HTMLVideoElement>,
+    "poster" | "objectFit" | "objectPosition"
+  >
 > = props => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -91,18 +97,27 @@ export const BondFullVideo: React.FC<
   const unmuteVideo = useCallback(() => {
     const video = fullVideoRef.current;
     if (video) {
-      video.muted = true;
+      video.muted = false;
       setIsMuted(false);
     }
   }, [fullVideoRef]);
 
   const {
+    video,
+    playButton,
+    pauseButton,
+    muteButton,
+    unmuteButton,
+    showAudioControls,
+    ...videoProps
+  } = props;
+  const {
     dontCrop,
     horizontalCropPosition,
     verticalCropPosition,
     full,
-    ...videoProps
-  } = props;
+    videoData,
+  } = video;
   const { objectFit, objectPosition } = calculateCropDetails({
     dontCrop,
     horizontalCropPosition,
@@ -112,6 +127,7 @@ export const BondFullVideo: React.FC<
   return (
     <GatsbyVideo
       {...videoProps}
+      video={videoData}
       onTimeUpdate={!previewHasStarted ? onPreviewHasStarted : undefined}
       pause={fullHasStarted ? true : undefined}
       objectFit={objectFit}
@@ -137,6 +153,11 @@ export const BondFullVideo: React.FC<
           pauseVideo={pauseVideo}
           muteVideo={muteVideo}
           unmuteVideo={unmuteVideo}
+          playButton={playButton}
+          pauseButton={pauseButton}
+          muteButton={muteButton}
+          unmuteButton={unmuteButton}
+          showAudioControls={showAudioControls}
         />
       )}
     </GatsbyVideo>

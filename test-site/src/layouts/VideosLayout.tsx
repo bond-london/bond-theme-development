@@ -34,7 +34,7 @@ const VideoCombinedLayout: React.FC<{
           objectPosition={objectPosition}
           loop={true}
           autoPlay={true}
-          controls={true}
+          controls={false}
         />
       </div>
       <div className={classNames(divClassName, className)}>
@@ -45,7 +45,7 @@ const VideoCombinedLayout: React.FC<{
           loop={true}
           loopDelay={3000}
           autoPlay={true}
-          controls={true}
+          controls={false}
         />
       </div>
       <div className={classNames(divClassName, className)}>
@@ -54,7 +54,7 @@ const VideoCombinedLayout: React.FC<{
           objectFit={objectFit}
           objectPosition={objectPosition}
           autoPlay={true}
-          controls={true}
+          controls={false}
         />
       </div>
     </>

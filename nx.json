@@ -4,27 +4,7 @@
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": [
-          "develop",
-          "format",
-          "build",
-          "clean",
-          "rebuild",
-          "typecheck",
-          "lint",
-          "build:browser",
-          "watch",
-          "watch:browser",
-          "prepare",
-          "build:gatsby-config",
-          "watch:gatsby-config",
-          "build:gatsby-node",
-          "watch:gatsby-node",
-          "build:gatsby-ssr",
-          "watch:gatsby-ssr",
-          "xbuild:browser",
-          "xwatch:browser"
-        ]
+        "cacheableOperations": []
       }
     }
   },

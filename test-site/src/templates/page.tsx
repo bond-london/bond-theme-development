@@ -6,9 +6,12 @@ export default CmsPageLayout;
 
 // eslint-disable-next-line import/no-unused-modules
 export const PageQuery = graphql`
-  query SinglePage {
-    graphCmsPage(remoteId: { eq: "cl6z6m5gd1z0k0btbhxtpr9z4" }) {
+  query SinglePage($id: String!) {
+    graphCmsPage(id: { eq: $id }) {
       ...Page
+    }
+    site {
+      ...SiteLayout
     }
   }
 `;

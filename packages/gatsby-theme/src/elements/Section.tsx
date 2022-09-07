@@ -48,9 +48,11 @@ const CoreSection: React.FC<
       )}
     >
       {preChildren}
-      <div ref={ref} className={classNames(contentClassName)}>
-        {children}
-      </div>
+      {children && (
+        <div ref={ref} className={classNames(contentClassName)}>
+          {children}
+        </div>
+      )}
       {postChildren}
     </Element>
   );

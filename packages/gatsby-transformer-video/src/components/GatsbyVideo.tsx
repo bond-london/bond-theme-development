@@ -9,7 +9,11 @@ import React, {
 } from "react";
 import { IGatsbyTransformedVideo } from "../types";
 
-function calculateSizes({ width, height, layout }: IGatsbyTransformedVideo): {
+function calculateVideoSizes({
+  width,
+  height,
+  layout,
+}: IGatsbyTransformedVideo): {
   width: number;
   height: number;
 } {
@@ -82,7 +86,7 @@ export const GatsbyInternalVideo: React.FC<
     "src" | "ref" | "width" | "height"
   >
 > = ({ video, videoRef, ...otherProps }) => {
-  const { width, height } = calculateSizes(video);
+  const { width, height } = calculateVideoSizes(video);
 
   return (
     <video {...otherProps} ref={videoRef} width={width} height={height}>
@@ -102,6 +106,7 @@ export const GatsbyVideo: React.FC<
       objectPosition?: CSSProperties["objectPosition"];
       videoClassName?: string;
       videoStyle?: CSSProperties;
+      pause?: boolean;
     } & Omit<VideoHTMLAttributes<HTMLVideoElement>, "poster" | "src">
   >
 > = allProps => {
@@ -119,6 +124,7 @@ export const GatsbyVideo: React.FC<
     videoClassName,
     videoStyle,
     controls = false,
+    pause,
     ...otherProps
   } = allProps;
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -151,6 +157,12 @@ export const GatsbyVideo: React.FC<
     }
     return undefined;
   }, [loop, loopDelay]);
+
+  useEffect(() => {
+    if (pause) {
+      videoRef.current?.pause();
+    }
+  }, [pause]);
 
   return (
     <div

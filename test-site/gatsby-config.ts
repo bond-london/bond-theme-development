@@ -8,7 +8,7 @@ function readEnvVar(envVarName: string): string {
   return value;
 }
 
-const themeOptions: IBondThemeOptions = {
+const themeOptions: Partial<IBondThemeOptions> = {
   projectName: "Theme Test Site",
   videoCacheConnectionString: process.env.VIDEO_CACHE_CONNECTION_STRING,
   graphCMSToken: readEnvVar("GRAPHCMS_TOKEN"),

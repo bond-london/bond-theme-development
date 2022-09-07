@@ -1,17 +1,20 @@
 import {
   IBondImage,
   IBondVideo,
+  IBondFullVideo,
   BondVideo,
+  BondFullVideo,
   BondImage,
   Section,
+  isBondFullVideo,
 } from "@bond-london/gatsby-theme";
 import React from "react";
 import { ColourName, lookupColourClassNames } from "../colors";
 
-const HeroBackground: React.FC<{ video?: IBondVideo; image?: IBondImage }> = ({
-  video,
-  image,
-}) => {
+const HeroBackground: React.FC<{
+  video?: IBondVideo | IBondFullVideo;
+  image?: IBondImage;
+}> = ({ video, image }) => {
   const className = "relative col-span-full row-span-full";
   if (video) {
     return (
@@ -71,6 +74,7 @@ export const Hero: React.FC<{
       className={lookupColourClassNames(backgroundColour, textColour)}
       componentName="Hero"
       preChildren={<HeroBackground video={video} image={image} />}
+      contentClassName="pointer-events-none"
     >
       <HeroText preHeader={preHeader} header={header} postHeader={postHeader} />
     </Section>

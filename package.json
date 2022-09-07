@@ -11,7 +11,9 @@
     "watch": "lerna run watch --no-sort --stream --concurrency=999",
     "build:packages": "lerna run --scope \"@bond-london/gatsby-theme\" --include-dependencies build --stream --concurrency=0",
     "watch:packages": "lerna run --scope \"@bond-london/gatsby-theme\" --include-dependencies watch --no-sort --stream --concurrency=999",
-    "nx": "nx"
+    "nx": "nx",
+    "prerelease": "lerna version prerelease",
+    "publish": "lerna publish from-package"
   },
   "workspaces": [
     "packages/*",

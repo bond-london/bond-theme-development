@@ -13,7 +13,7 @@
     "watch:packages": "lerna run --scope \"@bond-london/gatsby-theme\" --include-dependencies watch --no-sort --stream --concurrency=999",
     "nx": "nx",
     "prerelease": "lerna version prerelease",
-    "publish": "lerna publish from-package"
+    "publish:packages": "lerna publish from-package"
   },
   "workspaces": [
     "packages/*",

@@ -1,11 +1,6 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import React from "react";
-import {
-  INodeRenderer,
-  IAudioNodeRendererProps,
-  IImageNodeRendererProps,
-  IAssetProps,
-  IVideoNodeRendererProps,
-} from "../types";
+import { INodeRenderer } from "../types";
 import { AudioRenderer } from "./AudioRenderer";
 import { ClassRenderer } from "./ClassRenderer";
 import { DefaultRenderer } from "./DefaultRenderer";
@@ -35,39 +30,20 @@ export const defaultRenderers: INodeRenderer = {
   ul: props => <DefaultRenderer {...props} element="ul" />,
   ol: props => <DefaultRenderer {...props} element="ol" />,
   li: props => <DefaultRenderer {...props} element="li" />,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   list_item_child: ({ children }) => <>{children}</>,
   table: props => <DefaultRenderer {...props} element="table" />,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   table_head: props => <DefaultRenderer {...props} element="thead" />,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   table_body: props => <DefaultRenderer {...props} element="tbody" />,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   table_row: props => <DefaultRenderer {...props} element="tr" />,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   table_header_cell: props => <DefaultRenderer {...props} element="th" />,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   table_cell: props => <DefaultRenderer {...props} element="td" />,
   blockquote: props => <DefaultRenderer {...props} element="blockquote" />,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   code_block: props => <DefaultRenderer {...props} element="pre" />,
   embed: props => <EmbedRenderer {...props} />,
   embed_asset: {
-    audio: props => (
-      <AudioRenderer {...(props as unknown as IAudioNodeRendererProps)} />
-    ),
-    image: props => (
-      <ImageRenderer
-        {...(props as unknown as IImageNodeRendererProps)}
-        src={(props as IAssetProps).url}
-      />
-    ),
-    video: props => (
-      <VideoRenderer
-        {...(props as unknown as IVideoNodeRendererProps)}
-        src={(props as IAssetProps).url}
-      />
-    ),
+    audio: props => <AudioRenderer {...props} />,
+    image: props => <ImageRenderer {...props} />,
+    video: props => <VideoRenderer {...props} />,
   },
   embed_node: {},
 };

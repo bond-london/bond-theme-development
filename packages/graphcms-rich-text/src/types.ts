@@ -1,14 +1,13 @@
 import {
+  AssetMimeTypes,
   AssetReference,
   ClassProps,
   ElementNode,
   IFrameProps,
-  ImageProps,
   LinkProps,
   Node,
   Reference,
   RichTextContent,
-  VideoProps,
 } from "@graphcms/rich-text-types";
 import React, { AriaRole, CSSProperties } from "react";
 
@@ -85,6 +84,9 @@ export interface IBaseRendererProps {
     htmlElementName: keyof INodeRenderer
   ) => JSX.Element;
   contents?: ReadonlyArray<Node>;
+  additionalClassName?: string;
+  className?: string;
+  style?: CSSProperties;
 }
 
 export interface IDefaultNodeRendererProps {
@@ -152,6 +154,9 @@ export type CustomEmbedRendererProps<T = unknown> = IElementsRendererProps & {
   isInline?: boolean;
 } & T;
 
+export type ICustomEmbedRenderedProps<T = unknown> = IElementsRendererProps &
+  Partial<T> & { isInline?: boolean };
+
 export type EmbedNodeRenderer = (props: IEmbedNodeRendererProps) => JSX.Element;
 
 export type DefaultNodeRenderer = (
@@ -180,23 +185,36 @@ export interface IClassNodeRendererProps
     Partial<ClassProps> {}
 export type ClassNodeRenderer = (props: IClassNodeRendererProps) => JSX.Element;
 
-export interface IImageNodeRendererProps
-  extends IDefaultNodeRendererProps,
-    Partial<ImageProps> {}
+export interface IImageProps {
+  src?: string;
+  url?: string;
+  title?: string;
+  width?: number;
+  height?: number;
+  handle?: string;
+  mimeType?: AssetMimeTypes;
+  altText?: string;
+}
 
+export type IImageNodeRendererProps = ICustomEmbedRenderedProps<IImageProps>;
 export type ImageNodeRenderer = (props: IImageNodeRendererProps) => JSX.Element;
 
 export interface IAudioProps {
   url: string;
 }
-export interface IAudioNodeRendererProps
-  extends IDefaultNodeRendererProps,
-    Partial<IAudioProps> {}
+export type IAudioNodeRendererProps = ICustomEmbedRenderedProps<IAudioProps>;
 export type AudioNodeRenderer = (props: IAudioNodeRendererProps) => JSX.Element;
 
-export interface IVideoNodeRendererProps
-  extends IDefaultNodeRendererProps,
-    Partial<VideoProps> {}
+export interface IVideoProps {
+  src?: string;
+  url?: string;
+  title?: string;
+  width?: number;
+  height?: number;
+  handle?: string;
+}
+
+export type IVideoNodeRendererProps = ICustomEmbedRenderedProps<IVideoProps>;
 export type VideoNodeRenderer = (props: IVideoNodeRendererProps) => JSX.Element;
 
 export interface IAssetProps {

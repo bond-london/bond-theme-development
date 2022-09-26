@@ -4,6 +4,7 @@ import { IImageNodeRendererProps } from "../types";
 
 export const ImageRenderer: React.FC<IImageNodeRendererProps> = ({
   src,
+  url,
   width,
   height,
   altText,
@@ -13,16 +14,19 @@ export const ImageRenderer: React.FC<IImageNodeRendererProps> = ({
   className,
   style,
 }) => {
-  if (!src) {
+  const realSrc = src || url;
+  if (!realSrc) {
     return (
-      <span style={{ color: "red" }}>{"[ImageRenderer]: src is required"}</span>
+      <span style={{ color: "red" }}>
+        {"[ImageRenderer]: src or url is required"}
+      </span>
     );
   }
 
   return (
     <img
       loading="lazy"
-      src={encodeURI(src)}
+      src={encodeURI(realSrc)}
       width={width}
       height={height}
       alt={altText}

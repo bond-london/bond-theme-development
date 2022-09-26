@@ -4,6 +4,7 @@ import { IVideoNodeRendererProps } from "../types";
 
 export const VideoRenderer: React.FC<IVideoNodeRendererProps> = ({
   src,
+  url,
   width,
   height,
   title,
@@ -12,9 +13,12 @@ export const VideoRenderer: React.FC<IVideoNodeRendererProps> = ({
   className,
   style,
 }) => {
-  if (!src) {
+  const realSrc = src || url;
+  if (!realSrc) {
     return (
-      <span style={{ color: "red" }}>{"[VideoRenderer]: src is required"}</span>
+      <span style={{ color: "red" }}>
+        {"[VideoRenderer]: src or url is required"}
+      </span>
     );
   }
 
@@ -27,7 +31,7 @@ export const VideoRenderer: React.FC<IVideoNodeRendererProps> = ({
         className
       )}
       style={style}
-      src={encodeURI(src)}
+      src={encodeURI(realSrc)}
       width={width || "100%"}
       height={height || "100%"}
       controls={true}

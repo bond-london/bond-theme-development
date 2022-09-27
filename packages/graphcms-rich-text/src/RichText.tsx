@@ -11,7 +11,8 @@ export const InternalRichText: React.FC<IInternalRichTextProps> = ({
   <RenderElements
     {...rest}
     renderers={renderers}
-    contents={content}
+    contents={content.cleaned}
+    references={content.references}
     index={0}
     parentIndex={0}
   />

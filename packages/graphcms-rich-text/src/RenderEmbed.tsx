@@ -34,5 +34,5 @@ export const RenderEmbed: React.FC<IEmbedNodeRendererProps> = props => {
   }
 
   const NodeRenderer = renderer as React.ElementType;
-  return <NodeRenderer {...rest} nodeId={nodeId} {...referenceValue} />;
+  return <NodeRenderer {...rest} nodeId={nodeId} reference={referenceValue} />;
 };

@@ -5,8 +5,7 @@ import { IEmbedNodeRendererProps } from "./types";
 export const RenderAsset: React.FC<
   PropsWithChildren<IEmbedNodeRendererProps>
 > = props => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { nodeId, nodeType, children: _unusedChildren, ...rest } = props;
+  const { nodeId, nodeType, children, ...rest } = props;
   const { references, renderers } = rest;
 
   if (nodeType !== "Asset") {
@@ -64,7 +63,11 @@ export const RenderAsset: React.FC<
 
   const NodeRenderer = renderer as React.ElementType;
   if (NodeRenderer) {
-    return <NodeRenderer {...rest} {...referenceValue} />;
+    return (
+      <NodeRenderer {...rest} {...referenceValue}>
+        {children}
+      </NodeRenderer>
+    );
   }
 
   return (

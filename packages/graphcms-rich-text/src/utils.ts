@@ -5,12 +5,11 @@ import {
   EmbedElement,
 } from "@graphcms/rich-text-types";
 import React from "react";
-import { CleanedRTF } from ".";
 import {
   IElementsRendererProps,
   IGenericRichTextNode,
+  IRichTextInformation,
   RTFContent,
-  RTFReferences,
 } from "./types";
 
 export function getElements(content: RTFContent): Array<ElementNode> {
@@ -21,23 +20,21 @@ export function isEmbed(node: Node): node is EmbedElement {
   return isElement(node) && node.type === "embed";
 }
 
-export function rtfFromText(text: string): CleanedRTF {
-  return [{ type: "paragraph", children: [{ text }] }];
+export function rtfFromText(text: string): IRichTextInformation {
+  return { cleaned: [{ type: "paragraph", children: [{ text }] }] };
 }
 
-export function getCleanedRTF(
+export function getRTFInformation(
   node: IGenericRichTextNode | undefined | null
-): CleanedRTF | undefined {
-  if (node) {
-    return node.cleaned as CleanedRTF;
+): IRichTextInformation | undefined {
+  if (node && node.cleaned) {
+    const information: IRichTextInformation = {
+      cleaned: node.cleaned as ReadonlyArray<ElementNode>,
+      references: node.references,
+    };
+    return information;
   }
   return undefined;
-}
-
-export function getRTFReferences(
-  node: IGenericRichTextNode | undefined | null
-): RTFReferences | undefined {
-  return node?.references;
 }
 
 export type TableCell = Array<Node>;
@@ -60,8 +57,8 @@ function getTableRow(node: ElementNode): TableRow | undefined {
   }
 }
 
-function getTable(node: CleanedRTF): ITableInformation {
-  const rows = node
+function getTable(node: IRichTextInformation): ITableInformation {
+  const rows = node.cleaned
     .filter(n => {
       switch (n.type) {
         case "table_head":
@@ -78,7 +75,9 @@ function getTable(node: CleanedRTF): ITableInformation {
   return { header, body };
 }
 
-export function buildTableInformation(contents: CleanedRTF): ITableInformation {
+export function buildTableInformation(
+  contents: IRichTextInformation
+): ITableInformation {
   return getTable(contents);
 }
 
@@ -88,6 +87,8 @@ export function buildTableInformationFromChildren(
   const element = children as React.ReactElement<IElementsRendererProps>;
   const { props } = element;
   const { contents } = props;
-  const table = buildTableInformation(contents as Array<ElementNode>);
+  const table = buildTableInformation({
+    cleaned: contents as Array<ElementNode>,
+  });
   return table;
 }

@@ -12,11 +12,13 @@ import {
 import React, { AriaRole, CSSProperties } from "react";
 
 export type RTFContent = RichTextContent;
-export type RTFReferences = ReadonlyArray<
-  (Reference | AssetReference) & { remoteId?: string }
->;
+export type RTFReference = (Reference | AssetReference) & { remoteId?: string };
+export type RTFReferences = ReadonlyArray<RTFReference>;
 
-export type CleanedRTF = ReadonlyArray<ElementNode>;
+export interface IRichTextInformation {
+  readonly cleaned: ReadonlyArray<ElementNode>;
+  readonly references?: RTFReferences;
+}
 
 export interface IGenericRichTextNode {
   readonly raw?: unknown;
@@ -119,15 +121,18 @@ export interface IRTFProps extends Omit<IBaseRendererProps, "renderers"> {
   projectClassNameOverrides?: ClassNameOverrides;
 }
 
-export type RealRTFProps = Omit<IRTFProps, "content"> & { content: CleanedRTF };
+export type RealRTFProps = Omit<IRTFProps, "content" | "references"> & {
+  content: IRichTextInformation;
+};
 
-export interface IRichTextProps extends Omit<IBaseRendererProps, "renderers"> {
-  content: CleanedRTF;
+export interface IRichTextProps
+  extends Omit<IBaseRendererProps, "renderers" | "references"> {
+  content: IRichTextInformation;
   renderers?: Partial<INodeRenderer>;
 }
 
 export interface IInternalRichTextProps extends IBaseRendererProps {
-  content: CleanedRTF;
+  content: IRichTextInformation;
   renderers: INodeRenderer;
 }
 
@@ -149,6 +154,7 @@ export interface IEmbedNodeRendererProps extends IElementsRendererProps {
   nodeId: string;
   nodeType: string;
   isInline?: boolean;
+  reference: RTFReference;
 }
 
 export type CustomEmbedRendererProps<T = unknown> = IElementsRendererProps & {

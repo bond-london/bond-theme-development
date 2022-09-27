@@ -5,7 +5,7 @@
   "description": "Rich text components",
   "author": "Nick Randell <nick.randell@bond.fi>",
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "license": "MIT",
   "keywords": [

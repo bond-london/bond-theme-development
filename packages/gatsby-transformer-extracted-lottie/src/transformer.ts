@@ -6,9 +6,9 @@ import { Node, NodePluginArgs } from "gatsby";
 import { FileSystemNode } from "gatsby-source-filesystem";
 import { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
 import { IGatsbyExtractedAnimation, ITransformArgs } from "./types";
-import renderToSvg from "lottie-to-svg";
 import svgToTinyDataUri from "mini-svg-data-uri";
 import { optimize, OptimizedError, OptimizedSvg } from "svgo";
+import { renderLottieToSvg } from "./lottieToSvg";
 
 function isOptimizedError(
   a: OptimizedSvg | OptimizedError
@@ -23,7 +23,7 @@ async function parseLottie(
   const { reporter } = args;
   const animationJson = await readFile(fsNode.absolutePath, "utf8");
   const animationData = JSON.parse(animationJson) as unknown;
-  const svg = await renderToSvg(animationData, {});
+  const svg = renderLottieToSvg(animationData, reporter);
   const result = optimize(svg, { multipass: true });
   if (isOptimizedError(result)) {
     return reporter.panic(result.modernError);

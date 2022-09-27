@@ -12,7 +12,7 @@ import React from "react";
 import { ColourName, lookupColourClassNames } from "../colors";
 
 const HeroBackground: React.FC<{
-  video?: IBondVideo | IBondFullVideo;
+  video?: IBondVideo;
   image?: IBondImage;
 }> = ({ video, image }) => {
   const className = "relative col-span-full row-span-full";
@@ -20,7 +20,7 @@ const HeroBackground: React.FC<{
     return (
       <BondVideo
         className={className}
-        {...video}
+        video={video}
         autoPlay={true}
         muted={true}
         loop={true}

@@ -26,7 +26,6 @@ export async function createPages(args: CreatePagesArgs) {
     }
   `);
 
-  reporter.info(`Got query results: ${JSON.stringify(results)}`);
   const { data } = results;
 
   if (!data?.allGraphCmsPage) {

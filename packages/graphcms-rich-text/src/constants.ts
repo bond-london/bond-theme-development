@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { ElementTypeMap, INodeRenderer } from "./types";
+import { ElementTypeMap, IFullNodeRenderer } from "./types";
 
-export const elementKeys: { [key: string]: keyof INodeRenderer } = {
+export const elementKeys: { [key: string]: keyof IFullNodeRenderer } = {
   "heading-one": "h1",
   "heading-two": "h2",
   "heading-three": "h3",

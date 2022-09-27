@@ -5,7 +5,7 @@
     "bootstrap": "lerna bootstrap",
     "format": "yarn run format:code",
     "format:code": "yarn run lint:code --fix",
-    "lint:code": "eslint --ext .js,.jsx,.ts,.tsx --quiet packages",
+    "lint:code": "eslint --ext .ts,.tsx --quiet packages",
     "lerna": "lerna",
     "build": "lerna run build  --stream --concurrency=0",
     "watch": "lerna run watch --no-sort --stream --concurrency=999",

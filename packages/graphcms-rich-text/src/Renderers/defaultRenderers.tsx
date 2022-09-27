@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React from "react";
-import { INodeRenderer } from "../types";
+import { IFullNodeRenderer } from "../types";
 import { AudioRenderer } from "./AudioRenderer";
 import { ClassRenderer } from "./ClassRenderer";
 import { DefaultRenderer } from "./DefaultRenderer";
@@ -10,7 +10,7 @@ import { ImageRenderer } from "./ImageRenderer";
 import { LinkRenderer } from "./LinkRenderer";
 import { VideoRenderer } from "./VideoRenderer";
 
-export const defaultRenderers: INodeRenderer = {
+export const defaultRenderers: IFullNodeRenderer = {
   p: props => <DefaultRenderer {...props} element="p" />,
   bold: props => <DefaultRenderer {...props} element="b" />,
   italic: props => <DefaultRenderer {...props} element="i" />,

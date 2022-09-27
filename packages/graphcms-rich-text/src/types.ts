@@ -61,9 +61,12 @@ export interface INodeRenderer {
   table_cell: DefaultNodeRenderer;
   blockquote: DefaultNodeRenderer;
   code_block: DefaultNodeRenderer;
-  embed: EmbedNodeRenderer;
   embed_asset: IAssetRenderer;
   embed_node: IAssetRenderer;
+}
+
+export interface IFullNodeRenderer extends INodeRenderer {
+  embed: EmbedNodeRenderer;
 }
 
 export type ClassNameOverrides = {
@@ -81,7 +84,7 @@ export interface IBaseRendererProps {
   classNameOverrides?: ClassNameOverrides;
   renderDisabledElement?: (
     elementName: string,
-    htmlElementName: keyof INodeRenderer
+    htmlElementName: keyof IFullNodeRenderer
   ) => JSX.Element;
   contents?: ReadonlyArray<Node>;
   additionalClassName?: string;

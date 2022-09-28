@@ -97,6 +97,7 @@ export function createMp4VideoTransform(
 ): Array<string> {
   return [
     "-c:v libx265",
+    "-pix_fmt yuv420p",
     "-crf 32",
     targetWidth ? `-vf scale='min(${targetWidth},iw)':-2` : `-vf scale=0:0`,
     "-preset veryslow",

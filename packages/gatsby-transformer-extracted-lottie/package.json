@@ -53,8 +53,5 @@
     "gatsby": "^4",
     "gatsby-source-filesystem": "^4"
   },
-  "gitHead": "5c1e8033f5b218b11ccfec5b579df6b6a657449e",
-  "resolutions": {
-    "whatwg-url": "10"
-  }
+  "gitHead": "5c1e8033f5b218b11ccfec5b579df6b6a657449e"
 }

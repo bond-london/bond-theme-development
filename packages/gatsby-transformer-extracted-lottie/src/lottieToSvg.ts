@@ -8,6 +8,7 @@ export function renderLottieToSvg(
   try {
     const { window } = new JSDOM("<!DOCTYPE html><body></body>", {
       pretendToBeVisual: true,
+      url: "http://localhost",
     });
     const { document, navigator } = window;
     global.window = window;

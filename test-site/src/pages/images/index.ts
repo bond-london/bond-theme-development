@@ -5,7 +5,7 @@ export default ImagesLayout;
 
 export const AllImagesQuery = graphql`
   query AllImages {
-    allImageSharp {
+    allImageSharp(limit: 2) {
       constrained: nodes {
         ...ConstrainedImage
       }

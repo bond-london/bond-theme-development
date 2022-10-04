@@ -10,7 +10,7 @@ import React, {
 } from "react";
 import { calculateCropDetails } from "../utils";
 import { IBondSimpleVideo } from "./BondSimpleVideo";
-import { ICMSVideo } from "./BondVideo";
+import { ICmsVideo } from "./BondVideo";
 import ReactPlayer from "react-player/lazy";
 import { VideoControls } from "./VideoControls";
 
@@ -18,8 +18,8 @@ export type IBondExternalVideo = IBondSimpleVideo & {
   external: string;
 };
 
-export function convertCMSVideoToBondExternalVideo(
-  cms: ICMSVideo
+export function convertCmsVideoToBondExternalVideo(
+  cms: ICmsVideo
 ): IBondExternalVideo {
   const preview = cms.preview.localFile?.childGatsbyVideo
     ? getTransformedVideo(cms.preview.localFile.childGatsbyVideo)

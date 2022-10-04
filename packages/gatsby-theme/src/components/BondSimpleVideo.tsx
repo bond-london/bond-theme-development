@@ -10,14 +10,14 @@ import React, {
 } from "react";
 import { IVisualCommon } from "../types";
 import { calculateCropDetails } from "../utils";
-import { ICMSVideo } from "./BondVideo";
+import { ICmsVideo } from "./BondVideo";
 
 export type IBondSimpleVideo = IVisualCommon & {
   videoData: IGatsbyTransformedVideo;
 };
 
-export function convertCMSVideoToBondSimpleVideo(
-  cms: ICMSVideo
+export function convertCmsVideoToBondSimpleVideo(
+  cms: ICmsVideo
 ): IBondSimpleVideo {
   const preview = cms.preview.localFile?.childGatsbyVideo
     ? getTransformedVideo(cms.preview.localFile.childGatsbyVideo)

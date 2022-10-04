@@ -14,6 +14,7 @@ export const CMSHead: React.FC<{
   title,
 }) => {
   if (!site?.siteMetadata) throw new Error("No site metadata");
+  if (!site.siteMetadata.siteName) throw new Error("No site name");
   if (!title) throw new Error("No title");
   const pageTitle = `${title} | ${site.siteMetadata.siteName}`;
   return (

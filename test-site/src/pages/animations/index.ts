@@ -7,7 +7,7 @@ export default AnimationsLayout;
 // eslint-disable-next-line import/no-unused-modules
 export const AnimationsQuery = graphql`
   query AllAnimations {
-    allGatsbyAnimation {
+    allGatsbyAnimation(limit: 2) {
       constrained: nodes {
         ...ConstrainedAnimation
       }

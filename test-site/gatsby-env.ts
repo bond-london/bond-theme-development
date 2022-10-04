@@ -23,3 +23,4 @@ const PRODUCTION = parseEnvBoolean("PRODUCTION");
 const PUBLISHED = "PUBLISHED" === process.env.GRAPHCMS_STAGE;
 
 export const isProduction = !NOT_PRODUCTION && (PRODUCTION || PUBLISHED);
+export const articlesPerPage = 10;

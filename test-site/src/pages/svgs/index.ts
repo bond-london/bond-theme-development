@@ -5,7 +5,7 @@ export default SvgsLayout;
 
 export const SvgsQuery = graphql`
   query AllSvgs {
-    allGatsbySvg {
+    allGatsbySvg(limit: 2) {
       constrained: nodes {
         ...ConstrainedSvg
       }

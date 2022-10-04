@@ -122,10 +122,10 @@ export function createExecutor(
         if (!response.ok) {
           return response
             .text()
-            .then(() =>
+            .then(text =>
               reporter.panic(
                 `gatsby-source-graphcms: Response not ok building GraphCMS nodes: "${query}"`,
-                new Error(response.statusText)
+                new Error(text)
               )
             );
         }

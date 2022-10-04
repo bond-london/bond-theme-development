@@ -209,8 +209,11 @@ export const SeoImageAssetFragment = graphql`
   }
 `;
 
-export const ConstrainedCMSImageFragment = graphql`
-  fragment ConstrainedCMSImage on GraphCMS_Image {
+// Models
+
+export const ConstrainedCmsImageFragment = graphql`
+  fragment ConstrainedCmsImage on GraphCMS_Image {
+    __typename
     id
     alt
     dontCrop
@@ -223,8 +226,9 @@ export const ConstrainedCMSImageFragment = graphql`
   }
 `;
 
-export const FixedCMSImageFragment = graphql`
-  fragment FixedCMSImage on GraphCMS_Image {
+export const FixedCmsImageFragment = graphql`
+  fragment FixedCmsImage on GraphCMS_Image {
+    __typename
     id
     alt
     dontCrop
@@ -237,8 +241,9 @@ export const FixedCMSImageFragment = graphql`
   }
 `;
 
-export const FullWidthCMSImageFragment = graphql`
-  fragment FullWidthCMSImage on GraphCMS_Image {
+export const FullWidthCmsImageFragment = graphql`
+  fragment FullWidthCmsImage on GraphCMS_Image {
+    __typename
     id
     alt
     dontCrop
@@ -251,8 +256,9 @@ export const FullWidthCMSImageFragment = graphql`
   }
 `;
 
-export const ConstrainedCMSVideoFragment = graphql`
-  fragment ConstrainedCMSVideo on GraphCMS_Video {
+export const ConstrainedCmsVideoFragment = graphql`
+  fragment ConstrainedCmsVideo on GraphCMS_Video {
+    __typename
     id
     dontCrop
     horizontalCropPosition
@@ -275,8 +281,9 @@ export const ConstrainedCMSVideoFragment = graphql`
   }
 `;
 
-export const FixedCMSVideoFragment = graphql`
-  fragment FixedCMSVideo on GraphCMS_Video {
+export const FixedCmsVideoFragment = graphql`
+  fragment FixedCmsVideo on GraphCMS_Video {
+    __typename
     id
     dontCrop
     horizontalCropPosition
@@ -299,8 +306,9 @@ export const FixedCMSVideoFragment = graphql`
   }
 `;
 
-export const FullWidthCMSVideoFragment = graphql`
-  fragment FullWidthCMSVideo on GraphCMS_Video {
+export const FullWidthCmsVideoFragment = graphql`
+  fragment FullWidthCmsVideo on GraphCMS_Video {
+    __typename
     id
     dontCrop
     horizontalCropPosition
@@ -323,8 +331,9 @@ export const FullWidthCMSVideoFragment = graphql`
   }
 `;
 
-export const ConstrainedCMSAnimationFragment = graphql`
-  fragment ConstrainedCMSAnimation on GraphCMS_Animation {
+export const ConstrainedCmsAnimationFragment = graphql`
+  fragment ConstrainedCmsAnimation on GraphCMS_Animation {
+    __typename
     id
     dontCrop
     horizontalCropPosition
@@ -336,8 +345,9 @@ export const ConstrainedCMSAnimationFragment = graphql`
   }
 `;
 
-export const FixedCMSAnimationFragment = graphql`
-  fragment FixedCMSAnimation on GraphCMS_Animation {
+export const FixedCmsAnimationFragment = graphql`
+  fragment FixedCmsAnimation on GraphCMS_Animation {
+    __typename
     id
     dontCrop
     horizontalCropPosition
@@ -349,13 +359,169 @@ export const FixedCMSAnimationFragment = graphql`
   }
 `;
 
-export const FullWidthCMSAnimationFragment = graphql`
-  fragment FullWidthCMSAnimation on GraphCMS_Animation {
+export const FullWidthCmsAnimationFragment = graphql`
+  fragment FullWidthCmsAnimation on GraphCMS_Animation {
+    __typename
     id
     dontCrop
     horizontalCropPosition
     verticalCropPosition
     remoteId
+    animation {
+      ...FullWidthAnimationAsset
+    }
+  }
+`;
+
+// Components
+
+export const ConstrainedCmsImageComponentFragment = graphql`
+  fragment ConstrainedCmsImageComponent on GraphCMS_ImageComponent {
+    __typename
+    id
+    alt
+    dontCrop
+    horizontalCropPosition
+    verticalCropPosition
+    image {
+      ...ConstrainedImageAsset
+    }
+  }
+`;
+
+export const FixedCmsImageComponentFragment = graphql`
+  fragment FixedCmsImageComponent on GraphCMS_ImageComponent {
+    __typename
+    id
+    alt
+    dontCrop
+    horizontalCropPosition
+    verticalCropPosition
+    image {
+      ...FixedImageAsset
+    }
+  }
+`;
+
+export const FullWidthCmsImageComponentFragment = graphql`
+  fragment FullWidthCmsImageComponent on GraphCMS_ImageComponent {
+    __typename
+    id
+    alt
+    dontCrop
+    horizontalCropPosition
+    verticalCropPosition
+    image {
+      ...FullWidthImageAsset
+    }
+  }
+`;
+
+export const ConstrainedCmsVideoComponentFragment = graphql`
+  fragment ConstrainedCmsVideoComponent on GraphCMS_VideoComponent {
+    __typename
+    id
+    dontCrop
+    horizontalCropPosition
+    verticalCropPosition
+    preview {
+      ...MutedConstrainedVideoAsset
+    }
+    poster {
+      id
+      localFile {
+        id
+        publicURL
+      }
+    }
+    full {
+      ...ConstrainedVideoAsset
+    }
+    external
+  }
+`;
+
+export const FixedCmsVideoComponentFragment = graphql`
+  fragment FixedCmsVideoComponent on GraphCMS_VideoComponent {
+    __typename
+    id
+    dontCrop
+    horizontalCropPosition
+    verticalCropPosition
+    preview {
+      ...MutedFixedVideoAsset
+    }
+    poster {
+      id
+      localFile {
+        id
+        publicURL
+      }
+    }
+    full {
+      ...FixedVideoAsset
+    }
+    external
+  }
+`;
+
+export const FullWidthCmsVideoComponentFragment = graphql`
+  fragment FullWidthCmsVideoComponent on GraphCMS_VideoComponent {
+    __typename
+    id
+    dontCrop
+    horizontalCropPosition
+    verticalCropPosition
+    preview {
+      ...MutedFullWidthVideoAsset
+    }
+    poster {
+      id
+      localFile {
+        id
+        publicURL
+      }
+    }
+    full {
+      ...FullWidthVideoAsset
+    }
+    external
+  }
+`;
+
+export const ConstrainedCmsAnimationComponentFragment = graphql`
+  fragment ConstrainedCmsAnimationComponent on GraphCMS_AnimationComponent {
+    __typename
+    id
+    dontCrop
+    horizontalCropPosition
+    verticalCropPosition
+    animation {
+      ...ConstrainedAnimationAsset
+    }
+  }
+`;
+
+export const FixedCmsAnimationComponentFragment = graphql`
+  fragment FixedCmsAnimationComponent on GraphCMS_AnimationComponent {
+    __typename
+    id
+    dontCrop
+    horizontalCropPosition
+    verticalCropPosition
+    animation {
+      ...FixedAnimationAsset
+    }
+  }
+`;
+
+export const FullWidthCmsAnimationComponentFragment = graphql`
+  fragment FullWidthCmsAnimationComponent on GraphCMS_AnimationComponent {
+    __typename
+    id
+    dontCrop
+    horizontalCropPosition
+    verticalCropPosition
     animation {
       ...FullWidthAnimationAsset
     }

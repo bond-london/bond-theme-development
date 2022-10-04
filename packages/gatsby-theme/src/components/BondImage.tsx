@@ -14,7 +14,7 @@ export type IBondImage = IVisualCommon & {
   alt: string;
 };
 
-export interface ICMSImage {
+export interface ICmsImage {
   readonly id: string;
   readonly alt: string;
   readonly dontCrop: boolean | null;
@@ -37,7 +37,10 @@ export interface ICMSImage {
   };
 }
 
-export function convertCMSImageToBondImage(cms: ICMSImage): IBondImage {
+export function convertCmsImageToBondImage(
+  cms: ICmsImage | null
+): IBondImage | undefined {
+  if (!cms) return undefined;
   const image = cms.image.localFile?.childImageSharp
     ? getGatsbyImage(cms.image.localFile.childImageSharp)
     : undefined;

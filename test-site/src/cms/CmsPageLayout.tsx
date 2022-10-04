@@ -1,8 +1,9 @@
-import { graphql, HeadProps, PageProps } from "gatsby";
+import { HeadProps, PageProps } from "gatsby";
 import React from "react";
 import { CmsComponents } from "./CmsComponents";
 import { useClientOnly } from "@bond-london/gatsby-graphcms-components";
 import { CMSHead } from "./CMSHead";
+import { CmsTextBlock } from "./CmsTextBlock";
 
 export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
   props
@@ -12,42 +13,26 @@ export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
   if (!page) {
     throw new Error("Page does not exist");
   }
+
+  const template = page.template;
   return (
     <div>
-      <CmsComponents
-        fragments={
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
-          page.topComponents as any
-        }
-      />
-      <CmsComponents
-        fragments={
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
-          page.content as any
-        }
-      />
+      <CmsComponents fragments={page.topComponents} />
+      {template?.preContent && (
+        <CmsComponents fragments={template.preContent} />
+      )}
+      <CmsComponents fragments={page.content} />
+      <CmsTextBlock fragment={page.richText} />
+      {template?.postContent && (
+        <CmsComponents fragments={template.postContent} />
+      )}
+      <CmsComponents fragments={page.bottomComponents} />
       {isClient && <pre>{JSON.stringify(props, undefined, 2)}</pre>}
     </div>
   );
 };
 
 // eslint-disable-next-line import/no-unused-modules
-export const PageFragment = graphql`
-  fragment Page on GraphCMS_Page {
-    id
-    slug
-    title
-    topComponents {
-      __typename
-      ...CmsHero
-    }
-    content {
-      __typename
-      ...CmsHero
-    }
-  }
-`;
-
 export const CmsPageHead: React.FC<HeadProps<Queries.SinglePageQuery>> = (
   props
 ) => (

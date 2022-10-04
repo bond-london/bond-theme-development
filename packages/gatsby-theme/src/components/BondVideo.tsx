@@ -6,7 +6,7 @@ import { BondExternalVideo, IBondExternalVideo } from "./BondExternalVideo";
 import { BondFullVideo, IBondFullVideo } from "./BondFullVideo";
 import { BondSimpleVideo, IBondSimpleVideo } from "./BondSimpleVideo";
 
-export interface ICMSVideo {
+export interface ICmsVideo {
   readonly external: string | null;
   readonly dontCrop: boolean | null;
   readonly verticalCropPosition: Vertical | null;
@@ -54,7 +54,10 @@ export function isBondSimpleVideo(
   return !isBondFullVideo(video) && !isBondExternalVideo(video);
 }
 
-export function convertCMSVideoToBondVideo(cms: ICMSVideo): IBondVideo {
+export function convertCmsVideoToBondVideo(
+  cms: ICmsVideo | null
+): IBondVideo | undefined {
+  if (!cms) return undefined;
   const preview = cms.preview.localFile?.childGatsbyVideo
     ? getTransformedVideo(cms.preview.localFile.childGatsbyVideo)
     : undefined;

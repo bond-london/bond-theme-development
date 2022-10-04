@@ -1,12 +1,11 @@
 import {
   IBondImage,
   IBondVideo,
-  IBondFullVideo,
   BondVideo,
-  BondFullVideo,
   BondImage,
   Section,
-  isBondFullVideo,
+  IBondAnimation,
+  BondAnimation,
 } from "@bond-london/gatsby-theme";
 import React from "react";
 import { ColourName, lookupColourClassNames } from "../colors";
@@ -14,7 +13,8 @@ import { ColourName, lookupColourClassNames } from "../colors";
 const HeroBackground: React.FC<{
   video?: IBondVideo;
   image?: IBondImage;
-}> = ({ video, image }) => {
+  animation?: IBondAnimation;
+}> = ({ video, image, animation }) => {
   const className = "relative col-span-full row-span-full";
   if (video) {
     return (
@@ -29,6 +29,9 @@ const HeroBackground: React.FC<{
   }
   if (image) {
     return <BondImage className={className} {...image} />;
+  }
+  if (animation) {
+    return <BondAnimation className={className} {...animation} />;
   }
   return null;
 };
@@ -53,7 +56,7 @@ const HeroText: React.FC<{
 export const Hero: React.FC<{
   video?: IBondVideo;
   image?: IBondImage;
-  // animation?: IBondAnimation;
+  animation?: IBondAnimation;
   preHeader?: string;
   header?: string;
   postHeader?: string;
@@ -62,7 +65,7 @@ export const Hero: React.FC<{
 }> = ({
   video,
   image,
-  // animation,
+  animation,
   preHeader,
   header,
   postHeader,
@@ -73,7 +76,9 @@ export const Hero: React.FC<{
     <Section
       className={lookupColourClassNames(backgroundColour, textColour)}
       componentName="Hero"
-      preChildren={<HeroBackground video={video} image={image} />}
+      preChildren={
+        <HeroBackground video={video} image={image} animation={animation} />
+      }
       contentClassName="pointer-events-none"
     >
       <HeroText preHeader={preHeader} header={header} postHeader={postHeader} />

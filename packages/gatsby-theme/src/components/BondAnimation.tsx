@@ -11,7 +11,7 @@ export type IBondAnimation = IVisualCommon & {
   animation: IGatsbyExtractedAnimation;
 };
 
-export interface ICMSAnimation {
+export interface ICmsAnimation {
   readonly id: string;
   readonly name: string;
   readonly dontCrop: boolean | null;
@@ -30,9 +30,10 @@ export interface ICMSAnimation {
   };
 }
 
-export function convertCMSAnimationToBondAnimation(
-  cms: ICMSAnimation
-): IBondAnimation {
+export function convertCmsAnimationToBondAnimation(
+  cms: ICmsAnimation | null
+): IBondAnimation | undefined {
+  if (!cms) return undefined;
   const animation = cms.animation.localFile?.childGatsbyAnimation
     ? getExtractedAnimation(cms.animation.localFile.childGatsbyAnimation)
     : undefined;

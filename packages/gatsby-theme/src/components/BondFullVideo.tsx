@@ -13,14 +13,14 @@ import React, {
 } from "react";
 import { calculateCropDetails } from "../utils";
 import { IBondSimpleVideo } from "./BondSimpleVideo";
-import { ICMSVideo } from "./BondVideo";
+import { ICmsVideo } from "./BondVideo";
 import { VideoControls } from "./VideoControls";
 
 export type IBondFullVideo = IBondSimpleVideo & {
   full: IGatsbyTransformedVideo;
 };
 
-export function convertCMSVideoToBondFullVideo(cms: ICMSVideo): IBondFullVideo {
+export function convertCmsVideoToBondFullVideo(cms: ICmsVideo): IBondFullVideo {
   const preview = cms.preview.localFile?.childGatsbyVideo
     ? getTransformedVideo(cms.preview.localFile.childGatsbyVideo)
     : undefined;

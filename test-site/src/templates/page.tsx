@@ -8,7 +8,7 @@ export default CmsPageLayout;
 export const PageQuery = graphql`
   query SinglePage($id: String!) {
     graphCmsPage(id: { eq: $id }) {
-      ...Page
+      ...CmsPage
     }
     site {
       ...SiteLayout

@@ -1,8 +1,7 @@
 import {
-  convertCMSImageToBondImage,
-  convertCMSVideoToBondVideo,
+  convertCmsImageToBondImage,
+  convertCmsVideoToBondVideo,
 } from "@bond-london/gatsby-theme";
-import { IGatsbyTransformedVideo } from "@bond-london/gatsby-transformer-video";
 import { graphql } from "gatsby";
 import React from "react";
 import { Hero } from "../components/Hero";
@@ -11,12 +10,8 @@ import { makeValidTextString } from "@bond-london/simple-gatsby-source-graphcms"
 export const CmsHero: React.FC<{ fragment: Queries.CmsHeroFragment }> = ({
   fragment,
 }) => {
-  const video = fragment.video
-    ? convertCMSVideoToBondVideo(fragment.video)
-    : undefined;
-  const image = fragment.image
-    ? convertCMSImageToBondImage(fragment.image)
-    : undefined;
+  const video = convertCmsVideoToBondVideo(fragment.heroVideo);
+  const image = convertCmsImageToBondImage(fragment.heroImage);
 
   return (
     <Hero
@@ -36,11 +31,11 @@ export const CmsHeroFragment = graphql`
   fragment CmsHero on GraphCMS_Hero {
     __typename
     id
-    video {
-      ...FullWidthCMSVideo
+    heroVideo {
+      ...FullWidthCmsVideoComponent
     }
-    image {
-      ...FullWidthCMSImage
+    heroImage {
+      ...FullWidthCmsImageComponent
     }
     preHeader
     header

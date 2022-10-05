@@ -421,6 +421,7 @@ export const ConstrainedCmsVideoComponentFragment = graphql`
   fragment ConstrainedCmsVideoComponent on GraphCMS_VideoComponent {
     __typename
     id
+    name
     dontCrop
     horizontalCropPosition
     verticalCropPosition
@@ -445,6 +446,7 @@ export const FixedCmsVideoComponentFragment = graphql`
   fragment FixedCmsVideoComponent on GraphCMS_VideoComponent {
     __typename
     id
+    name
     dontCrop
     horizontalCropPosition
     verticalCropPosition
@@ -469,6 +471,7 @@ export const FullWidthCmsVideoComponentFragment = graphql`
   fragment FullWidthCmsVideoComponent on GraphCMS_VideoComponent {
     __typename
     id
+    name
     dontCrop
     horizontalCropPosition
     verticalCropPosition
@@ -493,6 +496,7 @@ export const ConstrainedCmsAnimationComponentFragment = graphql`
   fragment ConstrainedCmsAnimationComponent on GraphCMS_AnimationComponent {
     __typename
     id
+    name
     dontCrop
     horizontalCropPosition
     verticalCropPosition
@@ -506,6 +510,7 @@ export const FixedCmsAnimationComponentFragment = graphql`
   fragment FixedCmsAnimationComponent on GraphCMS_AnimationComponent {
     __typename
     id
+    name
     dontCrop
     horizontalCropPosition
     verticalCropPosition
@@ -519,6 +524,7 @@ export const FullWidthCmsAnimationComponentFragment = graphql`
   fragment FullWidthCmsAnimationComponent on GraphCMS_AnimationComponent {
     __typename
     id
+    name
     dontCrop
     horizontalCropPosition
     verticalCropPosition

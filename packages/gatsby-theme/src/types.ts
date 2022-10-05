@@ -12,7 +12,6 @@ export interface IVisualCommon {
 }
 
 export function getGatsbyImage(entry: {
-  id: string;
   gatsbyImageData: Record<string, unknown> | IGatsbyImageData;
 }): IGatsbyImageData | undefined {
   if (entry.gatsbyImageData) {

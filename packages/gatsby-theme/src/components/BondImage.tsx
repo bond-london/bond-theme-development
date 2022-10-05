@@ -15,22 +15,17 @@ export type IBondImage = IVisualCommon & {
 };
 
 export interface ICmsImage {
-  readonly id: string;
   readonly name: string;
   readonly dontCrop: boolean | null;
   readonly horizontalCropPosition: Horizontal | null;
   readonly verticalCropPosition: Vertical | null;
   readonly image: {
-    readonly id: string;
     readonly localFile: {
-      readonly id: string;
       readonly internal: { readonly mediaType: string | null };
       readonly childImageSharp: {
-        readonly id: string;
         readonly gatsbyImageData: IGatsbyImageData;
       } | null;
       readonly childGatsbySvg: {
-        readonly id: string;
         readonly extracted: Record<string, unknown>;
       } | null;
     } | null;

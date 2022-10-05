@@ -12,18 +12,13 @@ export type IBondAnimation = IVisualCommon & {
 };
 
 export interface ICmsAnimation {
-  readonly id: string;
-  readonly name: string;
   readonly dontCrop: boolean | null;
   readonly verticalCropPosition: Vertical | null;
   readonly horizontalCropPosition: Horizontal | null;
   readonly animation: {
-    readonly id: string;
     readonly localFile: {
-      readonly id: string;
       readonly internal: { readonly mediaType: string | null };
       readonly childGatsbyAnimation: {
-        readonly id: string;
         readonly extracted: Record<string, unknown>;
       } | null;
     } | null;

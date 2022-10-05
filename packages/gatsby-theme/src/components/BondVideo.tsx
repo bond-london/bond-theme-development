@@ -15,7 +15,6 @@ export interface ICmsVideo {
     readonly localFile: {
       readonly internal: { readonly mediaType: string | null };
       readonly childGatsbyVideo: {
-        readonly id: string;
         readonly transformed: Record<string, unknown>;
       } | null;
     } | null;
@@ -29,7 +28,6 @@ export interface ICmsVideo {
     readonly localFile: {
       readonly internal: { readonly mediaType: string | null };
       readonly childGatsbyVideo: {
-        readonly id: string;
         readonly transformed: Record<string, unknown>;
       } | null;
     } | null;

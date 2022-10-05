@@ -215,7 +215,7 @@ export const ConstrainedCmsImageFragment = graphql`
   fragment ConstrainedCmsImage on GraphCMS_Image {
     __typename
     id
-    alt
+    name
     dontCrop
     horizontalCropPosition
     verticalCropPosition
@@ -230,7 +230,7 @@ export const FixedCmsImageFragment = graphql`
   fragment FixedCmsImage on GraphCMS_Image {
     __typename
     id
-    alt
+    name
     dontCrop
     horizontalCropPosition
     verticalCropPosition
@@ -245,7 +245,7 @@ export const FullWidthCmsImageFragment = graphql`
   fragment FullWidthCmsImage on GraphCMS_Image {
     __typename
     id
-    alt
+    name
     dontCrop
     horizontalCropPosition
     verticalCropPosition
@@ -379,7 +379,7 @@ export const ConstrainedCmsImageComponentFragment = graphql`
   fragment ConstrainedCmsImageComponent on GraphCMS_ImageComponent {
     __typename
     id
-    alt
+    name
     dontCrop
     horizontalCropPosition
     verticalCropPosition
@@ -393,7 +393,7 @@ export const FixedCmsImageComponentFragment = graphql`
   fragment FixedCmsImageComponent on GraphCMS_ImageComponent {
     __typename
     id
-    alt
+    name
     dontCrop
     horizontalCropPosition
     verticalCropPosition
@@ -407,7 +407,7 @@ export const FullWidthCmsImageComponentFragment = graphql`
   fragment FullWidthCmsImageComponent on GraphCMS_ImageComponent {
     __typename
     id
-    alt
+    name
     dontCrop
     horizontalCropPosition
     verticalCropPosition

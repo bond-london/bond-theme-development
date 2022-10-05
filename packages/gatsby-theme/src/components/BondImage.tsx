@@ -11,12 +11,12 @@ import {
 export type IBondImage = IVisualCommon & {
   image?: IGatsbyImageData;
   svg?: IGatsbyExtractedSvg;
-  alt: string;
+  name: string;
 };
 
 export interface ICmsImage {
   readonly id: string;
-  readonly alt: string;
+  readonly name: string;
   readonly dontCrop: boolean | null;
   readonly horizontalCropPosition: Horizontal | null;
   readonly verticalCropPosition: Vertical | null;
@@ -50,7 +50,7 @@ export function convertCmsImageToBondImage(
   return {
     image,
     svg,
-    alt: cms.alt,
+    name: cms.name,
     dontCrop: cms.dontCrop,
     verticalCropPosition: cms.verticalCropPosition,
     horizontalCropPosition: cms.horizontalCropPosition,
@@ -85,6 +85,7 @@ export const BondImage: React.FC<
     onStartLoad,
     imgClassName,
     imgStyle,
+    name,
     ...imageProps
   } = props;
   const { objectFit, objectPosition } = calculateCropDetails({
@@ -97,6 +98,7 @@ export const BondImage: React.FC<
     return (
       <GatsbyImage
         {...imageProps}
+        alt={name}
         onLoad={onLoad}
         onStartLoad={onStartLoad}
         image={image}

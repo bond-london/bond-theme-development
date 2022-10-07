@@ -36,6 +36,7 @@
     "clean": "del-cli dist/*"
   },
   "devDependencies": {
+    "@types/gtag.js": "^0.0.12",
     "@types/react": "^18.0.18",
     "cross-env": "^7.0.3",
     "del-cli": "^5.0.0",
@@ -50,7 +51,8 @@
   "dependencies": {
     "@bond-london/gatsby-transformer-video": "^2.0.0-pre.9",
     "@bond-london/graphcms-rich-text": "^2.0.0-pre.6",
-    "lottie-web": "^5.9.6"
+    "lottie-web": "^5.9.6",
+    "react-cookie-consent": "^8.0.1"
   },
   "gitHead": "5c1e8033f5b218b11ccfec5b579df6b6a657449e"
 }

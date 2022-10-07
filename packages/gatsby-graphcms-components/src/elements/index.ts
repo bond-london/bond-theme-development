@@ -10,3 +10,4 @@ export * from "./AspectRatioVisualNoLottie";
 export * from "./AutoVisual";
 export * from "./AspectRatioVisual";
 export * from "./LottieElement";
+export * from "./GoogleTagManager";

@@ -1,5 +1,5 @@
 import { graphql } from "gatsby";
-import { CmsPageLayout } from "../cms/CmsPageLayout";
+import { CmsPageHead, CmsPageLayout } from "../cms/CmsPageLayout";
 
 // eslint-disable-next-line import/no-unused-modules
 export default CmsPageLayout;
@@ -15,3 +15,6 @@ export const PageQuery = graphql`
     }
   }
 `;
+
+// eslint-disable-next-line import/no-unused-modules
+export const Head = CmsPageHead;

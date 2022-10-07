@@ -4,6 +4,7 @@ import { CmsComponents } from "./CmsComponents";
 import { useClientOnly } from "@bond-london/gatsby-graphcms-components";
 import { CMSHead } from "./CMSHead";
 import { CmsTextBlock } from "./CmsTextBlock";
+import { Analytics } from "../components/Analytics";
 
 export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
   props
@@ -16,19 +17,24 @@ export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
 
   const template = page.template;
   return (
-    <div>
-      <CmsComponents fragments={page.topComponents} />
-      {template?.preContent && (
-        <CmsComponents fragments={template.preContent} />
-      )}
-      <CmsComponents fragments={page.content} />
-      <CmsTextBlock fragment={page.richText} />
-      {template?.postContent && (
-        <CmsComponents fragments={template.postContent} />
-      )}
-      <CmsComponents fragments={page.bottomComponents} />
-      {isClient && <pre>{JSON.stringify(props, undefined, 2)}</pre>}
-    </div>
+    <>
+      <pre>The heading</pre>
+      <Analytics />
+
+      <div>
+        <CmsComponents fragments={page.topComponents} />
+        {template?.preContent && (
+          <CmsComponents fragments={template.preContent} />
+        )}
+        <CmsComponents fragments={page.content} />
+        <CmsTextBlock fragment={page.richText} />
+        {template?.postContent && (
+          <CmsComponents fragments={template.postContent} />
+        )}
+        <CmsComponents fragments={page.bottomComponents} />
+        {isClient && <pre>{JSON.stringify(props, undefined, 2)}</pre>}
+      </div>
+    </>
   );
 };
 

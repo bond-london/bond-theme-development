@@ -4,17 +4,31 @@ import React, { createContext, PropsWithChildren, useContext } from "react";
 
 export const ModalPopupContext = createContext(false);
 
+function calculateContainerGridName(
+  withinModalPopup: boolean,
+  collapse: boolean
+): string {
+  if (withinModalPopup) {
+    return "modal-container-grid";
+  }
+  if (collapse) {
+    return "container-grid bond-row-1-0 bond-row-6-0";
+  }
+  return "container-grid";
+}
+
 const CoreSection: React.FC<
   PropsWithChildren<{
     id?: string;
     componentName: string;
-    className: string;
+    className?: string;
     contentClassName?: string;
     element?: keyof JSX.IntrinsicElements;
     preChildren?: React.ReactNode;
     postChildren?: React.ReactNode;
     visibleThreshold?: number;
     visibleDelay?: number;
+    collapse: boolean;
     onVisible?: () => void;
   }>
 > = ({
@@ -28,6 +42,7 @@ const CoreSection: React.FC<
   postChildren,
   visibleThreshold,
   visibleDelay,
+  collapse,
   onVisible,
 }) => {
   const withinModalPopup = useContext(ModalPopupContext);
@@ -42,7 +57,7 @@ const CoreSection: React.FC<
       id={id}
       data-component={componentName}
       className={classNames(
-        withinModalPopup ? "modal-container-grid" : "container-grid",
+        calculateContainerGridName(withinModalPopup, collapse),
         "grid-container relative",
         className
       )}
@@ -67,6 +82,7 @@ export const Section: React.FC<
     spacingClassName?: string;
     topSpacing?: boolean;
     bottomSpacing?: boolean;
+    collapse?: boolean;
     fullWidth?: boolean;
     element?: keyof JSX.IntrinsicElements;
     preChildren?: React.ReactNode;
@@ -83,6 +99,7 @@ export const Section: React.FC<
   spacingClassName,
   topSpacing = true,
   bottomSpacing = true,
+  collapse = false,
   fullWidth,
   children,
   element,
@@ -106,7 +123,7 @@ export const Section: React.FC<
       id={id}
       element={element}
       componentName={componentName}
-      className={classNames(className)}
+      className={className}
       contentClassName={classNames(
         realSpacingClassName,
         contentClassName,
@@ -120,6 +137,7 @@ export const Section: React.FC<
       onVisible={onVisible}
       visibleDelay={visibleDelay}
       visibleThreshold={visibleThreshold}
+      collapse={collapse}
     >
       {children}
     </CoreSection>

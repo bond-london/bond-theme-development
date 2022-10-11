@@ -34,6 +34,10 @@ function addContainerGrid(
       properties[`--bond-container-row-${row}`] = calculateRemSize(value);
       utilities[`.bond-row-${row}-${name}`] = properties;
     });
+
+    utilities[`.bond-row-${row}-0`] = {
+      [`--bond-container-row-${row}`]: "0px",
+    };
   }
 
   const containerGrid = ["w-full", "grid"];

@@ -12,7 +12,6 @@ export interface IGatsbyExtractedSvg {
 }
 
 export function getExtractedSvg(entry: {
-  id: string;
   extracted: Record<string, unknown>;
 }): IGatsbyExtractedSvg | undefined {
   if (entry.extracted) {

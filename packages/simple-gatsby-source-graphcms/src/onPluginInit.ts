@@ -133,7 +133,8 @@ function walkType(
     const isEnum = isEnumType(fieldType);
 
     const fieldTypeName = fieldType?.toString();
-    const isKnown = knownTypes.has(fieldTypeName);
+    const isKnown =
+      knownTypes.has(fieldTypeName) || fieldTypeName === type.name;
 
     if (isRichTextField(fieldType)) {
       specialFields.push({ fieldName, type: "RichText", field });
@@ -144,19 +145,21 @@ function walkType(
     } else if (!isKnown && isUnionType(fieldType)) {
       const map: SpecialFieldMap = new Map();
       const containedTypes = fieldType.getTypes();
-      containedTypes.forEach(type => {
-        const unionFieldType = getRealType(type);
-        const isKnown = knownTypes.has(unionFieldType.name);
-        if (!isKnown) {
+      containedTypes.forEach(containedType => {
+        const unionFieldType = getRealType(containedType);
+        const isContainedKnown =
+          knownTypes.has(unionFieldType.name) ||
+          unionFieldType.name === type.name;
+        if (!isContainedKnown) {
           const entries = walkType(
-            type,
+            containedType,
             markdownFieldsMap,
             knownTypes,
             reporter,
             topLevelTypeName
           );
           if (entries) {
-            map.set(type.name, entries);
+            map.set(containedType.name, entries);
           }
         }
       });

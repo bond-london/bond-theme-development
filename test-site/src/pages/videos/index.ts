@@ -17,15 +17,6 @@ export const VideosQuery = graphql`
       fullWidth: nodes {
         ...FullWidthVideo
       }
-      mutedConstrained: nodes {
-        ...MutedConstrainedVideo
-      }
-      mutedFixed: nodes {
-        ...MutedFixedVideo
-      }
-      mutedFullWidth: nodes {
-        ...MutedFullWidthVideo
-      }
     }
   }
 `;

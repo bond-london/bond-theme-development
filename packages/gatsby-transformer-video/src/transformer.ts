@@ -34,7 +34,7 @@ async function internalCreateTransformedVideo(
     context.path
   ) as FileSystemNode;
 
-  const { width, muted } = transformArgs;
+  const { width } = transformArgs;
 
   const information = await transformVideo(
     args,
@@ -45,13 +45,13 @@ async function internalCreateTransformedVideo(
       {
         key: "mp4",
         ext: ".mp4",
-        options: createMp4VideoTransform(width, muted),
+        options: createMp4VideoTransform(width),
         label: createLabel(details, transformArgs, "mp4"),
       },
       {
         key: "webm",
         ext: ".webm",
-        options: createWebmVideoTransform(width, muted),
+        options: createWebmVideoTransform(width),
         label: createLabel(details, transformArgs, "webm"),
       },
     ]
@@ -98,8 +98,7 @@ function createLabel(
   const widthInfo = transformArgs.width
     ? ` (width ${transformArgs.width})`
     : "";
-  const audioInfo = transformArgs.muted ? " muted" : "";
-  return `${stage}: ${details.name}${widthInfo}${audioInfo}`;
+  return `${stage}: ${details.name}${widthInfo}`;
 }
 
 const transformMap = new Map<string, Promise<IGatsbyTransformedVideo>>();

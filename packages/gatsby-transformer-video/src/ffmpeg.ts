@@ -78,24 +78,18 @@ export async function getVideoInformation(
 export function createScreenshotOptions(): Array<string> {
   return ["-vframes 1"];
 }
-export function createWebmVideoTransform(
-  targetWidth?: number,
-  muted?: boolean
-): Array<string> {
+export function createWebmVideoTransform(targetWidth?: number): Array<string> {
   return [
     "-c:v libvpx-vp9",
     "-pix_fmt yuv420p",
     "-crf 40",
     targetWidth ? `-vf scale='min(${targetWidth},iw)':-2` : `-vf scale=0:0`,
     "-deadline best",
-    muted ? "-an" : "-c:a libvorbis",
+    "-c:a libvorbis",
   ];
 }
 
-export function createMp4VideoTransform(
-  targetWidth?: number,
-  muted?: boolean
-): Array<string> {
+export function createMp4VideoTransform(targetWidth?: number): Array<string> {
   return [
     "-c:v libx265",
     "-pix_fmt yuv420p",
@@ -105,7 +99,7 @@ export function createMp4VideoTransform(
     "-tag:v hvc1",
     "-movflags",
     "faststart",
-    muted ? "-an" : "-c:a aac",
+    "-c:a aac",
   ];
 }
 

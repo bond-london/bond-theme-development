@@ -87,42 +87,6 @@ export const FullWidthImageAssetFragment = graphql`
   }
 `;
 
-export const MutedConstrainedVideoAssetFragment = graphql`
-  fragment MutedConstrainedVideoAsset on GraphCMS_Asset {
-    id
-    localFile {
-      internal {
-        mediaType
-      }
-      ...MutedConstrainedVideoFile
-    }
-  }
-`;
-
-export const MutedFixedVideoAssetFragment = graphql`
-  fragment MutedFixedVideoAsset on GraphCMS_Asset {
-    id
-    localFile {
-      internal {
-        mediaType
-      }
-      ...MutedFixedVideoFile
-    }
-  }
-`;
-
-export const MutedFullWidthVideoAssetFragment = graphql`
-  fragment MutedFullWidthVideoAsset on GraphCMS_Asset {
-    id
-    localFile {
-      internal {
-        mediaType
-      }
-      ...MutedFullWidthVideoFile
-    }
-  }
-`;
-
 export const ConstrainedVideoAssetFragment = graphql`
   fragment ConstrainedVideoAsset on GraphCMS_Asset {
     id
@@ -265,7 +229,7 @@ export const ConstrainedCmsVideoFragment = graphql`
     verticalCropPosition
     remoteId
     preview {
-      ...MutedConstrainedVideoAsset
+      ...ConstrainedVideoAsset
     }
     poster {
       id
@@ -290,7 +254,7 @@ export const FixedCmsVideoFragment = graphql`
     verticalCropPosition
     remoteId
     preview {
-      ...MutedFixedVideoAsset
+      ...FixedVideoAsset
     }
     poster {
       id
@@ -315,7 +279,7 @@ export const FullWidthCmsVideoFragment = graphql`
     verticalCropPosition
     remoteId
     preview {
-      ...MutedFullWidthVideoAsset
+      ...FullWidthVideoAsset
     }
     poster {
       id
@@ -426,7 +390,7 @@ export const ConstrainedCmsVideoComponentFragment = graphql`
     horizontalCropPosition
     verticalCropPosition
     preview {
-      ...MutedConstrainedVideoAsset
+      ...ConstrainedVideoAsset
     }
     poster {
       id
@@ -451,7 +415,7 @@ export const FixedCmsVideoComponentFragment = graphql`
     horizontalCropPosition
     verticalCropPosition
     preview {
-      ...MutedFixedVideoAsset
+      ...FixedVideoAsset
     }
     poster {
       id
@@ -476,7 +440,7 @@ export const FullWidthCmsVideoComponentFragment = graphql`
     horizontalCropPosition
     verticalCropPosition
     preview {
-      ...MutedFullWidthVideoAsset
+      ...FullWidthVideoAsset
     }
     poster {
       id

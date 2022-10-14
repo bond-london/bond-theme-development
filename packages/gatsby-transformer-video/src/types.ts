@@ -1,7 +1,6 @@
 export type VideoLayout = "constrained" | "fixed" | "fullWidth";
 export interface ITransformArgs {
   width?: number;
-  muted: boolean;
   layout?: VideoLayout;
 }
 

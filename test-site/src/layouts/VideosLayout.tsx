@@ -70,22 +70,11 @@ export const VideosLayout: React.FC<PageProps<Queries.AllVideosQuery>> = (
     const allConstrained = all.constrained;
     const allFixed = all.fixed;
     const allFullWidth = all.fullWidth;
-    const allMutedConstrained = all.mutedConstrained;
-    const allMutedFixed = all.mutedFixed;
-    const allMutedFullWidth = all.mutedFullWidth;
     for (let i = 0; i < allConstrained.length; i++) {
       {
         const constrained = getTransformedVideo(allConstrained[i]);
         const fixed = getTransformedVideo(allFixed[i]);
         const fullWidth = getTransformedVideo(allFullWidth[i]);
-        if (constrained && fixed && fullWidth) {
-          combined.push({ constrained, fixed, fullWidth });
-        }
-      }
-      {
-        const constrained = getTransformedVideo(allMutedConstrained[i]);
-        const fixed = getTransformedVideo(allMutedFixed[i]);
-        const fullWidth = getTransformedVideo(allMutedFullWidth[i]);
         if (constrained && fixed && fullWidth) {
           combined.push({ constrained, fixed, fullWidth });
         }

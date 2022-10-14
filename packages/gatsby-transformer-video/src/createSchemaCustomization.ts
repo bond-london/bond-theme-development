@@ -46,7 +46,6 @@ export function createSchemaCustomization(
         type: new GraphQLNonNull(GraphQLJSON),
         args: {
           width: { type: GraphQLInt, defaultValue: options.width },
-          muted: { type: GraphQLBoolean, defaultValue: true },
           layout: { type: VideoLayoutType, defaultValue: "constrained" },
         },
         resolve: (

@@ -22,6 +22,7 @@ export interface IPluginOptions {
   dontDownload: boolean;
   localCache: boolean;
   localCacheDir: string;
+  maxImageWidth?: number;
 }
 
 export interface ISchemaInformation {
@@ -69,6 +70,7 @@ export interface IGraphCmsAsset extends IRemoteNode {
   height?: number;
   width?: number;
   size: number;
+  urlToUse: string;
 }
 
 export interface IBasicFieldType {

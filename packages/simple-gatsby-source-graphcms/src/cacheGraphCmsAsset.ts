@@ -30,13 +30,17 @@ async function internalCreateLocalFileNode(
   const { gatsbyApi } = context;
   const { actions, reporter, createNodeId, getCache, store, cache } = gatsbyApi;
   const { createNode } = actions;
-  const { localCacheDir } = pluginOptions;
-  const url = remoteAsset.url;
+  const { localCacheDir, maxImageWidth } = pluginOptions;
+
+  const originalUrl = remoteAsset.url;
+  const urlToUse = remoteAsset.urlToUse;
   const fileName = getLocalFileName(remoteAsset, reporter);
   const ext = fileName && extname(fileName);
   const name = fileName && basename(fileName, ext);
 
-  const relativePath = new URL(url).pathname;
+  const relativePath =
+    new URL(originalUrl).pathname +
+    (maxImageWidth && urlToUse !== originalUrl ? `-${maxImageWidth}` : "");
   const fullPath = join(process.cwd(), localCacheDir, relativePath);
 
   const createFileNodeRequirements = {
@@ -56,18 +60,22 @@ async function internalCreateLocalFileNode(
       buffer,
       ...createFileNodeRequirements,
     });
-    reporter.verbose(`Using cached asset ${fileName} from ${url} (${reason})`);
+    reporter.verbose(
+      `Using cached asset ${fileName} from ${urlToUse} (${reason})`
+    );
     return fileNode.id;
   } catch {
     // ignore this - just download!
   }
 
-  reporter.verbose(`Downloading asset ${fileName} from ${url} (${reason})`);
+  reporter.verbose(
+    `Downloading asset ${fileName} from ${urlToUse} (${reason})`
+  );
 
   const remoteFileNode = await retry(
     async () => {
       const node = await createRemoteFileNode({
-        url,
+        url: urlToUse,
         ...createFileNodeRequirements,
       });
       return node;
@@ -78,7 +86,7 @@ async function internalCreateLocalFileNode(
       minTimeout: 5000,
       onRetry: error => {
         reporter.warn(
-          `Error downloading url ${url}: ${
+          `Error downloading url ${urlToUse}: ${
             typeof error === "string" ? error : error.message
           }`
         );
@@ -87,7 +95,7 @@ async function internalCreateLocalFileNode(
   );
 
   if (!remoteFileNode) {
-    reporter.panic(`Failed to download url: ${url}`);
+    reporter.panic(`Failed to download url: ${urlToUse}`);
     throw new Error(`Failed to download`);
   }
   try {
@@ -96,7 +104,7 @@ async function internalCreateLocalFileNode(
   } catch (e) {
     reporter.panic("Failed to copy asset", e);
   }
-  reporter.verbose(`Downloaded asset ${fileName} from ${url}`);
+  reporter.verbose(`Downloaded asset ${fileName} from ${urlToUse}`);
 
   return remoteFileNode.id;
 }
@@ -112,7 +120,7 @@ export async function createLocalFileNode(
   const {
     gatsbyApi: { reporter },
   } = context;
-  const url = remoteAsset.url;
+  const url = remoteAsset.urlToUse;
   const current = promiseCache.get(url);
   if (current) {
     reporter.verbose(`Using cached request for ${url}`);

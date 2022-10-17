@@ -44,5 +44,6 @@ export function pluginOptionsSchema(
       .description("Should the dev pages be shown")
       .default(false),
     icon: Joi.string().description("The icon for the site").required(),
+    maxImageWidth: Joi.number().description("Maximum image width"),
   });
 }

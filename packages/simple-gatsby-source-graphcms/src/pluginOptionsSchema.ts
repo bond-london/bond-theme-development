@@ -26,6 +26,7 @@ export function pluginOptionsSchema(
     skipUnusedAssets: Joi.boolean()
       .description(`Skip downloading any unused assets`)
       .default(true),
+    maxImageWidth: Joi.number().description("The maximum width for images"),
     endpoint: Joi.string()
       .description(
         `The endpoint URL for the GraphCMS project. This can be found in the [project settings UI](https://graphcms.com/docs/guides/concepts/apis#working-with-apis)`

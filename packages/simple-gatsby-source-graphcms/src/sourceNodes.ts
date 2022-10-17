@@ -48,6 +48,25 @@ function isAssetUsed(
   return false;
 }
 
+function updateAssetUrl(
+  remoteAsset: IGraphCmsAsset,
+  maxWidth: number | undefined
+): void {
+  const { url, width, mimeType } = remoteAsset;
+
+  if (
+    width &&
+    maxWidth &&
+    mimeType.startsWith("image/") &&
+    !mimeType.includes("svg")
+  ) {
+    const parsed = new URL(url);
+    remoteAsset.urlToUse = `${parsed.origin}/resize=width:${maxWidth}${parsed.pathname}`;
+  } else {
+    remoteAsset.urlToUse = url;
+  }
+}
+
 async function downloadAsset(
   context: ISourcingContext,
   remoteAsset: IGraphCmsAsset
@@ -55,10 +74,10 @@ async function downloadAsset(
   const { gatsbyApi } = context;
   const { actions, reporter, createNodeId, getCache } = gatsbyApi;
   const { createNode } = actions;
-  const url = remoteAsset.url;
   const fileName = getLocalFileName(remoteAsset, reporter);
   const ext = fileName && extname(fileName);
   const name = fileName && basename(fileName, ext);
+  const url = remoteAsset.urlToUse;
 
   const fileNode = await createRemoteFileNode({
     url,
@@ -81,10 +100,11 @@ async function processDownloadableAssets(
   remoteNodes: AsyncIterable<IRemoteNode>,
   usedAssetRemoteIds: Set<string>
 ): Promise<void> {
-  const { concurrentDownloads } = pluginOptions;
+  const { concurrentDownloads, maxImageWidth } = pluginOptions;
   const allRemoteNodes: Array<IRemoteNode> = [];
 
   for await (const remoteNode of remoteNodes) {
+    updateAssetUrl(remoteNode as IGraphCmsAsset, maxImageWidth);
     allRemoteNodes.push(remoteNode);
   }
 
@@ -171,7 +191,7 @@ async function createOrTouchAsset(
       node.localFile = localFileId;
     } catch (error) {
       reporter.panic(
-        `Failed to process asset ${asset.url} (${asset.fileName}): ${
+        `Failed to process asset ${asset.urlToUse} (${asset.fileName}): ${
           (error as Error).message || ""
         }`
       );

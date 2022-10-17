@@ -109,7 +109,9 @@ function buildConfig(
 
         options: {
           defaults: {
-            formats: options.isProduction ? ["auto", "webp", "avif"] : ["auto"],
+            formats: options.isProduction
+              ? options.productionImageFormats
+              : ["auto"],
             breakpoints: options.isProduction
               ? options.productionImageBreakpoints
               : options.developmentImageBreakpoints,

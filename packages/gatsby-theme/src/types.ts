@@ -30,6 +30,7 @@ export interface IBondThemeOptions extends IPluginRefOptions {
   graphCMSToken: string;
   graphCMSEndpoint: string;
   graphCMSStage: string;
+  productionImageFormats?: Array<string>;
   productionImageBreakpoints?: Array<number>;
   developmentImageBreakpoints?: Array<number>;
   allowIndex: boolean;

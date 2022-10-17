@@ -24,6 +24,10 @@ export function pluginOptionsSchema(
     graphCMSToken: Joi.string().required().description("GraphCMS token"),
     graphCMSEndpoint: Joi.string().required().description("GraphCMS endpoint"),
     graphCMSStage: Joi.string().required().description("GraphCMS stage"),
+    productionImageFormats: Joi.array()
+      .items(Joi.string())
+      .description("Image formats for production")
+      .default(["auto", "webp", "avif"]),
     productionImageBreakpoints: Joi.array()
       .items(Joi.number())
       .description("Image breakpoints for production")

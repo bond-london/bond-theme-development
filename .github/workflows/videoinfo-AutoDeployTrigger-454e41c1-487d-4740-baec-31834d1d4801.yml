@@ -4,14 +4,13 @@ name: Trigger auto deployment for videoinfo
 on:
   # Automatically trigger it when detected changes in repo
   push:
-    branches: 
-      [ main ]
+    branches: [main]
     paths:
-    - '**'
-    - '.github/workflows/videoinfo-AutoDeployTrigger-454e41c1-487d-4740-baec-31834d1d4801.yml'
+      - "Information"
+      - ".github/workflows/videoinfo-AutoDeployTrigger-454e41c1-487d-4740-baec-31834d1d4801.yml"
 
-  # Allow mannually trigger 
-  workflow_dispatch:      
+  # Allow mannually trigger
+  workflow_dispatch:
 
 jobs:
   build:
@@ -37,19 +36,17 @@ jobs:
           push: true
           tags: bondtowertransit.azurecr.io/videoinfo:${{ github.sha }}
           file: ./Dockerfile
-          context: ./
-
+          context: Information/
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    
+
     steps:
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.VIDEOINFO_AZURE_CREDENTIALS }}
-
 
       - name: Deploy to containerapp
         uses: azure/CLI@v1

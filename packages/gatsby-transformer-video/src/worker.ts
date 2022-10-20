@@ -1,16 +1,14 @@
 import pathToFfmpeg from "ffmpeg-static";
-import { path as pathToFfprobe } from "ffprobe-static";
 
-import ffmpeg, { FfmpegCommand, FfprobeData } from "fluent-ffmpeg";
+import ffmpeg, { FfmpegCommand } from "fluent-ffmpeg";
 import { reporter } from "gatsby-cli/lib/reporter/reporter";
 
 function createCommandForVideo(videoPath: string): FfmpegCommand {
   const command = ffmpeg({ source: videoPath, logger: console });
-  if (!pathToFfmpeg || !pathToFfprobe) {
+  if (!pathToFfmpeg) {
     throw new Error("No ffmpeg installed");
   }
   command.setFfmpegPath(pathToFfmpeg);
-  command.setFfprobePath(pathToFfprobe);
   return command;
 }
 
@@ -66,22 +64,22 @@ export async function workerTransformVideo(
     label: string;
   }>
 ): Promise<void> {
+  reporter.verbose(
+    `Transforming video "${inputName}" (${instances.length} instances)`
+  );
   for (const instance of instances) {
+    reporter.verbose(`Running ffmpeg for "${inputName}" ${instance.label}`);
     await runFfmpeg(
       inputName,
       instance.output,
       instance.options,
       instance.label
     );
+    reporter.verbose(
+      `Finished running ffmpeg for "${inputName}" ${instance.label}`
+    );
   }
-}
-
-export async function getVideoData(videoPath: string): Promise<FfprobeData> {
-  const command = createCommandForVideo(videoPath);
-  return new Promise<FfprobeData>((resolve, reject) => {
-    command.ffprobe((err, data) => {
-      if (err) reject(err);
-      resolve(data);
-    });
-  });
+  reporter.verbose(
+    `Finished transforming video "${inputName}" (${instances.length} instances)`
+  );
 }

@@ -1,5 +1,5 @@
 import { readFile, writeFile } from "fs/promises";
-import { ensureDir, copy } from "fs-extra";
+import { ensureDir, copySync } from "fs-extra";
 import { existsSync } from "fs";
 import { join } from "path";
 import { Node, NodePluginArgs } from "gatsby";
@@ -69,19 +69,9 @@ async function internalCreateExtractedAnimation(
 
       const publicAnimationPath = join(publicDir, details.base);
       if (!existsSync(publicAnimationPath)) {
-        copy(
-          details.absolutePath,
-          publicAnimationPath,
-          { dereference: true },
-          err => {
-            if (err) {
-              reporter.panic(
-                `error copying file from ${details.absolutePath} to ${publicPath}`,
-                err
-              );
-            }
-          }
-        );
+        copySync(details.absolutePath, publicAnimationPath, {
+          dereference: true,
+        });
       }
 
       const animation: IGatsbyExtractedAnimation = {

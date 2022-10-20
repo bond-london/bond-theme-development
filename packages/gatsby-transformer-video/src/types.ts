@@ -7,7 +7,6 @@ export interface ITransformArgs {
 export interface IGatsbyVideoInformation {
   width: number;
   height: number;
-  duration: string | number;
   hasAudio: boolean;
 }
 

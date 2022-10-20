@@ -6,10 +6,13 @@ import {
   createMp4VideoTransform,
   createScreenshotOptions,
   createWebmVideoTransform,
-  getVideoInformation,
   transformVideo,
 } from "./ffmpeg";
-import { IGatsbyTransformedVideo, ITransformArgs } from "./types";
+import {
+  IGatsbyTransformedVideo,
+  IGatsbyVideoInformation,
+  ITransformArgs,
+} from "./types";
 
 function rgbToHex(red, green, blue): string {
   return `#${(blue | (green << 8) | (red << 16) | (1 << 24))
@@ -17,8 +20,20 @@ function rgbToHex(red, green, blue): string {
     .slice(1)}`;
 }
 
+function calculateTransformedInformation(
+  source: IGatsbyVideoInformation,
+  width?: number
+): IGatsbyVideoInformation {
+  if (!width) return source;
+
+  const ratio = source.width / source.height;
+  const newHeight = 2 * Math.floor(width / ratio / 2);
+  return { width, height: newHeight, hasAudio: source.hasAudio };
+}
+
 async function internalCreateTransformedVideo(
-  source: Node,
+  source: FileSystemNode,
+  sourceInformation: IGatsbyVideoInformation,
   transformArgs: ITransformArgs,
   context: IGatsbyResolverContext<Node, ITransformArgs>,
   args: NodePluginArgs
@@ -35,6 +50,10 @@ async function internalCreateTransformedVideo(
   ) as FileSystemNode;
 
   const { width } = transformArgs;
+  const transformedInformation = calculateTransformedInformation(
+    sourceInformation,
+    width
+  );
 
   const information = await transformVideo(
     args,
@@ -71,7 +90,6 @@ async function internalCreateTransformedVideo(
       },
     ]
   );
-  const info = await getVideoInformation(mp4.publicFile, reporter);
   const { dominant } = await sharp(poster.publicFile)
     .resize(200, 200, { fit: "inside", withoutEnlargement: true })
     .stats();
@@ -79,10 +97,10 @@ async function internalCreateTransformedVideo(
     ? rgbToHex(dominant.r, dominant.g, dominant.b)
     : "#000000";
 
-  const result = {
-    ...info,
+  const result: IGatsbyTransformedVideo = {
+    ...transformedInformation,
     dominantColour,
-    layout: transformArgs.layout || "constrained",
+    layout: "constrained",
     mp4: mp4.publicRelativeUrl,
     webm: webm.publicRelativeUrl,
     poster: poster.publicRelativeUrl,
@@ -103,21 +121,47 @@ function createLabel(
 
 const transformMap = new Map<string, Promise<IGatsbyTransformedVideo>>();
 export function createTransformedVideo(
-  source: Node,
+  source: FileSystemNode,
   transformArgs: ITransformArgs,
   context: IGatsbyResolverContext<Node, ITransformArgs>,
   args: NodePluginArgs
 ): Promise<IGatsbyTransformedVideo> {
   const keyObj = {
-    digest: source.internal.contentDigest,
-    id: source.id,
-    transformArgs,
+    contentDigest: source.internal.contentDigest,
+    base: source.base,
+    width: transformArgs.width,
   };
+  const { reporter } = args;
   const key = args.createContentDigest(keyObj);
+  const { width, height, hasAudio } =
+    source as unknown as IGatsbyVideoInformation;
+  const sourceInformation = {
+    width,
+    height,
+    hasAudio,
+  } as IGatsbyVideoInformation;
   const existing = transformMap.get(key);
-  if (existing) return existing;
+  if (existing) {
+    reporter.verbose(
+      `Using existing video transform for ${JSON.stringify(
+        keyObj,
+        undefined,
+        2
+      )}`
+    );
+    return existing;
+  }
+  reporter.verbose(
+    `Creating new video transform for ${JSON.stringify(keyObj, undefined, 2)}`
+  );
   const promise = new Promise<IGatsbyTransformedVideo>((resolve, reject) => {
-    internalCreateTransformedVideo(source, transformArgs, context, args)
+    internalCreateTransformedVideo(
+      source,
+      sourceInformation,
+      transformArgs,
+      context,
+      args
+    )
       .then(resolve)
       .catch(reject);
   });

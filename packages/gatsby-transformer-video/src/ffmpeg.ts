@@ -1,5 +1,7 @@
-import { join, dirname, basename } from "path";
+import { join, basename } from "path";
 import { ensureDir, rename } from "fs-extra";
+import pathToFfmpeg from "ffmpeg-static";
+import { exec } from "child_process";
 
 import type { Actions, NodePluginArgs, Reporter } from "gatsby";
 import { IGatsbyVideoInformation } from "./types";
@@ -8,31 +10,12 @@ import {
   ISingleVideoProcessingArgs,
   IVideoProcessingArgs,
   VIDEO_PROCESSING_JOB_NAME,
-  VIDEO_INFORMATION_JOB_NAME,
 } from "./gatsby-worker";
-import { FfprobeData } from "fluent-ffmpeg";
 
 let actions: Actions;
 
 export function setActions(_actions: Actions): void {
   actions = _actions;
-}
-
-function createVideoInformationJob(
-  inputFileName: string,
-  reporter: Reporter
-): Promise<FfprobeData> {
-  if (!actions) {
-    return reporter.panic("Actions are not setup");
-  }
-
-  const result = actions.createJobV2({
-    name: VIDEO_INFORMATION_JOB_NAME,
-    inputPaths: [inputFileName],
-    outputDir: dirname(inputFileName),
-    args: {},
-  });
-  return result as Promise<FfprobeData>;
 }
 
 function createVideoProcessingJob(
@@ -54,25 +37,43 @@ function createVideoProcessingJob(
   return result as Promise<void>;
 }
 
-export async function getVideoInformation(
+const regex =
+  /Stream.#(.*): (?<type>Video|Audio|Data)(.*, (?<width>\d+)x(?<height>\d+).*$|.*$)/gim;
+function parseFfmpegOutput(output: string): IGatsbyVideoInformation {
+  const matches = output.matchAll(regex);
+  const info: Partial<IGatsbyVideoInformation> = {};
+  for (const match of matches) {
+    switch (match.groups?.type) {
+      case "Video":
+        info.width = parseInt(match.groups.width);
+        info.height = parseInt(match.groups.height);
+        break;
+
+      case "Audio":
+        info.hasAudio = true;
+    }
+  }
+
+  return info as IGatsbyVideoInformation;
+}
+
+export async function getLocalVideoInformation(
   videoPath: string,
   reporter: Reporter
 ): Promise<IGatsbyVideoInformation> {
-  const data = await createVideoInformationJob(videoPath, reporter);
-  const videoStream = data.streams.find(s => s.codec_type === "video");
-  const audioStream = data.streams.find(s => s.codec_type === "audio");
-  if (!videoStream) {
-    throw new Error(`Failed to find video stream in ${videoPath}`);
-  }
-  if (!videoStream.width || !videoStream.height || !videoStream.duration) {
-    throw new Error(`Video is empty for ${videoPath}`);
-  }
-  return {
-    width: videoStream.width,
-    height: videoStream.height,
-    duration: videoStream.duration,
-    hasAudio: !!audioStream,
-  };
+  return new Promise<IGatsbyVideoInformation>((resolve, reject) => {
+    exec(`${pathToFfmpeg} -i "${videoPath}"`, (_error, _stdout, stderr) => {
+      try {
+        const info = parseFfmpegOutput(stderr);
+        reporter.verbose(
+          `Got ${JSON.stringify(info, undefined, 2)} from ${videoPath}`
+        );
+        resolve(info);
+      } catch (ex) {
+        reject(ex);
+      }
+    });
+  });
 }
 
 export function createScreenshotOptions(): Array<string> {
@@ -131,6 +132,8 @@ export async function transformVideo(
     [key: string]: { publicFile: string; publicRelativeUrl: string };
   } = {};
 
+  reporter.verbose(`Transforming video ${name}`);
+
   const inputFileName = basename(inputName);
   const publicDir = join(process.cwd(), "public", "static", inputDigest);
   await ensureDir(publicDir);
@@ -173,7 +176,13 @@ export async function transformVideo(
       key,
     });
   }
+  reporter.verbose(
+    `Waiting to process video for "${inputName}" for ${instances.length} jobs`
+  );
   await createVideoProcessingJob(inputName, publicDir, { instances }, reporter);
+  reporter.verbose(
+    `Finished processing video for "${inputName}" for ${instances.length} jobs`
+  );
 
   for (const {
     tempPublicFile,
@@ -183,13 +192,19 @@ export async function transformVideo(
     key,
   } of jobInfo) {
     try {
+      reporter.verbose(
+        `Renaming temp public "${tempPublicFile}" to public "${publicFile}"`
+      );
       await rename(tempPublicFile, publicFile);
     } catch {
       // ignore
     }
+    reporter.verbose(`Adding public "${publicFile}" to cache`);
     await videoCache.addToCache(publicFile, outputName);
     results[key] = { publicFile, publicRelativeUrl };
+    reporter.verbose(`Finished processing public "${publicFile}"`);
   }
 
+  reporter.verbose(`Finished transforming video ${name}`);
   return results;
 }

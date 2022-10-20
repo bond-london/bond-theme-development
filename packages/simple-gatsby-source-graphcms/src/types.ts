@@ -1,8 +1,5 @@
 import { Node } from "gatsby";
-import {
-  IGatsbyNodeConfig,
-  IRemoteNode,
-} from "gatsby-graphql-source-toolkit/dist/types";
+import { IGatsbyNodeConfig } from "gatsby-graphql-source-toolkit/dist/types";
 import { GraphQLSchema, GraphQLField } from "graphql";
 
 export interface IPluginOptions {
@@ -63,7 +60,8 @@ export type GraphCMS_Markdown = GraphCMS_Node & {
   markdown?: string;
 };
 
-export interface IGraphCmsAsset extends IRemoteNode {
+export interface IGraphCmsAsset extends Node {
+  id: string;
   mimeType: string;
   url: string;
   fileName: string;
@@ -71,6 +69,7 @@ export interface IGraphCmsAsset extends IRemoteNode {
   width?: number;
   size: number;
   urlToUse: string;
+  hasAudio?: boolean;
 }
 
 export interface IBasicFieldType {

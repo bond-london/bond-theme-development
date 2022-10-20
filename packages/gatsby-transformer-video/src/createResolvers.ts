@@ -1,11 +1,10 @@
 import { CreateResolversArgs, Node } from "gatsby";
 import { FileSystemNode } from "gatsby-source-filesystem";
 import { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
-import { getVideoInformation } from "./ffmpeg";
 import { IGatsbyVideoInformation } from "./types";
 
 export function createResolvers(args: CreateResolversArgs): void {
-  const { createResolvers, reporter } = args;
+  const { createResolvers } = args;
 
   createResolvers({
     File: {
@@ -26,15 +25,8 @@ export function createResolvers(args: CreateResolversArgs): void {
             context,
             info
           )) as IGatsbyVideoInformation;
-          const videoInformation = await getVideoInformation(
-            source.absolutePath,
-            reporter
-          );
 
-          return {
-            ...main,
-            ...videoInformation,
-          };
+          return main;
         },
       },
     },

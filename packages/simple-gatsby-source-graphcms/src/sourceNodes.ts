@@ -175,7 +175,7 @@ async function createOrTouchAsset(
   const node: NodeInput = {
     ...remoteNode,
     id,
-    parent: undefined,
+    parent: asset.id,
     internal: {
       contentDigest,
       type: context.typeNameTransform.toGatsbyTypeName("Asset"),
@@ -199,6 +199,7 @@ async function createOrTouchAsset(
   }
 
   createNode(node);
+  // createParentChildLink({ parent: asset, child: node });
 }
 
 async function processNodesOfType(

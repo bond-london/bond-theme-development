@@ -14,7 +14,7 @@ import {
   ISourcingConfig,
 } from "gatsby-graphql-source-toolkit/dist/types";
 import { ISchemaInformation, IPluginOptions, IPluginState } from "./types";
-import { copyFile, rename, rm } from "fs-extra";
+import { copyFile, existsSync, rename, rm } from "fs-extra";
 import {
   GraphQLObjectType,
   GraphQLField,
@@ -247,11 +247,15 @@ export async function atomicCopyFile(
   sourcePath: string,
   targetPath: string
 ): Promise<void> {
-  const tempFile = targetPath + ".tmp";
+  const tempFile = targetPath + `.tmp-${performance.now()}`;
   await rm(targetPath, { force: true });
   try {
     await copyFile(sourcePath, tempFile);
     await rename(tempFile, targetPath);
+  } catch (ex) {
+    if (!existsSync(targetPath)) {
+      throw ex;
+    }
   } finally {
     await rm(tempFile, { force: true });
   }

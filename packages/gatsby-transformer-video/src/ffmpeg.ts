@@ -156,6 +156,7 @@ export async function transformVideo(
       results[key] = { publicFile, publicRelativeUrl };
       continue;
     } catch (err) {
+      console.error(err);
       /* do nothing as this basically means the file wasn't there */
       reporter.info(
         `${label}: Failed to get ${outputName} from cache (${err})`
@@ -176,35 +177,44 @@ export async function transformVideo(
       key,
     });
   }
-  reporter.verbose(
-    `Waiting to process video for "${inputName}" for ${instances.length} jobs`
-  );
-  await createVideoProcessingJob(inputName, publicDir, { instances }, reporter);
-  reporter.verbose(
-    `Finished processing video for "${inputName}" for ${instances.length} jobs`
-  );
+  if (instances.length) {
+    reporter.verbose(
+      `Waiting to process video for "${inputName}" for ${instances.length} jobs`
+    );
+    await createVideoProcessingJob(
+      inputName,
+      publicDir,
+      { instances },
+      reporter
+    );
+    reporter.verbose(
+      `Finished processing video for "${inputName}" for ${instances.length} jobs`
+    );
 
-  for (const {
-    tempPublicFile,
-    publicFile,
-    outputName,
-    publicRelativeUrl,
-    key,
-  } of jobInfo) {
-    try {
-      reporter.verbose(
-        `Renaming temp public "${tempPublicFile}" to public "${publicFile}"`
-      );
-      await rename(tempPublicFile, publicFile);
-    } catch {
-      // ignore
+    for (const {
+      tempPublicFile,
+      publicFile,
+      outputName,
+      publicRelativeUrl,
+      key,
+    } of jobInfo) {
+      try {
+        reporter.verbose(
+          `Renaming temp public "${tempPublicFile}" to public "${publicFile}"`
+        );
+        await rename(tempPublicFile, publicFile);
+      } catch {
+        // ignore
+      }
+      reporter.verbose(`Adding public "${publicFile}" to cache`);
+      await videoCache.addToCache(publicFile, outputName);
+      results[key] = { publicFile, publicRelativeUrl };
+      reporter.verbose(`Finished processing public "${publicFile}"`);
     }
-    reporter.verbose(`Adding public "${publicFile}" to cache`);
-    await videoCache.addToCache(publicFile, outputName);
-    results[key] = { publicFile, publicRelativeUrl };
-    reporter.verbose(`Finished processing public "${publicFile}"`);
-  }
 
-  reporter.verbose(`Finished transforming video ${name}`);
+    reporter.verbose(`Finished transforming video ${name}`);
+  } else {
+    reporter.verbose(`Video ${name} already processed`);
+  }
   return results;
 }

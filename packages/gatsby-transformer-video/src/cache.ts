@@ -1,22 +1,33 @@
-import { copy, rename } from "fs-extra";
+import { copy, copyFile, existsSync, mkdirSync, rename, rm } from "fs-extra";
 import { RemoteCache } from "./remoteCache";
 import { join } from "path";
 import { Reporter } from "gatsby";
 
-async function atomicCopyFile(
-  sourceFileName: string,
-  targetFileName: string
+export async function atomicCopyFile(
+  sourcePath: string,
+  targetPath: string
 ): Promise<void> {
-  const tempTargetFileName = targetFileName + ".tmp";
-  await copy(sourceFileName, tempTargetFileName, { dereference: false });
-  await rename(tempTargetFileName, targetFileName);
+  const tempFile = targetPath + `.tmp-${performance.now()}`;
+  await rm(targetPath, { force: true });
+  try {
+    await copyFile(sourcePath, tempFile);
+    await rename(tempFile, targetPath);
+  } catch (ex) {
+    if (!existsSync(targetPath)) {
+      throw ex;
+    }
+  } finally {
+    await rm(tempFile, { force: true });
+  }
 }
 
 export class Cache {
   constructor(
     private readonly cacheDir: string,
     private readonly remoteCache?: RemoteCache
-  ) {}
+  ) {
+    mkdirSync(cacheDir, { recursive: true });
+  }
 
   private cachedPromised: { [key: string]: Promise<void> } = {};
 
@@ -54,6 +65,9 @@ export class Cache {
       if (this.remoteCache) {
         reporter.info(`Looking to get ${name} from remote cache`);
         await this.remoteCache.getFromCache(name, targetFileName, reporter);
+        reporter.info(
+          `Got ${name} from remote cache, copying to local ${localFileName}`
+        );
         await atomicCopyFile(targetFileName, localFileName);
         reporter.info(`Got ${name} from remote cache`);
       } else {

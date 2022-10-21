@@ -1,4 +1,11 @@
 export type VideoLayout = "constrained" | "fixed" | "fullWidth";
+export interface ITransformedVideoInformation {
+  mp4Name: string;
+  webmName: string;
+  posterName: string;
+  dominantColour: string;
+}
+
 export interface ITransformArgs {
   width?: number;
   layout?: VideoLayout;

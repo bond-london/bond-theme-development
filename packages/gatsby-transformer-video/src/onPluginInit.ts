@@ -3,12 +3,11 @@ import { RemoteCache } from "./remoteCache";
 import { IPluginOptions } from "./types";
 import { Cache } from "./cache";
 import { join } from "path";
-import { setActions } from "./ffmpeg";
 
 export let videoCache: Cache;
 
 export async function onPluginInit(
-  { reporter, actions }: NodePluginArgs,
+  { reporter }: NodePluginArgs,
   {
     useRemoteCache,
     remoteConnectionString,
@@ -17,7 +16,6 @@ export async function onPluginInit(
   }: IPluginOptions
 ): Promise<void> {
   const cacheFolder = join(process.cwd(), videoCacheFolder);
-  setActions(actions);
 
   if (useRemoteCache) {
     if (!remoteConnectionString || !remoteContainer) {

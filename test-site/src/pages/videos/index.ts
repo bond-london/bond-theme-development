@@ -7,7 +7,7 @@ export default VideosLayout;
 // eslint-disable-next-line import/no-unused-modules
 export const VideosQuery = graphql`
   query AllVideos {
-    allGatsbyVideo(limit: 2) {
+    allGatsbyVideo(sort: { fields: base___name }) {
       constrained: nodes {
         ...ConstrainedVideo
       }

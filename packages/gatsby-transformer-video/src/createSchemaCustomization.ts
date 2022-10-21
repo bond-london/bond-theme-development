@@ -1,5 +1,4 @@
 import type { CreateSchemaCustomizationArgs, Node } from "gatsby";
-import { FileSystemNode } from "gatsby-source-filesystem";
 import type { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
 import {
   GraphQLBoolean,
@@ -9,7 +8,11 @@ import {
   GraphQLNonNull,
 } from "gatsby/graphql";
 import { createTransformedVideo } from "./transformer";
-import { IPluginOptions, ITransformArgs } from "./types";
+import type {
+  IGatsbyVideoInformation,
+  IPluginOptions,
+  ITransformArgs,
+} from "./types";
 
 const VideoLayoutType = new GraphQLEnumType({
   name: `VideoLayout`,
@@ -47,20 +50,11 @@ export function createSchemaCustomization(
           width: { type: GraphQLInt, defaultValue: options.width },
           layout: { type: VideoLayoutType, defaultValue: "constrained" },
         },
-        resolve: async (
-          source: FileSystemNode,
+        resolve: (
+          source: Node & IGatsbyVideoInformation,
           transformArgs: ITransformArgs,
           context: IGatsbyResolverContext<Node, ITransformArgs>
-        ) => {
-          const video = await createTransformedVideo(
-            source,
-            transformArgs,
-            context,
-            args
-          );
-
-          return { ...video, layout: transformArgs.layout || "constrained" };
-        },
+        ) => createTransformedVideo(source, transformArgs, context, args),
       },
     },
   });

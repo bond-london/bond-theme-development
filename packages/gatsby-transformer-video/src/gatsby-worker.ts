@@ -1,15 +1,9 @@
-import { workerTransformVideo } from "./worker";
-import { join } from "path";
+import { transformVideo } from "./worker";
+import { ITransformedVideoInformation } from "./types";
 
-export const VIDEO_PROCESSING_JOB_NAME = "VIDEO_PROCESSING";
-
-export interface ISingleVideoProcessingArgs {
-  options: Array<string>;
-  label: string;
-  outputName: string;
-}
 export interface IVideoProcessingArgs {
-  instances: Array<ISingleVideoProcessingArgs>;
+  name: string;
+  targetWidth?: number;
 }
 
 interface IVideoProcessingJobArgs {
@@ -19,20 +13,11 @@ interface IVideoProcessingJobArgs {
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export function VIDEO_PROCESSING({
-  inputPaths,
-  outputDir,
-  args,
-}: IVideoProcessingJobArgs): Promise<void> {
-  const inputFileName = inputPaths[0].path;
-  return workerTransformVideo(
-    inputFileName,
-    args.instances.map(i => {
-      return {
-        output: join(outputDir, i.outputName),
-        options: i.options,
-        label: i.label,
-      };
-    })
-  );
+export function VIDEO_PROCESSING(
+  jobArgs: IVideoProcessingJobArgs
+): Promise<ITransformedVideoInformation> {
+  const { inputPaths, outputDir, args } = jobArgs;
+  const { path, contentDigest } = inputPaths[0];
+  const { name, targetWidth } = args;
+  return transformVideo(path, name, outputDir, contentDigest, targetWidth);
 }

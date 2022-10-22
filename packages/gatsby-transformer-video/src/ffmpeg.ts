@@ -35,7 +35,7 @@ export async function getLocalVideoInformation(
         reporter.verbose(
           `Got ${info.width}x${info.height} (${
             info.hasAudio ? "Audio" : "No Audio"
-          }) from ${videoPath}`
+          })from ${videoPath}`
         );
         resolve(info);
       } catch (ex) {

@@ -1,15 +1,13 @@
 "client export";
 import React, {
   CSSProperties,
-  lazy,
   useCallback,
   useEffect,
   useRef,
   useState,
 } from "react";
 import { IGatsbyExtractedAnimation } from "../types";
-
-const LottiePlayer = lazy(() => import("./LottiePlayer"));
+import LottiePlayer from "./LottiePlayer";
 
 export function getGatsbyAnimation(
   extracted: Record<string, unknown> | unknown | null
@@ -152,6 +150,8 @@ export const GatsbyAnimation: React.FC<{
   });
 
   const posterSrc = animation.encoded || animation.encodedUrl;
+
+  console.log("Inside gatsby animation");
 
   return (
     <div

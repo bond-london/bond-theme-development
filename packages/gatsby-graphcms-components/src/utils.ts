@@ -1,7 +1,4 @@
-import {
-  IGatsbyTransformedVideo,
-  getTransformedVideo,
-} from "@bond-london/gatsby-transformer-video";
+import { IGatsbyTransformedVideo } from "@bond-london/gatsby-transformer-video";
 import { IGatsbyImageData } from "gatsby-plugin-image";
 import { CSSProperties, useEffect, useState } from "react";
 
@@ -112,7 +109,7 @@ export function getVideoUrl(
 export function getVideoFromFile(
   file?: IFile | null
 ): IGatsbyTransformedVideo | undefined {
-  return getTransformedVideo(file?.childGatsbyVideo);
+  return file?.childGatsbyVideo?.transformed;
 }
 
 export function getVideo(

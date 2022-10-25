@@ -3,7 +3,7 @@ import React from "react";
 import { CmsComponents } from "./CmsComponents";
 import { CMSHead } from "./CMSHead";
 import { CmsTextBlock } from "./CmsTextBlock";
-import { Analytics } from "../components/Analytics";
+// import { Analytics } from "../components/Analytics";
 import { PropsDump } from "./PropsDump";
 
 export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
@@ -18,9 +18,9 @@ export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
   return (
     <>
       <pre>The heading</pre>
-      <Analytics />
+      {/* <Analytics /> */}
 
-      <div>
+      {/* <div>
         <CmsComponents fragments={page.topComponents} />
         {template?.preContent && (
           <CmsComponents fragments={template.preContent} />
@@ -32,7 +32,7 @@ export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
         )}
         <CmsComponents fragments={page.bottomComponents} />
         <PropsDump {...props} />
-      </div>
+      </div> */}
     </>
   );
 };

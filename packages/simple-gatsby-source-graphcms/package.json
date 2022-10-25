@@ -24,16 +24,16 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.ts",
   "files": [
+    "src",
     "dist",
     "gatsby-node.js"
   ],
   "scripts": {
     "build:tsc": "tsc --outDir dist/",
-    "build": "npm-run-all -s clean build:tsc",
-    "watch": "npm-run-all -s watch:tsc",
+    "build": "npm-run-all -s clean build:*",
+    "watch": "npm-run-all -s watch:*",
     "watch:tsc": "yarn build:tsc -w",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "clean": "del-cli dist/*"
@@ -48,6 +48,7 @@
   "devDependencies": {
     "cross-env": "^7.0.3",
     "del-cli": "^5.0.0",
+    "gatsby": "^5.0.0-next.7",
     "npm-run-all": "^4.1.5",
     "typescript": "^4.7.4"
   },

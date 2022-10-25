@@ -27,15 +27,13 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build:mb": "microbundle -f cjs,modern --jsx React.createElement",
-    "build:defs": "tsc --jsx react -esModuleInterop true --emitDeclarationOnly --declaration true --declarationDir dist src/index.ts",
     "build:gatsby-node": "tsc --downlevelIteration true --skipLibCheck true --esModuleInterop true --outDir dist/ src/gatsby-node.ts",
-    "build:tsc": "tsc --outDir dist/",
-    "copy:lottie": "copyfiles lottie_svg.js dist/",
-    "build": "npm-run-all -s clean copy:lottie build:gatsby-node build:mb build:defs",
-    "postbuild": "prepend-directive --files=dist/index.js,dist/index.modern.mjs --directive=\"client export\"",
-    "watch": "npm-run-all -s watch:tsc",
+    "build:tsc": "tsc --noEmit",
+    "build": "npm-run-all -s clean copy:lottie build:*",
+    "watch": "npm-run-all -s watch:*",
+    "watch:gatsby-node": "yarn build:gatsby-node -w",
     "watch:tsc": "yarn build:tsc -w",
+    "copy:lottie": "copyfiles lottie_svg.js dist/",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "clean": "del-cli dist/*"
   },
@@ -43,9 +41,7 @@
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "del-cli": "^5.0.0",
-    "microbundle": "^0.15.1",
     "npm-run-all": "^4.1.5",
-    "prepend-directive": "^1.0.3",
     "typescript": "^4.7.4"
   },
   "dependencies": {

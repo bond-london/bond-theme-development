@@ -16,24 +16,20 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.modern.js",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.ts",
   "files": [
     "gatsby-node.js",
     "gatsby-worker.js",
     "gatsby-ssr.tsx",
     "dist",
-    "src/fragments.ts"
+    "src"
   ],
   "scripts": {
-    "build:mb": "microbundle -f cjs,modern --jsx React.createElement",
-    "build:defs": "tsc --jsx react -esModuleInterop true --emitDeclarationOnly --declaration true --declarationDir dist src/index.ts",
     "build:gatsby-node": "tsc --downlevelIteration true --skipLibCheck true --esModuleInterop true --outDir dist/ src/gatsby-node.ts src/gatsby-worker.ts",
-    "build:tsc": "tsc --outDir dist/",
-    "build": "npm-run-all -s clean build:gatsby-node build:mb build:defs",
-    "postbuild": "prepend-directive --files=dist/index.js,dist/index.modern.mjs --directive=\"client export\"",
-    "watch": "npm-run-all -s watch:tsc",
+    "build:tsc": "tsc --noEmit",
+    "build": "npm-run-all -s clean build:*",
+    "watch": "npm-run-all -s watch:*",
+    "watch:gatsby-node": "yarn build:gatsby-node -w",
     "watch:tsc": "yarn build:tsc -w",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "clean": "del-cli dist/*"
@@ -59,9 +55,8 @@
     "@types/sharp": "^0.31.0",
     "cross-env": "^7.0.3",
     "del-cli": "^5.0.0",
-    "microbundle": "^0.15.1",
+    "gatsby": "^5.0.0-next.7",
     "npm-run-all": "^4.1.5",
-    "prepend-directive": "^1.0.3",
     "typescript": "^4.7.4"
   },
   "gitHead": "5c1e8033f5b218b11ccfec5b579df6b6a657449e"

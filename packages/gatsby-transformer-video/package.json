@@ -1,6 +1,6 @@
 {
   "name": "@bond-london/gatsby-transformer-video",
-  "version": "3.0.0-alpha.0",
+  "version": "3.0.0-alpha.1",
   "description": "Transform video files",
   "author": "Nick Randell <nick.randell@bond.fi>",
   "license": "MIT",

@@ -1,5 +1,5 @@
 import { NodePluginArgs, ParentSpanPluginArgs, Reporter } from "gatsby";
-import { loadSchema } from "gatsby-graphql-source-toolkit";
+import { loadSchema } from "@nrandell/gatsby-graphql-source-toolkit";
 import {
   ISchemaInformation,
   IPluginOptions,
@@ -8,6 +8,7 @@ import {
 } from "./types";
 import { createExecutor, getRealType, stateCache } from "./utils";
 import {
+  GraphQLType,
   GraphQLAbstractType,
   GraphQLInterfaceType,
   GraphQLObjectType,
@@ -16,7 +17,7 @@ import {
   isUnionType,
   isObjectType,
 } from "graphql";
-import { IGatsbyNodeConfig } from "gatsby-graphql-source-toolkit/dist/types";
+import { IGatsbyNodeConfig } from "@nrandell/gatsby-graphql-source-toolkit/dist/types";
 import { isGatsbyNodeLifecycleSupported } from "gatsby-plugin-utils";
 
 const specialNames = new Set(["stage", "locale", "localizations"]);
@@ -62,8 +63,12 @@ async function retrieveSchema(
         }),
         `fragment _${type.name}Id_ on ${type.name} {
           __typename
-          id
-          ${hasLocaleField(type) ? `locale` : ""}
+          id${
+            hasLocaleField(type)
+              ? `
+          locale`
+              : ""
+          }
           stage
         }`,
       ].join("\n"),
@@ -93,12 +98,12 @@ function calculatePluginInit(): "stable" | "unstable" | "unsupported" {
   return "unsupported";
 }
 
-function isRichTextField(type: GraphQLObjectType): boolean {
+function isRichTextField(type: GraphQLType): boolean {
   const name = type?.toString();
   return name?.endsWith("RichText");
 }
 
-function isAssetField(type: GraphQLObjectType): boolean {
+function isAssetField(type: GraphQLType): boolean {
   const name = type?.toString();
   return name === "Asset";
 }
@@ -147,19 +152,21 @@ function walkType(
       const containedTypes = fieldType.getTypes();
       containedTypes.forEach(containedType => {
         const unionFieldType = getRealType(containedType);
-        const isContainedKnown =
-          knownTypes.has(unionFieldType.name) ||
-          unionFieldType.name === type.name;
-        if (!isContainedKnown) {
-          const entries = walkType(
-            containedType,
-            markdownFieldsMap,
-            knownTypes,
-            reporter,
-            topLevelTypeName
-          );
-          if (entries) {
-            map.set(containedType.name, entries);
+        if (isObjectType(unionFieldType)) {
+          const isContainedKnown =
+            knownTypes.has(unionFieldType.name) ||
+            unionFieldType.name === type.name;
+          if (!isContainedKnown) {
+            const entries = walkType(
+              containedType,
+              markdownFieldsMap,
+              knownTypes,
+              reporter,
+              topLevelTypeName
+            );
+            if (entries) {
+              map.set(containedType.name, entries);
+            }
           }
         }
       });

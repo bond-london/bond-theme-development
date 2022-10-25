@@ -1,4 +1,3 @@
-import { getTransformedVideo } from "@bond-london/gatsby-transformer-video";
 import React from "react";
 import { CSSProperties, VideoHTMLAttributes } from "react";
 import { Horizontal, Vertical } from "../types";
@@ -56,17 +55,13 @@ export function convertCmsVideoToBondVideo(
   cms: ICmsVideo | null
 ): IBondVideo | undefined {
   if (!cms) return undefined;
-  const preview = cms.preview.localFile?.childGatsbyVideo
-    ? getTransformedVideo(cms.preview.localFile.childGatsbyVideo)
-    : undefined;
+  const preview = cms.preview.localFile?.childGatsbyVideo?.transformed;
 
   if (!preview) {
     throw new Error("No preview found");
   }
 
-  const full = cms.full?.localFile?.childGatsbyVideo
-    ? getTransformedVideo(cms.full.localFile.childGatsbyVideo)
-    : undefined;
+  const full = cms.full?.localFile?.childGatsbyVideo?.transformed;
 
   const posterFile = cms.poster?.localFile?.publicURL || undefined;
   const videoData = posterFile ? { ...preview, poster: posterFile } : preview;

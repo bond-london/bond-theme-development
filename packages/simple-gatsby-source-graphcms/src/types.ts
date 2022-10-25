@@ -1,5 +1,5 @@
 import { Node } from "gatsby";
-import { IGatsbyNodeConfig } from "gatsby-graphql-source-toolkit/dist/types";
+import { IGatsbyNodeConfig } from "@nrandell/gatsby-graphql-source-toolkit/dist/types";
 import { GraphQLSchema, GraphQLField } from "graphql";
 
 export interface IPluginOptions {

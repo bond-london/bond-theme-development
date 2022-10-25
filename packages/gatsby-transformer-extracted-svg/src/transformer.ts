@@ -7,25 +7,47 @@ import { FileSystemNode } from "gatsby-source-filesystem";
 import { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
 import { IGatsbyExtractedSvg, ITransformArgs } from "./types";
 import svgToTinyDataUri from "mini-svg-data-uri";
-import { optimize, OptimizedError, OptimizedSvg } from "svgo";
+import { CustomPlugin, optimize } from "svgo";
 
-function isOptimizedError(
-  a: OptimizedSvg | OptimizedError
-): a is OptimizedError {
-  return !(a as OptimizedSvg).data;
+interface IParsedSvg {
+  width: string | null;
+  height: string | null;
+  data: string;
 }
 
 async function parseSvg(
   fsNode: FileSystemNode,
   args: NodePluginArgs
-): Promise<OptimizedSvg> {
+): Promise<IParsedSvg> {
   const { reporter } = args;
-  const svg = await readFile(fsNode.absolutePath, "utf8");
-  const result = optimize(svg, { multipass: true });
-  if (isOptimizedError(result)) {
-    return reporter.panic(result.modernError);
+  try {
+    const svg = await readFile(fsNode.absolutePath, "utf8");
+
+    let width: string | null = null;
+    let height: string | null = null;
+    const findSizePlugin: CustomPlugin = {
+      name: "find-size",
+      fn: () => {
+        return {
+          element: {
+            enter: (node, parentNode): void => {
+              if (parentNode.type === "root") {
+                width = node.attributes.width;
+                height = node.attributes.height;
+              }
+            },
+          },
+        };
+      },
+    };
+    const result = optimize(svg, {
+      multipass: true,
+      plugins: ["preset-default", findSizePlugin],
+    });
+    return { data: result.data, width, height };
+  } catch (error) {
+    return reporter.panic("Error parsing svg", error);
   }
-  return result;
 }
 
 async function internalCreateExtractedSvg(
@@ -48,10 +70,7 @@ async function internalCreateExtractedSvg(
   try {
     const result = await parseSvg(details, args);
     if (result) {
-      const {
-        data,
-        info: { width, height },
-      } = result;
+      const { data, width, height } = result;
 
       const publicDir = join(
         process.cwd(),

@@ -1,7 +1,4 @@
-import {
-  GatsbyVideo,
-  getTransformedVideo,
-} from "@bond-london/gatsby-transformer-video";
+import { GatsbyVideo } from "@bond-london/gatsby-transformer-video";
 import React, {
   CSSProperties,
   useCallback,
@@ -21,9 +18,7 @@ export type IBondExternalVideo = IBondSimpleVideo & {
 export function convertCmsVideoToBondExternalVideo(
   cms: ICmsVideo
 ): IBondExternalVideo {
-  const preview = cms.preview.localFile?.childGatsbyVideo
-    ? getTransformedVideo(cms.preview.localFile.childGatsbyVideo)
-    : undefined;
+  const preview = cms.preview.localFile?.childGatsbyVideo?.transformed;
 
   if (!preview) {
     throw new Error("No preview found");

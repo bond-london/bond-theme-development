@@ -1,5 +1,0 @@
-Dockerfile
-.dockerignore
-bin
-obj
-appsettings.Development.json

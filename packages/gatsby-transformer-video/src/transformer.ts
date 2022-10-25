@@ -2,7 +2,7 @@ import type { Node, NodePluginArgs } from "gatsby";
 import type { FileSystemNode } from "gatsby-source-filesystem";
 import type { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
 import type {
-  IGatsbyTransformedVideo,
+  IGatsbyVideo,
   IGatsbyVideoInformation,
   ITransformArgs,
   ITransformedVideoInformation,
@@ -26,7 +26,7 @@ export async function createTransformedVideo(
   transformArgs: ITransformArgs,
   context: IGatsbyResolverContext<Node, ITransformArgs>,
   args: NodePluginArgs
-): Promise<IGatsbyTransformedVideo> {
+): Promise<IGatsbyVideo> {
   const {
     reporter,
     getNodeAndSavePathDependency,

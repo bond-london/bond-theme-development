@@ -3,12 +3,12 @@ import { NodeInput, SourceNodesArgs, NodePluginArgs } from "gatsby";
 import {
   createSourcingContext,
   fetchAllNodes,
-} from "gatsby-graphql-source-toolkit";
+} from "@nrandell/gatsby-graphql-source-toolkit";
 import {
   IRemoteId,
   IRemoteNode,
   ISourcingContext,
-} from "gatsby-graphql-source-toolkit/dist/types";
+} from "@nrandell/gatsby-graphql-source-toolkit/dist/types";
 import {
   IBasicFieldType,
   GraphCMS_Node,

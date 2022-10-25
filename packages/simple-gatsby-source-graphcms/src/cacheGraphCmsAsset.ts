@@ -1,7 +1,7 @@
 import { IGraphCmsAsset, IPluginOptions } from "./types";
 import { ensureDir, readFile } from "fs-extra";
 import { join, extname, basename, dirname } from "path";
-import { ISourcingContext } from "gatsby-graphql-source-toolkit/dist/types";
+import { ISourcingContext } from "@nrandell/gatsby-graphql-source-toolkit/dist/types";
 import {
   createFileNodeFromBuffer,
   createRemoteFileNode,

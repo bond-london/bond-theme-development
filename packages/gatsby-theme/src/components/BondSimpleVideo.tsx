@@ -1,7 +1,6 @@
 import {
   IGatsbyTransformedVideo,
   GatsbyVideo,
-  getTransformedVideo,
 } from "@bond-london/gatsby-transformer-video";
 import React, {
   CSSProperties,
@@ -19,9 +18,7 @@ export type IBondSimpleVideo = IVisualCommon & {
 export function convertCmsVideoToBondSimpleVideo(
   cms: ICmsVideo
 ): IBondSimpleVideo {
-  const preview = cms.preview.localFile?.childGatsbyVideo
-    ? getTransformedVideo(cms.preview.localFile.childGatsbyVideo)
-    : undefined;
+  const preview = cms.preview.localFile?.childGatsbyVideo?.transformed;
 
   if (!preview) {
     throw new Error("No preview found");

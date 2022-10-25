@@ -7,16 +7,16 @@ import {
   readOrGenerateDefaultFragments,
   wrapQueryExecutorWithQueue,
   generateDefaultFragments,
-} from "gatsby-graphql-source-toolkit";
+} from "@nrandell/gatsby-graphql-source-toolkit";
 import {
   IQueryExecutionArgs,
   IQueryExecutor,
   ISourcingConfig,
-} from "gatsby-graphql-source-toolkit/dist/types";
+} from "@nrandell/gatsby-graphql-source-toolkit/dist/types";
 import { ISchemaInformation, IPluginOptions, IPluginState } from "./types";
 import { copyFile, existsSync, rename, rm } from "fs-extra";
 import {
-  GraphQLObjectType,
+  GraphQLType,
   GraphQLField,
   ExecutionResult,
   isNonNullType,
@@ -262,9 +262,9 @@ export async function atomicCopyFile(
 }
 
 export function getRealType(
-  valueType: GraphQLObjectType,
+  valueType: GraphQLType,
   level?: number
-): GraphQLObjectType {
+): GraphQLType {
   if (isListType(valueType)) {
     return getRealType(valueType.ofType, (level || 0) + 1);
   }
@@ -274,7 +274,7 @@ export function getRealType(
   return valueType;
 }
 
-export function couldBeAList(valueType: GraphQLObjectType): boolean {
+export function couldBeAList(valueType: GraphQLType): boolean {
   if (isListType(valueType)) {
     return true;
   }

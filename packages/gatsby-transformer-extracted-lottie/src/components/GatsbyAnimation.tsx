@@ -1,3 +1,4 @@
+"client export";
 import React, {
   CSSProperties,
   lazy,
@@ -20,17 +21,20 @@ export function getGatsbyAnimation(
 }
 
 function calculateSizes({ width, height, layout }: IGatsbyExtractedAnimation): {
-  width: number;
-  height: number;
+  width: number | undefined;
+  height: number | undefined;
 } {
-  const aspectRatio = width / height;
-  switch (layout) {
-    case "fixed":
-      return { width, height };
-    case "fullWidth":
-      return { width: 1, height: 1 / aspectRatio };
+  if (width && height) {
+    const aspectRatio = width / height;
+    switch (layout) {
+      case "fixed":
+        return { width, height };
+      case "fullWidth":
+        return { width: 1, height: 1 / aspectRatio };
+    }
+    return { width, height };
   }
-  return { width, height };
+  return { width: undefined, height: undefined };
 }
 
 function getWrapperProps({
@@ -59,12 +63,14 @@ function getSizerStyle({
   height,
   layout,
 }: IGatsbyExtractedAnimation): CSSProperties | undefined {
-  if (layout === "fullWidth") {
-    return { paddingTop: `${(height / width) * 100}%` };
-  }
+  if (width && height) {
+    if (layout === "fullWidth") {
+      return { paddingTop: `${(height / width) * 100}%` };
+    }
 
-  if (layout === "constrained") {
-    return { maxWidth: width, display: `block` };
+    if (layout === "constrained") {
+      return { maxWidth: width, display: `block` };
+    }
   }
   return undefined;
 }

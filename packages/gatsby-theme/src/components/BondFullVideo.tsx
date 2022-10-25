@@ -1,7 +1,6 @@
 import {
   IGatsbyTransformedVideo,
   GatsbyVideo,
-  getTransformedVideo,
   GatsbyInternalVideo,
 } from "@bond-london/gatsby-transformer-video";
 import React, {
@@ -21,13 +20,9 @@ export type IBondFullVideo = IBondSimpleVideo & {
 };
 
 export function convertCmsVideoToBondFullVideo(cms: ICmsVideo): IBondFullVideo {
-  const preview = cms.preview.localFile?.childGatsbyVideo
-    ? getTransformedVideo(cms.preview.localFile.childGatsbyVideo)
-    : undefined;
+  const preview = cms.preview.localFile?.childGatsbyVideo?.transformed;
 
-  const full = cms.full?.localFile?.childGatsbyVideo
-    ? getTransformedVideo(cms.full.localFile.childGatsbyVideo)
-    : undefined;
+  const full = cms.full?.localFile?.childGatsbyVideo?.transformed;
 
   if (!preview) {
     throw new Error("No preview found");

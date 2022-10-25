@@ -4,8 +4,8 @@ export interface ITransformArgs {
 }
 
 export interface IGatsbyExtractedAnimation {
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
   layout: AnimationLayout;
   encoded?: string;
   encodedUrl?: string;

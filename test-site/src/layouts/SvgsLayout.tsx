@@ -3,7 +3,6 @@ import React, { CSSProperties, Fragment, useMemo } from "react";
 import {
   IGatsbyExtractedSvg,
   GatsbySvg,
-  getExtractedSvg,
 } from "@bond-london/gatsby-transformer-extracted-svg";
 import classNames from "classnames";
 
@@ -48,9 +47,9 @@ export const SvgsLayout: React.FC<PageProps<Queries.AllSvgsQuery>> = (
     const allFixed = all.fixed;
     const allFullWidth = all.fullWidth;
     for (let i = 0; i < allConstrained.length; i++) {
-      const constrained = getExtractedSvg(allConstrained[i]);
-      const fixed = getExtractedSvg(allFixed[i]);
-      const fullWidth = getExtractedSvg(allFullWidth[i]);
+      const constrained = allConstrained[i].extracted;
+      const fixed = allFixed[i].extracted;
+      const fullWidth = allFullWidth[i].extracted;
       if (constrained && fixed && fullWidth) {
         combined.push({ constrained, fixed, fullWidth });
       }

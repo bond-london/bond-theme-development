@@ -1,16 +1,8 @@
 import React, { CSSProperties, ImgHTMLAttributes } from "react";
-import { IGatsbyExtractedSvg } from "../types";
+import { IGatsbySvg } from "../types";
+import { Sizer } from "./Sizer";
 
-export function getGatsbySvg(
-  extracted: Record<string, unknown> | unknown | null
-): IGatsbyExtractedSvg | undefined {
-  if (extracted) {
-    return extracted as IGatsbyExtractedSvg;
-  }
-  return undefined;
-}
-
-function calculateSizes({ width, height, layout }: IGatsbyExtractedSvg): {
+function calculateSizes({ width, height, layout }: IGatsbySvg): {
   width: number;
   height: number;
 } {
@@ -24,7 +16,7 @@ function calculateSizes({ width, height, layout }: IGatsbyExtractedSvg): {
   return { width, height };
 }
 
-function getWrapperProps({ width, height, layout }: IGatsbyExtractedSvg): {
+function getWrapperProps({ width, height, layout }: IGatsbySvg): {
   className: string;
   style: React.CSSProperties;
 } {
@@ -41,48 +33,7 @@ function getWrapperProps({ width, height, layout }: IGatsbyExtractedSvg): {
   return { className, style };
 }
 
-function getSizerStyle({
-  width,
-  height,
-  layout,
-}: IGatsbyExtractedSvg): CSSProperties | undefined {
-  if (layout === "fullWidth") {
-    return { paddingTop: `${(height / width) * 100}%` };
-  }
-
-  if (layout === "constrained") {
-    return { maxWidth: width, display: `block` };
-  }
-  return undefined;
-}
-
-const Sizer: React.FC<{ svg: IGatsbyExtractedSvg }> = ({ svg }) => {
-  const { width, height, layout } = svg;
-  const sizerStyle = getSizerStyle(svg);
-  if (layout === "fullWidth") {
-    return <div aria-hidden style={sizerStyle} />;
-  }
-
-  if (layout === "constrained") {
-    return (
-      <div style={sizerStyle}>
-        <img
-          alt=""
-          role="presentation"
-          aria-hidden="true"
-          src={`data:image/svg+xml;charset=utf-8,%3Csvg height='${height}' width='${width}' xmlns='http://www.w3.org/2000/svg' version='1.1'%3E%3C/svg%3E`}
-          style={{
-            maxWidth: `100%`,
-            display: `block`,
-            position: `static`,
-          }}
-        />
-      </div>
-    );
-  }
-  return null;
-};
-
+export type IGatsbyExtractedSvg = Record<string, unknown>;
 export const GatsbySvg: React.FC<
   {
     svg: IGatsbyExtractedSvg;
@@ -102,18 +53,19 @@ export const GatsbySvg: React.FC<
     svgClassName,
     ...otherProps
   } = allProps;
-  const { width, height } = calculateSizes(svg);
-  const { style: wrapperStyle, className: wrapperClassName } =
-    getWrapperProps(svg);
+  const { width, height } = calculateSizes(svg as unknown as IGatsbySvg);
+  const { style: wrapperStyle, className: wrapperClassName } = getWrapperProps(
+    svg as unknown as IGatsbySvg
+  );
 
-  const imgSrc = svg.encoded || svg.encodedUrl;
+  const imgSrc = (svg.encoded || svg.encodedUrl) as string;
 
   return (
     <div
       style={{ ...style, ...wrapperStyle }}
       className={`${wrapperClassName}${className ? ` ${className}` : ``}`}
     >
-      <Sizer svg={svg} />
+      <Sizer svg={svg as unknown as IGatsbySvg} />
       {imgSrc && (
         <img
           {...otherProps}

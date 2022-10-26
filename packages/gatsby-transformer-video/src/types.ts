@@ -32,3 +32,5 @@ export interface IPluginOptions {
   videoCacheFolder: string;
   width?: number;
 }
+
+export type IGatsbyTransformedVideo = Record<string, unknown>;

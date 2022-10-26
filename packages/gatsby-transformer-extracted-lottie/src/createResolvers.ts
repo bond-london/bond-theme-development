@@ -1,7 +1,7 @@
 import type { CreateResolversArgs } from "gatsby";
 import type { FileSystemNode } from "gatsby-source-filesystem";
 import type { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
-import { IGatsbyExtractedAnimation } from "./types";
+import { IGatsbyAnimation } from "./types";
 
 export function createResolvers(args: CreateResolversArgs): void {
   const { createResolvers } = args;
@@ -24,7 +24,7 @@ export function createResolvers(args: CreateResolversArgs): void {
             resolverArgs,
             context,
             info
-          )) as IGatsbyExtractedAnimation;
+          )) as IGatsbyAnimation;
 
           return main;
         },

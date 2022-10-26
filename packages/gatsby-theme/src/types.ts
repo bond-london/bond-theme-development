@@ -1,5 +1,4 @@
 import { IPluginRefOptions } from "gatsby";
-import { IGatsbyImageData } from "gatsby-plugin-image";
 
 export type Maybe<T> = T | null;
 export type Vertical = "Top" | "Middle" | "Bottom";
@@ -9,15 +8,6 @@ export interface IVisualCommon {
   dontCrop: Maybe<boolean>;
   horizontalCropPosition: Maybe<Horizontal>;
   verticalCropPosition: Maybe<Vertical>;
-}
-
-export function getGatsbyImage(entry: {
-  gatsbyImageData: Record<string, unknown> | IGatsbyImageData;
-}): IGatsbyImageData | undefined {
-  if (entry.gatsbyImageData) {
-    return entry.gatsbyImageData as unknown as IGatsbyImageData;
-  }
-  return undefined;
 }
 
 export interface IBondThemeOptions extends IPluginRefOptions {

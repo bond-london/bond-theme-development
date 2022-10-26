@@ -4,7 +4,6 @@ import React, {
   VideoHTMLAttributes,
 } from "react";
 import type { IGatsbyVideo } from "../types";
-import { IGatsbyTransformedVideo } from "./GatsbyVideo";
 
 function calculateVideoSizes({ width, height, layout }: IGatsbyVideo): {
   width: number;
@@ -22,15 +21,16 @@ function calculateVideoSizes({ width, height, layout }: IGatsbyVideo): {
 
 export const GatsbyInternalVideo: React.FC<
   {
-    video: IGatsbyTransformedVideo;
+    video: IGatsbyVideo;
     videoRef?: RefObject<HTMLVideoElement>;
   } & Omit<
     DetailedHTMLProps<VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement>,
     "src" | "ref" | "width" | "height"
   >
-> = ({ video: videoProps, videoRef, ...otherProps }) => {
-  const video = videoProps as unknown as IGatsbyVideo;
-  const { width, height } = calculateVideoSizes(video);
+> = ({ video, videoRef, ...otherProps }) => {
+  const { width, height } = calculateVideoSizes(
+    video as unknown as IGatsbyVideo
+  );
 
   return (
     <video {...otherProps} ref={videoRef} width={width} height={height}>

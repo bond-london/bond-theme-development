@@ -1,10 +1,9 @@
 import React, { CSSProperties, ImgHTMLAttributes } from "react";
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
-import { getGatsbyImage, Horizontal, IVisualCommon, Vertical } from "../types";
+import { Horizontal, IVisualCommon, Vertical } from "../types";
 import { calculateCropDetails } from "../utils";
 import {
   GatsbySvg,
-  getExtractedSvg,
   IGatsbyExtractedSvg,
 } from "@bond-london/gatsby-transformer-extracted-svg";
 
@@ -36,12 +35,8 @@ export function convertCmsImageToBondImage(
   cms: ICmsImage | null
 ): IBondImage | undefined {
   if (!cms) return undefined;
-  const image = cms.image.localFile?.childImageSharp
-    ? getGatsbyImage(cms.image.localFile.childImageSharp)
-    : undefined;
-  const svg = cms.image.localFile?.childGatsbySvg
-    ? getExtractedSvg(cms.image.localFile.childGatsbySvg)
-    : undefined;
+  const image = cms.image.localFile?.childImageSharp?.gatsbyImageData;
+  const svg = cms.image.localFile?.childGatsbySvg?.extracted;
   return {
     image,
     svg,

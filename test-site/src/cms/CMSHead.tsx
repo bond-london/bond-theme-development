@@ -24,7 +24,6 @@ export const CMSHead: React.FC<{
       }
     }
   `);
-  console.log("site", site);
   if (!site?.siteMetadata) throw new Error("No site metadata");
   if (!site.siteMetadata.siteName) throw new Error("No site name");
   if (!title) throw new Error("No title");

@@ -5,7 +5,7 @@ import { join } from "path";
 import { Node, NodePluginArgs } from "gatsby";
 import { FileSystemNode } from "gatsby-source-filesystem";
 import { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
-import { IGatsbyExtractedSvg, ITransformArgs } from "./types";
+import { IGatsbySvg, ITransformArgs } from "./types";
 import svgToTinyDataUri from "mini-svg-data-uri";
 import { CustomPlugin, optimize } from "svgo";
 
@@ -55,7 +55,7 @@ async function internalCreateExtractedSvg(
   transformArgs: ITransformArgs,
   context: IGatsbyResolverContext<Node, ITransformArgs>,
   args: NodePluginArgs
-): Promise<IGatsbyExtractedSvg | undefined> {
+): Promise<IGatsbySvg | undefined> {
   const { reporter, getNodeAndSavePathDependency, pathPrefix } = args;
   if (!source.parent) {
     console.error("source missing", source);
@@ -82,7 +82,7 @@ async function internalCreateExtractedSvg(
       const fileName = `${details.name}-preview.svg`;
       const publicPath = join(publicDir, fileName);
 
-      const svg: IGatsbyExtractedSvg = {
+      const svg: IGatsbySvg = {
         width: width ? parseFloat(width) : 1,
         height: height ? parseFloat(height) : 1,
         layout: transformArgs.layout,
@@ -109,16 +109,13 @@ async function internalCreateExtractedSvg(
   return undefined;
 }
 
-const transformMap = new Map<
-  string,
-  Promise<IGatsbyExtractedSvg | undefined>
->();
+const transformMap = new Map<string, Promise<IGatsbySvg | undefined>>();
 export function createExtractedSvg(
   source: Node,
   transformArgs: ITransformArgs,
   context: IGatsbyResolverContext<Node, ITransformArgs>,
   args: NodePluginArgs
-): Promise<IGatsbyExtractedSvg | undefined> {
+): Promise<IGatsbySvg | undefined> {
   const keyObj = {
     digest: source.internal.contentDigest,
     id: source.id,
@@ -128,13 +125,11 @@ export function createExtractedSvg(
   const existing = transformMap.get(key);
   if (existing) return existing;
 
-  const promise = new Promise<IGatsbyExtractedSvg | undefined>(
-    (resolve, reject) => {
-      internalCreateExtractedSvg(source, transformArgs, context, args)
-        .then(resolve)
-        .catch(reject);
-    }
-  );
+  const promise = new Promise<IGatsbySvg | undefined>((resolve, reject) => {
+    internalCreateExtractedSvg(source, transformArgs, context, args)
+      .then(resolve)
+      .catch(reject);
+  });
   transformMap.set(key, promise);
   return promise;
 }

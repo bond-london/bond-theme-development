@@ -1,6 +1,5 @@
 import {
   GatsbyAnimation,
-  getExtractedAnimation,
   IGatsbyExtractedAnimation,
 } from "@bond-london/gatsby-transformer-extracted-lottie";
 import React from "react";
@@ -29,9 +28,7 @@ export function convertCmsAnimationToBondAnimation(
   cms: ICmsAnimation | null
 ): IBondAnimation | undefined {
   if (!cms) return undefined;
-  const animation = cms.animation.localFile?.childGatsbyAnimation
-    ? getExtractedAnimation(cms.animation.localFile.childGatsbyAnimation)
-    : undefined;
+  const animation = cms.animation.localFile?.childGatsbyAnimation?.extracted;
   if (!animation) {
     throw new Error("No animation");
   }

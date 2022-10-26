@@ -5,7 +5,7 @@ import { join } from "path";
 import { Node, NodePluginArgs } from "gatsby";
 import { FileSystemNode } from "gatsby-source-filesystem";
 import { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
-import { IGatsbyExtractedAnimation, ITransformArgs } from "./types";
+import { IGatsbyAnimation, ITransformArgs } from "./types";
 import svgToTinyDataUri from "mini-svg-data-uri";
 import { CustomPlugin, optimize } from "svgo";
 import { renderLottieToSvg } from "./lottieToSvg";
@@ -58,7 +58,7 @@ async function internalCreateExtractedAnimation(
   transformArgs: ITransformArgs,
   context: IGatsbyResolverContext<Node, ITransformArgs>,
   args: NodePluginArgs
-): Promise<IGatsbyExtractedAnimation | undefined> {
+): Promise<IGatsbyAnimation | undefined> {
   const { reporter, getNodeAndSavePathDependency, pathPrefix } = args;
   if (!source.parent) {
     console.error("source missing", source);
@@ -92,7 +92,7 @@ async function internalCreateExtractedAnimation(
         });
       }
 
-      const animation: IGatsbyExtractedAnimation = {
+      const animation: IGatsbyAnimation = {
         width: width ? parseFloat(width) : undefined,
         height: height ? parseFloat(height) : undefined,
         layout: transformArgs.layout,
@@ -120,16 +120,13 @@ async function internalCreateExtractedAnimation(
   return undefined;
 }
 
-const transformMap = new Map<
-  string,
-  Promise<IGatsbyExtractedAnimation | undefined>
->();
+const transformMap = new Map<string, Promise<IGatsbyAnimation | undefined>>();
 export function createExtractedAnimation(
   source: Node,
   transformArgs: ITransformArgs,
   context: IGatsbyResolverContext<Node, ITransformArgs>,
   args: NodePluginArgs
-): Promise<IGatsbyExtractedAnimation | undefined> {
+): Promise<IGatsbyAnimation | undefined> {
   const keyObj = {
     digest: source.internal.contentDigest,
     id: source.id,
@@ -139,7 +136,7 @@ export function createExtractedAnimation(
   const existing = transformMap.get(key);
   if (existing) return existing;
 
-  const promise = new Promise<IGatsbyExtractedAnimation | undefined>(
+  const promise = new Promise<IGatsbyAnimation | undefined>(
     (resolve, reject) => {
       internalCreateExtractedAnimation(source, transformArgs, context, args)
         .then(resolve)

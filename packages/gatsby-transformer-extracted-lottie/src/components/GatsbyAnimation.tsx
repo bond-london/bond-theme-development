@@ -1,66 +1,22 @@
-"client export";
+"use client";
 import React, {
   CSSProperties,
+  lazy,
+  Suspense,
   useCallback,
   useEffect,
   useRef,
   useState,
 } from "react";
-import { IGatsbyExtractedAnimation } from "../types";
-import LottiePlayer from "./LottiePlayer";
+import { IGatsbyAnimation } from "../types";
 
-export function getGatsbyAnimation(
-  extracted: Record<string, unknown> | unknown | null
-): IGatsbyExtractedAnimation | undefined {
-  if (extracted) {
-    return extracted as IGatsbyExtractedAnimation;
-  }
-  return undefined;
-}
-
-function calculateSizes({ width, height, layout }: IGatsbyExtractedAnimation): {
-  width: number | undefined;
-  height: number | undefined;
-} {
-  if (width && height) {
-    const aspectRatio = width / height;
-    switch (layout) {
-      case "fixed":
-        return { width, height };
-      case "fullWidth":
-        return { width: 1, height: 1 / aspectRatio };
-    }
-    return { width, height };
-  }
-  return { width: undefined, height: undefined };
-}
-
-function getWrapperProps({
-  width,
-  height,
-  layout,
-}: IGatsbyExtractedAnimation): {
-  className: string;
-  style: React.CSSProperties;
-} {
-  let className = "gatsby-animation-wrapper";
-  const style: CSSProperties = {};
-
-  if (layout === "fixed") {
-    style.width = width;
-    style.height = height;
-  } else if (layout === "constrained") {
-    className = "gatsby-animation-wrapper gatsby-animation-wrapper-constrained";
-  }
-
-  return { className, style };
-}
+const LottiePlayer = lazy(() => import("./LottiePlayer"));
 
 function getSizerStyle({
   width,
   height,
   layout,
-}: IGatsbyExtractedAnimation): CSSProperties | undefined {
+}: IGatsbyAnimation): CSSProperties | undefined {
   if (width && height) {
     if (layout === "fullWidth") {
       return { paddingTop: `${(height / width) * 100}%` };
@@ -73,9 +29,7 @@ function getSizerStyle({
   return undefined;
 }
 
-const Sizer: React.FC<{ animation: IGatsbyExtractedAnimation }> = ({
-  animation,
-}) => {
+const Sizer: React.FC<{ animation: IGatsbyAnimation }> = ({ animation }) => {
   const { width, height, layout } = animation;
   const sizerStyle = getSizerStyle(animation);
   if (layout === "fullWidth") {
@@ -102,6 +56,41 @@ const Sizer: React.FC<{ animation: IGatsbyExtractedAnimation }> = ({
   return null;
 };
 
+function calculateSizes({ width, height, layout }: IGatsbyAnimation): {
+  width: number | undefined;
+  height: number | undefined;
+} {
+  if (width && height) {
+    const aspectRatio = width / height;
+    switch (layout) {
+      case "fixed":
+        return { width, height };
+      case "fullWidth":
+        return { width: 1, height: 1 / aspectRatio };
+    }
+    return { width, height };
+  }
+  return { width: undefined, height: undefined };
+}
+
+function getWrapperProps({ width, height, layout }: IGatsbyAnimation): {
+  className: string;
+  style: React.CSSProperties;
+} {
+  let className = "gatsby-animation-wrapper";
+  const style: CSSProperties = {};
+
+  if (layout === "fixed") {
+    style.width = width;
+    style.height = height;
+  } else if (layout === "constrained") {
+    className = "gatsby-animation-wrapper gatsby-animation-wrapper-constrained";
+  }
+
+  return { className, style };
+}
+
+export type IGatsbyExtractedAnimation = Record<string, unknown>;
 export const GatsbyAnimation: React.FC<{
   animation: IGatsbyExtractedAnimation;
   objectFit?: CSSProperties["objectFit"];
@@ -119,9 +108,12 @@ export const GatsbyAnimation: React.FC<{
     loop = false,
     loopDelay,
   } = allProps;
-  const { width, height } = calculateSizes(animation);
-  const { style: wrapperStyle, className: wrapperClassName } =
-    getWrapperProps(animation);
+  const { width, height } = calculateSizes(
+    animation as unknown as IGatsbyAnimation
+  );
+  const { style: wrapperStyle, className: wrapperClassName } = getWrapperProps(
+    animation as unknown as IGatsbyAnimation
+  );
   const [loadAnimation, setLoadAnimation] = useState(false);
   const [containerVisible, setContainerVisible] = useState(false);
   const [showPoster, setShowPoster] = useState(true);
@@ -149,9 +141,7 @@ export const GatsbyAnimation: React.FC<{
     return undefined;
   });
 
-  const posterSrc = animation.encoded || animation.encodedUrl;
-
-  console.log("Inside gatsby animation");
+  const posterSrc = (animation.encoded || animation.encodedUrl) as string;
 
   return (
     <div
@@ -159,7 +149,7 @@ export const GatsbyAnimation: React.FC<{
       style={wrapperStyle}
       className={`${wrapperClassName}${className ? ` ${className}` : ``}`}
     >
-      <Sizer animation={animation} />
+      <Sizer animation={animation as unknown as IGatsbyAnimation} />
       {showPoster && posterSrc && (
         <img
           style={{ objectFit, objectPosition }}
@@ -169,16 +159,18 @@ export const GatsbyAnimation: React.FC<{
         />
       )}
       {loadAnimation && (
-        <LottiePlayer
-          containerRef={containerRef}
-          objectFit={objectFit}
-          objectPosition={objectPosition}
-          loop={loop}
-          loopDelay={loopDelay}
-          animationUrl={animation.animationUrl}
-          play={containerVisible}
-          onPlay={onPlay}
-        />
+        <Suspense>
+          <LottiePlayer
+            containerRef={containerRef}
+            objectFit={objectFit}
+            objectPosition={objectPosition}
+            loop={loop}
+            loopDelay={loopDelay}
+            animationUrl={animation.animationUrl as string}
+            play={containerVisible}
+            onPlay={onPlay}
+          />
+        </Suspense>
       )}
     </div>
   );

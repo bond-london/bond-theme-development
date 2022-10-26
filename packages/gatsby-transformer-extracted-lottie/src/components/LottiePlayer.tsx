@@ -1,3 +1,4 @@
+"use client";
 import { AnimationItem } from "lottie-web";
 import React, {
   CSSProperties,

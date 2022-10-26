@@ -3,6 +3,7 @@ import {
   GatsbyVideo,
   GatsbyInternalVideo,
 } from "@bond-london/gatsby-transformer-video";
+import { IGatsbyVideo } from "@bond-london/gatsby-transformer-video/src/types";
 import React, {
   CSSProperties,
   useCallback,
@@ -132,7 +133,7 @@ export const BondFullVideo: React.FC<
       {previewHasStarted && (
         <GatsbyInternalVideo
           style={{ objectFit, objectPosition }}
-          video={full}
+          video={full as unknown as IGatsbyVideo}
           videoRef={fullVideoRef}
           onCanPlay={onFullLoaded}
           onTimeUpdate={onFullTimeUpdate}

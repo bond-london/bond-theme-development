@@ -1,4 +1,4 @@
-"client export";
+"use client";
 import { useClientOnly } from "@bond-london/gatsby-graphcms-components";
 import { PageProps } from "gatsby";
 import React from "react";

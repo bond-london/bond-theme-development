@@ -21,7 +21,7 @@
     "gatsby-config.js",
     "gatsby-browser.ts",
     "dist",
-    "src/fragments.ts"
+    "src"
   ],
   "scripts": {
     "build:gatsby-node": "tsc --downlevelIteration true --skipLibCheck true --esModuleInterop true --outDir dist/ src/gatsby-config.ts",

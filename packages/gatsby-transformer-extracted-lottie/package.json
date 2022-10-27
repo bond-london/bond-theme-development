@@ -12,13 +12,12 @@
     "typescript",
     "lottie"
   ],
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.ts",
   "files": [
     "gatsby-node.js",
     "gatsby-ssr.tsx",
     "dist",
-    "src/fragments.ts"
+    "src"
   ],
   "repository": {
     "url": "https://github.com/bond-london/gatsby-transformer-extracted-lottie"
@@ -28,16 +27,17 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build:tsc": "tsc --outDir dist/",
-    "copy:lottie": "copyfiles lottie_svg.js dist/",
-    "build": "npm-run-all -s clean copy:lottie build:tsc",
-    "watch": "npm-run-all -s watch:tsc",
+    "build:gatsby-node": "tsc --downlevelIteration true --skipLibCheck true --esModuleInterop true --outDir dist/ src/gatsby-node.ts",
+    "build:tsc": "tsc --noEmit",
+    "build": "npm-run-all -s clean copy:lottie build:*",
+    "watch": "npm-run-all -s watch:*",
+    "watch:gatsby-node": "yarn build:gatsby-node -w",
     "watch:tsc": "yarn build:tsc -w",
+    "copy:lottie": "copyfiles lottie_svg.js dist/",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "clean": "del-cli dist/*"
   },
   "devDependencies": {
-    "@types/svgo": "^2.6.3",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "del-cli": "^5.0.0",
@@ -47,7 +47,7 @@
   "dependencies": {
     "jsdom": "^20.0.0",
     "mini-svg-data-uri": "^1.4.4",
-    "svgo": "^2.8.0"
+    "svgo": "^3.0.0"
   },
   "peerDependencies": {
     "gatsby": "^4",

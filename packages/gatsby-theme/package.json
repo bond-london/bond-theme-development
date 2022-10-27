@@ -16,8 +16,7 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.ts",
   "files": [
     "gatsby-config.js",
     "gatsby-browser.ts",
@@ -25,9 +24,11 @@
     "src/fragments.ts"
   ],
   "scripts": {
-    "build:tsc": "tsc --outDir dist/",
-    "build": "npm-run-all -s clean build:tsc",
-    "watch": "npm-run-all -s watch:tsc",
+    "build:gatsby-node": "tsc --downlevelIteration true --skipLibCheck true --esModuleInterop true --outDir dist/ src/gatsby-config.ts",
+    "build:tsc": "tsc --noEmit",
+    "build": "npm-run-all -s clean build:*",
+    "watch": "npm-run-all -s watch:*",
+    "watch:gatsby-node": "yarn build:gatsby-node -w",
     "watch:tsc": "yarn build:tsc -w",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "clean": "del-cli dist/*"

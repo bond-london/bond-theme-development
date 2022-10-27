@@ -1,16 +1,15 @@
 import { HeadProps, PageProps } from "gatsby";
 import React from "react";
+import { Analytics } from "../components/Analytics";
 import { CmsComponents } from "./CmsComponents";
-import { useClientOnly } from "@bond-london/gatsby-graphcms-components";
 import { CMSHead } from "./CMSHead";
 import { CmsTextBlock } from "./CmsTextBlock";
-import { Analytics } from "../components/Analytics";
+import { PropsDump } from "./PropsDump";
 
 export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
   props
 ) => {
   const page = props.data.graphCmsPage;
-  const isClient = useClientOnly();
   if (!page) {
     throw new Error("Page does not exist");
   }
@@ -32,7 +31,7 @@ export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
           <CmsComponents fragments={template.postContent} />
         )}
         <CmsComponents fragments={page.bottomComponents} />
-        {isClient && <pre>{JSON.stringify(props, undefined, 2)}</pre>}
+        <PropsDump {...props} />
       </div>
     </>
   );
@@ -41,10 +40,4 @@ export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
 // eslint-disable-next-line import/no-unused-modules
 export const CmsPageHead: React.FC<HeadProps<Queries.SinglePageQuery>> = (
   props
-) => (
-  <CMSHead
-    headProps={props}
-    site={props.data.site}
-    title={props.data.graphCmsPage?.title}
-  />
-);
+) => <CMSHead headProps={props} title={props.data.graphCmsPage?.title} />;

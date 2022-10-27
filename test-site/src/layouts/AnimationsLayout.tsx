@@ -4,7 +4,6 @@ import classNames from "classnames";
 import {
   GatsbyAnimation,
   IGatsbyExtractedAnimation,
-  getExtractedAnimation,
 } from "@bond-london/gatsby-transformer-extracted-lottie";
 
 interface Combined {
@@ -64,10 +63,11 @@ export const AnimationsLayout: React.FC<
     const allConstrained = all.constrained;
     const allFixed = all.fixed;
     const allFullWidth = all.fullWidth;
-    for (let i = 0; i < allConstrained.length; i++) {
-      const constrained = getExtractedAnimation(allConstrained[i]);
-      const fixed = getExtractedAnimation(allFixed[i]);
-      const fullWidth = getExtractedAnimation(allFullWidth[i]);
+    for (let i = 0; i < 1; i++) {
+      // allConstrained.length; i++) {
+      const constrained = allConstrained[i].extracted;
+      const fixed = allFixed[i].extracted;
+      const fullWidth = allFullWidth[i].extracted;
       if (constrained && fixed && fullWidth) {
         combined.push({ constrained, fixed, fullWidth });
       }

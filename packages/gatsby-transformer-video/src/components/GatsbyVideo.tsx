@@ -1,38 +1,20 @@
+"use client";
 import React, {
   CSSProperties,
-  DetailedHTMLProps,
   PropsWithChildren,
-  RefObject,
   useEffect,
   useRef,
   VideoHTMLAttributes,
 } from "react";
-import { IGatsbyTransformedVideo } from "../types";
-
-function calculateVideoSizes({
-  width,
-  height,
-  layout,
-}: IGatsbyTransformedVideo): {
-  width: number;
-  height: number;
-} {
-  const aspectRatio = width / height;
-  switch (layout) {
-    case "fixed":
-      return { width, height };
-    case "fullWidth":
-      return { width: 1, height: 1 / aspectRatio };
-  }
-  return { width, height };
-}
+import type { IGatsbyTransformedVideo, IGatsbyVideo } from "../types";
+import { GatsbyInternalVideo } from "./GatsbyInternalVideo";
 
 function getWrapperProps({
   width,
   height,
   layout,
   dominantColour,
-}: IGatsbyTransformedVideo): { className: string; style: CSSProperties } {
+}: IGatsbyVideo): { className: string; style: CSSProperties } {
   let className = "gatsby-video-wrapper";
   const style: CSSProperties = {};
 
@@ -48,7 +30,7 @@ function getWrapperProps({
   return { className, style };
 }
 
-const Sizer: React.FC<{ video: IGatsbyTransformedVideo }> = ({
+const Sizer: React.FC<{ video: IGatsbyVideo }> = ({
   video: { width, height, layout },
 }) => {
   if (layout === "fullWidth") {
@@ -75,25 +57,6 @@ const Sizer: React.FC<{ video: IGatsbyTransformedVideo }> = ({
     );
   }
   return null;
-};
-
-export const GatsbyInternalVideo: React.FC<
-  {
-    video: IGatsbyTransformedVideo;
-    videoRef?: RefObject<HTMLVideoElement>;
-  } & Omit<
-    DetailedHTMLProps<VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement>,
-    "src" | "ref" | "width" | "height"
-  >
-> = ({ video, videoRef, ...otherProps }) => {
-  const { width, height } = calculateVideoSizes(video);
-
-  return (
-    <video {...otherProps} ref={videoRef} width={width} height={height}>
-      <source type="video/webm" src={video.webm} />
-      <source type="video/mp4" src={video.mp4} />
-    </video>
-  );
 };
 
 export const GatsbyVideo: React.FC<
@@ -128,8 +91,9 @@ export const GatsbyVideo: React.FC<
     ...otherProps
   } = allProps;
   const videoRef = useRef<HTMLVideoElement>(null);
-  const { style: wrapperStyle, className: wrapperClassName } =
-    getWrapperProps(video);
+  const { style: wrapperStyle, className: wrapperClassName } = getWrapperProps(
+    video as unknown as IGatsbyVideo
+  );
 
   useEffect(() => {
     const video = videoRef.current;
@@ -169,9 +133,9 @@ export const GatsbyVideo: React.FC<
       style={{ ...style, ...wrapperStyle }}
       className={`${wrapperClassName}${className ? ` ${className}` : ``}`}
     >
-      <Sizer video={video} />
+      <Sizer video={video as unknown as IGatsbyVideo} />
       <GatsbyInternalVideo
-        video={video}
+        video={video as unknown as IGatsbyVideo}
         videoRef={videoRef}
         {...otherProps}
         loop={loopDelay ? false : loop}
@@ -179,7 +143,7 @@ export const GatsbyVideo: React.FC<
         style={{ ...videoStyle, objectFit, objectPosition }}
         className={videoClassName}
         controls={controls}
-        poster={noPoster ? undefined : video.poster}
+        poster={noPoster ? undefined : (video.poster as string | undefined)}
       />
       {children}
     </div>

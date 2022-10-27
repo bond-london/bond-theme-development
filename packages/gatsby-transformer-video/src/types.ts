@@ -17,7 +17,7 @@ export interface IGatsbyVideoInformation {
   hasAudio: boolean;
 }
 
-export interface IGatsbyTransformedVideo extends IGatsbyVideoInformation {
+export interface IGatsbyVideo extends IGatsbyVideoInformation {
   dominantColour: string;
   layout: VideoLayout;
   mp4: string;
@@ -33,13 +33,4 @@ export interface IPluginOptions {
   width?: number;
 }
 
-export function getTransformedVideo(
-  entry?: {
-    readonly transformed?: Record<string, unknown> | null;
-  } | null
-): IGatsbyTransformedVideo | undefined {
-  if (entry?.transformed) {
-    return entry.transformed as unknown as IGatsbyTransformedVideo;
-  }
-  return undefined;
-}
+export type IGatsbyTransformedVideo = Record<string, unknown>;

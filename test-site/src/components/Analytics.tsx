@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { graphql, useStaticQuery } from "gatsby";
 import ReactCookieConsent from "react-cookie-consent";

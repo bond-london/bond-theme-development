@@ -1,16 +1,7 @@
-import { useFirstVisibleToUser } from "@bond-london/gatsby-graphcms-components";
 import classNames from "classnames";
-import React, { createContext, PropsWithChildren, useContext } from "react";
+import React, { PropsWithChildren } from "react";
 
-export const ModalPopupContext = createContext(false);
-
-function calculateContainerGridName(
-  withinModalPopup: boolean,
-  collapse: boolean
-): string {
-  if (withinModalPopup) {
-    return "modal-container-grid";
-  }
+function calculateContainerGridName(collapse: boolean): string {
   if (collapse) {
     return "container-grid bond-row-1-0 bond-row-6-0";
   }
@@ -40,38 +31,22 @@ const CoreSection: React.FC<
   element: Element = "section",
   preChildren,
   postChildren,
-  visibleThreshold,
-  visibleDelay,
   collapse,
-  onVisible,
-}) => {
-  const withinModalPopup = useContext(ModalPopupContext);
-  const [ref] = useFirstVisibleToUser<HTMLDivElement>(
-    visibleThreshold,
-    visibleDelay,
-    onVisible
-  );
-
-  return (
-    <Element
-      id={id}
-      data-component={componentName}
-      className={classNames(
-        calculateContainerGridName(withinModalPopup, collapse),
-        "grid-container relative",
-        className
-      )}
-    >
-      {preChildren}
-      {children && (
-        <div ref={ref} className={classNames(contentClassName)}>
-          {children}
-        </div>
-      )}
-      {postChildren}
-    </Element>
-  );
-};
+}) => (
+  <Element
+    id={id}
+    data-component={componentName}
+    className={classNames(
+      calculateContainerGridName(collapse),
+      "grid-container relative",
+      className
+    )}
+  >
+    {preChildren}
+    {children && <div className={classNames(contentClassName)}>{children}</div>}
+    {postChildren}
+  </Element>
+);
 
 export const Section: React.FC<
   PropsWithChildren<{
@@ -87,9 +62,6 @@ export const Section: React.FC<
     element?: keyof JSX.IntrinsicElements;
     preChildren?: React.ReactNode;
     postChildren?: React.ReactNode;
-    visibleThreshold?: number;
-    visibleDelay?: number;
-    onVisible?: () => void;
   }>
 > = ({
   id,
@@ -105,9 +77,6 @@ export const Section: React.FC<
   element,
   preChildren,
   postChildren,
-  visibleThreshold,
-  visibleDelay,
-  onVisible,
 }) => {
   const realSpacingClassName =
     spacingClassName ||
@@ -134,9 +103,6 @@ export const Section: React.FC<
       )}
       preChildren={preChildren}
       postChildren={postChildren}
-      onVisible={onVisible}
-      visibleDelay={visibleDelay}
-      visibleThreshold={visibleThreshold}
       collapse={collapse}
     >
       {children}

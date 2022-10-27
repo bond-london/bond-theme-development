@@ -1,3 +1,4 @@
+"use client";
 import { Script, ScriptStrategy } from "gatsby";
 import React, { useCallback, useEffect } from "react";
 import { getCookieConsentValue } from "react-cookie-consent";

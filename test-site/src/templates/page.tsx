@@ -10,9 +10,6 @@ export const PageQuery = graphql`
     graphCmsPage(id: { eq: $id }) {
       ...CmsPage
     }
-    site {
-      ...SiteLayout
-    }
   }
 `;
 

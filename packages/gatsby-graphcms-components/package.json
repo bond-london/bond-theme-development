@@ -22,15 +22,14 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.ts",
   "files": [
-    "dist"
+    "src"
   ],
   "scripts": {
-    "build:tsc": "tsc --outDir dist/",
-    "build": "npm-run-all -s clean build:tsc",
-    "watch": "npm-run-all -s watch:tsc",
+    "build:tsc": "tsc --noEmit",
+    "build": "npm-run-all -s clean build:*",
+    "watch": "npm-run-all -s watch:*",
     "watch:tsc": "yarn build:tsc -w",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "clean": "del-cli dist/*"
@@ -44,9 +43,8 @@
     "typescript": "^4.7.4"
   },
   "peerDependencies": {
-    "gatsby": "^4.21.1",
-    "gatsby-plugin-image": "^2.x",
-    "react": "^18.x"
+    "gatsby": "^4",
+    "gatsby-plugin-image": "^2"
   },
   "dependencies": {
     "@bond-london/gatsby-transformer-video": "^2.0.0",

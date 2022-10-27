@@ -11,7 +11,7 @@ export function renderLottieToSvg(
       url: "http://localhost",
     });
     const { document, navigator } = window;
-    global.window = window;
+    global.window = window as unknown as Window & typeof globalThis;
     global.document = document;
     global.navigator = navigator;
 
@@ -33,6 +33,6 @@ export function renderLottieToSvg(
     const svg = container.innerHTML;
     return svg;
   } catch (ex) {
-    return reporter.panic("Error loading lottie", ex);
+    return reporter.panic("Error loading lottie", ex as Error);
   }
 }

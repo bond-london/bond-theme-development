@@ -49,7 +49,7 @@ async function parseLottie(
 
     return { animationJson, data: result.data, width, height };
   } catch (error) {
-    return reporter.panic("Failed to parse lottie", error);
+    return reporter.panic("Failed to parse lottie", error as Error);
   }
 }
 
@@ -106,7 +106,10 @@ async function internalCreateExtractedAnimation(
           try {
             await writeFile(publicPath, data);
           } catch (error) {
-            reporter.panic(`Failed to create animation preview`, error);
+            reporter.panic(
+              `Failed to create animation preview`,
+              error as Error
+            );
           }
         }
         animation.encodedUrl = `${pathPrefix}/static/${details.internal.contentDigest}/${fileName}`;

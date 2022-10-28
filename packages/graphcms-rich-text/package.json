@@ -45,9 +45,6 @@
     "ts-jest": "^29.0.2",
     "typescript": "^4.7.4"
   },
-  "peerDependencies": {
-    "react": "^18.x"
-  },
   "gitHead": "5c1e8033f5b218b11ccfec5b579df6b6a657449e",
   "dependencies": {
     "@graphcms/rich-text-types": "^0.5.0"

@@ -102,7 +102,7 @@ async function internalCreateLocalFileNode(
     await ensureDir(dirname(fullPath));
     await atomicCopyFile(remoteFileNode.absolutePath, fullPath);
   } catch (e) {
-    reporter.panic("Failed to copy asset", e);
+    reporter.panic("Failed to copy asset", e as Error);
   }
   reporter.verbose(`Downloaded asset ${fileName} from ${urlToUse}`);
 

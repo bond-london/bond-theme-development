@@ -46,7 +46,7 @@ async function parseSvg(
     });
     return { data: result.data, width, height };
   } catch (error) {
-    return reporter.panic("Error parsing svg", error);
+    return reporter.panic("Error parsing svg", error as Error);
   }
 }
 
@@ -95,7 +95,10 @@ async function internalCreateExtractedSvg(
           try {
             await writeFile(publicPath, data);
           } catch (error) {
-            reporter.panic(`Failed to create animation preview`, error);
+            reporter.panic(
+              `Failed to create animation preview`,
+              error as Error
+            );
           }
         }
         svg.encodedUrl = `${pathPrefix}/static/${details.internal.contentDigest}/${fileName}`;

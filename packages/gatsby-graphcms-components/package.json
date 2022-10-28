@@ -44,8 +44,7 @@
   },
   "peerDependencies": {
     "gatsby": "^4 || ^5",
-    "gatsby-plugin-image": "^2 || ^3",
-    "react": "^18.x"
+    "gatsby-plugin-image": "^2 || ^3"
   },
   "dependencies": {
     "@bond-london/gatsby-transformer-video": "^3.0.0-alpha.1",

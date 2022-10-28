@@ -63,8 +63,7 @@
   },
   "peerDependencies": {
     "gatsby": "^4 || ^5",
-    "i18next": "^21.x",
-    "react": "^18"
+    "i18next": "^21.x"
   },
   "gitHead": "5c1e8033f5b218b11ccfec5b579df6b6a657449e"
 }

@@ -55,23 +55,23 @@ function buildConfig(
       //     openAnalyzer: false,
       //   },
       // },
-      // {
-      //   resolve: "gatsby-plugin-robots-txt",
-      //   options: {
-      //     resolveEnv: (): string => {
-      //       const robotsEnv = options.allowIndex ? "production" : "development";
-      //       return robotsEnv;
-      //     },
-      //     env: {
-      //       development: {
-      //         policy: [{ userAgent: "*", disallow: ["/"] }],
-      //       },
-      //       production: {
-      //         policy: [{ userAgent: "*", allow: "/", disallow: ["/dev/"] }],
-      //       },
-      //     },
-      //   },
-      // },
+      {
+        resolve: "gatsby-plugin-robots-txt",
+        options: {
+          resolveEnv: (): string => {
+            const robotsEnv = options.allowIndex ? "production" : "development";
+            return robotsEnv;
+          },
+          env: {
+            development: {
+              policy: [{ userAgent: "*", disallow: ["/"] }],
+            },
+            production: {
+              policy: [{ userAgent: "*", allow: "/", disallow: ["/dev/"] }],
+            },
+          },
+        },
+      },
       {
         resolve: "gatsby-plugin-postcss",
         options: {

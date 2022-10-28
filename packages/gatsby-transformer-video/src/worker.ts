@@ -133,7 +133,7 @@ function createLabel(
   return `${stage}: ${name}${widthInfo}`;
 }
 
-function rgbToHex(red, green, blue): string {
+function rgbToHex(red: number, green: number, blue: number): string {
   return `#${(blue | (green << 8) | (red << 16) | (1 << 24))
     .toString(16)
     .slice(1)}`;

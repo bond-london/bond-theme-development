@@ -26,7 +26,6 @@
   },
   "main": "src/index.ts",
   "files": [
-    "src",
     "dist",
     "gatsby-node.js"
   ],

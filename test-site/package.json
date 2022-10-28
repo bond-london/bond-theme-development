@@ -30,9 +30,10 @@
   },
   "dependencies": {
     "@bond-london/gatsby-theme": "^2.0.0-alpha.0",
-    "@typescript-eslint/eslint-plugin": "^5.41.0",
     "classnames": "^2.3.1",
     "gatsby": "next"
+    "react": "experimental",
+    "react-dom": "experimental"
   },
   "devDependencies": {
     "@types/node": "^18.7.23",

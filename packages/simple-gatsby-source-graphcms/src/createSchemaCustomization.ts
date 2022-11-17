@@ -9,7 +9,7 @@ import {
   SpecialFieldMap,
 } from "./types";
 import { createSourcingConfig, getRealType, stateCache } from "./utils";
-import { createSchemaCustomization as createToolkitSchemaCustomization } from "gatsby-graphql-source-toolkit";
+import { createSchemaCustomization as createToolkitSchemaCustomization } from "@nrandell/gatsby-graphql-source-toolkit";
 import { GraphQLObjectType } from "graphql";
 
 function customiseSchema(

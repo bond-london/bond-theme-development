@@ -5,7 +5,7 @@
   "sideEffects": [
     "*.css"
   ],
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "test-site",
   "author": "nrandell",
   "keywords": [
@@ -29,11 +29,11 @@
     "lint": "eslint --rulesdir ../node_modules/gatsby/dist/utils/eslint-rules --config .custom.eslintrc.json --max-warnings 0 \"src/**/*.{js,jsx,ts,tsx}\" \"gatsby-*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
-    "@bond-london/gatsby-theme": "^1.0.0-pre.1",
+    "@bond-london/gatsby-theme": "^2.0.0-alpha.0",
     "classnames": "^2.3.1",
-    "gatsby": "^4.20.0",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "gatsby": "^5.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/node": "^18.7.23",

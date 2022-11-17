@@ -8,19 +8,15 @@ export const TemplateFragment = graphql`
     name
     preContent {
       __typename
-      ...CmsHero
-      ...CmsTextBlock
-      ...FullWidthCmsAnimationComponent
-      ...FullWidthCmsImageComponent
-      ...FullWidthCmsVideoComponent
+      ...CmsComponent
+      ...CmsCollection
     }
     postContent {
       __typename
-      ...CmsHero
-      ...CmsTextBlock
-      ...FullWidthCmsAnimationComponent
-      ...FullWidthCmsImageComponent
-      ...FullWidthCmsVideoComponent
+      ...CmsComponent
+      ...CmsCollection
     }
+    backgroundColour
+    textColour
   }
 `;

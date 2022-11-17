@@ -1,26 +1,17 @@
 "use client";
 import React from "react";
-import { graphql, useStaticQuery } from "gatsby";
+import { graphql, SliceComponentProps, useStaticQuery } from "gatsby";
 import ReactCookieConsent from "react-cookie-consent";
 import {
   GoogleTagManager,
   useBondCookie,
 } from "@bond-london/gatsby-graphcms-components";
 
-export const Analytics: React.FC = () => {
-  const { site } = useStaticQuery<Queries.AnalyticsQuery>(graphql`
-    query Analytics {
-      site {
-        siteMetadata {
-          cookieName
-          googleTag
-          declinedCookieName
-        }
-      }
-    }
-  `);
+const Analytics: React.FC<SliceComponentProps<Queries.AnalyticsQuery>> = ({
+  data: { site },
+}) => {
+  if (!site?.siteMetadata) throw new Error("No site");
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const { cookieName, googleTag, declinedCookieName } = site!.siteMetadata!;
 
   const onAccept = useBondCookie(cookieName);
@@ -51,3 +42,17 @@ export const Analytics: React.FC = () => {
     </>
   );
 };
+
+export default Analytics;
+
+export const query = graphql`
+  query Analytics {
+    site {
+      siteMetadata {
+        cookieName
+        googleTag
+        declinedCookieName
+      }
+    }
+  }
+`;

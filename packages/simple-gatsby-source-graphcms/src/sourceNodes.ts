@@ -3,12 +3,12 @@ import { NodeInput, SourceNodesArgs, NodePluginArgs } from "gatsby";
 import {
   createSourcingContext,
   fetchAllNodes,
-} from "gatsby-graphql-source-toolkit";
+} from "@nrandell/gatsby-graphql-source-toolkit";
 import {
   IRemoteId,
   IRemoteNode,
   ISourcingContext,
-} from "gatsby-graphql-source-toolkit/dist/types";
+} from "@nrandell/gatsby-graphql-source-toolkit/dist/types";
 import {
   IBasicFieldType,
   GraphCMS_Node,
@@ -74,7 +74,7 @@ async function downloadAsset(
   const { gatsbyApi } = context;
   const { actions, reporter, createNodeId, getCache } = gatsbyApi;
   const { createNode } = actions;
-  const fileName = getLocalFileName(remoteAsset, reporter);
+  const fileName = getLocalFileName(remoteAsset);
   const ext = fileName && extname(fileName);
   const name = fileName && basename(fileName, ext);
   const url = remoteAsset.urlToUse;

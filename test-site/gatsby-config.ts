@@ -8,8 +8,11 @@ function readEnvVar(envVarName: string): string {
   return value;
 }
 
+const name = "Theme Test Site";
+const icon = "src/images/icon.png";
+
 const themeOptions: Partial<IBondThemeOptions> = {
-  projectName: "Theme Test Site",
+  projectName: name,
   useVideoCache: true,
   videoCacheConnectionString: process.env.VIDEO_CACHE_CONNECTION_STRING,
   productionImageFormats: ["auto", "webp"],
@@ -19,7 +22,15 @@ const themeOptions: Partial<IBondThemeOptions> = {
   graphCMSStage: readEnvVar("GRAPHCMS_STAGE"),
   enableEslint: false,
   siteUrl,
-  icon: "src/images/icon.png",
+  icon,
+  manifestOptions: {
+    name,
+    short_name: "test",
+    start_url: "/",
+    background_color: "#663399",
+    display: "minimal-ui",
+    icon,
+  },
 };
 
 const config: GatsbyConfig = {
@@ -38,7 +49,8 @@ const config: GatsbyConfig = {
   },
   flags: {
     FAST_DEV: true,
-    DEV_SSR: true,
+    DEV_SSR: false,
+    PARTIAL_HYDRATION: false,
     PRESERVE_FILE_DOWNLOAD_CACHE: true,
   },
   plugins: [

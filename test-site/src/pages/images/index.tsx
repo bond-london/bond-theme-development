@@ -1,4 +1,6 @@
-import { graphql } from "gatsby";
+import { graphql, HeadFC } from "gatsby";
+import React from "react";
+import { PageHead } from "../../components/PageHead";
 import { ImagesLayout } from "../../layouts/ImagesLayout";
 
 export default ImagesLayout;
@@ -18,3 +20,7 @@ export const AllImagesQuery = graphql`
     }
   }
 `;
+
+export const Head: HeadFC = (props) => (
+  <PageHead headProps={props} page={{ title: "All images" }} />
+);

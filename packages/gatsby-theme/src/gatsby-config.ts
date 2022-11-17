@@ -49,13 +49,6 @@ function buildConfig(
     plugins: [
       "gatsby-plugin-image",
       {
-        resolve: "gatsby-plugin-webpack-bundle-analyser-v2",
-        options: {
-          analyzerMode: "static",
-          openAnalyzer: false,
-        },
-      },
-      {
         resolve: "gatsby-plugin-robots-txt",
         options: {
           resolveEnv: (): string => {
@@ -99,7 +92,7 @@ function buildConfig(
       "gatsby-plugin-sitemap",
       {
         resolve: "gatsby-plugin-manifest",
-        options: {
+        options: options.manifestOptions || {
           icon: options.icon,
         },
       },

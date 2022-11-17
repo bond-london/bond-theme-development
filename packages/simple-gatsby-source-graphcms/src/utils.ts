@@ -7,12 +7,12 @@ import {
   readOrGenerateDefaultFragments,
   wrapQueryExecutorWithQueue,
   generateDefaultFragments,
-} from "gatsby-graphql-source-toolkit";
+} from "@nrandell/gatsby-graphql-source-toolkit";
 import {
   IQueryExecutionArgs,
   IQueryExecutor,
   ISourcingConfig,
-} from "gatsby-graphql-source-toolkit/dist/types";
+} from "@nrandell/gatsby-graphql-source-toolkit/dist/types";
 import { ISchemaInformation, IPluginOptions, IPluginState } from "./types";
 import { copyFile, existsSync, rename, rm } from "fs-extra";
 import {

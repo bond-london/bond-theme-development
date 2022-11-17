@@ -1,5 +1,5 @@
 import { NodePluginArgs, ParentSpanPluginArgs, Reporter } from "gatsby";
-import { loadSchema } from "gatsby-graphql-source-toolkit";
+import { loadSchema } from "@nrandell/gatsby-graphql-source-toolkit";
 import {
   ISchemaInformation,
   IPluginOptions,
@@ -17,7 +17,7 @@ import {
   isUnionType,
   isObjectType,
 } from "graphql";
-import { IGatsbyNodeConfig } from "gatsby-graphql-source-toolkit/dist/types";
+import { IGatsbyNodeConfig } from "@nrandell/gatsby-graphql-source-toolkit/dist/types";
 import { isGatsbyNodeLifecycleSupported } from "gatsby-plugin-utils";
 
 const specialNames = new Set(["stage", "locale", "localizations"]);

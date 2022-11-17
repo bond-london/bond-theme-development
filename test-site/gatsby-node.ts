@@ -18,6 +18,36 @@ function tryLoadTemplate(templateName: string) {
   return undefined;
 }
 
+function buildSlices(
+  { actions: { createSlice } }: CreatePagesArgs,
+  nodes: Queries.AllContentQuery["allGraphCmsNavigation"]["nodes"]
+) {
+  for (const { name, isFooter } of nodes) {
+    console.log(`Creating slice for ${name} ${isFooter}`);
+    if (isFooter) {
+      createSlice({
+        id: `footer-${name}`,
+        component: resolve("./src/cms/CmsFooter.tsx"),
+        context: {
+          name,
+        },
+      });
+    } else {
+      createSlice({
+        id: `navigation-${name}`,
+        component: resolve("./src/cms/CmsNavigationMenu.tsx"),
+        context: {
+          name,
+        },
+      });
+    }
+  }
+  createSlice({
+    id: "analytics",
+    component: resolve("./src/components/Analytics.tsx"),
+  });
+}
+
 function buildPages(
   { actions }: CreatePagesArgs,
   nodes: Queries.AllContentQuery["allGraphCmsPage"]["nodes"]
@@ -231,6 +261,12 @@ export async function createPages(args: CreatePagesArgs) {
             name
           }
         }
+        allGraphCmsNavigation {
+          nodes {
+            name
+            isFooter
+          }
+        }
       }
     `,
     { allowHidden }
@@ -260,6 +296,7 @@ export async function createPages(args: CreatePagesArgs) {
   }
 
   buildPages(args, data.allGraphCmsPage.nodes);
+  buildSlices(args, data.allGraphCmsNavigation.nodes);
 
   if (data.allGraphCmsArticleType) {
     await buildArticleTypes(args, data.allGraphCmsArticleType.nodes);

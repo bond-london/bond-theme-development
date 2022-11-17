@@ -1,6 +1,6 @@
 {
   "name": "@bond-london/gatsby-plugin-cms-i18next",
-  "version": "3.1.0",
+  "version": "4.0.0-alpha.1",
   "description": "Use CMS languages to generate your Gatsby website",
   "author": "Nick Randell <nick.randell@bond.fi>",
   "license": "MIT",
@@ -58,11 +58,11 @@
   "dependencies": {
     "browser-lang": "^0.2.0",
     "i18next": "^22.0.1",
-    "i18next-browser-languagedetector": "^7.0.0",
+    "i18next-browser-languagedetector": "^7.0.1",
     "react-i18next": "^12.0.0"
   },
   "peerDependencies": {
-    "gatsby": "^4",
+    "gatsby": "^4 || ^5",
     "i18next": "^21.x"
   },
   "gitHead": "5c1e8033f5b218b11ccfec5b579df6b6a657449e"

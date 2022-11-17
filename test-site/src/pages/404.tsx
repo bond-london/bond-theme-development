@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Link, HeadFC } from "gatsby";
+import { PageHead } from "../components/PageHead";
 
 const pageStyles = {
   color: "#232129",
@@ -48,4 +49,6 @@ const NotFoundPage = () => {
 export default NotFoundPage;
 
 // eslint-disable-next-line import/no-unused-modules
-export const Head: HeadFC = () => <title>Not found</title>;
+export const Head: HeadFC = (props) => (
+  <PageHead headProps={props} page={{ title: "Not found" }} />
+);

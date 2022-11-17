@@ -7,16 +7,5 @@
         "cacheableOperations": []
       }
     }
-  },
-  "targetDefaults": {
-    "build": {
-      "dependsOn": ["^build"]
-    },
-    "prepare": {
-      "dependsOn": ["^prepare"]
-    }
-  },
-  "affected": {
-    "defaultBase": "main"
   }
 }

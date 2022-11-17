@@ -5,7 +5,7 @@
   "sideEffects": [
     "*.css"
   ],
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "test-site",
   "author": "nrandell",
   "keywords": [
@@ -31,9 +31,9 @@
   "dependencies": {
     "@bond-london/gatsby-theme": "^2.0.0-alpha.0",
     "classnames": "^2.3.1",
-    "gatsby": "next"
-    "react": "experimental",
-    "react-dom": "experimental"
+    "gatsby": "^5.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/node": "^18.7.23",

@@ -8,6 +8,9 @@ export const CmsPageLinkFragment = graphql`
     remoteId
     title
     slug
+    pageType {
+      slug
+    }
   }
 `;
 
@@ -18,48 +21,28 @@ export const CmsPageFragment = graphql`
     indexed
     hidden
     description
+    backgroundColour
+    textColour
     featuredImage {
       ...SeoImageAsset
     }
     template {
       ...Template
     }
-    richText {
-      cleaned
-      references {
-        ...FullWidthCmsAnimation
-        ...CmsArticleLink
-        ...CmsArticleTypeLink
-        ...FullWidthCmsImage
-        ...CmsLink
-        ...CmsPageLink
-        ...CmsTagLink
-        ...FullWidthCmsVideo
-      }
-    }
-    topComponents {
+    topContent {
       __typename
-      ...CmsHero
-      ...CmsTextBlock
-      ...FullWidthCmsAnimationComponent
-      ...FullWidthCmsImageComponent
-      ...FullWidthCmsVideoComponent
+      ...CmsComponent
+      ...CmsCollection
     }
     content {
       __typename
-      ...CmsHero
-      ...CmsTextBlock
-      ...FullWidthCmsAnimationComponent
-      ...FullWidthCmsImageComponent
-      ...FullWidthCmsVideoComponent
+      ...CmsComponent
+      ...CmsCollection
     }
-    bottomComponents {
+    bottomContent {
       __typename
-      ...CmsHero
-      ...CmsTextBlock
-      ...FullWidthCmsAnimationComponent
-      ...FullWidthCmsImageComponent
-      ...FullWidthCmsVideoComponent
+      ...CmsComponent
+      ...CmsCollection
     }
   }
 `;

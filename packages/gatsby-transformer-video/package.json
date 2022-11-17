@@ -44,7 +44,7 @@
     "gatsby": "^4 || ^5",
     "gatsby-cli": "^4 || ^5",
     "gatsby-source-filesystem": "^4 || ^5",
-    "gatsby-worker": "^1 || ^2",
+    "gatsby-worker": "^1 || ^2"
   },
   "devDependencies": {
     "@types/ffmpeg-static": "^3.0.1",

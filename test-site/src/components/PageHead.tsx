@@ -1,16 +1,11 @@
-import { SEO } from "@bond-london/gatsby-graphcms-components";
-import { graphql, HeadProps, useStaticQuery } from "gatsby";
 import React from "react";
+import { graphql, HeadProps, useStaticQuery } from "gatsby";
+import { BondSEO, IPageMetadata, ISite } from "@bond-london/gatsby-theme";
 
-export const CMSHead: React.FC<{
+export const PageHead: React.FC<{
   headProps: HeadProps;
-  title: string | null | undefined;
-}> = ({
-  headProps: {
-    location: { pathname },
-  },
-  title,
-}) => {
+  page: IPageMetadata;
+}> = ({ headProps: { location }, page }) => {
   const { site } = useStaticQuery<Queries.SiteLayoutQuery>(graphql`
     query SiteLayout {
       site {
@@ -24,17 +19,18 @@ export const CMSHead: React.FC<{
       }
     }
   `);
+
   if (!site?.siteMetadata) throw new Error("No site metadata");
   if (!site.siteMetadata.siteName) throw new Error("No site name");
-  if (!title) throw new Error("No title");
-  const pageTitle = `${title} | ${site.siteMetadata.siteName}`;
+
+  const pageTitle = `${page.title} | ${site.siteMetadata.siteName}`;
+
   return (
-    <SEO
+    <BondSEO
+      site={site as ISite}
       pageTitle={pageTitle}
-      pageMetadata={{ title, noIndex: true }}
-      siteBuildMetadata={site}
-      siteMetadata={site.siteMetadata}
-      pagePath={pathname}
+      pageMetadata={page}
+      pagePath={location.pathname}
     />
   );
 };

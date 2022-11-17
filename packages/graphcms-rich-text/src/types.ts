@@ -123,6 +123,7 @@ export interface IRTFProps extends Omit<IBaseRendererProps, "renderers"> {
 
 export type RealRTFProps = Omit<IRTFProps, "content" | "references"> & {
   content: IRichTextInformation;
+  style?: CSSProperties;
 };
 
 export interface IRichTextProps

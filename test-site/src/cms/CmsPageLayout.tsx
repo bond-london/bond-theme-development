@@ -1,10 +1,6 @@
-import { HeadProps, PageProps } from "gatsby";
+import { HeadProps, PageProps, Slice } from "gatsby";
 import React from "react";
-import { Analytics } from "../components/Analytics";
-import { CmsComponents } from "./CmsComponents";
-import { CMSHead } from "./CMSHead";
-import { CmsTextBlock } from "./CmsTextBlock";
-import { PropsDump } from "./PropsDump";
+import { CmsContent } from "./CmsContents";
 
 export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
   props
@@ -17,27 +13,20 @@ export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
   const template = page.template;
   return (
     <>
-      <pre>The heading</pre>
-      <Analytics />
+      <Slice alias="navigation-Menu" />
+      <Slice alias="analytics" />
 
       <div>
-        <CmsComponents fragments={page.topComponents} />
-        {template?.preContent && (
-          <CmsComponents fragments={template.preContent} />
-        )}
-        <CmsComponents fragments={page.content} />
-        <CmsTextBlock fragment={page.richText} />
+        <CmsContent fragment={page.topContent} />
+        {template?.preContent && <CmsContent fragment={template.preContent} />}
+        <CmsContent fragment={page.topContent} />
         {template?.postContent && (
-          <CmsComponents fragments={template.postContent} />
+          <CmsContent fragment={template.postContent} />
         )}
-        <CmsComponents fragments={page.bottomComponents} />
-        <PropsDump {...props} />
+        <CmsContent fragment={page.content} />
       </div>
+
+      <Slice alias="footer-Footer" />
     </>
   );
 };
-
-// eslint-disable-next-line import/no-unused-modules
-export const CmsPageHead: React.FC<HeadProps<Queries.SinglePageQuery>> = (
-  props
-) => <CMSHead headProps={props} title={props.data.graphCmsPage?.title} />;

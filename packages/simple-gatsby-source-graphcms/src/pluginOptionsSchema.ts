@@ -60,7 +60,7 @@ export function pluginOptionsSchema(
     concurrency: Joi.number()
       .integer()
       .min(1)
-      .default(10)
+      .default(1)
       .description("The number of promises to run at one time"),
     concurrentDownloads: Joi.number()
       .integer()

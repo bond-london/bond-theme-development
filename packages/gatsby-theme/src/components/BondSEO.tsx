@@ -1,19 +1,18 @@
 import { getSrc, IGatsbyImageData } from "gatsby-plugin-image";
 import React, { useMemo } from "react";
 
-export interface ISiteBuildMetadata {
+export interface ISite {
   readonly buildTime?: unknown | string | null;
   readonly buildYear: string | null;
+  siteMetadata: {
+    readonly siteName: string | null;
+    readonly siteUrl: string | null;
+    readonly logo?: string | null;
+    readonly sameAs?: ReadonlyArray<string | null> | null;
+  };
 }
 
-export interface ISiteMetadata {
-  readonly siteName: string | null;
-  readonly siteUrl: string | null;
-  readonly logo?: string | null;
-  readonly sameAs?: ReadonlyArray<string | null> | null;
-}
-
-export interface ISeo {
+export interface IPageMetadata {
   title: string;
   description?: string | null;
   image?: IGatsbyImageData | null;
@@ -21,9 +20,8 @@ export interface ISeo {
   noIndex?: boolean | null;
 }
 interface IProps {
-  siteBuildMetadata: ISiteBuildMetadata;
-  siteMetadata: ISiteMetadata;
-  pageMetadata: ISeo;
+  site: ISite;
+  pageMetadata: IPageMetadata;
   pagePath: string;
   pageTitle: string;
   schemaOrgs?: Array<unknown>;
@@ -62,13 +60,15 @@ export function buildWebsiteSchema(
   return { "@type": "WebSite", name, url };
 }
 
-export const SEO: React.FC<IProps> = ({
-  siteBuildMetadata: { buildTime },
-  siteMetadata: {
-    siteName: possibleSiteName,
-    siteUrl: possibleSiteUrl,
-    logo,
-    sameAs,
+export const BondSEO: React.FC<IProps> = ({
+  site: {
+    buildTime,
+    siteMetadata: {
+      siteName: possibleSiteName,
+      siteUrl: possibleSiteUrl,
+      logo,
+      sameAs,
+    },
   },
   pageMetadata,
   pagePath,

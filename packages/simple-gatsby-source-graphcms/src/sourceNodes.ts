@@ -74,7 +74,7 @@ async function downloadAsset(
   const { gatsbyApi } = context;
   const { actions, reporter, createNodeId, getCache } = gatsbyApi;
   const { createNode } = actions;
-  const fileName = getLocalFileName(remoteAsset, reporter);
+  const fileName = getLocalFileName(remoteAsset);
   const ext = fileName && extname(fileName);
   const name = fileName && basename(fileName, ext);
   const url = remoteAsset.urlToUse;

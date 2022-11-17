@@ -21,6 +21,7 @@ export const RealRTF: React.FC<RealRTFProps> = ({
   fixedParagraphClassName,
   fixedHeadingClassName,
   renderers,
+  style,
   ...rest
 }) => {
   const realClassNameOverrides = useMemo(() => {
@@ -49,7 +50,7 @@ export const RealRTF: React.FC<RealRTFProps> = ({
   }, [projectRenderers, renderers]);
 
   return (
-    <div className={className}>
+    <div className={className} style={style}>
       <RichText
         {...rest}
         classNameOverrides={realClassNameOverrides}

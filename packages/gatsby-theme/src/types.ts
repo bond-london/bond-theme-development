@@ -28,4 +28,5 @@ export interface IBondThemeOptions extends IPluginRefOptions {
   showDevPages: boolean;
   icon: string;
   maxImageWidth?: number;
+  manifestOptions: IPluginRefOptions;
 }

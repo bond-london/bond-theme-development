@@ -136,6 +136,7 @@ function buildConfig(
           stages: [options.graphCMSStage],
           token: options.graphCMSToken,
           maxImageWidth: options.maxImageWidth,
+          ...options.sourceOptions,
         },
       },
       {

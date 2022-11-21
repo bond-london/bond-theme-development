@@ -27,8 +27,7 @@ export const Head: HeadFC<Queries.SinglePageQuery> = (props) => {
     title: graphCmsPage.title,
     noIndex: !graphCmsPage.indexed,
     description: graphCmsPage.description,
-    image:
-      graphCmsPage.featuredImage?.localFile?.childImageSharp?.gatsbyImageData,
+    image: graphCmsPage.seoImage?.localFile?.childImageSharp?.gatsbyImageData,
   };
 
   return <PageHead headProps={props} page={pageMetadata} />;

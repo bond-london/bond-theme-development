@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { defaultRenderers } from "./Renderers";
 import { RenderElements } from "./RenderNode";
-import { IInternalRichTextProps, INodeRenderer, IRichTextProps } from "./types";
+import { IInternalRichTextProps, IRichTextProps } from "./types";
 
 export const InternalRichText: React.FC<IInternalRichTextProps> = ({
   content,
@@ -19,9 +19,7 @@ export const InternalRichText: React.FC<IInternalRichTextProps> = ({
 );
 
 export const RichText: React.FC<IRichTextProps> = ({ renderers, ...rest }) => {
-  const realRenderers: INodeRenderer = useMemo(() => {
-    return { ...defaultRenderers, ...renderers };
-  }, [renderers]);
+  const realRenderers = { ...defaultRenderers, ...renderers };
 
   return <InternalRichText {...rest} renderers={realRenderers} />;
 };

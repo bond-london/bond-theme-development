@@ -1,6 +1,5 @@
 export * from "./defaultRenderers";
 export * from "./AudioRenderer";
-export * from "./ClassRenderer";
 export * from "./DefaultRenderer";
 export * from "./EmbedRenderer";
 export * from "./IFrameRenderer";

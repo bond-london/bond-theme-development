@@ -1,15 +1,22 @@
-import React, { PropsWithChildren } from "react";
+import React from "react";
 import { AssetReference } from "@graphcms/rich-text-types";
-import { IEmbedNodeRendererProps } from "./types";
+import { RenderEmbedProps } from "./RenderEmbed";
+import { Unsupported } from "./Unsupported";
 
-export const RenderAsset: React.FC<
-  PropsWithChildren<IEmbedNodeRendererProps>
-> = props => {
-  const { nodeId, nodeType, children, ...rest } = props;
+const componentName = "RenderAsset";
+
+export const RenderAsset: React.FC<RenderEmbedProps> = props => {
+  const { nodeId, nodeType, ...rest } = props;
   const { references, renderers } = rest;
 
   if (nodeType !== "Asset") {
-    throw new Error(`Render asset can only render assets, not ${nodeType}`);
+    return (
+      <Unsupported
+        component={componentName}
+        message={`Can only render assets, not ${nodeType}`}
+        inline={rest.isInline}
+      />
+    );
   }
 
   const referenceValue = references?.filter(
@@ -17,25 +24,31 @@ export const RenderAsset: React.FC<
   )[0];
   if (!referenceValue?.id) {
     return (
-      <span style={{ color: "red" }}>
-        {`[RenderAsset]: No id found for embed node: ${nodeId}`}
-      </span>
+      <Unsupported
+        component={componentName}
+        message={`No id found for asset: ${nodeId}`}
+        inline={rest.isInline}
+      />
     );
   }
 
   if (!referenceValue?.mimeType) {
     return (
-      <span style={{ color: "red" }}>
-        {`[RenderAsset]: No mimeType found for embed node: ${nodeId}`}
-      </span>
+      <Unsupported
+        component={componentName}
+        message={`No mimeType found for asset: ${nodeId}`}
+        inline={rest.isInline}
+      />
     );
   }
 
   if (!referenceValue?.url) {
     return (
-      <span style={{ color: "red" }}>
-        {`[RenderAsset]: No url found for embed node: ${nodeId}`}
-      </span>
+      <Unsupported
+        component={componentName}
+        message={`No url found for asset: ${nodeId}`}
+        inline={rest.isInline}
+      />
     );
   }
 
@@ -53,9 +66,11 @@ export const RenderAsset: React.FC<
         renderer = mimeGroupRenderer;
       } else {
         return (
-          <span style={{ color: "red" }}>
-            {`[RenderAsset]: Unsupported mime type: ${mimeType}`}
-          </span>
+          <Unsupported
+            component={componentName}
+            message={`Unsupported mime type: ${mimeType}`}
+            inline={rest.isInline}
+          />
         );
       }
     }
@@ -63,14 +78,14 @@ export const RenderAsset: React.FC<
 
   const NodeRenderer = renderer as React.ElementType;
   if (NodeRenderer) {
-    return (
-      <NodeRenderer {...rest} {...referenceValue}>
-        {children}
-      </NodeRenderer>
-    );
+    return <NodeRenderer {...rest} {...referenceValue} />;
   }
 
   return (
-    <span style={{ color: "red" }}>{`[RenderAsset]: No renderer found`}</span>
+    <Unsupported
+      component={componentName}
+      message={`No renderer found`}
+      inline={rest.isInline}
+    />
   );
 };

@@ -9,9 +9,9 @@ module.exports = {
     "./gatsby-ssr.tsx",
     path.join(
       path.dirname(require.resolve("@bond-london/gatsby-theme/package.json")),
-      "dist",
+      "src",
       "**",
-      "*.js"
+      "*.{tsx,ts}"
     ),
   ],
   plugins: [

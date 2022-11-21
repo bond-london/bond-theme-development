@@ -125,6 +125,20 @@ export const SeoImageAssetFragment = graphql`
   }
 `;
 
+export const EmbedFeaturedImageAssetFragment = graphql`
+  fragment EmbedFeaturedImageAsset on GraphCMS_Asset {
+    id
+    localFile {
+      internal {
+        mediaType
+      }
+      childImageSharp {
+        gatsbyImageData(layout: FULL_WIDTH)
+      }
+    }
+  }
+`;
+
 // Models
 
 export const ConstrainedCmsImageFragment = graphql`

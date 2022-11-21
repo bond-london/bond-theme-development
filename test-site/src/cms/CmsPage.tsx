@@ -11,6 +11,9 @@ export const CmsPageLinkFragment = graphql`
     pageType {
       slug
     }
+    featuredImage {
+      ...EmbedFeaturedImageAsset
+    }
   }
 `;
 
@@ -23,7 +26,7 @@ export const CmsPageFragment = graphql`
     description
     backgroundColour
     textColour
-    featuredImage {
+    seoImage: featuredImage {
       ...SeoImageAsset
     }
     template {

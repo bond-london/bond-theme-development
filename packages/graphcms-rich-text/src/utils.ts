@@ -57,8 +57,22 @@ function getTableRow(node: ElementNode): TableRow | undefined {
   }
 }
 
-function getTable(node: IRichTextInformation): ITableInformation {
-  const rows = node.cleaned
+export function buildTableInformation(
+  contents: IRichTextInformation
+): ITableInformation {
+  return buildTableInformationFromContents(contents.cleaned);
+}
+
+export function buildTableInformationFromNodes(
+  nodes: ReadonlyArray<Node>
+): ITableInformation {
+  return buildTableInformationFromContents(nodes as ReadonlyArray<ElementNode>);
+}
+
+export function buildTableInformationFromContents(
+  contents: ReadonlyArray<ElementNode>
+): ITableInformation {
+  const rows = contents
     .filter(n => {
       switch (n.type) {
         case "table_head":
@@ -75,20 +89,14 @@ function getTable(node: IRichTextInformation): ITableInformation {
   return { header, body };
 }
 
-export function buildTableInformation(
-  contents: IRichTextInformation
-): ITableInformation {
-  return getTable(contents);
-}
-
 export function buildTableInformationFromChildren(
   children: React.ReactNode
 ): ITableInformation {
   const element = children as React.ReactElement<IElementsRendererProps>;
   const { props } = element;
   const { contents } = props;
-  const table = buildTableInformation({
-    cleaned: contents as Array<ElementNode>,
-  });
+  const table = buildTableInformationFromContents(
+    contents as ReadonlyArray<ElementNode>
+  );
   return table;
 }

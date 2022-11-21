@@ -1,12 +1,34 @@
 import React from "react";
-import { IEmbedNodeRendererProps } from "./types";
+import {
+  IBaseRendererProps,
+  IEmbedNodeRendererProps,
+  IFullNodeRenderer,
+} from "./types";
+import { Unsupported } from "./Unsupported";
 
-export const RenderEmbed: React.FC<IEmbedNodeRendererProps> = props => {
+export type RenderEmbedProps = IBaseRendererProps & {
+  renderers: IFullNodeRenderer;
+  isInline: boolean;
+  nodeId: string;
+  nodeType: string;
+  index: number;
+  parentIndex: number;
+};
+
+const componentName = "RenderEmbed";
+
+export const RenderEmbed: React.FC<RenderEmbedProps> = props => {
   const { nodeId, nodeType, ...rest } = props;
   const { references, renderers } = rest;
 
   if (nodeType === "Asset") {
-    throw new Error(`Render embed can not render assets`);
+    return (
+      <Unsupported
+        component={componentName}
+        message={`Render embed can not render assets`}
+        inline={rest.isInline}
+      />
+    );
   }
 
   const referenceValue = references?.filter(
@@ -14,9 +36,11 @@ export const RenderEmbed: React.FC<IEmbedNodeRendererProps> = props => {
   )[0];
   if (!referenceValue?.id) {
     return (
-      <span style={{ color: "red" }}>
-        {`[RenderEmbed]: No id found for embed node: ${nodeId}`}
-      </span>
+      <Unsupported
+        component={componentName}
+        message={`No id found for embed node: ${nodeId}`}
+        inline={rest.isInline}
+      />
     );
   }
 
@@ -27,12 +51,21 @@ export const RenderEmbed: React.FC<IEmbedNodeRendererProps> = props => {
     renderer = elementRenderer;
   } else {
     return (
-      <span style={{ color: "red" }}>
-        {`[RenderEmbed]: No renderer found for embed type: ${nodeType}`}
-      </span>
+      <Unsupported
+        component={componentName}
+        message={`No renderer found for embed type: ${nodeType}`}
+        inline={rest.isInline}
+      />
     );
   }
 
-  const NodeRenderer = renderer as React.ElementType;
-  return <NodeRenderer {...rest} nodeId={nodeId} reference={referenceValue} />;
+  const NodeRenderer = renderer as React.ElementType<IEmbedNodeRendererProps>;
+  return (
+    <NodeRenderer
+      {...rest}
+      nodeType={nodeType}
+      nodeId={nodeId}
+      reference={referenceValue}
+    />
+  );
 };

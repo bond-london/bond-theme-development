@@ -40,14 +40,19 @@ export function convertCmsAnimationToBondAnimation(
   };
 }
 
-export const BondAnimation: React.FC<
-  IBondAnimation & { loop?: boolean; loopDelay?: number; className?: string }
-> = props => {
+export const BondAnimation: React.FC<{
+  animation: IBondAnimation;
+  loop?: boolean;
+  loopDelay?: number;
+  className?: string;
+}> = props => {
   const {
-    dontCrop,
-    horizontalCropPosition,
-    verticalCropPosition,
-    animation,
+    animation: {
+      dontCrop,
+      horizontalCropPosition,
+      verticalCropPosition,
+      animation,
+    },
     loop,
     loopDelay,
     className,

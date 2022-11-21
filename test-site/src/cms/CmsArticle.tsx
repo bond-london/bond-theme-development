@@ -7,8 +7,12 @@ export const CmsArticleLinkFragment = graphql`
     id
     remoteId
     slug
+    title
     articleType {
       ...CmsArticleTypeLink
+    }
+    featuredImage {
+      ...EmbedFeaturedImageAsset
     }
   }
 `;

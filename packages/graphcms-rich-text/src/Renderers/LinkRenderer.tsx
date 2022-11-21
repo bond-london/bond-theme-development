@@ -1,29 +1,22 @@
-import React from "react";
-import { RenderEmbed } from "../RenderEmbed";
-import { ILinkNodeRendererProps, IEmbedNodeRendererProps } from "../types";
+import React, { PropsWithChildren } from "react";
+import { RenderEmbedProps } from "../RenderEmbed";
+import { RenderLinkTo, RenderLinkToProps } from "../RenderLinkTo";
+import { ILinkNodeRendererProps } from "../types";
 
-export const LinkRenderer: React.FC<ILinkNodeRendererProps> = props => {
-  const {
-    href,
-    rel,
-    id,
-    title,
-    openInNewTab,
-    className,
-    classNameOverrides,
-    style,
-    role,
-    children,
-  } = props;
-
-  if (props.nodeType) {
-    return (
-      <RenderEmbed
-        {...(props as unknown as IEmbedNodeRendererProps)}
-        isInline={true}
-      />
-    );
-  }
+const BasicLinkRenderer: React.FC<
+  PropsWithChildren<ILinkNodeRendererProps>
+> = ({
+  href,
+  rel,
+  id,
+  title,
+  openInNewTab,
+  className,
+  classNameOverrides,
+  style,
+  role,
+  children,
+}) => {
   const aProps: React.AnchorHTMLAttributes<HTMLAnchorElement> = {
     rel,
     id,
@@ -42,4 +35,13 @@ export const LinkRenderer: React.FC<ILinkNodeRendererProps> = props => {
   }
 
   return <a {...aProps}>{children}</a>;
+};
+
+export const LinkRenderer: React.FC<
+  ILinkNodeRendererProps | RenderEmbedProps
+> = props => {
+  if (props.nodeType) {
+    return <RenderLinkTo {...(props as RenderLinkToProps)} />;
+  }
+  return <BasicLinkRenderer {...(props as ILinkNodeRendererProps)} />;
 };

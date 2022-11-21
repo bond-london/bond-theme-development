@@ -1,6 +1,7 @@
 import React from "react";
 import { calculateClassName } from "./utils";
 import { IAudioNodeRendererProps } from "../types";
+import { Unsupported } from "../Unsupported";
 
 export const AudioRenderer: React.FC<IAudioNodeRendererProps> = ({
   url,
@@ -8,10 +9,15 @@ export const AudioRenderer: React.FC<IAudioNodeRendererProps> = ({
   additionalClassName,
   className,
   style,
+  isInline,
 }) => {
   if (!url) {
     return (
-      <span style={{ color: "red" }}>{"[AudioRenderer]: url is required"}</span>
+      <Unsupported
+        component="AudioRenderer"
+        message={`url is required`}
+        inline={isInline}
+      />
     );
   }
 

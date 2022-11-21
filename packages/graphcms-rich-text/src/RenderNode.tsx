@@ -1,8 +1,14 @@
 import { ElementNode, isElement, isText } from "@graphcms/rich-text-types";
 import React, { Fragment } from "react";
 import { elementKeys } from "./constants";
+import { RenderClass } from "./RenderClass";
 import { RenderText } from "./RenderText";
-import { IElementsRendererProps, INodeRendererProps } from "./types";
+import {
+  IElementsRendererProps,
+  IEmbedNodeRendererProps,
+  INodeRendererProps,
+} from "./types";
+import { Unsupported } from "./Unsupported";
 
 export const RenderNode: React.FC<INodeRendererProps> = props => {
   const { node, ...rest } = props;
@@ -58,7 +64,32 @@ export const RenderElement: React.FC<
   const { node: element, ...rest } = props;
   const { type, ...elementProps } = element;
 
+  if (type === "class") {
+    return (
+      <RenderClass {...rest} {...elementProps} contents={element.children} />
+    );
+  }
+
   const rendererKey = elementKeys[type];
+  if (!rendererKey) {
+    if (type === "embed") {
+      const { nodeType, isInline } =
+        element as unknown as IEmbedNodeRendererProps;
+      return (
+        <Unsupported
+          component="RenderElement"
+          message={`Failed to find a renderer for ${type}/${nodeType}`}
+          inline={isInline}
+        />
+      );
+    }
+    return (
+      <Unsupported
+        component="RenderElement"
+        message={`Failed to find a renderer for ${type}`}
+      />
+    );
+  }
 
   const renderer = props.renderers[rendererKey];
   const NodeRenderer = renderer as React.ElementType;

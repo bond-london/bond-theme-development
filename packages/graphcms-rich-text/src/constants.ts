@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { ElementTypeMap, INodeRenderer } from "./types";
+import { ElementTypeMap, IFullNodeRenderer } from "./types";
 
-export const elementKeys: { [key: string]: keyof INodeRenderer } = {
+export const elementKeys: { [key: string]: keyof IFullNodeRenderer } = {
   "heading-one": "h1",
   "heading-two": "h2",
   "heading-three": "h3",
@@ -30,6 +30,7 @@ export const elementKeys: { [key: string]: keyof INodeRenderer } = {
   underline: "underline",
   code: "code",
   "code-block": "code_block",
+  embed: "embed",
 };
 
 export const defaultRemoveEmpty: ElementTypeMap = {

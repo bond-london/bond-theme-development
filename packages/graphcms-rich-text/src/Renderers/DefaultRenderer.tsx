@@ -1,11 +1,13 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { calculateClassName } from "./utils";
 import { IDefaultNodeRendererProps } from "../types";
 
 export const DefaultRenderer: React.FC<
-  IDefaultNodeRendererProps & {
-    element: keyof JSX.IntrinsicElements;
-  }
+  PropsWithChildren<
+    IDefaultNodeRendererProps & {
+      element: keyof JSX.IntrinsicElements;
+    }
+  >
 > = props => {
   const {
     element: Element,

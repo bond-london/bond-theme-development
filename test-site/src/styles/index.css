@@ -9,3 +9,15 @@
     @apply bg-white font-light text-black;
   }
 }
+
+.button-primary {
+  @apply p4 inline-flex justify-center rounded-[2px] py-s px-s;
+}
+
+table.lined tbody tr {
+  @apply border-t-2;
+}
+
+table.lined td {
+  @apply py-xs pr-xs align-top laptop:align-middle;
+}

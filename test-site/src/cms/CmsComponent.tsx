@@ -5,7 +5,12 @@ import { GenericComponent } from "../components/GenericComponent";
 export const CmsComponent: React.FC<{
   fragment: Queries.CmsComponentFragment;
 }> = ({ fragment }) => {
-  return <GenericComponent fragment={fragment} />;
+  switch (fragment.componentType) {
+    case "Generic":
+      return <GenericComponent fragment={fragment} />;
+    default:
+      return <GenericComponent fragment={fragment} unknown={true} />;
+  }
 };
 
 export const fragment = graphql`
@@ -33,6 +38,8 @@ export const fragment = graphql`
     links {
       ...CmsLink
     }
+    backgroundColour
+    textColour
     image {
       ...FullWidthCmsImageComponent
     }

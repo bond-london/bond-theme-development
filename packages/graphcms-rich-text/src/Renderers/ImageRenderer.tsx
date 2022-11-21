@@ -1,6 +1,7 @@
 import React from "react";
 import { calculateClassName } from "./utils";
 import { IImageNodeRendererProps } from "../types";
+import { Unsupported } from "../Unsupported";
 
 export const ImageRenderer: React.FC<IImageNodeRendererProps> = ({
   src,
@@ -13,13 +14,16 @@ export const ImageRenderer: React.FC<IImageNodeRendererProps> = ({
   additionalClassName,
   className,
   style,
+  isInline,
 }) => {
   const realSrc = src || url;
   if (!realSrc) {
     return (
-      <span style={{ color: "red" }}>
-        {"[ImageRenderer]: src or url is required"}
-      </span>
+      <Unsupported
+        component="ImageRenderer"
+        message={`url is required`}
+        inline={isInline}
+      />
     );
   }
 

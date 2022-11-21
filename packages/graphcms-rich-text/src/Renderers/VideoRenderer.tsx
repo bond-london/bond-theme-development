@@ -1,6 +1,7 @@
 import React from "react";
 import { calculateClassName } from "./utils";
 import { IVideoNodeRendererProps } from "../types";
+import { Unsupported } from "../Unsupported";
 
 export const VideoRenderer: React.FC<IVideoNodeRendererProps> = ({
   src,
@@ -12,13 +13,16 @@ export const VideoRenderer: React.FC<IVideoNodeRendererProps> = ({
   additionalClassName,
   className,
   style,
+  isInline,
 }) => {
   const realSrc = src || url;
   if (!realSrc) {
     return (
-      <span style={{ color: "red" }}>
-        {"[VideoRenderer]: src or url is required"}
-      </span>
+      <Unsupported
+        component="VideoRenderer"
+        message={`url is required`}
+        inline={isInline}
+      />
     );
   }
 

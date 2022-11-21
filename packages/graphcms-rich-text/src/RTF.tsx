@@ -1,8 +1,8 @@
 /* eslint-disable react/display-name */
-import React, { useMemo } from "react";
+import React from "react";
 import { defaultRenderers } from "./Renderers";
-import { RichText } from "./RichText";
-import { ClassNameOverrides, RealRTFProps, INodeRenderer } from "./types";
+import { InternalRichText } from "./RichText";
+import { ClassNameOverrides, RealRTFProps } from "./types";
 
 const headingClasses: Array<keyof ClassNameOverrides> = [
   "h1",
@@ -12,6 +12,27 @@ const headingClasses: Array<keyof ClassNameOverrides> = [
   "h5",
   "h6",
 ];
+
+function calculateClassNameOverrides(
+  projectClassNameOverrides: ClassNameOverrides | undefined,
+  classNameOverrides: ClassNameOverrides | undefined,
+  fixedHeadingClassName: string | undefined,
+  fixedParagraphClassName: string | undefined
+): ClassNameOverrides {
+  const result: ClassNameOverrides = {
+    ...projectClassNameOverrides,
+    ...classNameOverrides,
+  };
+  const defaultHeadingClassName =
+    fixedHeadingClassName || fixedParagraphClassName;
+  if (defaultHeadingClassName) {
+    headingClasses.forEach(h => (result[h] = defaultHeadingClassName));
+  }
+  if (fixedParagraphClassName) {
+    result.p = fixedParagraphClassName;
+  }
+  return result;
+}
 
 export const RealRTF: React.FC<RealRTFProps> = ({
   projectClassNameOverrides,
@@ -24,34 +45,21 @@ export const RealRTF: React.FC<RealRTFProps> = ({
   style,
   ...rest
 }) => {
-  const realClassNameOverrides = useMemo(() => {
-    const result: ClassNameOverrides = {
-      ...projectClassNameOverrides,
-      ...classNameOverrides,
-    };
-    const defaultHeadingClassName =
-      fixedHeadingClassName || fixedParagraphClassName;
-    if (defaultHeadingClassName) {
-      headingClasses.forEach(h => (result[h] = defaultHeadingClassName));
-    }
-    if (fixedParagraphClassName) {
-      result.p = fixedParagraphClassName;
-    }
-    return result;
-  }, [
+  const realClassNameOverrides = calculateClassNameOverrides(
     projectClassNameOverrides,
     classNameOverrides,
-    fixedParagraphClassName,
     fixedHeadingClassName,
-  ]);
-
-  const realRenderers: INodeRenderer = useMemo(() => {
-    return { ...defaultRenderers, ...projectRenderers, ...renderers };
-  }, [projectRenderers, renderers]);
+    fixedParagraphClassName
+  );
+  const realRenderers = {
+    ...defaultRenderers,
+    ...projectRenderers,
+    ...renderers,
+  };
 
   return (
     <div className={className} style={style}>
-      <RichText
+      <InternalRichText
         {...rest}
         classNameOverrides={realClassNameOverrides}
         renderers={realRenderers}

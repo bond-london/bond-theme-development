@@ -9,7 +9,8 @@ import {
   Reference,
   RichTextContent,
 } from "@graphcms/rich-text-types";
-import React, { AriaRole, CSSProperties } from "react";
+import { AriaRole, CSSProperties, PropsWithChildren } from "react";
+import { RenderEmbedProps } from "./RenderEmbed";
 
 export type RTFContent = RichTextContent;
 export type RTFReference = (Reference | AssetReference) & { remoteId?: string };
@@ -30,10 +31,6 @@ export interface IGenericRichTextNode {
   readonly cleaned?: unknown;
 }
 
-export interface IAssetRenderer {
-  [key: string]: EmbedNodeRenderer | undefined;
-}
-
 export interface INodeRenderer {
   p: DefaultNodeRenderer;
   bold: DefaultNodeRenderer;
@@ -46,11 +43,10 @@ export interface INodeRenderer {
   h4: DefaultNodeRenderer;
   h5: DefaultNodeRenderer;
   h6: DefaultNodeRenderer;
-  class: DefaultNodeRenderer;
   a: LinkNodeRenderer;
   img: ImageNodeRenderer;
   iframe: IframeNodeRenderer;
-  video: DefaultNodeRenderer;
+  video: VideoNodeRenderer;
   ul: DefaultNodeRenderer;
   ol: DefaultNodeRenderer;
   li: DefaultNodeRenderer;
@@ -63,8 +59,21 @@ export interface INodeRenderer {
   table_cell: DefaultNodeRenderer;
   blockquote: DefaultNodeRenderer;
   code_block: DefaultNodeRenderer;
-  embed_asset: IAssetRenderer;
-  embed_node: IAssetRenderer;
+  class: {
+    [key: string]: {
+      description: string;
+      renderer?: ClassNodeRenderer;
+      element?: keyof JSX.IntrinsicElements;
+      className?: string;
+    };
+  };
+  link_to: {
+    [key: string]: (props: ILinkToRendererProps) => JSX.Element | undefined;
+  };
+  embed_asset: { [key: string]: EmbedNodeRenderer | undefined };
+  embed_node: {
+    [key: string]: (props: IEmbedNodeRendererProps) => JSX.Element | undefined;
+  };
 }
 
 export interface IFullNodeRenderer extends INodeRenderer {
@@ -75,11 +84,10 @@ export type ClassNameOverrides = {
   [key in keyof JSX.IntrinsicElements]?: string;
 };
 export type ElementTypeMap = {
-  [key in keyof INodeRenderer]?: boolean;
+  [key in keyof IFullNodeRenderer]?: boolean;
 };
 
 export interface IBaseRendererProps {
-  renderers: INodeRenderer;
   references?: RTFReferences;
   context?: unknown;
   disabledElements?: ElementTypeMap;
@@ -95,7 +103,7 @@ export interface IBaseRendererProps {
 }
 
 export interface IDefaultNodeRendererProps {
-  renderers: INodeRenderer;
+  renderers: IFullNodeRenderer;
   references?: RTFReferences;
   context?: unknown;
   disabledElements?: ElementTypeMap;
@@ -105,10 +113,9 @@ export interface IDefaultNodeRendererProps {
   className?: string;
   style?: CSSProperties;
   role?: AriaRole;
-  children: React.ReactNode;
   index: number;
   parentIndex: number;
-  contents?: Array<Node>;
+  contents?: ReadonlyArray<Node>;
 }
 
 export interface IRTFProps extends Omit<IBaseRendererProps, "renderers"> {
@@ -134,43 +141,53 @@ export interface IRichTextProps
 
 export interface IInternalRichTextProps extends IBaseRendererProps {
   content: IRichTextInformation;
-  renderers: INodeRenderer;
+  renderers: IFullNodeRenderer;
 }
 
 export interface IElementsRendererProps extends IBaseRendererProps {
-  renderers: INodeRenderer;
+  renderers: IFullNodeRenderer;
   index: number;
   parentIndex: number;
 }
 
 export interface INodeRendererProps<N = Node> extends IBaseRendererProps {
   node: N;
-  renderers: INodeRenderer;
+  renderers: IFullNodeRenderer;
   index: number;
   parentIndex: number;
 }
 
 export interface IEmbedNodeRendererProps extends IElementsRendererProps {
-  type: "embed";
   nodeId: string;
   nodeType: string;
   isInline?: boolean;
   reference: RTFReference;
 }
 
-export type CustomEmbedRendererProps<T = unknown> = IElementsRendererProps & {
+export interface ILinkToRendererProps extends IElementsRendererProps {
+  nodeId: string;
+  nodeType: string;
+  reference: RTFReference;
+}
+
+type BaseCustomRendererProps = IBaseRendererProps & {
+  renderers: INodeRenderer;
+  index: number;
+  parentIndex: number;
   nodeId: string;
   nodeType: string;
   isInline?: boolean;
-} & T;
+};
 
-export type ICustomEmbedRenderedProps<T = unknown> = IElementsRendererProps &
-  Partial<T> & { isInline?: boolean };
+export type CustomEmbedRendererProps<T = unknown> = BaseCustomRendererProps & T;
 
-export type EmbedNodeRenderer = (props: IEmbedNodeRendererProps) => JSX.Element;
+export type ICustomEmbedRenderedProps<T = unknown> = BaseCustomRendererProps &
+  Partial<T>;
+
+export type EmbedNodeRenderer = (props: RenderEmbedProps) => JSX.Element;
 
 export type DefaultNodeRenderer = (
-  props: IDefaultNodeRendererProps
+  props: PropsWithChildren<IDefaultNodeRendererProps>
 ) => JSX.Element;
 
 export interface ILinkNodeRendererProps
@@ -193,7 +210,9 @@ export type IframeNodeRenderer = (
 export interface IClassNodeRendererProps
   extends IDefaultNodeRendererProps,
     Partial<ClassProps> {}
-export type ClassNodeRenderer = (props: IClassNodeRendererProps) => JSX.Element;
+export type ClassNodeRenderer = (
+  props: PropsWithChildren<IClassNodeRendererProps>
+) => JSX.Element | null;
 
 export interface IImageProps {
   src?: string;

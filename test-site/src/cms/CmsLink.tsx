@@ -6,5 +6,19 @@ export const CmsLinkFragment = graphql`
     __typename
     id
     remoteId
+    name
+    useName
+    linkText
+    remoteInternal {
+      __typename
+      ...CmsArticleLink
+      ...CmsArticleTypeLink
+      ...CmsPageLink
+      ...CmsTagLink
+    }
+    external
+    isButton
+    colour
+    icon
   }
 `;

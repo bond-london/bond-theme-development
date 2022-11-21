@@ -2,7 +2,6 @@
 import React from "react";
 import { IFullNodeRenderer } from "../types";
 import { AudioRenderer } from "./AudioRenderer";
-import { ClassRenderer } from "./ClassRenderer";
 import { DefaultRenderer } from "./DefaultRenderer";
 import { EmbedRenderer } from "./EmbedRenderer";
 import { IFrameRenderer } from "./IFrameRenderer";
@@ -22,7 +21,6 @@ export const defaultRenderers: IFullNodeRenderer = {
   h4: props => <DefaultRenderer {...props} element="h4" />,
   h5: props => <DefaultRenderer {...props} element="h5" />,
   h6: props => <DefaultRenderer {...props} element="h6" />,
-  class: props => <ClassRenderer {...props} />,
   a: props => <LinkRenderer {...props} />,
   img: props => <ImageRenderer {...props} />,
   iframe: props => <IFrameRenderer {...props} />,
@@ -46,4 +44,6 @@ export const defaultRenderers: IFullNodeRenderer = {
     video: props => <VideoRenderer {...props} />,
   },
   embed_node: {},
+  link_to: {},
+  class: {},
 };

@@ -6,6 +6,10 @@ export const CmsTagLinkFragment = graphql`
     __typename
     id
     remoteId
+    title
     slug
+    featuredImage {
+      ...EmbedFeaturedImageAsset
+    }
   }
 `;

@@ -48,34 +48,37 @@ export function convertCmsImageToBondImage(
 }
 
 export const BondImage: React.FC<
-  IBondImage & {
+  {
+    image: IBondImage;
     imgClassName?: string;
     imgStyle?: CSSProperties;
     onLoad?: (props: { wasCached: boolean }) => void;
     onStartLoad?: (props: { wasCached: boolean }) => void;
   } & Omit<
-      ImgHTMLAttributes<HTMLImageElement>,
-      | "placeholder"
-      | "onLoad"
-      | "src"
-      | "srcSet"
-      | "width"
-      | "height"
-      | "objectFit"
-      | "objectPosition"
-    >
+    ImgHTMLAttributes<HTMLImageElement>,
+    | "placeholder"
+    | "onLoad"
+    | "src"
+    | "srcSet"
+    | "width"
+    | "height"
+    | "objectFit"
+    | "objectPosition"
+  >
 > = props => {
   const {
-    dontCrop,
-    horizontalCropPosition,
-    verticalCropPosition,
-    image,
-    svg,
+    image: {
+      dontCrop,
+      horizontalCropPosition,
+      verticalCropPosition,
+      image,
+      svg,
+      name,
+    },
     onLoad,
     onStartLoad,
     imgClassName,
     imgStyle,
-    name,
     ...imageProps
   } = props;
   const { objectFit, objectPosition } = calculateCropDetails({

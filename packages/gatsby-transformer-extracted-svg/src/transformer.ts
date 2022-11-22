@@ -42,7 +42,17 @@ async function parseSvg(
     };
     const result = optimize(svg, {
       multipass: true,
-      plugins: ["preset-default", findSizePlugin],
+      plugins: [
+        {
+          name: "preset-default",
+          params: {
+            overrides: {
+              removeViewBox: false,
+            },
+          },
+        },
+        findSizePlugin,
+      ],
     });
     return { data: result.data, width, height };
   } catch (error) {
@@ -90,6 +100,7 @@ async function internalCreateExtractedSvg(
 
       if (data.length < 2048) {
         svg.encoded = svgToTinyDataUri(data);
+        svg.raw = data;
       } else {
         if (!existsSync(publicPath)) {
           try {

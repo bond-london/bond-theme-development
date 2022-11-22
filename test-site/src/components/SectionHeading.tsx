@@ -7,6 +7,7 @@ export const SectionHeading: React.FC<{
   preHeading?: string | null;
   postHeading?: string | null;
 }> = ({ heading, preHeading, postHeading }) => {
+  if (!(heading || preHeading || postHeading)) return null;
   return (
     <>
       {preHeading && (

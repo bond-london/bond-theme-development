@@ -1,15 +1,61 @@
 import { graphql } from "gatsby";
 import React from "react";
-import { GenericComponent } from "../components/GenericComponent";
+import {
+  GenericComponent,
+  IComponentInformation,
+} from "../components/GenericComponent";
+import { getRTFInformation } from "@bond-london/graphcms-rich-text";
+import {
+  convertCmsAssetToBondImage,
+  convertCmsImageToBondImage,
+  convertCmsVisualToBondVisual,
+} from "@bond-london/gatsby-theme";
+
+export function convertCmsComponentInformation({
+  heading,
+  showHeading,
+  preHeading,
+  postHeading,
+  body,
+  visual,
+  backgroundColour,
+  textColour,
+  icon,
+}: Queries.CmsComponentFragment): IComponentInformation {
+  return {
+    name: heading,
+    preHeading: showHeading ? preHeading : undefined,
+    heading: showHeading ? heading : undefined,
+    postHeading: showHeading ? postHeading : undefined,
+    body: getRTFInformation(body),
+    backgroundColour,
+    textColour,
+    icon: convertCmsAssetToBondImage(icon),
+    visual: convertCmsVisualToBondVisual(visual),
+  };
+}
 
 export const CmsComponent: React.FC<{
   fragment: Queries.CmsComponentFragment;
 }> = ({ fragment }) => {
-  switch (fragment.componentType) {
+  const converted = convertCmsComponentInformation(fragment);
+  const componentType = fragment.componentType;
+  switch (componentType) {
     case "Generic":
-      return <GenericComponent fragment={fragment} />;
+      return (
+        <GenericComponent
+          information={converted}
+          componentType={componentType}
+        />
+      );
     default:
-      return <GenericComponent fragment={fragment} unknown={true} />;
+      return (
+        <GenericComponent
+          information={converted}
+          componentType={componentType}
+          unknown={true}
+        />
+      );
   }
 };
 
@@ -33,6 +79,7 @@ export const fragment = graphql`
         ...CmsPageLink
         ...CmsTagLink
         ...FullWidthCmsVideo
+        ...FullWidthCmsVisual
       }
     }
     links {
@@ -40,17 +87,11 @@ export const fragment = graphql`
     }
     backgroundColour
     textColour
-    image {
-      ...FullWidthCmsImageComponent
-    }
     icon {
       ...FullWidthImageAsset
     }
-    animation {
-      ...FullWidthCmsAnimationComponent
-    }
-    video {
-      ...FullWidthCmsVideoComponent
+    visual {
+      ...FullWidthCmsVisualComponent
     }
   }
 `;

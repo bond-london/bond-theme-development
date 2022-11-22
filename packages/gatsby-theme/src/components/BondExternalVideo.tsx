@@ -13,6 +13,7 @@ import { VideoControls } from "./VideoControls";
 
 export type IBondExternalVideo = IBondSimpleVideo & {
   external: string;
+  loop?: boolean;
 };
 
 export function convertCmsVideoToBondExternalVideo(
@@ -34,6 +35,7 @@ export function convertCmsVideoToBondExternalVideo(
 
   return {
     videoData: posterFile ? { ...preview, poster: posterFile } : preview,
+    loop: cms.loop || undefined,
     external,
     dontCrop: cms.dontCrop,
     verticalCropPosition: cms.verticalCropPosition,
@@ -77,6 +79,7 @@ export const BondExternalVideo: React.FC<
     muteButton,
     unmuteButton,
     showAudioControls,
+    loop,
     ...videoProps
   } = props;
   const {
@@ -85,6 +88,7 @@ export const BondExternalVideo: React.FC<
     verticalCropPosition,
     external,
     videoData,
+    loop: videoLoop,
   } = video;
   const { objectFit, objectPosition } = calculateCropDetails({
     dontCrop,
@@ -95,6 +99,7 @@ export const BondExternalVideo: React.FC<
   return (
     <GatsbyVideo
       {...videoProps}
+      loop={true}
       video={videoData}
       onTimeUpdate={!previewHasStarted ? onPreviewHasStarted : undefined}
       pause={fullHasStarted ? true : undefined}
@@ -114,6 +119,7 @@ export const BondExternalVideo: React.FC<
           controls={false}
           playing={isPlaying}
           muted={isMuted}
+          loop={loop || videoLoop}
         />
       )}
       {fullHasLoaded && (

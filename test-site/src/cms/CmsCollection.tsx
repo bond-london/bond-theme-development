@@ -1,11 +1,75 @@
 import { graphql } from "gatsby";
 import React from "react";
-import { GenericCollection } from "../collections/GenericCollection";
+import {
+  GenericCollection,
+  ICollectionInformation,
+} from "../collections/GenericCollection";
+import { getRTFInformation } from "@bond-london/graphcms-rich-text";
+import { convertCmsImageToBondImage } from "@bond-london/gatsby-theme";
+import { convertCmsComponentInformation } from "./CmsComponent";
+
+function convertCmsCollectionCoreInformation({
+  heading,
+  showHeading,
+  preHeading,
+  postHeading,
+  body,
+  backgroundImage,
+  backgroundColour,
+  textColour,
+}: Queries.CmsCollectionCoreFragment) {
+  return {
+    name: heading,
+    preHeading: showHeading ? preHeading : undefined,
+    heading: showHeading ? heading : undefined,
+    postHeading: showHeading ? postHeading : undefined,
+    body: getRTFInformation(body),
+    backgroundColour,
+    textColour,
+    backgroundImage: convertCmsImageToBondImage(backgroundImage),
+  };
+}
+
+export function convertCmsCollectionInformation(
+  fragment: Queries.CmsCollectionFragment
+): ICollectionInformation {
+  return {
+    ...convertCmsCollectionCoreInformation(fragment),
+    contents: fragment.contents.map((fragment) => {
+      switch (fragment.__typename) {
+        case "GraphCMS_Component":
+          return convertCmsComponentInformation(fragment);
+        case "GraphCMS_Collection":
+          return convertCmsCollectionInformation(
+            fragment as Queries.CmsCollectionFragment
+          );
+      }
+    }),
+  };
+}
 
 export const CmsCollection: React.FC<{
   fragment: Queries.CmsCollectionFragment;
 }> = ({ fragment }) => {
-  return <GenericCollection fragment={fragment} />;
+  const converted = convertCmsCollectionInformation(fragment);
+  const collectionType = fragment.collectionType;
+  switch (collectionType) {
+    case "Generic":
+      return (
+        <GenericCollection
+          information={converted}
+          collectionType={collectionType}
+        />
+      );
+    default:
+      return (
+        <GenericCollection
+          information={converted}
+          collectionType={collectionType}
+          unknown={true}
+        />
+      );
+  }
 };
 
 export const coreFragment = graphql`
@@ -28,10 +92,16 @@ export const coreFragment = graphql`
         ...CmsPageLink
         ...CmsTagLink
         ...FullWidthCmsVideo
+        ...FullWidthCmsVisual
       }
     }
     links {
       ...CmsLink
+    }
+    backgroundColour
+    textColour
+    icon {
+      ...FullWidthImageAsset
     }
     backgroundImage {
       ...FullWidthCmsImageComponent

@@ -21,3 +21,8 @@ table.lined tbody tr {
 table.lined td {
   @apply py-xs pr-xs align-top laptop:align-middle;
 }
+
+.section-icon svg {
+  width: auto;
+  height: 100%;
+}

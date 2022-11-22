@@ -6,14 +6,20 @@ import React from "react";
 import { Horizontal, IVisualCommon, Vertical } from "../types";
 import { calculateCropDetails } from "../utils";
 
+export function isBondAnimation(obj: unknown): obj is IBondAnimation {
+  return !!(obj as IBondAnimation).animation;
+}
+
 export type IBondAnimation = IVisualCommon & {
   animation: IGatsbyExtractedAnimation;
+  loop?: boolean;
+  loopDelay?: number;
 };
 
 export interface ICmsAnimation {
-  readonly dontCrop: boolean | null;
-  readonly verticalCropPosition: Vertical | null;
-  readonly horizontalCropPosition: Horizontal | null;
+  readonly dontCrop?: boolean | null;
+  readonly verticalCropPosition?: Vertical | null;
+  readonly horizontalCropPosition?: Horizontal | null;
   readonly animation: {
     readonly localFile: {
       readonly internal: { readonly mediaType: string | null };
@@ -22,6 +28,8 @@ export interface ICmsAnimation {
       } | null;
     } | null;
   };
+  readonly loop?: boolean | null;
+  readonly loopDelay?: number | null;
 }
 
 export function convertCmsAnimationToBondAnimation(
@@ -34,6 +42,8 @@ export function convertCmsAnimationToBondAnimation(
   }
   return {
     animation,
+    loop: cms.loop || undefined,
+    loopDelay: cms.loopDelay || undefined,
     dontCrop: cms.dontCrop,
     verticalCropPosition: cms.verticalCropPosition,
     horizontalCropPosition: cms.horizontalCropPosition,
@@ -48,6 +58,8 @@ export const BondAnimation: React.FC<{
 }> = props => {
   const {
     animation: {
+      loop: animationLoop,
+      loopDelay: animationLoopDelay,
       dontCrop,
       horizontalCropPosition,
       verticalCropPosition,
@@ -66,8 +78,8 @@ export const BondAnimation: React.FC<{
   return (
     <GatsbyAnimation
       animation={animation}
-      loop={loop}
-      loopDelay={loopDelay}
+      loop={loop || animationLoop}
+      loopDelay={loopDelay || animationLoopDelay}
       className={className}
       objectFit={objectFit}
       objectPosition={objectPosition}

@@ -8,10 +8,11 @@ export function calculatePageLinkPath({
   pageType,
   slug,
 }: Queries.CmsPageLinkFragment) {
+  const slugUrl = slug === "home" ? "/" : `/${slug}/`;
   if (pageType) {
-    return `/${pageType.slug}/${slug}/`;
+    return `/${pageType.slug}${slugUrl}`;
   }
-  return `/${slug}/`;
+  return slugUrl;
 }
 export const PageLink: React.FC<{ fragment: Queries.CmsPageLinkFragment }> = ({
   fragment,

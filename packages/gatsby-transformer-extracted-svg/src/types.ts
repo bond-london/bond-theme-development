@@ -8,5 +8,6 @@ export interface IGatsbySvg {
   height: number;
   layout: SvgLayout;
   encoded?: string;
+  raw?: string;
   encodedUrl?: string;
 }

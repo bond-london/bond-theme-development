@@ -18,6 +18,7 @@ import { VideoControls } from "./VideoControls";
 
 export type IBondFullVideo = IBondSimpleVideo & {
   full: IGatsbyTransformedVideo;
+  loop?: boolean;
 };
 
 export function convertCmsVideoToBondFullVideo(cms: ICmsVideo): IBondFullVideo {
@@ -38,6 +39,7 @@ export function convertCmsVideoToBondFullVideo(cms: ICmsVideo): IBondFullVideo {
   return {
     videoData: posterFile ? { ...preview, poster: posterFile } : preview,
     full,
+    loop: cms.loop || undefined,
     dontCrop: cms.dontCrop,
     verticalCropPosition: cms.verticalCropPosition,
     horizontalCropPosition: cms.horizontalCropPosition,
@@ -105,6 +107,7 @@ export const BondFullVideo: React.FC<
     muteButton,
     unmuteButton,
     showAudioControls,
+    loop,
     ...videoProps
   } = props;
   const {
@@ -113,6 +116,7 @@ export const BondFullVideo: React.FC<
     verticalCropPosition,
     full,
     videoData,
+    loop: videoLoop,
   } = video;
   const { objectFit, objectPosition } = calculateCropDetails({
     dontCrop,
@@ -123,6 +127,7 @@ export const BondFullVideo: React.FC<
   return (
     <GatsbyVideo
       {...videoProps}
+      loop={true}
       video={videoData}
       onTimeUpdate={!previewHasStarted ? onPreviewHasStarted : undefined}
       pause={fullHasStarted ? true : undefined}
@@ -139,6 +144,7 @@ export const BondFullVideo: React.FC<
           onTimeUpdate={onFullTimeUpdate}
           className={fullHasStarted ? "opacity-100" : "opacity-0"}
           onEnded={onFullEnded}
+          loop={loop || videoLoop}
         />
       )}
       {fullHasLoaded && (

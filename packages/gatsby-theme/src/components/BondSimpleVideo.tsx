@@ -13,6 +13,7 @@ import { ICmsVideo } from "./BondVideo";
 
 export type IBondSimpleVideo = IVisualCommon & {
   videoData: IGatsbyTransformedVideo;
+  loop?: boolean;
 };
 
 export function convertCmsVideoToBondSimpleVideo(
@@ -47,9 +48,14 @@ export const BondSimpleVideo: React.FC<
     >
   >
 > = props => {
-  const { children, video, ...videoProps } = props;
-  const { dontCrop, horizontalCropPosition, verticalCropPosition, videoData } =
-    video;
+  const { children, video, loop, ...videoProps } = props;
+  const {
+    dontCrop,
+    horizontalCropPosition,
+    verticalCropPosition,
+    videoData,
+    loop: videoLoop,
+  } = video;
   const { objectFit, objectPosition } = calculateCropDetails({
     dontCrop,
     horizontalCropPosition,
@@ -59,6 +65,7 @@ export const BondSimpleVideo: React.FC<
   return (
     <GatsbyVideo
       {...videoProps}
+      loop={loop || videoLoop}
       video={videoData}
       objectFit={objectFit}
       objectPosition={objectPosition}

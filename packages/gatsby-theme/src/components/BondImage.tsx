@@ -7,32 +7,38 @@ import {
   IGatsbyExtractedSvg,
 } from "@bond-london/gatsby-transformer-extracted-svg";
 
+export function isBondImage(obj: unknown): obj is IBondImage {
+  const image = obj as IBondImage;
+  return !!(image.image || image.svg);
+}
 export type IBondImage = IVisualCommon & {
   image?: IGatsbyImageData;
   svg?: IGatsbyExtractedSvg;
   name: string;
 };
 
-export interface ICmsImage {
-  readonly name: string;
-  readonly dontCrop: boolean | null;
-  readonly horizontalCropPosition: Horizontal | null;
-  readonly verticalCropPosition: Vertical | null;
-  readonly image: {
-    readonly localFile: {
-      readonly internal: { readonly mediaType: string | null };
-      readonly childImageSharp: {
-        readonly gatsbyImageData: IGatsbyImageData;
-      } | null;
-      readonly childGatsbySvg: {
-        readonly extracted: Record<string, unknown>;
-      } | null;
+interface ICmsImageAsset {
+  readonly localFile: {
+    readonly internal: { readonly mediaType: string | null };
+    readonly childImageSharp: {
+      readonly gatsbyImageData: IGatsbyImageData;
     } | null;
-  };
+    readonly childGatsbySvg: {
+      readonly extracted: Record<string, unknown>;
+    } | null;
+  } | null;
+}
+export interface ICmsImage {
+  readonly name?: string;
+  readonly dontCrop?: boolean | null;
+  readonly horizontalCropPosition?: Horizontal | null;
+  readonly verticalCropPosition?: Vertical | null;
+  readonly image: ICmsImageAsset;
 }
 
 export function convertCmsImageToBondImage(
-  cms: ICmsImage | null
+  cms: ICmsImage | null,
+  name?: string
 ): IBondImage | undefined {
   if (!cms) return undefined;
   const image = cms.image.localFile?.childImageSharp?.gatsbyImageData;
@@ -40,10 +46,24 @@ export function convertCmsImageToBondImage(
   return {
     image,
     svg,
-    name: cms.name,
+    name: name || cms.name || "",
     dontCrop: cms.dontCrop,
     verticalCropPosition: cms.verticalCropPosition,
     horizontalCropPosition: cms.horizontalCropPosition,
+  };
+}
+
+export function convertCmsAssetToBondImage(
+  asset: ICmsImageAsset | null,
+  name?: string
+): IBondImage | undefined {
+  if (!asset) return undefined;
+  const image = asset.localFile?.childImageSharp?.gatsbyImageData;
+  const svg = asset.localFile?.childGatsbySvg?.extracted;
+  return {
+    image,
+    svg,
+    name: name || "",
   };
 }
 

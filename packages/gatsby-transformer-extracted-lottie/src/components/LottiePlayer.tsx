@@ -168,7 +168,11 @@ const LottiePlayer: React.FC<{
           handle = undefined;
         }
 
-        remove();
+        try {
+          remove();
+        } catch {
+          // ignore
+        }
       };
     }
     return undefined;

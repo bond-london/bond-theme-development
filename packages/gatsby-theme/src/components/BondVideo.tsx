@@ -6,10 +6,10 @@ import { BondFullVideo, IBondFullVideo } from "./BondFullVideo";
 import { BondSimpleVideo, IBondSimpleVideo } from "./BondSimpleVideo";
 
 export interface ICmsVideo {
-  readonly external: string | null;
-  readonly dontCrop: boolean | null;
-  readonly verticalCropPosition: Vertical | null;
-  readonly horizontalCropPosition: Horizontal | null;
+  readonly external?: string | null;
+  readonly dontCrop?: boolean | null;
+  readonly verticalCropPosition?: Vertical | null;
+  readonly horizontalCropPosition?: Horizontal | null;
   readonly preview: {
     readonly localFile: {
       readonly internal: { readonly mediaType: string | null };
@@ -18,12 +18,12 @@ export interface ICmsVideo {
       } | null;
     } | null;
   };
-  readonly poster: {
+  readonly poster?: {
     readonly localFile: {
       readonly publicURL: string | null;
     } | null;
   } | null;
-  readonly full: {
+  readonly full?: {
     readonly localFile: {
       readonly internal: { readonly mediaType: string | null };
       readonly childGatsbyVideo: {
@@ -31,24 +31,30 @@ export interface ICmsVideo {
       } | null;
     } | null;
   } | null;
+  readonly loop?: boolean | null;
+  readonly loopDelay?: number | null;
 }
 
 export type IBondVideo = IBondSimpleVideo | IBondFullVideo | IBondExternalVideo;
 
-export function isBondFullVideo(video: IBondVideo): video is IBondFullVideo {
+export function isBondFullVideo(video: unknown): video is IBondFullVideo {
   return !!(video as IBondFullVideo).full;
 }
 
 export function isBondExternalVideo(
-  video: IBondVideo
+  video: unknown
 ): video is IBondExternalVideo {
   return !!(video as IBondExternalVideo).external;
 }
 
-export function isBondSimpleVideo(
-  video: IBondVideo
-): video is IBondSimpleVideo {
-  return !isBondFullVideo(video) && !isBondExternalVideo(video);
+export function isBondSimpleVideo(video: unknown): video is IBondSimpleVideo {
+  return !!(video as IBondSimpleVideo).videoData;
+}
+
+export function isBondVideo(obj: unknown): obj is IBondVideo {
+  return (
+    isBondFullVideo(obj) || isBondExternalVideo(obj) || isBondSimpleVideo(obj)
+  );
 }
 
 export function convertCmsVideoToBondVideo(
@@ -65,7 +71,13 @@ export function convertCmsVideoToBondVideo(
 
   const posterFile = cms.poster?.localFile?.publicURL || undefined;
   const videoData = posterFile ? { ...preview, poster: posterFile } : preview;
-  const { dontCrop, verticalCropPosition, horizontalCropPosition } = cms;
+  const {
+    loop,
+    loopDelay,
+    dontCrop,
+    verticalCropPosition,
+    horizontalCropPosition,
+  } = cms;
 
   const external = cms.external || undefined;
   if (external && full) {
@@ -75,6 +87,8 @@ export function convertCmsVideoToBondVideo(
   if (external) {
     return {
       videoData,
+      loop,
+      loopDelay,
       external,
       dontCrop,
       verticalCropPosition,
@@ -85,6 +99,8 @@ export function convertCmsVideoToBondVideo(
   if (full) {
     return {
       videoData,
+      loop,
+      loopDelay,
       full,
       dontCrop,
       verticalCropPosition,
@@ -94,6 +110,8 @@ export function convertCmsVideoToBondVideo(
 
   return {
     videoData,
+    loop,
+    loopDelay,
     dontCrop,
     verticalCropPosition,
     horizontalCropPosition,
@@ -122,6 +140,7 @@ export const BondVideo: React.FC<
   muteButton,
   unmuteButton,
   showAudioControls,
+
   ...props
 }) => {
   if (isBondFullVideo(video)) {

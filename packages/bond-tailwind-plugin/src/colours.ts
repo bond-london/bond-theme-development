@@ -32,21 +32,19 @@ export function buildColorTable(config: IBondConfigurationOptions): void {
   ];
   forEachObject(colors, ({ key: color }) => {
     const colorName = pascalCase(color);
-    code.push(
-      `  "${colorName}": ["text-${color}", "bg-${color}", "button-${color}"],`
-    );
+    code.push(`  "${colorName}": ["text-${color}", "bg-${color}"],`);
   });
   code.push("};");
   code.push(`export type ColourName = keyof typeof colourTable;
-export type ColourType = "text" | "bg" | "button";
+export type ColourType = "text" | "bg";
 export function lookupColourString(colour: ColourName, type:ColourType): string {
   const entry = colourTable[colour];
   if (!entry) throw new Error("No colour for " + colour);
   switch (type) {
     case "text": return entry[0];
     case "bg": return entry[1];
-    case "button": return entry[2];
   }
+  throw new Error("Unsupported colour type " + type);
 }  
 `);
 

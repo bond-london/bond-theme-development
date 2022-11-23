@@ -10,6 +10,47 @@ import {
   convertCmsImageToBondImage,
   convertCmsVisualToBondVisual,
 } from "@bond-london/gatsby-theme";
+import { ILinkInformation } from "../components/LinkOrButton";
+import { calculateArticleLinkPath } from "../elements/renderers/ArticleLink";
+import { calculateArticleTypeLinkPath } from "../elements/renderers/ArticleTypeLink";
+import { calculatePageLinkPath } from "../elements/renderers/PageLink";
+import { calculateTagLinkPath } from "../elements/renderers/TagLink";
+
+function convertCMSInternalLink(
+  internal: Queries.CmsLinkFragment["remoteInternal"]
+): string | undefined {
+  switch (internal?.__typename) {
+    case "GraphCMS_Article":
+      return calculateArticleLinkPath(internal);
+    case "GraphCMS_ArticleType":
+      return calculateArticleTypeLinkPath(internal);
+    case "GraphCMS_Page":
+      return calculatePageLinkPath(internal);
+    case "GraphCMS_Tag":
+      return calculateTagLinkPath(internal);
+  }
+}
+function convertCmsLink({
+  name,
+  useName,
+  icon,
+  remoteInternal,
+  external,
+  colour,
+  isButton,
+}: Queries.CmsLinkFragment): ILinkInformation {
+  return {
+    name: name,
+    text: useName ? name : undefined,
+    icon: convertCmsAssetToBondImage(icon),
+    external: external || undefined,
+    internal: remoteInternal
+      ? convertCMSInternalLink(remoteInternal)
+      : undefined,
+    colour: colour || undefined,
+    isButton: isButton || undefined,
+  };
+}
 
 export function convertCmsComponentInformation({
   heading,
@@ -21,6 +62,7 @@ export function convertCmsComponentInformation({
   backgroundColour,
   textColour,
   icon,
+  links,
 }: Queries.CmsComponentFragment): IComponentInformation {
   return {
     name: heading,
@@ -32,6 +74,7 @@ export function convertCmsComponentInformation({
     textColour,
     icon: convertCmsAssetToBondImage(icon),
     visual: convertCmsVisualToBondVisual(visual),
+    links: links?.map(convertCmsLink),
   };
 }
 
@@ -88,7 +131,7 @@ export const fragment = graphql`
     backgroundColour
     textColour
     icon {
-      ...FullWidthImageAsset
+      ...ConstrainedImageAsset
     }
     visual {
       ...FullWidthCmsVisualComponent

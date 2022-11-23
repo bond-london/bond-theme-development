@@ -1,21 +1,15 @@
-import {
-  convertCmsVisualToBondVisual,
-  IBondImage,
-  IBondVisual,
-  Section,
-} from "@bond-london/gatsby-theme";
-import {
-  getRTFInformation,
-  IRichTextInformation,
-} from "@bond-london/graphcms-rich-text";
+import { IBondImage, IBondVisual, Section } from "@bond-london/gatsby-theme";
+import { IRichTextInformation } from "@bond-london/graphcms-rich-text";
 import classNames from "classnames";
 import React from "react";
 import { ColourName, lookupColourClassNames } from "../colors";
 import { Icon } from "../elements/Icon";
 import { SectionBodyClassName } from "../styles";
+import { ILinkInformation } from "./LinkOrButton";
 import { SectionBody } from "./SectionBody";
 import { SectionHeading } from "./SectionHeading";
 import { SectionIcon } from "./SectionIcon";
+import { SectionLinks } from "./SectionLinks";
 import { SectionVisual } from "./SectionVisual";
 
 export interface IComponentInformation {
@@ -28,6 +22,7 @@ export interface IComponentInformation {
   textColour?: ColourName | null;
   icon?: IBondImage;
   visual?: IBondVisual;
+  links?: ReadonlyArray<ILinkInformation>;
 }
 
 export const GenericComponent: React.FC<{
@@ -42,7 +37,7 @@ export const GenericComponent: React.FC<{
     preHeading,
     postHeading,
     body,
-    // links,
+    links,
     visual,
     backgroundColour,
     textColour,
@@ -65,6 +60,7 @@ export const GenericComponent: React.FC<{
       {body && <SectionBody content={body} />}
       {icon && <SectionIcon icon={icon} className={SectionBodyClassName} />}
       {visual && <SectionVisual visual={visual} />}
+      {links && <SectionLinks links={links} />}
     </Section>
   );
 };

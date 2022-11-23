@@ -1,13 +1,13 @@
-/* eslint-disable */import classNames from "classnames";export const colourTable = {  "Transparent": ["text-transparent", "bg-transparent", "button-transparent"],  "Current": ["text-current", "bg-current", "button-current"],  "Black": ["text-black", "bg-black", "button-black"],  "Grey": ["text-grey", "bg-grey", "button-grey"],  "Gray": ["text-gray", "bg-gray", "button-gray"],  "White": ["text-white", "bg-white", "button-white"],  "Green": ["text-green", "bg-green", "button-green"],  "GreenHover": ["text-green-hover", "bg-green-hover", "button-green-hover"],  "Blue": ["text-blue", "bg-blue", "button-blue"],  "BlueHover": ["text-blue-hover", "bg-blue-hover", "button-blue-hover"],  "Red": ["text-red", "bg-red", "button-red"],  "Yellow": ["text-yellow", "bg-yellow", "button-yellow"],  "Error": ["text-error", "bg-error", "button-error"],};export type ColourName = keyof typeof colourTable;
-export type ColourType = "text" | "bg" | "button";
+/* eslint-disable */import classNames from "classnames";export const colourTable = {  "Transparent": ["text-transparent", "bg-transparent"],  "Current": ["text-current", "bg-current"],  "Black": ["text-black", "bg-black"],  "Grey": ["text-grey", "bg-grey"],  "Gray": ["text-gray", "bg-gray"],  "White": ["text-white", "bg-white"],  "Green": ["text-green", "bg-green"],  "GreenHover": ["text-green-hover", "bg-green-hover"],  "Blue": ["text-blue", "bg-blue"],  "BlueHover": ["text-blue-hover", "bg-blue-hover"],  "Red": ["text-red", "bg-red"],  "Yellow": ["text-yellow", "bg-yellow"],  "Error": ["text-error", "bg-error"],};export type ColourName = keyof typeof colourTable;
+export type ColourType = "text" | "bg";
 export function lookupColourString(colour: ColourName, type:ColourType): string {
   const entry = colourTable[colour];
   if (!entry) throw new Error("No colour for " + colour);
   switch (type) {
     case "text": return entry[0];
     case "bg": return entry[1];
-    case "button": return entry[2];
   }
+  throw new Error("Unsupported colour type " + type);
 }  
 export const colourOpposites= {  "Black": "White",  "White": "Black",  "Green": "Blue",  "Blue": "Green",  "Red": "Yellow",  "Yellow": "Red",};
 export type OppositeName = keyof typeof colourOpposites;

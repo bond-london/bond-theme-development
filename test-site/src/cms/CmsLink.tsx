@@ -19,6 +19,8 @@ export const CmsLinkFragment = graphql`
     external
     isButton
     colour
-    icon
+    icon {
+      ...ConstrainedImageAsset
+    }
   }
 `;

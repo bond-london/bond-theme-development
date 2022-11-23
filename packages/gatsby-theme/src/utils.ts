@@ -3,7 +3,7 @@ import React, { CSSProperties, useEffect, useRef } from "react";
 import { Horizontal, Maybe, Vertical, IVisualCommon } from "./types";
 
 function caclulateVertical(
-  position: Maybe<Vertical>
+  position?: Maybe<Vertical>
 ): "bottom" | "center" | "top" {
   switch (position) {
     case "Bottom":
@@ -16,7 +16,7 @@ function caclulateVertical(
 }
 
 function calculateHorizontal(
-  position: Maybe<Horizontal>
+  position?: Maybe<Horizontal>
 ): "left" | "right" | "center" {
   switch (position) {
     case "Left":

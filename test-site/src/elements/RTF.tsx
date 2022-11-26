@@ -20,7 +20,6 @@ import { Link } from "./renderers/Link";
 import { RenderAnimation } from "./renderers/RenderAnimation";
 import { RenderImage } from "./renderers/RenderImage";
 import { RenderVideo } from "./renderers/RenderVideo";
-import classNames from "classnames";
 import { RenderSpecial } from "./renderers/RenderSpecialTable";
 
 const projectClassNameOverrides: ClassNameOverrides = {

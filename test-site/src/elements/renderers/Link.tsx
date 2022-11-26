@@ -56,6 +56,7 @@ export const Link: React.FC<{ fragment: Queries.CmsLinkFragment }> = ({
         return <TagLink fragment={remoteInternal} />;
     }
     return (
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       <Unsupported component="Link" message={`Cannot link to ${typename}`} />
     );
   }

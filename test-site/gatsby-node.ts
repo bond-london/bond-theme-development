@@ -1,29 +1,27 @@
-import { statSync } from "fs";
-import { CreatePagesArgs } from "gatsby";
+import { CreatePageArgs, CreatePagesArgs } from "gatsby";
 import { resolve } from "path";
-import { articlesPerPage, isProduction } from "./gatsby-env";
+import { isProduction } from "./gatsby-env";
 
-const allowHidden = !isProduction;
+const allowHidden = false && !isProduction;
 
-function tryLoadTemplate(templateName: string) {
-  const possible = `./src/templates/${templateName}.tsx`;
-  try {
-    const stat = statSync(possible);
-    if (stat.isFile()) {
-      return resolve(possible);
-    }
-  } catch {
-    /* no op */
-  }
-  return undefined;
-}
+// function tryLoadTemplate(templateName: string) {
+//   const possible = `./src/templates/${templateName}.tsx`;
+//   try {
+//     const stat = statSync(possible);
+//     if (stat.isFile()) {
+//       return resolve(possible);
+//     }
+//   } catch {
+//     /* no op */
+//   }
+//   return undefined;
+// }
 
 function buildSlices(
   { actions: { createSlice } }: CreatePagesArgs,
   nodes: Queries.AllContentQuery["allGraphCmsNavigation"]["nodes"]
 ) {
   for (const { name, isFooter } of nodes) {
-    console.log(`Creating slice for ${name} ${isFooter}`);
     if (isFooter) {
       createSlice({
         id: `footer-${name}`,
@@ -48,169 +46,101 @@ function buildSlices(
   });
 }
 
-function buildPages(
-  { actions }: CreatePagesArgs,
-  nodes: Queries.AllContentQuery["allGraphCmsPage"]["nodes"]
-) {
-  const defaultPageTemplate = resolve("./src/templates/page.tsx");
-  nodes.forEach(({ slug, id, template, pageType }) => {
-    const path = slug === "home" ? "/" : `/${slug}/`;
-    const templateName = template?.name || pageType?.name;
-    const component = templateName
-      ? tryLoadTemplate(`pages/${templateName}`) || defaultPageTemplate
-      : defaultPageTemplate;
-    actions.createPage({
-      path,
-      component,
-      context: { id },
-    });
-  });
-}
+// async function buildTagIndex(
+//   { actions, graphql }: CreatePagesArgs,
+//   tagId: string,
+//   slug: string,
+//   name: string
+// ) {
+//   const { data } = await graphql<Queries.TagIndexQuery>(
+//     `
+//       query TagIndex(
+//         $allowHidden: Boolean!
+//         $tagId: String!
+//         $articlesPerPage: Int
+//       ) {
+//         allGraphCmsArticle(
+//           filter: {
+//             tags: { elemMatch: { id: { eq: $tagId } } }
+//             hidden: { in: [false, $allowHidden] }
+//           }
+//           limit: $articlesPerPage
+//         ) {
+//           pageInfo {
+//             pageCount
+//           }
+//         }
+//       }
+//     `,
+//     { tagId, articlesPerPage, allowHidden }
+//   );
 
-function buildArticles(
-  { actions, reporter }: CreatePagesArgs,
-  nodes: Queries.AllContentQuery["allGraphCmsArticle"]["nodes"]
+//   if (data?.allGraphCmsArticle?.pageInfo) {
+//     const { pageCount } = data.allGraphCmsArticle.pageInfo;
+//     if (pageCount) {
+//       const component =
+//         tryLoadTemplate(`tag/${name}List`) ||
+//         resolve(`./src/templates/tag/list.tsx`);
+
+//       for (let page = 0; page < pageCount; page++) {
+//         const path = page === 0 ? `/${slug}/` : `/${slug}/${page + 1}/`;
+//         actions.createPage({
+//           path,
+//           component,
+//           context: {
+//             limit: articlesPerPage,
+//             skip: page * articlesPerPage,
+//             tagId,
+//           },
+//         });
+//       }
+//     }
+//   }
+// }
+
+const specialPageMap = new Map<
+  string,
+  { hidden?: boolean; redirectTo?: string }
+>();
+
+function updateSpecialPageMap(
+  id: string,
+  {
+    hidden,
+    redirectTo,
+  }: {
+    hidden?: boolean;
+    redirectTo?: string;
+  }
 ) {
-  const defaultPageTemplate = resolve("./src/templates/article.tsx");
-  nodes.forEach(({ slug, id, template, articleType }) => {
-    if (!articleType) {
-      reporter.panicOnBuild(`Article ${slug} has no article type`);
-    } else {
-      const path = `/${articleType.slug}/${slug}`;
-      const component =
-        tryLoadTemplate(`articles/${template?.name || articleType.name}`) ||
-        defaultPageTemplate;
-      actions.createPage({
-        path,
-        component,
-        context: { id },
-      });
+  const existing = specialPageMap.get(id);
+  if (existing) {
+    if (typeof hidden !== "undefined") {
+      existing.hidden = hidden;
     }
-  });
+    if (typeof redirectTo !== "undefined") {
+      existing.redirectTo = redirectTo;
+    }
+  } else {
+    specialPageMap.set(id, { hidden, redirectTo });
+  }
 }
 
-async function buildArticleTypeIndex(
-  { actions, graphql }: CreatePagesArgs,
-  articleTypeId: string,
-  slug: string,
-  name: string
-) {
-  const { data } = await graphql<Queries.ArticleTypeIndexQuery>(
-    `
-      query ArticleTypeIndex(
-        $allowHidden: Boolean!
-        $articleTypeId: String!
-        $articlesPerPage: Int
-      ) {
-        allGraphCmsArticle(
-          filter: {
-            articleType: { id: { eq: $articleTypeId } }
-            hidden: { in: [false, $allowHidden] }
-          }
-          limit: $articlesPerPage
-        ) {
-          pageInfo {
-            pageCount
-          }
-        }
-      }
-    `,
-    { articleTypeId, articlesPerPage, allowHidden }
+function buildHiddenMaps(data: Queries.AllContentQuery) {
+  data.hiddenArticles.nodes.forEach(({ id }) =>
+    updateSpecialPageMap(id, { hidden: true })
   );
-
-  if (data?.allGraphCmsArticle?.pageInfo) {
-    const { pageCount } = data.allGraphCmsArticle.pageInfo;
-    if (pageCount) {
-      const component =
-        tryLoadTemplate(`articleType/${name}List`) ||
-        resolve(`./src/templates/articleType/list.tsx`);
-
-      for (let page = 0; page < pageCount; page++) {
-        const pathPrefix = slug ? `/${slug}` : "";
-        const path =
-          page === 0 ? `${pathPrefix}/` : `${pathPrefix}/${page + 1}/`;
-        actions.createPage({
-          path,
-          component,
-          context: {
-            limit: articlesPerPage,
-            skip: page * articlesPerPage,
-            articleTypeId,
-          },
-        });
-      }
-    }
-  }
-}
-
-async function buildArticleTypes(
-  args: CreatePagesArgs,
-  nodes: Queries.AllContentQuery["allGraphCmsArticleType"]["nodes"]
-) {
-  for (const { id, slug, name } of nodes) {
-    await buildArticleTypeIndex(args, id, slug, name);
-  }
-}
-
-async function buildTagIndex(
-  { actions, graphql }: CreatePagesArgs,
-  tagId: string,
-  slug: string,
-  name: string
-) {
-  const { data } = await graphql<Queries.TagIndexQuery>(
-    `
-      query TagIndex(
-        $allowHidden: Boolean!
-        $tagId: String!
-        $articlesPerPage: Int
-      ) {
-        allGraphCmsArticle(
-          filter: {
-            tags: { elemMatch: { id: { eq: $tagId } } }
-            hidden: { in: [false, $allowHidden] }
-          }
-          limit: $articlesPerPage
-        ) {
-          pageInfo {
-            pageCount
-          }
-        }
-      }
-    `,
-    { tagId, articlesPerPage, allowHidden }
+  data.hiddenPages.nodes.forEach(({ id }) =>
+    updateSpecialPageMap(id, { hidden: true })
   );
-
-  if (data?.allGraphCmsArticle?.pageInfo) {
-    const { pageCount } = data.allGraphCmsArticle.pageInfo;
-    if (pageCount) {
-      const component =
-        tryLoadTemplate(`tag/${name}List`) ||
-        resolve(`./src/templates/tag/list.tsx`);
-
-      for (let page = 0; page < pageCount; page++) {
-        const path = page === 0 ? `/${slug}/` : `/${slug}/${page + 1}/`;
-        actions.createPage({
-          path,
-          component,
-          context: {
-            limit: articlesPerPage,
-            skip: page * articlesPerPage,
-            tagId,
-          },
-        });
-      }
-    }
-  }
-}
-
-async function buildTags(
-  args: CreatePagesArgs,
-  nodes: Queries.AllContentQuery["allGraphCmsTag"]["nodes"]
-) {
-  for (const { id, slug, name } of nodes) {
-    await buildTagIndex(args, id, slug, name);
-  }
+  data.redirectArticles.nodes.forEach(({ id, redirectTo }) =>
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    updateSpecialPageMap(id, { redirectTo: redirectTo! })
+  );
+  data.redirectPages.nodes.forEach(({ id, redirectTo }) =>
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    updateSpecialPageMap(id, { redirectTo: redirectTo! })
+  );
 }
 
 export async function createPages(args: CreatePagesArgs) {
@@ -218,58 +148,40 @@ export async function createPages(args: CreatePagesArgs) {
   const { reporter, graphql } = args;
   const results = await graphql<Queries.AllContentQuery>(
     `
-      query AllContent($allowHidden: Boolean!) {
-        allGraphCmsPage(filter: { hidden: { in: [false, $allowHidden] } }) {
-          nodes {
-            slug
-            id
-            template {
-              name
-            }
-            pageType {
-              name
-              slug
-            }
-          }
-        }
-        allGraphCmsArticle(filter: { hidden: { in: [false, $allowHidden] } }) {
-          nodes {
-            slug
-            id
-            template {
-              name
-            }
-            articleType {
-              name
-              slug
-            }
-          }
-        }
-        allGraphCmsArticleType(
-          filter: { hidden: { in: [false, $allowHidden] } }
-        ) {
-          nodes {
-            slug
-            id
-            name
-          }
-        }
-        allGraphCmsTag(filter: { hidden: { in: [false, $allowHidden] } }) {
-          nodes {
-            slug
-            id
-            name
-          }
-        }
+      query AllContent {
         allGraphCmsNavigation {
           nodes {
             name
             isFooter
           }
         }
+
+        hiddenArticles: allGraphCmsArticle(filter: { hidden: { eq: true } }) {
+          nodes {
+            id
+          }
+        }
+        hiddenPages: allGraphCmsPage(filter: { hidden: { eq: true } }) {
+          nodes {
+            id
+          }
+        }
+        redirectArticles: allGraphCmsArticle(
+          filter: { redirectTo: { ne: null } }
+        ) {
+          nodes {
+            id
+            redirectTo
+          }
+        }
+        redirectPages: allGraphCmsPage(filter: { redirectTo: { ne: null } }) {
+          nodes {
+            id
+            redirectTo
+          }
+        }
       }
-    `,
-    { allowHidden }
+    `
   );
 
   const { data } = results;
@@ -278,30 +190,40 @@ export async function createPages(args: CreatePagesArgs) {
     return reporter.panicOnBuild("No data");
   }
 
-  if (!data.allGraphCmsPage) {
-    return reporter.panicOnBuild(`Failed to find any pages`);
-  }
-
-  if (data.allGraphCmsTag) {
-    if (data.allGraphCmsArticle) {
-      await buildTags(args, data.allGraphCmsTag.nodes);
-    }
-    // if (data.allGraphCmsArticleType) {
-    //   await buildArticleTypeTags(
-    //     args,
-    //     data.allGraphCmsArticleType.nodes,
-    //     data.allGraphCmsTag.nodes
-    //   );
-    // }
-  }
-
-  buildPages(args, data.allGraphCmsPage.nodes);
+  buildHiddenMaps(data);
   buildSlices(args, data.allGraphCmsNavigation.nodes);
+}
 
-  if (data.allGraphCmsArticleType) {
-    await buildArticleTypes(args, data.allGraphCmsArticleType.nodes);
+export function onCreatePage(args: CreatePageArgs) {
+  const {
+    page,
+    reporter,
+    actions: { createPage, deletePage, createRedirect },
+  } = args;
+  reporter.info(`Create page: ${JSON.stringify(page, undefined, 2)}`);
+
+  deletePage(page);
+  const id = page.context?.id as string | undefined;
+  if (id) {
+    const special = specialPageMap.get(id);
+    if (special) {
+      reporter.info(`Got a special page: ${id}: ${page.path}`);
+      if (special.hidden) {
+        reporter.info(`Got a hidden page: ${id}: ${page.path}`);
+        return;
+      }
+      if (special.redirectTo) {
+        reporter.info(`Redirecting from ${page.path} to ${special.redirectTo}`);
+        createRedirect({ fromPath: page.path, toPath: special.redirectTo });
+        return;
+      }
+    }
   }
-  if (data.allGraphCmsArticle) {
-    buildArticles(args, data.allGraphCmsArticle.nodes);
-  }
+  createPage({
+    ...page,
+    context: {
+      ...page.context,
+      allowHidden,
+    },
+  });
 }

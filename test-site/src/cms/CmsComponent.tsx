@@ -7,14 +7,10 @@ import {
 import { getRTFInformation } from "@bond-london/graphcms-rich-text";
 import {
   convertCmsAssetToBondImage,
-  convertCmsImageToBondImage,
   convertCmsVisualToBondVisual,
 } from "@bond-london/gatsby-theme";
 import { ILinkInformation } from "../components/LinkOrButton";
 import { calculateArticleLinkPath } from "../elements/renderers/ArticleLink";
-import { calculateArticleTypeLinkPath } from "../elements/renderers/ArticleTypeLink";
-import { calculatePageLinkPath } from "../elements/renderers/PageLink";
-import { calculateTagLinkPath } from "../elements/renderers/TagLink";
 
 function convertCMSInternalLink(
   internal: Queries.CmsLinkFragment["remoteInternal"]
@@ -23,11 +19,14 @@ function convertCMSInternalLink(
     case "GraphCMS_Article":
       return calculateArticleLinkPath(internal);
     case "GraphCMS_ArticleType":
-      return calculateArticleTypeLinkPath(internal);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return internal.gatsbyPath!;
     case "GraphCMS_Page":
-      return calculatePageLinkPath(internal);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return internal.gatsbyPath!;
     case "GraphCMS_Tag":
-      return calculateTagLinkPath(internal);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return internal.gatsbyPath!;
   }
 }
 function convertCmsLink({
@@ -102,6 +101,7 @@ export const CmsComponent: React.FC<{
   }
 };
 
+// eslint-disable-next-line import/no-unused-modules
 export const fragment = graphql`
   fragment CmsComponent on GraphCMS_Component {
     __typename

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unused-modules */
 import { graphql } from "gatsby";
 
 export const ConstrainedImageAssetFragment = graphql`

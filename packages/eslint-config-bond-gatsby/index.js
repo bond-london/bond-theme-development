@@ -45,6 +45,7 @@ module.exports = {
       rules: {
         // "no-anonymous-exports-page-templates": "warn",
         // "limited-exports-page-templates": "warn",
+        "react/prop-types": "off",
         "react-hooks/exhaustive-deps": "error",
         "import/no-unresolved": "error",
         "import/no-unused-modules": [

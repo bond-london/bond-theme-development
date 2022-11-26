@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { graphql, SliceComponentProps, useStaticQuery } from "gatsby";
+import { graphql, SliceComponentProps } from "gatsby";
 import ReactCookieConsent from "react-cookie-consent";
 import {
   GoogleTagManager,
@@ -12,7 +12,7 @@ const Analytics: React.FC<SliceComponentProps<Queries.AnalyticsQuery>> = ({
 }) => {
   if (!site?.siteMetadata) throw new Error("No site");
 
-  const { cookieName, googleTag, declinedCookieName } = site!.siteMetadata!;
+  const { cookieName, googleTag, declinedCookieName } = site.siteMetadata;
 
   const onAccept = useBondCookie(cookieName);
 
@@ -43,8 +43,10 @@ const Analytics: React.FC<SliceComponentProps<Queries.AnalyticsQuery>> = ({
   );
 };
 
+// eslint-disable-next-line import/no-unused-modules
 export default Analytics;
 
+// eslint-disable-next-line import/no-unused-modules
 export const query = graphql`
   query Analytics {
     site {

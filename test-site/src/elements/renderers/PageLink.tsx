@@ -4,21 +4,12 @@ import { LinkClassName } from "../../styles";
 import { getImage } from "gatsby-plugin-image";
 import { EmbedLink } from "./EmbedLink";
 
-export function calculatePageLinkPath({
-  pageType,
-  slug,
-}: Queries.CmsPageLinkFragment) {
-  const slugUrl = slug === "home" ? "/" : `/${slug}/`;
-  if (pageType) {
-    return `/${pageType.slug}${slugUrl}`;
-  }
-  return slugUrl;
-}
 export const PageLink: React.FC<{ fragment: Queries.CmsPageLinkFragment }> = ({
   fragment,
 }) => {
   return (
-    <Link className={LinkClassName} to={calculatePageLinkPath(fragment)}>
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    <Link className={LinkClassName} to={fragment.gatsbyPath!}>
       {fragment.title}
     </Link>
   );
@@ -37,7 +28,8 @@ export const PageEmbedLink: React.FC<{
       <EmbedLink
         className={className}
         title={fragment.title}
-        to={calculatePageLinkPath(fragment)}
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        to={fragment.gatsbyPath!}
         image={image}
       />
     );

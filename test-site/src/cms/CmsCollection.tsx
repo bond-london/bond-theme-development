@@ -30,7 +30,7 @@ function convertCmsCollectionCoreInformation({
   };
 }
 
-export function convertCmsCollectionInformation(
+function convertCmsCollectionInformation(
   fragment: Queries.CmsCollectionFragment
 ): ICollectionInformation {
   return {
@@ -72,6 +72,7 @@ export const CmsCollection: React.FC<{
   }
 };
 
+// eslint-disable-next-line import/no-unused-modules
 export const coreFragment = graphql`
   fragment CmsCollectionCore on GraphCMS_Collection {
     __typename
@@ -109,6 +110,7 @@ export const coreFragment = graphql`
   }
 `;
 
+// eslint-disable-next-line import/no-unused-modules
 export const fragment = graphql`
   fragment CmsCollection on GraphCMS_Collection {
     ...CmsCollectionCore

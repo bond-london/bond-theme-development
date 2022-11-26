@@ -4,14 +4,12 @@ import { LinkClassName } from "../../styles";
 import { getImage } from "gatsby-plugin-image";
 import { EmbedLink } from "./EmbedLink";
 
-export function calculateTagLinkPath({ slug }: Queries.CmsTagLinkFragment) {
-  return `/${slug}/`;
-}
 export const TagLink: React.FC<{ fragment: Queries.CmsTagLinkFragment }> = ({
   fragment,
 }) => {
   return (
-    <Link className={LinkClassName} to={calculateTagLinkPath(fragment)}>
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    <Link className={LinkClassName} to={fragment.gatsbyPath!}>
       {fragment.title}
     </Link>
   );
@@ -23,14 +21,15 @@ export const TagEmbedLink: React.FC<{
   fragment: Queries.CmsTagLinkFragment;
 }> = ({ fragment, className, isInline }) => {
   const image = getImage(
-    fragment.featuredImage?.localFile?.childImageSharp || null
+    fragment.embedImage?.localFile?.childImageSharp || null
   );
   if (!isInline && image) {
     return (
       <EmbedLink
         className={className}
         title={fragment.title}
-        to={calculateTagLinkPath(fragment)}
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        to={fragment.gatsbyPath!}
         image={image}
       />
     );

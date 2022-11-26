@@ -3,7 +3,6 @@ import { IRichTextInformation } from "@bond-london/graphcms-rich-text";
 import classNames from "classnames";
 import React from "react";
 import { ColourName, lookupColourClassNames } from "../colors";
-import { Icon } from "../elements/Icon";
 import { SectionBodyClassName } from "../styles";
 import { ILinkInformation } from "./LinkOrButton";
 import { SectionBody } from "./SectionBody";

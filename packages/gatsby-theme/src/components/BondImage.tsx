@@ -17,13 +17,13 @@ export type IBondImage = IVisualCommon & {
   name: string;
 };
 
-interface ICmsImageAsset {
+export interface ICmsImageAsset {
   readonly localFile: {
-    readonly internal: { readonly mediaType: string | null };
-    readonly childImageSharp: {
+    readonly internal?: { readonly mediaType: string | null };
+    readonly childImageSharp?: {
       readonly gatsbyImageData: IGatsbyImageData;
     } | null;
-    readonly childGatsbySvg: {
+    readonly childGatsbySvg?: {
       readonly extracted: Record<string, unknown>;
     } | null;
   } | null;

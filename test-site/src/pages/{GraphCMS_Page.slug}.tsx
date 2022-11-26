@@ -1,5 +1,5 @@
 import { IPageMetadata } from "@bond-london/gatsby-theme";
-import { graphql, HeadFC, HeadProps } from "gatsby";
+import { graphql, HeadFC } from "gatsby";
 import React from "react";
 import { CmsPageLayout } from "../cms/CmsPageLayout";
 import { PageHead } from "../components/PageHead";

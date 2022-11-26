@@ -14,7 +14,7 @@ export const SectionLinks: React.FC<{
     <div
       className={classNames(
         SectionBodyClassName,
-        "flex",
+        "flex pointer-events-auto",
         vertical ? "flex-col items-start gap-y-x" : "items-center gap-x-xs"
       )}
     >

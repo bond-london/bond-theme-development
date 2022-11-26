@@ -2,7 +2,7 @@ import React from "react";
 import { CmsCollection } from "./CmsCollection";
 import { CmsComponent } from "./CmsComponent";
 
-export type ContentFragment =
+type ContentFragment =
   | Queries.CmsComponentFragment
   | Queries.CmsCollectionFragment;
 

@@ -23,6 +23,7 @@ export const AnimationsQuery = graphql`
   }
 `;
 
+// eslint-disable-next-line import/no-unused-modules
 export const Head: HeadFC = (props) => (
   <PageHead headProps={props} page={{ title: "All animations" }} />
 );

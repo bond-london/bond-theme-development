@@ -1,11 +1,4 @@
 import { graphql } from "gatsby";
-import React from "react";
-
-export const CmsNavigation: React.FC<{
-  fragment: Queries.CmsNavigationFragment;
-}> = ({ fragment }) => {
-  return <pre>{JSON.stringify(fragment)}</pre>;
-};
 
 // eslint-disable-next-line import/no-unused-modules
 export const CmsNavigationItemCoreFragment = graphql`

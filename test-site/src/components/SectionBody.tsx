@@ -2,7 +2,7 @@ import { IRichTextInformation } from "@bond-london/graphcms-rich-text";
 import classNames from "classnames";
 import React from "react";
 import { RTF } from "../elements/RTF";
-import { SectionBodyClassName, SectionBodyGridClassName } from "../styles";
+import { SectionBodyClassName } from "../styles";
 
 export const SectionBody: React.FC<{
   content: IRichTextInformation;

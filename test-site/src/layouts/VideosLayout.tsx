@@ -1,8 +1,10 @@
 import { PageProps } from "gatsby";
 import React, { CSSProperties, Fragment, useMemo } from "react";
 import classNames from "classnames";
-import { GatsbyVideo } from "@bond-london/gatsby-transformer-video";
-import { IGatsbyTransformedVideo } from "@bond-london/gatsby-transformer-video/dist/types";
+import {
+  GatsbyVideo,
+  IGatsbyTransformedVideo,
+} from "@bond-london/gatsby-transformer-video";
 
 interface Combined {
   constrained: IGatsbyTransformedVideo;

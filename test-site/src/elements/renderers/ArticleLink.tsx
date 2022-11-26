@@ -8,16 +8,18 @@ export function calculateArticleLinkPath({
   articleType,
   slug,
 }: Queries.CmsArticleLinkFragment) {
-  if (articleType) {
+  if (articleType?.slug) {
     return `/${articleType.slug}/${slug}/`;
   }
   return `/${slug}/`;
 }
+
 export const ArticleLink: React.FC<{
   fragment: Queries.CmsArticleLinkFragment;
 }> = ({ fragment }) => {
+  const path = calculateArticleLinkPath(fragment);
   return (
-    <Link className={LinkClassName} to={calculateArticleLinkPath(fragment)}>
+    <Link className={LinkClassName} to={path}>
       {fragment.title}
     </Link>
   );
@@ -29,14 +31,15 @@ export const ArticleEmbedLink: React.FC<{
   fragment: Queries.CmsArticleLinkFragment;
 }> = ({ className, fragment, isInline }) => {
   const image = getImage(
-    fragment.featuredImage?.localFile?.childImageSharp || null
+    fragment.embedImage?.localFile?.childImageSharp || null
   );
+  const path = calculateArticleLinkPath(fragment);
   if (!isInline && image) {
     return (
       <EmbedLink
         className={className}
         title={fragment.title}
-        to={calculateArticleLinkPath(fragment)}
+        to={path}
         image={image}
       />
     );

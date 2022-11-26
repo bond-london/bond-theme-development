@@ -1,22 +1,10 @@
-import {
-  BondImage,
-  convertCmsImageToBondImage,
-  IBondImage,
-  Section,
-} from "@bond-london/gatsby-theme";
-import {
-  IRichTextInformation,
-  getRTFInformation,
-} from "@bond-london/graphcms-rich-text";
+import { BondImage, IBondImage, Section } from "@bond-london/gatsby-theme";
+import { IRichTextInformation } from "@bond-london/graphcms-rich-text";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
 import classNames from "classnames";
 import React from "react";
-import { convertCmsComponentInformation } from "../cms/CmsComponent";
 import { ColourName, lookupColourClassNames } from "../colors";
-import {
-  GenericComponent,
-  IComponentInformation,
-} from "../components/GenericComponent";
+import { IComponentInformation } from "../components/GenericComponent";
 import { SectionBody } from "../components/SectionBody";
 import { SectionHeading } from "../components/SectionHeading";
 import { SectionIcon } from "../components/SectionIcon";
@@ -33,14 +21,14 @@ function calculateContentsClassName(length: number) {
   }
 }
 
-export type ICollectionContent = ICollectionInformation | IComponentInformation;
-export function isContentCollection(
+type ICollectionContent = ICollectionInformation | IComponentInformation;
+function isContentCollection(
   content: ICollectionContent
 ): content is ICollectionInformation {
   return !!(content as ICollectionInformation).contents;
 }
 
-export function isContentComponent(
+function isContentComponent(
   content: ICollectionContent
 ): content is IComponentInformation {
   return !(content as ICollectionInformation).contents;

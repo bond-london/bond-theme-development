@@ -7,9 +7,25 @@ export const CmsArticleTypeLinkFragment = graphql`
     id
     remoteId
     title
-    slug
-    featuredImage {
+    gatsbyPath(filePath: "/{GraphCMS_ArticleType.slug}")
+    embedImage: featuredImage {
       ...EmbedFeaturedImageAsset
+    }
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const CmsArticleTypeFragment = graphql`
+  fragment CmsArticleType on GraphCMS_ArticleType {
+    ...CmsArticleTypeLink
+    backgroundColour
+    textColour
+    description
+    seoImage: featuredImage {
+      ...SeoImageAsset
+    }
+    featuredImage {
+      ...FullWidthImageAsset
     }
   }
 `;

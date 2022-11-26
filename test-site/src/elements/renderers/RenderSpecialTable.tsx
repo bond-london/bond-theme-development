@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import {
   buildTableInformationFromNodes,
-  DefaultRenderer,
   IClassNodeRendererProps,
   IDefaultNodeRendererProps,
   RenderElements,

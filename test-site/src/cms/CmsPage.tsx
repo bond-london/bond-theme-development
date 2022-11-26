@@ -7,10 +7,7 @@ export const CmsPageLinkFragment = graphql`
     id
     remoteId
     title
-    slug
-    pageType {
-      slug
-    }
+    gatsbyPath(filePath: "/{GraphCMS_Page.slug}")
     featuredImage {
       ...EmbedFeaturedImageAsset
     }

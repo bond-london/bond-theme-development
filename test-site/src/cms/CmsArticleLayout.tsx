@@ -2,28 +2,26 @@ import { PageProps, Slice } from "gatsby";
 import React from "react";
 import { CmsContent } from "./CmsContents";
 
-export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
-  props
-) => {
-  const page = props.data.graphCmsPage;
-  if (!page) {
-    throw new Error("Page does not exist");
+export const CmsArticleLayout: React.FC<
+  PageProps<Queries.SingleArticleQuery>
+> = (props) => {
+  const article = props.data.graphCmsArticle;
+  if (!article) {
+    throw new Error("Article does not exist");
   }
 
-  const template = page.template;
+  const template = article.template;
   return (
     <>
       <Slice alias="navigation-Menu" />
       <Slice alias="analytics" />
 
       <div>
-        <CmsContent fragment={page.topContent} />
         {template?.preContent && <CmsContent fragment={template.preContent} />}
-        <CmsContent fragment={page.content} />
+        <CmsContent fragment={article.content} />
         {template?.postContent && (
           <CmsContent fragment={template.postContent} />
         )}
-        <CmsContent fragment={page.bottomContent} />
       </div>
 
       <Slice alias="footer-Footer" />

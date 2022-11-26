@@ -12,6 +12,7 @@ const CmsFooter: React.FC<SliceComponentProps<Queries.FooterQuery>> = ({
   );
 };
 
+// eslint-disable-next-line import/no-unused-modules
 export default CmsFooter;
 
 // eslint-disable-next-line import/no-unused-modules

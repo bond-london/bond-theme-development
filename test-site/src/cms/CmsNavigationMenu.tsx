@@ -1,17 +1,15 @@
 import { graphql, SliceComponentProps } from "gatsby";
 import React from "react";
+import { NavigationBar } from "../components/Navigation/NavigationBar";
 
 const CmsNavigationMenu: React.FC<
   SliceComponentProps<Queries.NavigationMenuQuery>
 > = ({ data: { graphCmsNavigation } }) => {
   if (!graphCmsNavigation) throw new Error("No naviation menu");
-  return (
-    <>
-      <h1>Nav menu - {graphCmsNavigation.name}</h1>
-    </>
-  );
+  return <NavigationBar />;
 };
 
+// eslint-disable-next-line import/no-unused-modules
 export default CmsNavigationMenu;
 
 // eslint-disable-next-line import/no-unused-modules

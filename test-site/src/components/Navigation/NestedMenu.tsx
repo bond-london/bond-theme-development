@@ -2,6 +2,7 @@ import classNames from "classnames";
 import React, { MouseEvent, useCallback } from "react";
 import { LinkOrButton } from "../LinkOrButton";
 import { SectionIcon } from "../SectionIcon";
+import { useNestedMenu } from "./MenuUtils";
 import { INavigationItem } from "./NavigationMenu";
 
 export const NestedMenu: React.FC<{
@@ -15,24 +16,9 @@ export const NestedMenu: React.FC<{
   ) => void;
 }> = ({ item, active, closeMenu, activateMenu }) => {
   const entries = item.entries!;
-  const handleButtonClick = useCallback(
-    (ev: MouseEvent<HTMLButtonElement>) => {
-      activateMenu(ev.timeStamp, item);
-    },
-    [activateMenu, item]
-  );
 
-  const handleMouseEnter = useCallback(
-    (ev: MouseEvent<HTMLDivElement>) => {
-      activateMenu(ev.timeStamp, item);
-    },
-    [activateMenu, item]
-  );
-  const handleMouseLeave = useCallback(
-    (ev: MouseEvent<HTMLDivElement>) =>
-      activateMenu(ev.timeStamp, undefined, item),
-    [activateMenu, item]
-  );
+  const { handleButtonClick, handleMouseEnter, handleMouseLeave } =
+    useNestedMenu(item, activateMenu);
 
   return (
     <div

@@ -2,10 +2,7 @@
 import React from "react";
 import { graphql, SliceComponentProps } from "gatsby";
 import ReactCookieConsent from "react-cookie-consent";
-import {
-  GoogleTagManager,
-  useBondCookie,
-} from "@bond-london/gatsby-graphcms-components";
+import { GoogleTagManager, useBondCookie } from "@bond-london/gatsby-theme";
 
 const Analytics: React.FC<SliceComponentProps<Queries.AnalyticsQuery>> = ({
   data: { site },

@@ -1,17 +1,16 @@
 import { convertCmsAssetToBondImage } from "@bond-london/gatsby-theme";
 import { graphql, PageProps, Slice } from "gatsby";
 import React, { useCallback } from "react";
-import { CmsArticleTypeHead } from "../../../cms/CmsArticleTypeLayout";
-import { ArticleList } from "../../../components/ArticleList";
-import { Paginator } from "../../../components/Paginator";
-import { SectionHero } from "../../../components/SectionHero";
+import { CmsArticleTypeHead } from "../../cms/CmsArticleTypeLayout";
+import { ArticleList } from "../../components/ArticleList";
+import { Paginator } from "../../components/Paginator";
+import { SectionHero } from "../../components/SectionHero";
 
-const ArticleTypeTagLayout: React.FC<
-  PageProps<Queries.ArticleTypeTagListQuery>
+const CaseStudyArticleTypeLayout: React.FC<
+  PageProps<Queries.CaseStudyArticleTypeListQuery>
 > = (props) => {
   const {
     graphCmsArticleType,
-    graphCmsTag,
     allGraphCmsArticle: {
       edges,
       pageInfo: { currentPage, pageCount },
@@ -20,23 +19,20 @@ const ArticleTypeTagLayout: React.FC<
   if (!graphCmsArticleType) {
     throw new Error("Article Type does not exist");
   }
-  if (!graphCmsTag) {
-    throw new Error("Tag does not exist");
-  }
 
   const buildLink = useCallback(
     (page: number) => {
       const pagePart = page === 1 ? "" : `${page}/`;
-      return `/${graphCmsArticleType.slug}/${graphCmsTag.slug}/${pagePart}`;
+      return `/${graphCmsArticleType.slug}/${pagePart}`;
     },
-    [graphCmsArticleType.slug, graphCmsTag.slug]
+    [graphCmsArticleType.slug]
   );
 
   return (
     <>
       <Slice alias="navigation-Menu" />
       <Slice alias="analytics" />
-      <h1 className="h1">Generic ArticleType/Tag page</h1>
+      <h1 className="h1">Case Study ArticleType page</h1>
       <SectionHero
         header={graphCmsArticleType.title}
         visual={convertCmsAssetToBondImage(graphCmsArticleType.featuredImage)}
@@ -56,27 +52,27 @@ const ArticleTypeTagLayout: React.FC<
 };
 
 // eslint-disable-next-line import/no-unused-modules
-export default ArticleTypeTagLayout;
+export default CaseStudyArticleTypeLayout;
 
 // eslint-disable-next-line import/no-unused-modules
-export const ArticleTypeTagListQuery = graphql`
-  query ArticleTypeTagList(
+export const CaseStudyArticleTypeListQuery = graphql`
+  query CaseStudyArticleTypeList(
     $skip: Int!
     $articlesPerPage: Int!
-    $articleTypeId: String!
-    $tagId: String!
+    $id: String!
     $allowHidden: Boolean!
   ) {
-    graphCmsArticleType(id: { eq: $articleTypeId }) {
+    graphCmsArticleType(id: { eq: $id }) {
       ...CmsArticleType
     }
-    graphCmsTag(id: { eq: $tagId }) {
-      ...CmsTag
+    allGraphCmsTag {
+      nodes {
+        ...CmsTagLink
+      }
     }
     allGraphCmsArticle(
       filter: {
-        articleType: { id: { eq: $articleTypeId } }
-        tags: { elemMatch: { id: { eq: $tagId } } }
+        articleType: { id: { eq: $id } }
         hidden: { in: [false, $allowHidden] }
       }
       skip: $skip

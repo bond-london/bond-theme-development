@@ -16,9 +16,9 @@
   },
   "scripts": {
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "develop": "gatsby develop --verbose",
+    "develop": "gatsby develop",
     "start": "gatsby develop",
-    "build:gatsby": "gatsby build --verbose",
+    "build:gatsby": "gatsby build",
     "build": "run-s clean build:gatsby",
     "watch": "develop",
     "serve": "gatsby serve",

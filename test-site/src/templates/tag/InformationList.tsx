@@ -1,25 +1,21 @@
 import { convertCmsAssetToBondImage } from "@bond-london/gatsby-theme";
 import { graphql, PageProps, Slice } from "gatsby";
 import React, { useCallback } from "react";
-import { CmsArticleTypeHead } from "../../../cms/CmsArticleTypeLayout";
-import { ArticleList } from "../../../components/ArticleList";
-import { Paginator } from "../../../components/Paginator";
-import { SectionHero } from "../../../components/SectionHero";
+import { CmsTagHead } from "../../cms/CmsTagLayout";
+import { ArticleList } from "../../components/ArticleList";
+import { Paginator } from "../../components/Paginator";
+import { SectionHero } from "../../components/SectionHero";
 
-const ArticleTypeTagLayout: React.FC<
-  PageProps<Queries.ArticleTypeTagListQuery>
+const InformationTagLayout: React.FC<
+  PageProps<Queries.InformationTagListQuery>
 > = (props) => {
   const {
-    graphCmsArticleType,
     graphCmsTag,
     allGraphCmsArticle: {
       edges,
       pageInfo: { currentPage, pageCount },
     },
   } = props.data;
-  if (!graphCmsArticleType) {
-    throw new Error("Article Type does not exist");
-  }
   if (!graphCmsTag) {
     throw new Error("Tag does not exist");
   }
@@ -27,21 +23,21 @@ const ArticleTypeTagLayout: React.FC<
   const buildLink = useCallback(
     (page: number) => {
       const pagePart = page === 1 ? "" : `${page}/`;
-      return `/${graphCmsArticleType.slug}/${graphCmsTag.slug}/${pagePart}`;
+      return `/${graphCmsTag.slug}/${pagePart}`;
     },
-    [graphCmsArticleType.slug, graphCmsTag.slug]
+    [graphCmsTag.slug]
   );
 
   return (
     <>
       <Slice alias="navigation-Menu" />
       <Slice alias="analytics" />
-      <h1 className="h1">Generic ArticleType/Tag page</h1>
+      <h1 className="h1">Information specific page</h1>
       <SectionHero
-        header={graphCmsArticleType.title}
-        visual={convertCmsAssetToBondImage(graphCmsArticleType.featuredImage)}
-        textColour={graphCmsArticleType.textColour}
-        backgroundColour={graphCmsArticleType.backgroundColour}
+        header={graphCmsTag.title}
+        visual={convertCmsAssetToBondImage(graphCmsTag.featuredImage)}
+        textColour={graphCmsTag.textColour}
+        backgroundColour={graphCmsTag.backgroundColour}
       />
       <ArticleList articles={edges.map((e) => e.node)} />
       <Paginator
@@ -56,27 +52,27 @@ const ArticleTypeTagLayout: React.FC<
 };
 
 // eslint-disable-next-line import/no-unused-modules
-export default ArticleTypeTagLayout;
+export default InformationTagLayout;
 
 // eslint-disable-next-line import/no-unused-modules
-export const ArticleTypeTagListQuery = graphql`
-  query ArticleTypeTagList(
+export const InformationTagListQuery = graphql`
+  query InformationTagList(
     $skip: Int!
     $articlesPerPage: Int!
-    $articleTypeId: String!
-    $tagId: String!
+    $id: String!
     $allowHidden: Boolean!
   ) {
-    graphCmsArticleType(id: { eq: $articleTypeId }) {
-      ...CmsArticleType
-    }
-    graphCmsTag(id: { eq: $tagId }) {
+    graphCmsTag(id: { eq: $id }) {
       ...CmsTag
+    }
+    allGraphCmsArticleType {
+      nodes {
+        ...CmsArticleTypeLink
+      }
     }
     allGraphCmsArticle(
       filter: {
-        articleType: { id: { eq: $articleTypeId } }
-        tags: { elemMatch: { id: { eq: $tagId } } }
+        tags: { elemMatch: { id: { eq: $id } } }
         hidden: { in: [false, $allowHidden] }
       }
       skip: $skip
@@ -89,4 +85,4 @@ export const ArticleTypeTagListQuery = graphql`
 `;
 
 // eslint-disable-next-line import/no-unused-modules
-export const Head = CmsArticleTypeHead;
+export const Head = CmsTagHead;

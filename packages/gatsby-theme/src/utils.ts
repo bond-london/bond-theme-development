@@ -1,5 +1,4 @@
-import { clearAllBodyScrollLocks, disableBodyScroll } from "body-scroll-lock";
-import React, { CSSProperties, useEffect, useRef } from "react";
+import { CSSProperties } from "react";
 import { Horizontal, Maybe, Vertical, IVisualCommon } from "./types";
 
 function caclulateVertical(
@@ -43,38 +42,4 @@ export function calculateCropDetails(
       horizontalCropPosition
     )} ${caclulateVertical(verticalCropPosition)}`,
   };
-}
-
-function updateClientSize(): void {
-  const vw = document.documentElement.clientWidth / 100;
-  const vh = document.documentElement.clientHeight / 100;
-  document.documentElement.style.setProperty("--bond-vw", `${vw}px`);
-  document.documentElement.style.setProperty("--bond-vh", `${vh}px`);
-}
-
-export function useBondClientSize(): void {
-  useEffect(() => {
-    const observer = new ResizeObserver(updateClientSize);
-    updateClientSize();
-    observer.observe(document.documentElement);
-    return () => observer.unobserve(document.documentElement);
-  }, []);
-}
-
-export function useBodyScrollLock<T extends HTMLElement = HTMLElement>(
-  doLock: boolean
-): { ref: React.RefObject<T> } {
-  const ref = useRef<T>(null);
-
-  useEffect(() => {
-    const current = ref.current;
-    if (current && doLock) {
-      disableBodyScroll(current, { reserveScrollBarGap: true });
-      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-      return () => clearAllBodyScrollLocks();
-    }
-    return undefined;
-  }, [doLock]);
-
-  return { ref };
 }

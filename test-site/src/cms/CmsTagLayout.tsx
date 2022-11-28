@@ -1,36 +1,39 @@
-import { convertCmsAssetToBondImage } from "@bond-london/gatsby-theme";
-import { PageProps, Slice } from "gatsby";
+import { IPageMetadata } from "@bond-london/gatsby-theme";
+import { graphql, HeadFC } from "gatsby";
 import React from "react";
-import { ArticleList } from "../components/ArticleList";
-import { SectionHero } from "../components/SectionHero";
-import { PropsDump } from "./PropsDump";
+import { PageHead } from "../components/PageHead";
 
-export const CmsTagLayout: React.FC<PageProps<Queries.FirstTagListQuery>> = (
-  props
-) => {
+export const CmsTagHead: HeadFC<Queries.TagListQuery> = (props) => {
   const {
-    graphCmsTag,
-    allGraphCmsArticle: { edges },
-  } = props.data;
-  if (!graphCmsTag) {
-    throw new Error("Tag does not exist");
-  }
+    data: { graphCmsTag },
+  } = props;
+  if (!graphCmsTag) throw new Error("No page");
 
-  return (
-    <>
-      <Slice alias="navigation-Menu" />
-      <Slice alias="analytics" />
-      <SectionHero
-        header={graphCmsTag.title}
-        visual={convertCmsAssetToBondImage(graphCmsTag.featuredImage)}
-        textColour={graphCmsTag.textColour}
-        backgroundColour={graphCmsTag.backgroundColour}
-      />
-      <ArticleList articles={edges.map((e) => e.node)} />
+  const pageMetadata: IPageMetadata = {
+    title: graphCmsTag.title,
+    description: graphCmsTag.description,
+    image: graphCmsTag.seoImage?.localFile?.childImageSharp?.gatsbyImageData,
+  };
 
-      <PropsDump props={props} />
-
-      <Slice alias="footer-Footer" />
-    </>
-  );
+  return <PageHead headProps={props} page={pageMetadata} />;
 };
+
+// eslint-disable-next-line import/no-unused-modules
+export const PagedArticleListFragment = graphql`
+  fragment PagedArticleList on GraphCMS_ArticleConnection {
+    edges {
+      node {
+        ...CmsArticleLink
+      }
+    }
+    pageInfo {
+      currentPage
+      hasNextPage
+      hasPreviousPage
+      itemCount
+      pageCount
+      perPage
+      totalCount
+    }
+  }
+`;

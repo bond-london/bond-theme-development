@@ -11,6 +11,8 @@ import {
 } from "@bond-london/gatsby-theme";
 import { ILinkInformation } from "../components/LinkOrButton";
 import { calculateArticleLinkPath } from "../elements/renderers/ArticleLink";
+import { getTagPath } from "./CmsTag";
+import { getArticleTypePath } from "./CmsArticleType";
 
 function convertCMSInternalLink(
   internal: Queries.CmsLinkFragment["remoteInternal"]
@@ -19,14 +21,12 @@ function convertCMSInternalLink(
     case "GraphCMS_Article":
       return calculateArticleLinkPath(internal);
     case "GraphCMS_ArticleType":
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      return internal.gatsbyPath!;
+      return getArticleTypePath(internal);
     case "GraphCMS_Page":
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return internal.gatsbyPath!;
     case "GraphCMS_Tag":
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      return internal.gatsbyPath!;
+      return getTagPath(internal);
   }
 }
 function convertCmsLink({

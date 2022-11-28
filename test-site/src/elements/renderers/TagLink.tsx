@@ -3,13 +3,13 @@ import React from "react";
 import { LinkClassName } from "../../styles";
 import { getImage } from "gatsby-plugin-image";
 import { EmbedLink } from "./EmbedLink";
+import { getTagPath } from "../../cms/CmsTag";
 
 export const TagLink: React.FC<{ fragment: Queries.CmsTagLinkFragment }> = ({
   fragment,
 }) => {
   return (
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    <Link className={LinkClassName} to={fragment.gatsbyPath!}>
+    <Link className={LinkClassName} to={getTagPath(fragment)}>
       {fragment.title}
     </Link>
   );
@@ -28,8 +28,7 @@ export const TagEmbedLink: React.FC<{
       <EmbedLink
         className={className}
         title={fragment.title}
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        to={fragment.gatsbyPath!}
+        to={getTagPath(fragment)}
         image={image}
       />
     );

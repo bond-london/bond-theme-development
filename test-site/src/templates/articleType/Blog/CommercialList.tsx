@@ -6,8 +6,8 @@ import { ArticleList } from "../../../components/ArticleList";
 import { Paginator } from "../../../components/Paginator";
 import { SectionHero } from "../../../components/SectionHero";
 
-const ArticleTypeTagLayout: React.FC<
-  PageProps<Queries.ArticleTypeTagListQuery>
+const BlogCommercialLayout: React.FC<
+  PageProps<Queries.BlogCommercialListQuery>
 > = (props) => {
   const {
     graphCmsArticleType,
@@ -36,7 +36,7 @@ const ArticleTypeTagLayout: React.FC<
     <>
       <Slice alias="navigation-Menu" />
       <Slice alias="analytics" />
-      <h1 className="h1">Generic ArticleType/Tag page</h1>
+      <h1 className="h1">Blog/Commercial list page</h1>
       <SectionHero
         header={graphCmsArticleType.title}
         visual={convertCmsAssetToBondImage(graphCmsArticleType.featuredImage)}
@@ -56,11 +56,11 @@ const ArticleTypeTagLayout: React.FC<
 };
 
 // eslint-disable-next-line import/no-unused-modules
-export default ArticleTypeTagLayout;
+export default BlogCommercialLayout;
 
 // eslint-disable-next-line import/no-unused-modules
-export const ArticleTypeTagListQuery = graphql`
-  query ArticleTypeTagList(
+export const BlogCommercialListQuery = graphql`
+  query BlogCommercialList(
     $skip: Int!
     $articlesPerPage: Int!
     $articleTypeId: String!

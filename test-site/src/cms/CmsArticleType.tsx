@@ -1,5 +1,11 @@
 import { graphql } from "gatsby";
 
+export function getArticleTypePath({
+  slug,
+}: Queries.CmsArticleTypeLinkFragment) {
+  return `/${slug}/`;
+}
+
 // eslint-disable-next-line import/no-unused-modules
 export const CmsArticleTypeLinkFragment = graphql`
   fragment CmsArticleTypeLink on GraphCMS_ArticleType {
@@ -7,7 +13,7 @@ export const CmsArticleTypeLinkFragment = graphql`
     id
     remoteId
     title
-    gatsbyPath(filePath: "/{GraphCMS_ArticleType.slug}")
+    slug
     embedImage: featuredImage {
       ...EmbedFeaturedImageAsset
     }

@@ -1,33 +1,22 @@
-import { convertCmsAssetToBondImage } from "@bond-london/gatsby-theme";
-import { PageProps, Slice } from "gatsby";
+import { IPageMetadata } from "@bond-london/gatsby-theme";
+import { HeadFC } from "gatsby";
 import React from "react";
-import { ArticleList } from "../components/ArticleList";
-import { SectionHero } from "../components/SectionHero";
+import { PageHead } from "../components/PageHead";
 
-export const CmsArticleTypeLayout: React.FC<
-  PageProps<Queries.FirstArticleTypeListQuery>
-> = (props) => {
+export const CmsArticleTypeHead: HeadFC<Queries.ArticleTypeListQuery> = (
+  props
+) => {
   const {
-    graphCmsArticleType,
-    allGraphCmsArticle: { edges },
-  } = props.data;
-  if (!graphCmsArticleType) {
-    throw new Error("Article type does not exist");
-  }
+    data: { graphCmsArticleType },
+  } = props;
+  if (!graphCmsArticleType) throw new Error("No page");
 
-  return (
-    <>
-      <Slice alias="navigation-Menu" />
-      <Slice alias="analytics" />
-      <SectionHero
-        header={graphCmsArticleType.title}
-        visual={convertCmsAssetToBondImage(graphCmsArticleType.featuredImage)}
-        textColour={graphCmsArticleType.textColour}
-        backgroundColour={graphCmsArticleType.backgroundColour}
-      />
-      <ArticleList articles={edges.map((e) => e.node)} />
+  const pageMetadata: IPageMetadata = {
+    title: graphCmsArticleType.title,
+    description: graphCmsArticleType.description,
+    image:
+      graphCmsArticleType.seoImage?.localFile?.childImageSharp?.gatsbyImageData,
+  };
 
-      <Slice alias="footer-Footer" />
-    </>
-  );
+  return <PageHead headProps={props} page={pageMetadata} />;
 };

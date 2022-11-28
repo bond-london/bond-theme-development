@@ -3,8 +3,8 @@ import { CreatePageArgs, CreatePagesArgs } from "gatsby";
 import { resolve } from "path";
 import { articlesPerPage, isProduction } from "./gatsby-env";
 
-// TODO: Get pagination pages working
 // TODO: Working nav menu
+// TODO: Reduce use of index.ts in css, but allow auto complete for classes?
 // TODO: Site search
 // TODO: Make sure it works as a template
 

@@ -21,7 +21,7 @@ const Analytics: React.FC<SliceComponentProps<Queries.AnalyticsQuery>> = ({
       <ReactCookieConsent
         cookieName={cookieName}
         declineCookieValue={declinedCookieName || undefined}
-        containerClasses="bg-error container-grid w-full z-cookies items-center py-xxxs"
+        containerClasses="bg-error container-grid w-full z-[100] items-center py-xxxs relative"
         disableStyles={true}
         disableButtonStyles={true}
         location={"top"}

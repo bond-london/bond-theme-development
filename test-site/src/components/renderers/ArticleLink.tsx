@@ -3,16 +3,7 @@ import React from "react";
 import { LinkClassName } from "../../styles";
 import { EmbedLink } from "./EmbedLink";
 import { getImage } from "gatsby-plugin-image";
-
-export function calculateArticleLinkPath({
-  articleType,
-  slug,
-}: Queries.CmsArticleLinkFragment) {
-  if (articleType?.slug) {
-    return `/${articleType.slug}/${slug}/`;
-  }
-  return `/${slug}/`;
-}
+import { calculateArticleLinkPath } from "../../cms/CmsArticle";
 
 export const ArticleLink: React.FC<{
   fragment: Queries.CmsArticleLinkFragment;

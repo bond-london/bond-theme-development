@@ -14,6 +14,9 @@ module.exports = {
       "*.{tsx,ts}"
     ),
   ],
+  theme: {
+    extend: {},
+  },
   plugins: [
     require("@tailwindcss/aspect-ratio"),
     require("tailwindcss-debug-screens"),

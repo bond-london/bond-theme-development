@@ -9,47 +9,7 @@ import {
   convertCmsAssetToBondImage,
   convertCmsVisualToBondVisual,
 } from "@bond-london/gatsby-theme";
-import { ILinkInformation } from "../components/LinkOrButton";
-import { calculateArticleLinkPath } from "../elements/renderers/ArticleLink";
-import { getTagPath } from "./CmsTag";
-import { getArticleTypePath } from "./CmsArticleType";
-
-function convertCMSInternalLink(
-  internal: Queries.CmsLinkFragment["remoteInternal"]
-): string | undefined {
-  switch (internal?.__typename) {
-    case "GraphCMS_Article":
-      return calculateArticleLinkPath(internal);
-    case "GraphCMS_ArticleType":
-      return getArticleTypePath(internal);
-    case "GraphCMS_Page":
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      return internal.gatsbyPath!;
-    case "GraphCMS_Tag":
-      return getTagPath(internal);
-  }
-}
-function convertCmsLink({
-  name,
-  useName,
-  icon,
-  remoteInternal,
-  external,
-  colour,
-  isButton,
-}: Queries.CmsLinkFragment): ILinkInformation {
-  return {
-    name: name,
-    text: useName ? name : undefined,
-    icon: convertCmsAssetToBondImage(icon),
-    external: external || undefined,
-    internal: remoteInternal
-      ? convertCMSInternalLink(remoteInternal)
-      : undefined,
-    colour: colour || undefined,
-    isButton: isButton || undefined,
-  };
-}
+import { convertCmsLink } from "./CmsLink";
 
 export function convertCmsComponentInformation({
   heading,

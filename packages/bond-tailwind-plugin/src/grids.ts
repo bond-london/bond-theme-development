@@ -14,7 +14,7 @@ function addContainerGrid(
 ): void {
   const { addUtilities, addComponents } = helpers;
   addUtilities({
-    ".grid-container": {
+    ".container-rows-grid": {
       "--bond-container-row-1": calculateRemSize(config.spacing.s),
       "--bond-container-row-2": "1fr",
       "--bond-container-row-3": "1fr",
@@ -40,7 +40,7 @@ function addContainerGrid(
     };
   }
 
-  const containerGrid = ["w-full", "grid"];
+  const containerGrid = ["grid"];
   const contentGrid = ["grid"];
   const gridGap: Array<string> = [];
   forEachObject(config.sizes, ({ key, value: { cols, gap, max }, index }) => {
@@ -58,8 +58,8 @@ function addContainerGrid(
       gridGap.push(gapClassName);
     }
   });
-  components[`.container-grid`] = createApplyEntry(containerGrid);
-  components[".content-grid"] = createApplyEntry(contentGrid);
+  components[`.container-cols-grid`] = createApplyEntry(containerGrid);
+  components[".content-cols-grid"] = createApplyEntry(contentGrid);
   components[".grid-gap"] = createApplyEntry(gridGap);
 
   addUtilities(utilities);
@@ -121,12 +121,6 @@ export function buildGridSpacing(
         results[
           `${name}-${i}-gap-cols`
         ] = `calc((${calculateColSize} * ${i}) + (${gapRem} * ${i}))`;
-
-        // results[
-        //   `${name}-${i}-margin-cols`
-        // ] = `calc((((min(100vw, ${maxWidthRem}) - ${totalGapRem}) / ${cols}) * ${i}) + ${marginRem} + ${calculateRemSize(
-        //   (i - 1) * gap
-        // )})`;
       }
     }
   );

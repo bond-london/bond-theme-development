@@ -5,21 +5,18 @@ export const CmsNavigationItemCoreFragment = graphql`
   fragment CmsNavigationItemCore on GraphCMS_NavigationItem {
     title
     useTitle
-    page {
-      ...CmsPageLink
-    }
-    article {
+    remoteInternal {
+      __typename
       ...CmsArticleLink
-    }
-    articleType {
       ...CmsArticleTypeLink
-    }
-    tag {
+      ...CmsPageLink
       ...CmsTagLink
     }
     link
-    image {
-      ...FullWidthImageAsset
+    colour
+    isButton
+    icon {
+      ...ConstrainedImageAsset
     }
   }
 `;

@@ -35,10 +35,15 @@ const LinkOrButtonInside: React.FC<
   );
 };
 
-export const LinkOrButton: React.FC<{ information: ILinkInformation }> = ({
+export const LinkOrButton: React.FC<{
+  information: ILinkInformation;
+  onClick?: () => void;
+}> = ({
   information: { internal, external, text, name, colour, isButton, icon },
+  onClick,
 }) => {
   const label = text || name;
+  const realText = icon ? text : name;
   const outerClassName = classNames(
     isButton
       ? ["button", colour && lookupColourClassNames(colour || "yellow")]
@@ -48,10 +53,11 @@ export const LinkOrButton: React.FC<{ information: ILinkInformation }> = ({
     return (
       <Link
         className={classNames(outerClassName, "inline-flex items-center")}
+        onClick={onClick}
         to={internal}
         aria-label={name}
       >
-        <LinkOrButtonInside text={text} icon={icon} />
+        <LinkOrButtonInside text={realText} icon={icon} />
       </Link>
     );
   }
@@ -62,21 +68,23 @@ export const LinkOrButton: React.FC<{ information: ILinkInformation }> = ({
         <a
           aria-label={label}
           href={external}
+          onClick={onClick}
           className={classNames(outerClassName, "inline-flex items-center")}
         >
-          <LinkOrButtonInside text={text} icon={icon} />
+          <LinkOrButtonInside text={realText} icon={icon} />
         </a>
       );
     }
     return (
       <a
         aria-label={label}
+        onClick={onClick}
         href={external}
         className={classNames(outerClassName, "inline-flex items-center")}
         target="_blank"
         rel="noreferrer"
       >
-        <LinkOrButtonInside text={text} icon={icon} />
+        <LinkOrButtonInside text={realText} icon={icon} />
       </a>
     );
   }

@@ -4,6 +4,7 @@ import { resolve } from "path";
 import { articlesPerPage, isProduction } from "./gatsby-env";
 
 // TODO: Working nav menu
+// TODO: Better intro animation for sections
 // TODO: Reduce use of index.ts in css, but allow auto complete for classes?
 // TODO: Site search
 // TODO: Make sure it works as a template
@@ -131,28 +132,6 @@ async function buildTagIndexPages(
       slug,
       { id }
     );
-    // const mainTemplate = resolve(`./src/templates/tag/list.tsx`);
-    // if (pageCount) {
-    //   const nameTemplate = tryLoadTemplate(`tag/${name}List`);
-    //   const component = nameTemplate || mainTemplate;
-    //   reporter.info(`Using template ${nameTemplate ? "name" : "default"}`);
-
-    //   for (let page = 0; page < pageCount; page++) {
-    //     const path = page === 0 ? `/${slug}/` : `/${slug}/${page + 1}/`;
-    //     reporter.info(`Creating page ${page}`);
-    //     actions.createPage({
-    //       path,
-    //       component,
-    //       defer: page > 0,
-    //       context: {
-    //         articlesPerPage,
-    //         allowHidden,
-    //         skip: page * articlesPerPage,
-    //         id,
-    //       },
-    //     });
-    //   }
-    // }
   }
 }
 

@@ -5,7 +5,7 @@ import {
 } from "@bond-london/gatsby-theme";
 import { Link } from "gatsby";
 import React from "react";
-import { calculateArticleLinkPath } from "../elements/renderers/ArticleLink";
+import { calculateArticleLinkPath } from "../cms/CmsArticle";
 
 const ArticleListEntry: React.FC<{
   article: Queries.CmsArticleLinkFragment;

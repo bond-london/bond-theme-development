@@ -1,5 +1,15 @@
 import { graphql } from "gatsby";
 
+export function calculateArticleLinkPath({
+  articleType,
+  slug,
+}: Queries.CmsArticleLinkFragment) {
+  if (articleType?.slug) {
+    return `/${articleType.slug}/${slug}/`;
+  }
+  return `/${slug}/`;
+}
+
 // eslint-disable-next-line import/no-unused-modules
 export const CmsArticleLinkFragment = graphql`
   fragment CmsArticleLink on GraphCMS_Article {

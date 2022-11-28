@@ -102,7 +102,7 @@ export const coreFragment = graphql`
     backgroundColour
     textColour
     icon {
-      ...FullWidthImageAsset
+      ...ConstrainedImageAsset
     }
     backgroundImage {
       ...FullWidthCmsImageComponent

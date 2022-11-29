@@ -1,7 +1,7 @@
 {
   "name": "@bond-london/eslint-config-bond-gatsby",
   "sideEffects": false,
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Bond London ESlint config for Gatsby",
   "author": "Nick Randell <nick.randell@bond.fi>",
   "engines": {

@@ -3,7 +3,6 @@ import { CreatePageArgs, CreatePagesArgs } from "gatsby";
 import { resolve } from "path";
 import { articlesPerPage, isProduction } from "./gatsby-env";
 
-// TODO: Working nav menu
 // TODO: Better intro animation for sections
 // TODO: Reduce use of index.ts in css, but allow auto complete for classes?
 // TODO: Site search

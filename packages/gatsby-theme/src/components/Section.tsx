@@ -1,5 +1,6 @@
 import classNames from "classnames";
-import React, { createElement, PropsWithChildren } from "react";
+import React, { PropsWithChildren } from "react";
+import { AnimationTrigger } from "./AnimationTrigger";
 
 function calculateContainerRowsGridName(collapse: boolean): string {
   if (collapse) {
@@ -12,6 +13,7 @@ export const Section: React.FC<
   PropsWithChildren<{
     id?: string;
     componentName: string;
+    animationClassName?: string;
     className?: string;
     contentClassName?: string;
     spacingClassName?: string;
@@ -22,7 +24,6 @@ export const Section: React.FC<
     element?: keyof JSX.IntrinsicElements;
     preChildren?: React.ReactNode;
     postChildren?: React.ReactNode;
-    elementRef?: React.RefObject<HTMLElement>;
   }>
 > = ({
   id,
@@ -35,10 +36,10 @@ export const Section: React.FC<
   collapse = false,
   fullWidth,
   children,
-  element = "section",
+  element: Element = "section",
   preChildren,
   postChildren,
-  elementRef,
+  animationClassName,
 }) => {
   const realSpacingClassName =
     spacingClassName ||
@@ -50,20 +51,19 @@ export const Section: React.FC<
       ? "row-start-1 row-span-5"
       : "row-start-1 row-span-6");
 
-  return createElement(
-    element,
-    {
-      id,
-      ref: elementRef,
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      "data-component": componentName,
-      className: classNames(
+  return (
+    <Element
+      id={id}
+      data-component={componentName}
+      className={classNames(
         calculateContainerRowsGridName(collapse),
         "w-full container-cols-grid relative",
+        animationClassName && "animation-paused",
+        animationClassName,
         className
-      ),
-    },
-    <>
+      )}
+    >
+      {animationClassName && <AnimationTrigger />}
       {preChildren}
       {children && (
         <div
@@ -80,6 +80,6 @@ export const Section: React.FC<
         </div>
       )}
       {postChildren}
-    </>
+    </Element>
   );
 };

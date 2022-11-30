@@ -18,6 +18,7 @@ export function addAnimationUtilities({ addUtilities }: PluginAPI): void {
   addUtilities({
     ".animation-running": { "animation-play-state": "running" },
     ".animation-paused": { "animation-play-state": "paused" },
+    ".animation-paused *": { "animation-play-state": "paused" },
   });
 
   addUtilities(

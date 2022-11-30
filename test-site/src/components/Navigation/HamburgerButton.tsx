@@ -1,6 +1,5 @@
-import { useBodyScrollLock } from "@bond-london/gatsby-theme";
 import classNames from "classnames";
-import React, { useCallback, useState } from "react";
+import React from "react";
 
 const SingleHamburgerLine: React.FC<{ className: string }> = ({
   className,

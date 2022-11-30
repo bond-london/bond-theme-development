@@ -16,15 +16,11 @@ export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
       <Slice alias="navigation-Menu" />
       <Slice alias="analytics" />
 
-      <div>
-        <CmsContent fragment={page.topContent} />
-        {template?.preContent && <CmsContent fragment={template.preContent} />}
-        <CmsContent fragment={page.content} />
-        {template?.postContent && (
-          <CmsContent fragment={template.postContent} />
-        )}
-        <CmsContent fragment={page.bottomContent} />
-      </div>
+      <CmsContent fragment={page.topContent} />
+      {template?.preContent && <CmsContent fragment={template.preContent} />}
+      <CmsContent fragment={page.content} />
+      {template?.postContent && <CmsContent fragment={template.postContent} />}
+      <CmsContent fragment={page.bottomContent} />
 
       <Slice alias="footer-Footer" />
     </>

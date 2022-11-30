@@ -38,30 +38,21 @@
     "tablet": {
       "breakpoint": 768,
       "margin": 45,
-      "gap": 15,
       "cols": 8
     },
     "laptop": {
       "breakpoint": 1024,
       "margin": 75,
-      "gap": 15,
       "cols": 12
     },
     "desktop": {
-      "breakpoint": 1440,
-      "margin": 75,
-      "gap": 15,
-      "cols": 12
+      "breakpoint": 1440
     },
     "4k": {
       "breakpoint": 1920,
-      "margin": 75,
-      "gap": 15,
-      "cols": 12,
       "max": 1770
     }
   },
-  "fonts": [64, 56, 48, 40, 36, 28, 24, 20, 18, 16, 14, 12],
   "lineHeight": 1.25,
   "fontWeight": {
     "light": 300,
@@ -71,16 +62,16 @@
     "h1": {
       "font": "sans",
       "weight": "bold",
-      "default": 36,
-      "desktop": 56,
-      "4k": 64
+      "default": "36/124",
+      "desktop": "56/200",
+      "4k": "64/130"
     },
     "h2": {
       "font": "sans",
       "weight": "bold",
-      "default": 28,
-      "desktop": 40,
-      "4k": 48
+      "default": "28/124",
+      "desktop": "40/120",
+      "4k": "48/130"
     },
     "h3": { "font": "sans", "weight": "bold", "default": 18, "desktop": 36 },
     "h4": { "font": "sans", "weight": "bold", "default": 16, "desktop": 20 },

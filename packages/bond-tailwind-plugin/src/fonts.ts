@@ -3,6 +3,31 @@ import { CSSRuleObject, PluginAPI } from "tailwindcss/types/config";
 import { IBondConfigurationOptions } from ".";
 import { calculateRemSize, forEachObject } from "./utils";
 
+function calculateFontAndLineSizePixels(info: string): {
+  pixels: number;
+  lineHeightPixels: number;
+  name: string;
+} {
+  const slashSplit = info.split("/");
+  if (slashSplit.length === 2) {
+    const pixels = parseInt(slashSplit[0]);
+    const lineHeightProportion = parseInt(slashSplit[1]);
+    const lineHeightPixels = pixels * (lineHeightProportion / 100);
+    return {
+      pixels,
+      lineHeightPixels,
+      name: `${pixels}\\/${lineHeightProportion}`,
+    };
+  }
+  const dashSplit = info.split("-");
+  if (dashSplit.length === 2) {
+    const pixels = parseInt(dashSplit[0]);
+    const lineHeightPixels = parseInt(dashSplit[1]);
+    return { pixels, lineHeightPixels, name: info };
+  }
+  const pixels = parseInt(info);
+  return { pixels, lineHeightPixels: pixels, name: info };
+}
 export function addFontSizes(
   { addUtilities }: PluginAPI,
   config: IBondConfigurationOptions
@@ -25,13 +50,14 @@ export function addFontSizes(
     }
   });
   fontRatios.forEach(fontSize => {
-    const split = fontSize.split("-");
-    const pixels = parseInt(split[0]);
-    const lineHeight = parseInt(split[1]) || pixels;
+    const { pixels, lineHeightPixels, name } =
+      calculateFontAndLineSizePixels(fontSize);
     const sizeRem = calculateRemSize(pixels);
-    const lineHeightRem = calculateRemSize(lineHeight);
-    const bottomFontOffsetRem = calculateRemSize((lineHeight - pixels) / 2);
-    results[`.text-${pixels}-${lineHeight}`] = {
+    const lineHeightRem = calculateRemSize(lineHeightPixels);
+    const bottomFontOffsetRem = calculateRemSize(
+      (lineHeightPixels - pixels) / 2
+    );
+    results[`.text-${name}`] = {
       "font-size": sizeRem,
       "line-height": lineHeightRem,
       "--bond-line-height": lineHeightRem,

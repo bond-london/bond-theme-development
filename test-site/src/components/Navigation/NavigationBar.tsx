@@ -1,4 +1,4 @@
-import { Section, useBodyScrollLock } from "@bond-london/gatsby-theme";
+import { useBodyScrollLock } from "@bond-london/gatsby-theme";
 import classNames from "classnames";
 import React, { useCallback, useState } from "react";
 import { HamburgerButton } from "./HamburgerButton";

@@ -7,6 +7,7 @@ import { articlesPerPage, isProduction } from "./gatsby-env";
 // TODO: Reduce use of index.ts in css, but allow auto complete for classes?
 // TODO: Site search
 // TODO: Make sure it works as a template
+// TODO: Main design pages for fonts, colours, grids etc
 
 const allowHidden = !isProduction;
 

@@ -50,6 +50,7 @@ export const GenericComponent: React.FC<{
         lookupColourClassNames(backgroundColour, textColour),
         unknown && "border-2 border-yellow"
       )}
+      animationClassName="animate-enter-from-bottom animation-delay-2000"
     >
       <SectionHeading
         preHeading={preHeading}

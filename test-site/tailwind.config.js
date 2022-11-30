@@ -1,5 +1,7 @@
 const path = require("path");
 const config = require("./tailwind.config.json");
+const animationTiming = "cubic-bezier(0.22, 1, 0.36, 1)";
+const animationDuration = "0.5s";
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -15,7 +17,20 @@ module.exports = {
     ),
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        "enter-from-bottom": {
+          "0%": { transform: "translateY(20px)", opacity: 0 },
+          "100%": {
+            transform: "translateY(0)",
+            opacity: 1,
+          },
+        },
+      },
+      animation: {
+        "enter-from-bottom": `enter-from-bottom ${animationDuration} ${animationTiming} both`,
+      },
+    },
   },
   plugins: [
     require("@tailwindcss/aspect-ratio"),

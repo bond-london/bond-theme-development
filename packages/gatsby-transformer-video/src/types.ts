@@ -1,6 +1,7 @@
 export type VideoLayout = "constrained" | "fixed" | "fullWidth";
 export interface ITransformedVideoInformation {
-  mp4Name: string;
+  mp4Hvc1Name: string;
+  mp4Avc1Name: string;
   webmName: string;
   posterName: string;
   dominantColour: string;
@@ -20,7 +21,8 @@ export interface IGatsbyVideoInformation {
 export interface IGatsbyVideo extends IGatsbyVideoInformation {
   dominantColour: string;
   layout: VideoLayout;
-  mp4: string;
+  mp4Hvc1: string;
+  mp4Avc1: string;
   webm: string;
   poster: string;
 }

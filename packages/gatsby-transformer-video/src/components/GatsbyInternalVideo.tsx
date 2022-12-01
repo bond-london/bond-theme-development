@@ -34,8 +34,9 @@ export const GatsbyInternalVideo: React.FC<
 
   return (
     <video {...otherProps} ref={videoRef} width={width} height={height}>
-      <source type="video/webm" src={video.webm} />
-      <source type="video/mp4" src={video.mp4} />
+      <source type={`video/webm`} src={video.webm} />
+      <source type={`video/mp4; codecs="hvc1"`} src={video.mp4Hvc1} />
+      <source type={`video/mp4; codecs="avc1"`} src={video.mp4Avc1} />
     </video>
   );
 };

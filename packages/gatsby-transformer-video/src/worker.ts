@@ -105,19 +105,37 @@ export function createWebmVideoTransform(targetWidth?: number): Array<string> {
     "-pix_fmt yuv420p",
     "-crf 40",
     targetWidth ? `-vf scale='min(${targetWidth},iw)':-2` : `-vf scale=0:0`,
-    "-deadline best",
+    "-deadline good",
     "-c:a libvorbis",
   ];
 }
 
-export function createMp4VideoTransform(targetWidth?: number): Array<string> {
+export function createMp4Hvc1VideoTransform(
+  targetWidth?: number
+): Array<string> {
   return [
     "-c:v libx265",
     "-pix_fmt yuv420p",
     "-crf 32",
     targetWidth ? `-vf scale='min(${targetWidth},iw)':-2` : `-vf scale=0:0`,
-    "-preset veryslow",
+    "-preset slow",
     "-tag:v hvc1",
+    "-movflags",
+    "faststart",
+    "-c:a aac",
+  ];
+}
+
+export function createMp4Avc1VideoTransform(
+  targetWidth?: number
+): Array<string> {
+  return [
+    "-c:v libx264",
+    "-pix_fmt yuv420p",
+    "-crf 32",
+    targetWidth ? `-vf scale='min(${targetWidth},iw)':-2` : `-vf scale=0:0`,
+    "-preset slow",
+    "-tag:v avc1",
     "-movflags",
     "faststart",
     "-c:a aac",
@@ -196,7 +214,7 @@ export async function transformVideo(
   inputDigest: string,
   targetWidth?: number
 ): Promise<ITransformedVideoInformation> {
-  const mp4Name = await runVideoTransform(
+  const mp4Hvc1Name = await runVideoTransform(
     inputName,
     name,
     targetWidth,
@@ -204,7 +222,17 @@ export async function transformVideo(
     inputDigest,
     "mp4",
     ".mp4",
-    createMp4VideoTransform(targetWidth)
+    createMp4Hvc1VideoTransform(targetWidth)
+  );
+  const mp4Avc1Name = await runVideoTransform(
+    inputName,
+    name,
+    targetWidth,
+    publicDir,
+    inputDigest,
+    "mp4 (AVC1)",
+    ".mp4",
+    createMp4Avc1VideoTransform(targetWidth)
   );
   const webmName = await runVideoTransform(
     inputName,
@@ -238,5 +266,5 @@ export async function transformVideo(
     ? rgbToHex(dominant.r, dominant.g, dominant.b)
     : "#000000";
 
-  return { mp4Name, webmName, posterName, dominantColour };
+  return { mp4Hvc1Name, mp4Avc1Name, webmName, posterName, dominantColour };
 }

@@ -57,12 +57,13 @@ export async function createTransformedVideo(
       transformArgs.width || "??"
     }`
   );
-  const { dominantColour, mp4Name, webmName, posterName } = (await createJobV2({
-    name: "VIDEO_PROCESSING",
-    inputPaths: [details.absolutePath],
-    outputDir: publicDir,
-    args: { name: details.name, targetWidth: transformArgs.width },
-  })) as ITransformedVideoInformation;
+  const { dominantColour, mp4Hvc1Name, mp4Avc1Name, webmName, posterName } =
+    (await createJobV2({
+      name: "VIDEO_PROCESSING",
+      inputPaths: [details.absolutePath],
+      outputDir: publicDir,
+      args: { name: details.name, targetWidth: transformArgs.width },
+    })) as ITransformedVideoInformation;
 
   return {
     width,
@@ -70,7 +71,8 @@ export async function createTransformedVideo(
     hasAudio: source.hasAudio,
     dominantColour,
     layout: transformArgs.layout || "constrained",
-    mp4: `${publicBaseUrl}/${mp4Name}`,
+    mp4Hvc1: `${publicBaseUrl}/${mp4Hvc1Name}`,
+    mp4Avc1: `${publicBaseUrl}/${mp4Avc1Name}`,
     webm: `${publicBaseUrl}/${webmName}`,
     poster: `${publicBaseUrl}/${posterName}`,
   };

@@ -148,6 +148,7 @@ export const BondVideo: React.FC<
       <BondFullVideo
         {...props}
         video={video}
+        playsInline={true}
         playButton={playButton}
         pauseButton={pauseButton}
         muteButton={muteButton}
@@ -161,6 +162,7 @@ export const BondVideo: React.FC<
       <BondExternalVideo
         {...props}
         video={video}
+        playsInline={true}
         playButton={playButton}
         pauseButton={pauseButton}
         muteButton={muteButton}
@@ -169,5 +171,5 @@ export const BondVideo: React.FC<
       />
     );
   }
-  return <BondSimpleVideo {...props} video={video} />;
+  return <BondSimpleVideo {...props} video={video} playsInline={true} F />;
 };

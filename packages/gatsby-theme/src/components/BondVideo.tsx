@@ -171,5 +171,5 @@ export const BondVideo: React.FC<
       />
     );
   }
-  return <BondSimpleVideo {...props} video={video} playsInline={true} F />;
+  return <BondSimpleVideo {...props} video={video} playsInline={true} />;
 };

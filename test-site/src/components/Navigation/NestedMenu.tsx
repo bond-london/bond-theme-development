@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { MouseEvent, useCallback } from "react";
+import React from "react";
 import { LinkOrButton } from "../LinkOrButton";
 import { SectionIcon } from "../SectionIcon";
 import { useNestedMenu } from "./MenuUtils";
@@ -15,8 +15,6 @@ export const NestedMenu: React.FC<{
     from?: INavigationItem
   ) => void;
 }> = ({ item, active, closeMenu, activateMenu }) => {
-  const entries = item.entries!;
-
   const { handleButtonClick, handleMouseEnter, handleMouseLeave } =
     useNestedMenu(item, activateMenu);
 

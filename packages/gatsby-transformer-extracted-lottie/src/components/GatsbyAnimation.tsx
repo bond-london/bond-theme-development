@@ -96,8 +96,8 @@ export const GatsbyAnimation: React.FC<{
   objectFit?: CSSProperties["objectFit"];
   objectPosition?: CSSProperties["objectPosition"];
   className?: string;
-  loop?: boolean;
-  loopDelay?: number;
+  loop?: boolean | null;
+  loopDelay?: number | null;
 }> = allProps => {
   const containerRef = useRef<HTMLDivElement>(null);
   const {
@@ -164,7 +164,7 @@ export const GatsbyAnimation: React.FC<{
             containerRef={containerRef}
             objectFit={objectFit}
             objectPosition={objectPosition}
-            loop={loop}
+            loop={loop || false}
             loopDelay={loopDelay}
             animationUrl={animation.animationUrl as string}
             play={containerVisible}

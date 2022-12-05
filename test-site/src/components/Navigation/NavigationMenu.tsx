@@ -1,5 +1,5 @@
 import { IBondImage } from "@bond-london/gatsby-theme";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React from "react";
 import { ColourName } from "../../colors";
 import { MenuItem } from "./MenuItem";
 import { useMenuInformation } from "./MenuUtils";

@@ -33,16 +33,16 @@ export interface ICmsImage {
   readonly dontCrop?: boolean | null;
   readonly horizontalCropPosition?: Horizontal | null;
   readonly verticalCropPosition?: Vertical | null;
-  readonly image: ICmsImageAsset;
+  readonly image?: ICmsImageAsset | null;
 }
 
 export function convertCmsImageToBondImage(
   cms: ICmsImage | null,
   name?: string
 ): IBondImage | undefined {
-  if (!cms) return undefined;
-  const image = cms.image.localFile?.childImageSharp?.gatsbyImageData;
-  const svg = cms.image.localFile?.childGatsbySvg?.extracted;
+  if (!cms?.image) return undefined;
+  const image = cms.image?.localFile?.childImageSharp?.gatsbyImageData;
+  const svg = cms.image?.localFile?.childGatsbySvg?.extracted;
   return {
     image,
     svg,

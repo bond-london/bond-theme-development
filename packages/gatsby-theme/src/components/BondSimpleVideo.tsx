@@ -13,7 +13,8 @@ import { ICmsVideo } from "./BondVideo";
 
 export type IBondSimpleVideo = IVisualCommon & {
   videoData: IGatsbyTransformedVideo;
-  loop?: boolean;
+  loop?: boolean | null;
+  loopDelay?: number | null;
 };
 
 export function convertCmsVideoToBondSimpleVideo(
@@ -42,19 +43,21 @@ export const BondSimpleVideo: React.FC<
       videoClassName?: string;
       videoStyle?: CSSProperties;
       noPoster?: boolean;
+      loopDelay?: number | null;
     } & Omit<
       VideoHTMLAttributes<HTMLVideoElement>,
       "poster" | "objectFit" | "objectPosition"
     >
   >
 > = props => {
-  const { children, video, loop, ...videoProps } = props;
+  const { children, video, loop, loopDelay, ...videoProps } = props;
   const {
     dontCrop,
     horizontalCropPosition,
     verticalCropPosition,
     videoData,
     loop: videoLoop,
+    loopDelay: videoLoopDelay,
   } = video;
   const { objectFit, objectPosition } = calculateCropDetails({
     dontCrop,
@@ -65,7 +68,8 @@ export const BondSimpleVideo: React.FC<
   return (
     <GatsbyVideo
       {...videoProps}
-      loop={loop || videoLoop}
+      loop={loop || videoLoop || undefined}
+      loopDelay={loopDelay || videoLoopDelay || undefined}
       video={videoData}
       objectFit={objectFit}
       objectPosition={objectPosition}

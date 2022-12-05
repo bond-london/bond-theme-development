@@ -41,6 +41,7 @@ module.exports = {
         "prettier",
         "jsx-a11y",
         "import",
+        "implicit-dependencies",
       ],
       rules: {
         // "no-anonymous-exports-page-templates": "warn",
@@ -57,6 +58,10 @@ module.exports = {
           },
         ],
         "require-jsdoc": "off",
+        "implicit-dependencies/no-implicit": [
+          "error",
+          { peer: true, dev: true },
+        ],
       },
     },
     {

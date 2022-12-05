@@ -91,7 +91,7 @@ const LottiePlayer: React.FC<{
   play: boolean;
   animationUrl: string;
   loop: boolean;
-  loopDelay?: number;
+  loopDelay?: number | null;
   onPlay?: () => void;
   objectFit?: CSSProperties["objectFit"];
   objectPosition?: CSSProperties["objectPosition"];

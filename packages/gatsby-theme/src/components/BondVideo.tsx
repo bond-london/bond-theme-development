@@ -5,32 +5,26 @@ import { BondExternalVideo, IBondExternalVideo } from "./BondExternalVideo";
 import { BondFullVideo, IBondFullVideo } from "./BondFullVideo";
 import { BondSimpleVideo, IBondSimpleVideo } from "./BondSimpleVideo";
 
+export interface ICmsVideoAsset {
+  readonly localFile: {
+    readonly internal: { readonly mediaType: string | null };
+    readonly childGatsbyVideo: {
+      readonly transformed: Record<string, unknown>;
+    } | null;
+  } | null;
+}
 export interface ICmsVideo {
   readonly external?: string | null;
   readonly dontCrop?: boolean | null;
   readonly verticalCropPosition?: Vertical | null;
   readonly horizontalCropPosition?: Horizontal | null;
-  readonly preview: {
-    readonly localFile: {
-      readonly internal: { readonly mediaType: string | null };
-      readonly childGatsbyVideo: {
-        readonly transformed: Record<string, unknown>;
-      } | null;
-    } | null;
-  };
+  readonly preview: ICmsVideoAsset;
   readonly poster?: {
     readonly localFile: {
       readonly publicURL: string | null;
     } | null;
   } | null;
-  readonly full?: {
-    readonly localFile: {
-      readonly internal: { readonly mediaType: string | null };
-      readonly childGatsbyVideo: {
-        readonly transformed: Record<string, unknown>;
-      } | null;
-    } | null;
-  } | null;
+  readonly full?: ICmsVideoAsset | null;
   readonly loop?: boolean | null;
   readonly loopDelay?: number | null;
 }
@@ -116,6 +110,28 @@ export function convertCmsVideoToBondVideo(
     verticalCropPosition,
     horizontalCropPosition,
   } as IBondSimpleVideo;
+}
+
+export function convertCmsAssetToBondVideo(
+  asset: ICmsVideoAsset | null,
+  loop?: boolean | null,
+  loopDelay?: number | null,
+  dontCrop?: boolean | null,
+  verticalCropPosition?: Vertical | null,
+  horizontalCropPosition?: Horizontal | null
+): IBondSimpleVideo | undefined {
+  if (!asset) return undefined;
+  const videoData = asset.localFile?.childGatsbyVideo?.transformed;
+  if (!videoData) throw new Error("No video");
+
+  return {
+    videoData,
+    loop,
+    loopDelay,
+    dontCrop,
+    verticalCropPosition,
+    horizontalCropPosition,
+  };
 }
 
 export const BondVideo: React.FC<

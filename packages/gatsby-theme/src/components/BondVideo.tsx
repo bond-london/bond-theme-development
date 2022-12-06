@@ -114,11 +114,13 @@ export function convertCmsVideoToBondVideo(
 
 export function convertCmsAssetToBondVideo(
   asset: ICmsVideoAsset | null,
-  loop?: boolean | null,
-  loopDelay?: number | null,
-  dontCrop?: boolean | null,
-  verticalCropPosition?: Vertical | null,
-  horizontalCropPosition?: Horizontal | null
+  options?: {
+    loop?: boolean | null;
+    loopDelay?: number | null;
+    dontCrop?: boolean | null;
+    verticalCropPosition?: Vertical | null;
+    horizontalCropPosition?: Horizontal | null;
+  }
 ): IBondSimpleVideo | undefined {
   if (!asset) return undefined;
   const videoData = asset.localFile?.childGatsbyVideo?.transformed;
@@ -126,11 +128,7 @@ export function convertCmsAssetToBondVideo(
 
   return {
     videoData,
-    loop,
-    loopDelay,
-    dontCrop,
-    verticalCropPosition,
-    horizontalCropPosition,
+    ...options,
   };
 }
 

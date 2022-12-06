@@ -7,14 +7,28 @@ import React, {
 import { Horizontal, Vertical } from "../types";
 import {
   BondAnimation,
+  convertCmsAssetToBondAnimation,
   IBondAnimation,
+  ICmsAnimationAsset,
   isBondAnimation,
 } from "./BondAnimation";
 import { IBondExternalVideo } from "./BondExternalVideo";
 import { IBondFullVideo } from "./BondFullVideo";
-import { BondImage, IBondImage, isBondImage } from "./BondImage";
+import {
+  BondImage,
+  convertCmsAssetToBondImage,
+  IBondImage,
+  ICmsImageAsset,
+  isBondImage,
+} from "./BondImage";
 import { IBondSimpleVideo } from "./BondSimpleVideo";
-import { BondVideo, IBondVideo, isBondVideo } from "./BondVideo";
+import {
+  BondVideo,
+  convertCmsAssetToBondVideo,
+  IBondVideo,
+  ICmsVideoAsset,
+  isBondVideo,
+} from "./BondVideo";
 
 interface ICmsVisual {
   readonly name?: string | null;
@@ -146,6 +160,33 @@ export function convertCmsVisualToBondVisual(
   }
 
   throw new Error("Failed to extract BondVisual from CMS");
+}
+
+export function convertCmsAssetToBondVisual(
+  asset:
+    | ICmsImageAsset
+    | ICmsAnimationAsset
+    | ICmsVideoAsset
+    | null
+    | undefined,
+  options?: {
+    name?: string | null;
+    loop?: boolean | null;
+    loopDelay?: number | null;
+    dontCrop?: boolean | null;
+    verticalCropPosition?: Vertical | null;
+    horizontalCropPosition?: Horizontal | null;
+  }
+): IBondVisual | undefined {
+  if (!asset) return undefined;
+  const image = convertCmsAssetToBondImage(asset as ICmsImageAsset, options);
+  const animation = convertCmsAssetToBondAnimation(
+    asset as ICmsAnimationAsset,
+    options
+  );
+  const video = convertCmsAssetToBondVideo(asset as ICmsVideoAsset, options);
+  if (!image && !animation && !video) return undefined;
+  return animation || image || video;
 }
 
 export const BondVisual: React.FC<

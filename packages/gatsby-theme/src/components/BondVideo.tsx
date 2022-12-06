@@ -122,7 +122,7 @@ export function convertCmsAssetToBondVideo(
 ): IBondSimpleVideo | undefined {
   if (!asset) return undefined;
   const videoData = asset.localFile?.childGatsbyVideo?.transformed;
-  if (!videoData) throw new Error("No video");
+  if (!videoData) return undefined;
 
   return {
     videoData,

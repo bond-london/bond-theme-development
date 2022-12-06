@@ -39,9 +39,7 @@ export function convertCmsAnimationToBondAnimation(
 ): IBondAnimation | undefined {
   if (!cms) return undefined;
   const animation = cms.animation?.localFile?.childGatsbyAnimation?.extracted;
-  if (!animation) {
-    throw new Error("No animation");
-  }
+  if (!animation) return undefined;
   return {
     animation,
     loop: cms.loop || undefined,
@@ -63,10 +61,7 @@ export function convertCmsAssetToBondAnimation(
   if (!asset) return undefined;
 
   const animation = asset.localFile?.childGatsbyAnimation?.extracted;
-  if (!animation) {
-    throw new Error("No animation");
-  }
-
+  if (!animation) return undefined;
   return {
     animation,
     loop,

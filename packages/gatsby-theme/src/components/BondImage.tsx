@@ -43,6 +43,7 @@ export function convertCmsImageToBondImage(
   if (!cms?.image) return undefined;
   const image = cms.image?.localFile?.childImageSharp?.gatsbyImageData;
   const svg = cms.image?.localFile?.childGatsbySvg?.extracted;
+  if (!image && !svg) return undefined;
   return {
     image,
     svg,
@@ -55,15 +56,22 @@ export function convertCmsImageToBondImage(
 
 export function convertCmsAssetToBondImage(
   asset: ICmsImageAsset | null,
-  name?: string
+  name?: string,
+  dontCrop?: boolean | null,
+  verticalCropPosition?: Vertical | null,
+  horizontalCropPosition?: Horizontal | null
 ): IBondImage | undefined {
   if (!asset) return undefined;
   const image = asset.localFile?.childImageSharp?.gatsbyImageData;
   const svg = asset.localFile?.childGatsbySvg?.extracted;
+  if (!image && !svg) return undefined;
   return {
     image,
     svg,
     name: name || "",
+    dontCrop,
+    verticalCropPosition,
+    horizontalCropPosition,
   };
 }
 

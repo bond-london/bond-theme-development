@@ -95,6 +95,7 @@ const LottiePlayer: React.FC<{
   onPlay?: () => void;
   objectFit?: CSSProperties["objectFit"];
   objectPosition?: CSSProperties["objectPosition"];
+  className?: string;
 }> = ({
   containerRef,
   play,
@@ -104,6 +105,7 @@ const LottiePlayer: React.FC<{
   onPlay,
   objectFit,
   objectPosition,
+  className,
 }) => {
   const [animationItem, setAnimationItem] = useState<AnimationItem>();
   const state = useRef({ isLoopPause: false, canPlay: play });
@@ -127,6 +129,7 @@ const LottiePlayer: React.FC<{
               viewBoxOnly: true,
               progressiveLoad: true,
               preserveAspectRatio,
+              className,
             },
           });
           setAnimationItem(animation);
@@ -142,7 +145,15 @@ const LottiePlayer: React.FC<{
       };
     }
     return undefined;
-  }, [animationUrl, containerRef, loop, loopDelay, objectFit, objectPosition]);
+  }, [
+    animationUrl,
+    containerRef,
+    loop,
+    loopDelay,
+    objectFit,
+    objectPosition,
+    className,
+  ]);
 
   useEffect(() => {
     if (animationItem && loopDelay) {

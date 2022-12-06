@@ -14,7 +14,7 @@ export function isBondImage(obj: unknown): obj is IBondImage {
 export type IBondImage = IVisualCommon & {
   image?: IGatsbyImageData;
   svg?: IGatsbyExtractedSvg;
-  name: string;
+  name?: string | null;
 };
 
 export interface ICmsImageAsset {
@@ -56,10 +56,12 @@ export function convertCmsImageToBondImage(
 
 export function convertCmsAssetToBondImage(
   asset: ICmsImageAsset | null,
-  name?: string,
-  dontCrop?: boolean | null,
-  verticalCropPosition?: Vertical | null,
-  horizontalCropPosition?: Horizontal | null
+  options?: {
+    name?: string | null;
+    dontCrop?: boolean | null;
+    verticalCropPosition?: Vertical | null;
+    horizontalCropPosition?: Horizontal | null;
+  }
 ): IBondImage | undefined {
   if (!asset) return undefined;
   const image = asset.localFile?.childImageSharp?.gatsbyImageData;
@@ -68,10 +70,7 @@ export function convertCmsAssetToBondImage(
   return {
     image,
     svg,
-    name: name || "",
-    dontCrop,
-    verticalCropPosition,
-    horizontalCropPosition,
+    ...options,
   };
 }
 
@@ -119,7 +118,7 @@ export const BondImage: React.FC<
     return (
       <GatsbyImage
         {...imageProps}
-        alt={name}
+        alt={name || ""}
         onLoad={onLoad}
         onStartLoad={onStartLoad}
         image={image}

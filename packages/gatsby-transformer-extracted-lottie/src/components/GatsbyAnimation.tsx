@@ -96,15 +96,19 @@ export const GatsbyAnimation: React.FC<{
   objectFit?: CSSProperties["objectFit"];
   objectPosition?: CSSProperties["objectPosition"];
   className?: string;
+  style?: Omit<CSSProperties, "objectFit" | "objectPosition">;
   loop?: boolean | null;
   loopDelay?: number | null;
+  animationClassName?: string;
 }> = allProps => {
   const containerRef = useRef<HTMLDivElement>(null);
   const {
     animation,
     objectFit,
     objectPosition,
+    style,
     className,
+    animationClassName,
     loop = false,
     loopDelay,
   } = allProps;
@@ -146,13 +150,14 @@ export const GatsbyAnimation: React.FC<{
   return (
     <div
       ref={containerRef}
-      style={wrapperStyle}
+      style={{ ...style, ...wrapperStyle }}
       className={`${wrapperClassName}${className ? ` ${className}` : ``}`}
     >
       <Sizer animation={animation as unknown as IGatsbyAnimation} />
       {showPoster && posterSrc && (
         <img
           style={{ objectFit, objectPosition }}
+          className={animationClassName}
           width={width}
           height={height}
           src={posterSrc}
@@ -161,6 +166,7 @@ export const GatsbyAnimation: React.FC<{
       {loadAnimation && (
         <Suspense>
           <LottiePlayer
+            className={animationClassName}
             containerRef={containerRef}
             objectFit={objectFit}
             objectPosition={objectPosition}

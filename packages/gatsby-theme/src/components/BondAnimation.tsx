@@ -2,7 +2,7 @@ import {
   GatsbyAnimation,
   IGatsbyExtractedAnimation,
 } from "@bond-london/gatsby-transformer-extracted-lottie";
-import React from "react";
+import React, { CSSProperties } from "react";
 import { Horizontal, IVisualCommon, Vertical } from "../types";
 import { calculateCropDetails } from "../utils";
 
@@ -52,11 +52,13 @@ export function convertCmsAnimationToBondAnimation(
 
 export function convertCmsAssetToBondAnimation(
   asset: ICmsAnimationAsset | null,
-  loop?: boolean | null,
-  loopDelay?: number | null,
-  dontCrop?: boolean | null,
-  verticalCropPosition?: Vertical | null,
-  horizontalCropPosition?: Horizontal | null
+  options?: {
+    loop?: boolean | null;
+    loopDelay?: number | null;
+    dontCrop?: boolean | null;
+    verticalCropPosition?: Vertical | null;
+    horizontalCropPosition?: Horizontal | null;
+  }
 ): IBondAnimation | undefined {
   if (!asset) return undefined;
 
@@ -64,11 +66,7 @@ export function convertCmsAssetToBondAnimation(
   if (!animation) return undefined;
   return {
     animation,
-    loop,
-    loopDelay,
-    dontCrop,
-    verticalCropPosition,
-    horizontalCropPosition,
+    ...options,
   };
 }
 
@@ -77,6 +75,8 @@ export const BondAnimation: React.FC<{
   loop?: boolean;
   loopDelay?: number;
   className?: string;
+  style?: Omit<CSSProperties, "objectFit" | "objectPosition">;
+  animationClassName?: string;
 }> = props => {
   const {
     animation: {
@@ -90,6 +90,8 @@ export const BondAnimation: React.FC<{
     loop,
     loopDelay,
     className,
+    style,
+    animationClassName,
   } = props;
   const { objectFit, objectPosition } = calculateCropDetails({
     dontCrop,
@@ -105,6 +107,8 @@ export const BondAnimation: React.FC<{
       className={className}
       objectFit={objectFit}
       objectPosition={objectPosition}
+      style={style}
+      animationClassName={animationClassName}
     />
   );
 };

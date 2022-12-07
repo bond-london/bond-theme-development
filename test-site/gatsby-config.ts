@@ -1,6 +1,6 @@
 import type { GatsbyConfig } from "gatsby";
 import type { IBondThemeOptions } from "@bond-london/gatsby-theme";
-import { COOKIE_NAME, siteUrl, GOOGLE_TAG } from "./gatsby-env";
+import { COOKIE_NAME, siteUrl, GOOGLE_TAG, allowIndex } from "./gatsby-env";
 
 function readEnvVar(envVarName: string): string {
   const value = process.env[envVarName];
@@ -24,6 +24,7 @@ const themeOptions: Partial<IBondThemeOptions> = {
   enableEslint: false,
   siteUrl,
   icon,
+  allowIndex,
   manifestOptions: {
     name,
     short_name: "test",

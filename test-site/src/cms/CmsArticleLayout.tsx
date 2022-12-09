@@ -14,15 +14,11 @@ export const CmsArticleLayout: React.FC<
   return (
     <>
       <Slice alias="navigation-Menu" />
-      <Slice alias="analytics" />
+      {/* <Slice alias="analytics" /> */}
 
-      <div>
-        {template?.preContent && <CmsContent fragment={template.preContent} />}
-        <CmsContent fragment={article.content} />
-        {template?.postContent && (
-          <CmsContent fragment={template.postContent} />
-        )}
-      </div>
+      {template?.preContent && <CmsContent fragment={template.preContent} />}
+      <CmsContent fragment={article.content} />
+      {template?.postContent && <CmsContent fragment={template.postContent} />}
 
       <Slice alias="footer-Footer" />
     </>

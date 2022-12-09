@@ -1,5 +1,5 @@
 import { getSrc, IGatsbyImageData } from "gatsby-plugin-image";
-import React, { useMemo } from "react";
+import React from "react";
 
 export interface ISite {
   readonly buildTime?: unknown | string | null;
@@ -60,6 +60,26 @@ export function buildWebsiteSchema(
   return { "@type": "WebSite", name, url };
 }
 
+function buildSchemas(
+  schemaOrgs: Array<unknown> | undefined,
+  siteName: string,
+  siteUrl: string,
+  logo: string | null | undefined,
+  sameAs: ReadonlyArray<string | null> | null | undefined,
+  additionalSchemas: Array<unknown> | undefined
+): unknown {
+  const schemas = schemaOrgs || [
+    buildOrganizationSchema(siteName, siteUrl, logo, sameAs),
+    buildWebsiteSchema(siteName, siteUrl),
+  ];
+  if (additionalSchemas) {
+    schemas.push(...additionalSchemas);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  return { "@context": "http://schema.org", "@graph": schemas };
+}
+
 export const BondSEO: React.FC<IProps> = ({
   site: {
     buildTime,
@@ -85,18 +105,14 @@ export const BondSEO: React.FC<IProps> = ({
   const imageUrl = imageSrc && siteUrl + imageSrc;
   const keywords = pageMetadata?.keywords;
 
-  const schemaOrg = useMemo(() => {
-    const schemas = schemaOrgs || [
-      buildOrganizationSchema(siteName, siteUrl, logo, sameAs),
-      buildWebsiteSchema(siteName, siteUrl),
-    ];
-    if (additionalSchemas) {
-      schemas.push(...additionalSchemas);
-    }
-
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    return { "@context": "http://schema.org", "@graph": schemas };
-  }, [schemaOrgs, siteName, siteUrl, logo, sameAs, additionalSchemas]);
+  const schemaOrg = buildSchemas(
+    schemaOrgs,
+    siteName,
+    siteUrl,
+    logo,
+    sameAs,
+    additionalSchemas
+  );
 
   if (!possibleSiteName) {
     console.error(`The site metadata must have siteName`);

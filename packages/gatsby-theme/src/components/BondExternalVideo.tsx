@@ -1,3 +1,4 @@
+"use client";
 import { GatsbyVideo } from "@bond-london/gatsby-transformer-video";
 import React, {
   CSSProperties,

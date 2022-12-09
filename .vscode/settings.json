@@ -7,9 +7,9 @@
   "tailwindCSS.validate": true,
   "tailwindCSS.experimental.classRegex": [
     // "classNames\\(\"(.*)\"\\)",
-    "Classes\\s*=\\s*\"([^\"]*)\"",
-    ".+ClassName\\s*=\\s*\"([^\"]*)\"",
-    "const\\s+.*ClassName\\s*=\\s*\"([^']*)\""
+    "[cC]lasses\\s*=\\s*\"([^\"]*)\"",
+    ".+[cC]lassName\\s*=\\s*\"([^\"]*)\"",
+    "const\\s+.*[cC]lassName\\s*=\\s*\"([^']*)\""
   ],
   "tailwindCSS.lint.cssConflict": "ignore",
   "files.exclude": {

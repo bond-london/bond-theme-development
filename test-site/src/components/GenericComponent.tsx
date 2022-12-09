@@ -1,4 +1,8 @@
-import { IBondImage, IBondVisual, Section } from "@bond-london/gatsby-theme";
+import {
+  IBondImage,
+  IBondVisual,
+  AnimatedSection,
+} from "@bond-london/gatsby-theme";
 import { IRichTextInformation } from "@bond-london/graphcms-rich-text";
 import classNames from "classnames";
 import React from "react";
@@ -44,7 +48,7 @@ export const GenericComponent: React.FC<{
   },
 }) => {
   return (
-    <Section
+    <AnimatedSection
       componentName={`${componentType} component`}
       className={classNames(
         lookupColourClassNames(backgroundColour, textColour),
@@ -61,6 +65,6 @@ export const GenericComponent: React.FC<{
       {icon && <SectionIcon icon={icon} className={SectionBodyClassName} />}
       {visual && <SectionVisual visual={visual} />}
       {links && <SectionLinks links={links} />}
-    </Section>
+    </AnimatedSection>
   );
 };

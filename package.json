@@ -32,11 +32,15 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.4",
     "lerna": "^6.0.1",
-    "nx": "^15.0.1",
     "prettier": "^2.7.1",
     "typescript": "^4.7.4"
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "gatsby": "^5.2.0",
+    "react": "experimental",
+    "react-dom": "experimental"
   }
 }

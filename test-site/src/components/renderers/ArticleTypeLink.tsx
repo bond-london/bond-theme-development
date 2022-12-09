@@ -1,7 +1,6 @@
 import { Link } from "gatsby";
 import React from "react";
 import { LinkClassName } from "../../styles";
-import { getImage } from "gatsby-plugin-image";
 import { EmbedLink } from "./EmbedLink";
 import { getArticleTypePath } from "../../cms/CmsArticleType";
 
@@ -20,9 +19,8 @@ export const ArticleTypeEmbedLink: React.FC<{
   isInline?: boolean;
   fragment: Queries.CmsArticleTypeLinkFragment;
 }> = ({ fragment, className, isInline }) => {
-  const image = getImage(
-    fragment.embedImage?.localFile?.childImageSharp || null
-  );
+  const image =
+    fragment.embedImage?.localFile?.childImageSharp?.gatsbyImageData;
   if (!isInline && image) {
     return (
       <EmbedLink

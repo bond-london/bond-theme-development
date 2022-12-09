@@ -1,11 +1,10 @@
 {
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
-  "useNx": true,
+  "useNx": false,
   "useWorkspaces": true,
   "npmClient": "yarn",
   "registry": "https://registry.npmjs.org/",
   "version": "independent",
-  "packages": ["packages/*", "test-site"],
   "command": {
     "publish": {
       "allowBranch": "main",

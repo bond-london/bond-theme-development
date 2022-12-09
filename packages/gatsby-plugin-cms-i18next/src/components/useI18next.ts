@@ -1,12 +1,10 @@
-import {
-  DefaultNamespace,
-  useTranslation,
-  UseTranslationOptions,
-} from "react-i18next";
+import { useTranslation, UseTranslationOptions } from "react-i18next";
 import { useContext } from "react";
 import { I18nextContext } from "./i18nextContext";
 import { I18NextContext } from "../types";
-import { i18n, KeyPrefix, Namespace, TFunction } from "i18next";
+import { i18n, KeyPrefix, Namespace, TFunction, TypeOptions } from "i18next";
+
+type DefaultNamespace = TypeOptions["defaultNS"];
 
 export function useI18next<
   N extends Namespace = DefaultNamespace,

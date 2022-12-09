@@ -6,3 +6,4 @@ export * from "./BondSEO";
 export * from "./BondVisual";
 export * from "./Section";
 export * from "./GoogleTagManager";
+export * from "./AnimatedSection";

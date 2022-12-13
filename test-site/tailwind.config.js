@@ -2,6 +2,7 @@ const path = require("path");
 const config = require("./tailwind.config.json");
 const animationTiming = "cubic-bezier(0.22, 1, 0.36, 1)";
 const animationDuration = "0.5s";
+const bondPlugin = require("@bond-london/bond-tailwind-plugin/dist/utils");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -26,6 +27,10 @@ module.exports = {
             opacity: 1,
           },
         },
+      },
+      height: {
+        "mobile-icon": bondPlugin.calculateRemSize(32),
+        "laptop-icon": bondPlugin.calculateRemSize(52),
       },
       animation: {
         "enter-from-bottom": `enter-from-bottom ${animationDuration} ${animationTiming} both`,

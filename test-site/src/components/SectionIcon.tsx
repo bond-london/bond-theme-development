@@ -12,7 +12,7 @@ export const SectionIcon: React.FC<{
       <div
         className={classNames(
           className,
-          "h-icon flex icon-container justify-center"
+          "h-mobile-icon laptop:h-laptop-icon flex icon-container"
         )}
         dangerouslySetInnerHTML={{ __html: raw }}
       />
@@ -22,7 +22,10 @@ export const SectionIcon: React.FC<{
   return (
     <BondImage
       image={{ ...icon, dontCrop: true }}
-      className={classNames(className, "relative h-icon flex justify-center")}
+      className={classNames(
+        className,
+        "relative h-mobile-icon laptop:h-laptop-icon flex"
+      )}
       imgStyle={{ height: "100%" }}
     />
   );

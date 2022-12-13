@@ -1,0 +1,100 @@
+import { IPageMetadata, Section } from "@bond-london/gatsby-theme";
+import classNames from "classnames";
+import { HeadFC, HeadProps, Slice } from "gatsby";
+import React, { Fragment } from "react";
+import { PageHead } from "../../components/PageHead";
+import { fontTable, sizes } from "../../design";
+
+const head = classNames("font-bold text-34-44");
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const retain = "h1h h1t h2h h2t h3h h4h p1h p2r p3r";
+
+const styles = ["", "italic"];
+
+const name = "Typography";
+const Fonts: React.FC = () => {
+  return (
+    <>
+      <Slice alias="navigation-Menu" />
+      <Slice alias="analytics" />
+      <Section
+        componentName={name}
+        className="hidden desktop:grid"
+        contentClassName="gap-y-s"
+      >
+        <h1 className={classNames(head, "col-span-2 uppercase")}>Font Info</h1>
+        {sizes.map(({ key, value }) => {
+          const breakpoint = value.breakpoint ? `${value.breakpoint}px` : "";
+          return (
+            <div key={key} className={classNames(head, "col-span-2")}>
+              <h2>{key}</h2>
+              <h3>{breakpoint}</h3>
+            </div>
+          );
+        })}
+        <div className="col-span-full border-b border-midnight-blue" />
+        {fontTable.map(({ key: name, value }) => {
+          {
+            return styles.map((style) => {
+              const prefix = name.startsWith("h") ? "Headline" : "Paragraph";
+              const { font, weight, default: initialSize, ...others } = value;
+              let currentSize = initialSize;
+              return (
+                <Fragment key={name + style}>
+                  <div className="col-span-2">
+                    <h3 className={classNames(name, style)}>
+                      {prefix} {name.toUpperCase()}
+                    </h3>
+                    <p className="capitalize" style={{ fontWeight: weight }}>
+                      {font} {weight} {style}
+                    </p>
+                  </div>
+                  {sizes.map(({ key }) => {
+                    const newSize = others[key] || currentSize;
+                    currentSize = newSize;
+
+                    return (
+                      <div
+                        key={key}
+                        className="col-span-2"
+                        style={{
+                          fontWeight: weight,
+                          fontSize: `${currentSize}px`,
+                        }}
+                      >
+                        <p>
+                          {prefix} {name.substring(1)} - {newSize}px
+                        </p>
+                        <p>Line height 125%</p>
+                      </div>
+                    );
+                  })}
+                  <div className="col-span-full border-b border-midnight-blue" />
+                </Fragment>
+              );
+            });
+          }
+        })}
+      </Section>
+      <Section componentName={name} className="desktop:hidden">
+        Please view on a larger screen
+      </Section>
+      <Slice alias="footer-Footer" />
+    </>
+  );
+};
+
+// eslint-disable-next-line import/no-unused-modules
+export default Fonts;
+
+// eslint-disable-next-line import/no-unused-modules
+export const Head: HeadFC = (props) => {
+  const pageMetadata: IPageMetadata = {
+    title: "Fonts test page",
+    noIndex: true,
+    description: "Test page for fonts",
+  };
+
+  return <PageHead headProps={props} page={pageMetadata} />;
+};

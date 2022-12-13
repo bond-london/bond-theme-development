@@ -14,7 +14,7 @@ export const CmsArticleLayout: React.FC<
   return (
     <>
       <Slice alias="navigation-Menu" />
-      {/* <Slice alias="analytics" /> */}
+      <Slice alias="analytics" />
 
       {template?.preContent && <CmsContent fragment={template.preContent} />}
       <CmsContent fragment={article.content} />

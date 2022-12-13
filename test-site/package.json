@@ -26,7 +26,8 @@
     "restart": "run-s clean develop",
     "rebuild": "run-s clean build",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint --rulesdir ../node_modules/gatsby/dist/utils/eslint-rules --config .custom.eslintrc.json --max-warnings 0 \"src/**/*.{js,jsx,ts,tsx}\" \"gatsby-*.{js,jsx,ts,tsx}\""
+    "lint": "eslint --rulesdir ../node_modules/gatsby/dist/utils/eslint-rules --config .custom.eslintrc.json --max-warnings 0 \"src/**/*.{js,jsx,ts,tsx}\" \"gatsby-*.{js,jsx,ts,tsx}\"",
+    "css": "tailwindcss -i ./src/styles/index.css -o built.css"
   },
   "dependencies": {
     "@bond-london/gatsby-theme": "^2.0.0-alpha.0",
@@ -37,9 +38,9 @@
     "classnames": "^2.3.1",
     "gatsby": "^5.0.0",
     "gatsby-plugin-image": "^3.2.0",
-    "react": "experimental",
+    "react": "18",
     "react-cookie-consent": "^8.0.1",
-    "react-dom": "experimental"
+    "react-dom": "18"
   },
   "devDependencies": {
     "@types/node": "^18.7.23",

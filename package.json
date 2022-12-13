@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "gatsby": "^5.2.0",
-    "react": "experimental",
-    "react-dom": "experimental"
+    "react": "18",
+    "react-dom": "18"
   }
 }

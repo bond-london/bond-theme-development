@@ -23,7 +23,7 @@ const themeOptions: Partial<IBondThemeOptions> = {
   isProduction,
   projectName: name,
   useVideoCache: true,
-  videoCacheConnectionString: process.env.VIDEO_CACHE_CONNECTION_STRING,
+  videoCacheConnectionString: readEnvVar("VIDEO_CACHE_CONNECTION_STRING"),
   productionImageFormats: ["auto", "webp"],
   maxImageWidth: 1920,
   videoWidth: 1920,

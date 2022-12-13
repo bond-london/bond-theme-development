@@ -8,9 +8,13 @@ const fontsToPreload = {
 // eslint-disable-next-line import/no-unused-modules
 export function onRenderBody({
   setHtmlAttributes,
+  setBodyAttributes,
   setHeadComponents,
 }: RenderBodyArgs) {
   setHtmlAttributes({ lang: `en` });
+  if (process.env.GATSBY_DEBUG_TAILWIND) {
+    setBodyAttributes({ className: "debug-screens" });
+  }
   setHeadComponents(
     Object.entries(fontsToPreload).map(([path, type]) => (
       <link

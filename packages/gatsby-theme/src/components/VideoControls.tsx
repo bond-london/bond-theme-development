@@ -9,14 +9,14 @@ export const VideoControls: React.FC<{
   muteUnmuteClassName?: string;
   isPlaying?: boolean;
   isMuted?: boolean;
-  playVideo: () => void;
-  pauseVideo: () => void;
-  muteVideo: () => void;
-  unmuteVideo: () => void;
-  playButton?: React.FC<{ playVideo: () => void }>;
-  pauseButton?: React.FC<{ pauseVideo: () => void }>;
-  muteButton?: React.FC<{ muteVideo: () => void }>;
-  unmuteButton?: React.FC<{ unmuteVideo: () => void }>;
+  playVideo?: () => void;
+  pauseVideo?: () => void;
+  muteVideo?: () => void;
+  unmuteVideo?: () => void;
+  playButton?: React.FC<{ playVideo?: () => void }>;
+  pauseButton?: React.FC<{ pauseVideo?: () => void }>;
+  muteButton?: React.FC<{ muteVideo?: () => void }>;
+  unmuteButton?: React.FC<{ unmuteVideo?: () => void }>;
   showAudioControls?: boolean;
 }> = ({
   className,

@@ -138,10 +138,10 @@ export const BondVideo: React.FC<
     videoClassName?: string;
     videoStyle?: CSSProperties;
     noPoster?: boolean;
-    playButton?: React.FC<{ playVideo: () => void }>;
-    pauseButton?: React.FC<{ pauseVideo: () => void }>;
-    muteButton?: React.FC<{ muteVideo: () => void }>;
-    unmuteButton?: React.FC<{ unmuteVideo: () => void }>;
+    playButton?: React.FC<{ playVideo?: () => void }>;
+    pauseButton?: React.FC<{ pauseVideo?: () => void }>;
+    muteButton?: React.FC<{ muteVideo?: () => void }>;
+    unmuteButton?: React.FC<{ unmuteVideo?: () => void }>;
     showAudioControls?: boolean;
   } & Omit<
     VideoHTMLAttributes<HTMLVideoElement>,

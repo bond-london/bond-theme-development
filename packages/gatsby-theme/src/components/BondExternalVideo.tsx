@@ -47,13 +47,14 @@ export function convertCmsVideoToBondExternalVideo(
 export const BondExternalVideo: React.FC<
   {
     video: IBondExternalVideo;
+    autoLoad?: boolean;
     videoClassName?: string;
     videoStyle?: CSSProperties;
     noPoster?: boolean;
-    playButton?: React.FC<{ playVideo: () => void }>;
-    pauseButton?: React.FC<{ pauseVideo: () => void }>;
-    muteButton?: React.FC<{ muteVideo: () => void }>;
-    unmuteButton?: React.FC<{ unmuteVideo: () => void }>;
+    playButton?: React.FC<{ playVideo?: () => void }>;
+    pauseButton?: React.FC<{ pauseVideo?: () => void }>;
+    muteButton?: React.FC<{ muteVideo?: () => void }>;
+    unmuteButton?: React.FC<{ unmuteVideo?: () => void }>;
     showAudioControls?: boolean;
   } & Omit<
     VideoHTMLAttributes<HTMLVideoElement>,
@@ -63,10 +64,13 @@ export const BondExternalVideo: React.FC<
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [previewHasStarted, setPreviewHasStarted] = useState(false);
-  const onPreviewHasStarted = useCallback(() => setPreviewHasStarted(true), []);
+  const [fullRequested, setFullRequested] = useState(false);
   const [fullHasLoaded, setFullHasLoaded] = useState(false);
-  const onFullLoaded = useCallback(() => setFullHasLoaded(true), []);
   const [fullHasStarted, setFullHasStarted] = useState(false);
+
+  const onPreviewHasStarted = useCallback(() => setPreviewHasStarted(true), []);
+  const onFullRequested = useCallback(() => setFullRequested(true), []);
+  const onFullLoaded = useCallback(() => setFullHasLoaded(true), []);
   const onFullStarted = useCallback(() => setFullHasStarted(true), []);
   const playVideo = useCallback(() => setIsPlaying(true), []);
   const pauseVideo = useCallback(() => setIsPlaying(false), []);
@@ -97,18 +101,25 @@ export const BondExternalVideo: React.FC<
     verticalCropPosition,
   });
 
+  const loadFull = (props.autoLoad && previewHasStarted) || fullRequested;
+  const showFullRequest = !loadFull && !props.autoLoad && !fullRequested;
+  const fullShouldPlay = isPlaying || (fullRequested && !fullHasStarted);
+
   return (
     <GatsbyVideo
       {...videoProps}
       loop={true}
       video={videoData}
       onTimeUpdate={!previewHasStarted ? onPreviewHasStarted : undefined}
-      pause={fullHasStarted ? true : undefined}
+      pause={fullHasLoaded ? true : undefined}
       objectFit={objectFit}
       objectPosition={objectPosition}
-      videoClassName={fullHasStarted ? "opacity-0" : "opacity-100"}
+      videoClassName={fullHasLoaded ? "opacity-0" : "opacity-100"}
     >
-      {previewHasStarted && (
+      {showFullRequest && (
+        <VideoControls playVideo={onFullRequested} playButton={playButton} />
+      )}
+      {loadFull && (
         <ReactPlayer
           url={external}
           style={{ objectFit, objectPosition, opacity: fullHasStarted ? 1 : 0 }}
@@ -118,9 +129,10 @@ export const BondExternalVideo: React.FC<
           width="100%"
           height="100%"
           controls={false}
-          playing={isPlaying}
+          playing={fullShouldPlay}
           muted={isMuted}
           loop={loop || videoLoop}
+          playsinline={videoProps.playsInline}
         />
       )}
       {fullHasLoaded && (

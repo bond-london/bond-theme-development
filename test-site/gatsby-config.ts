@@ -51,8 +51,8 @@ const config: GatsbyConfig = {
   },
   flags: {
     FAST_DEV: true,
-    DEV_SSR: true,
-    PARTIAL_HYDRATION: true,
+    DEV_SSR: false,
+    PARTIAL_HYDRATION: false,
     PRESERVE_FILE_DOWNLOAD_CACHE: true,
   },
   plugins: [

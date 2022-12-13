@@ -50,13 +50,14 @@ export function convertCmsVideoToBondFullVideo(cms: ICmsVideo): IBondFullVideo {
 export const BondFullVideo: React.FC<
   {
     video: IBondFullVideo;
+    autoLoad?: boolean;
     videoClassName?: string;
     videoStyle?: CSSProperties;
     noPoster?: boolean;
-    playButton?: React.FC<{ playVideo: () => void }>;
-    pauseButton?: React.FC<{ pauseVideo: () => void }>;
-    muteButton?: React.FC<{ muteVideo: () => void }>;
-    unmuteButton?: React.FC<{ unmuteVideo: () => void }>;
+    playButton?: React.FC<{ playVideo?: () => void }>;
+    pauseButton?: React.FC<{ pauseVideo?: () => void }>;
+    muteButton?: React.FC<{ muteVideo?: () => void }>;
+    unmuteButton?: React.FC<{ unmuteVideo?: () => void }>;
     showAudioControls?: boolean;
   } & Omit<
     VideoHTMLAttributes<HTMLVideoElement>,
@@ -66,12 +67,16 @@ export const BondFullVideo: React.FC<
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [previewHasStarted, setPreviewHasStarted] = useState(false);
-  const onPreviewHasStarted = useCallback(() => setPreviewHasStarted(true), []);
+  const [fullRequested, setFullRequested] = useState(false);
   const [fullHasLoaded, setFullHasLoaded] = useState(false);
-  const onFullLoaded = useCallback(() => setFullHasLoaded(true), []);
   const [fullHasStarted, setFullHasStarted] = useState(false);
+
+  const onPreviewHasStarted = useCallback(() => setPreviewHasStarted(true), []);
+  const onFullRequested = useCallback(() => setFullRequested(true), []);
+  const onFullLoaded = useCallback(() => setFullHasLoaded(true), []);
   const onFullTimeUpdate = useCallback(() => setFullHasStarted(true), []);
   const onFullEnded = useCallback(() => setIsPlaying(false), []);
+  const onPlaying = useCallback(() => setIsPlaying(true), []);
   const fullVideoRef = useRef<HTMLVideoElement>(null);
 
   const playVideo = useCallback(() => {
@@ -125,27 +130,36 @@ export const BondFullVideo: React.FC<
     verticalCropPosition,
   });
 
+  const loadFull = (props.autoLoad && previewHasStarted) || fullRequested;
+  const showFullRequest = !loadFull && !props.autoLoad && !fullRequested;
+
   return (
     <GatsbyVideo
       {...videoProps}
       loop={true}
       video={videoData}
       onTimeUpdate={!previewHasStarted ? onPreviewHasStarted : undefined}
-      pause={fullHasStarted ? true : undefined}
+      pause={fullHasLoaded ? true : undefined}
       objectFit={objectFit}
       objectPosition={objectPosition}
-      videoClassName={fullHasStarted ? "opacity-0" : "opacity-100"}
+      videoClassName={fullHasLoaded ? "opacity-0" : "opacity-100"}
     >
-      {previewHasStarted && (
+      {showFullRequest && (
+        <VideoControls playVideo={onFullRequested} playButton={playButton} />
+      )}
+      {loadFull && (
         <GatsbyInternalVideo
           style={{ objectFit, objectPosition }}
           video={full as unknown as IGatsbyVideo}
+          autoPlay={fullRequested}
           videoRef={fullVideoRef}
           onCanPlay={onFullLoaded}
+          onPlaying={onPlaying}
           onTimeUpdate={onFullTimeUpdate}
           className={fullHasStarted ? "opacity-100" : "opacity-0"}
           onEnded={onFullEnded}
           loop={loop || videoLoop}
+          playsInline={videoProps.playsInline}
         />
       )}
       {fullHasLoaded && (

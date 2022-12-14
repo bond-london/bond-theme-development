@@ -46,7 +46,7 @@ export const GenericComponent: React.FC<{
   return (
     <Section
       componentName={`${componentType} component`}
-      className={classNames(
+      sectionClassName={classNames(
         lookupColourClassNames(backgroundColour, textColour),
         unknown && "border-2 border-yellow"
       )}

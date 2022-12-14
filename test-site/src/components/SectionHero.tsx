@@ -15,25 +15,6 @@ const HeroBackground: React.FC<{ visual: IBondVisual }> = ({ visual }) => {
       className="relative col-span-full row-span-full"
     />
   );
-  // const className = "relative col-span-full row-span-full";
-  // if (video) {
-  //   return (
-  //     <BondVideo
-  //       className={className}
-  //       video={video}
-  //       autoPlay={true}
-  //       muted={true}
-  //       loop={true}
-  //     />
-  //   );
-  // }
-  // if (image) {
-  //   return <BondImage className={className} image={image} />;
-  // }
-  // if (animation) {
-  //   return <BondAnimation className={className} animation={animation} />;
-  // }
-  // return null;
 };
 
 const HeroText: React.FC<{
@@ -74,7 +55,7 @@ export const SectionHero: React.FC<{
 }) => {
   return (
     <Section
-      className={classNames(
+      sectionClassName={classNames(
         "h-[80vh] tablet:h-[70vh] laptop:h-[60vh] w-full pointer-events-none",
         lookupColourClassNames(backgroundColour, textColour)
       )}

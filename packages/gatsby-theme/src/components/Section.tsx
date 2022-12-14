@@ -1,24 +1,42 @@
 import classNames from "classnames";
 import React, { PropsWithChildren } from "react";
 
-export function calculateSectionContainerClassNames(
-  collapse: boolean,
-  ...additionalClassNames: Array<string | undefined | null | boolean>
+function calculateSectionGridClassName(
+  sectionGridClassName: string | undefined,
+  collapse: boolean
 ): string {
-  return classNames(
-    collapse
-      ? "relative w-full container-rows-grid bond-row-1-0 bond-row-6-0 container-cols-grid"
-      : "relative w-full container-rows-grid container-cols-grid",
-    ...additionalClassNames
-  );
+  if (sectionGridClassName) return sectionGridClassName;
+  if (collapse)
+    return "relative w-full container-rows-grid bond-row-1-0 bond-row-6-0 container-cols-grid";
+  return "relative w-full container-rows-grid container-cols-grid";
 }
 
-export function calculateSectionSpacingClassName(
-  spacingClassName: string | undefined,
+export function calculateSectionContainerClassNames(
+  {
+    sectionGridClassName,
+    sectionClassName,
+    collapse,
+  }: {
+    sectionGridClassName: string | undefined;
+    sectionClassName: string | undefined;
+    collapse: boolean;
+  },
+  ...other: classNames.ArgumentArray
+): string {
+  const realSectionGridClassName = calculateSectionGridClassName(
+    sectionGridClassName,
+    collapse
+  );
+
+  return classNames(realSectionGridClassName, sectionClassName, ...other);
+}
+
+function calculateSectionRowsClassName(
+  sectionRowsClassName: string | undefined,
   topSpacing: boolean | undefined,
   bottomSpacing: boolean | undefined
 ): string {
-  if (spacingClassName) return spacingClassName;
+  if (sectionRowsClassName) return sectionRowsClassName;
   if (topSpacing && bottomSpacing) return "row-start-2 row-span-4";
 
   if (topSpacing) return "row-start-2 row-span-5";
@@ -26,33 +44,52 @@ export function calculateSectionSpacingClassName(
   return "row-start-1 row-span-6";
 }
 
-export function calculateSectionContentClassNames(
-  spacingClassName: string | undefined,
-  topSpacing: boolean,
-  bottomSpacing: boolean,
-  contentClassName: string | undefined,
-  fullWidth: boolean
+function calculateSectionColumnsClassName(
+  sectionColumnsClassName: string | undefined,
+  fullWidth: boolean | undefined
 ): string {
-  const realSpacingClassName = calculateSectionSpacingClassName(
-    spacingClassName,
+  if (sectionColumnsClassName) return sectionColumnsClassName;
+  if (fullWidth) return "relative col-start-1 col-span-3 content-cols-grid";
+  return "relative col-start-2 col-span-1 content-cols-grid";
+}
+
+export function calculateSectionContentClassNames({
+  sectionRowsClassName,
+  sectionColumnsClassName,
+  contentClassName,
+  topSpacing,
+  bottomSpacing,
+  fullWidth,
+}: {
+  sectionRowsClassName: string | undefined;
+  sectionColumnsClassName: string | undefined;
+  contentClassName: string | undefined;
+  topSpacing: boolean;
+  bottomSpacing: boolean;
+  fullWidth: boolean;
+}): string {
+  const realRowsClassName = calculateSectionRowsClassName(
+    sectionRowsClassName,
     topSpacing,
     bottomSpacing
   );
 
-  return classNames(
-    realSpacingClassName,
-    contentClassName,
-    fullWidth ? "relative col-start-1 col-span-3" : "col-start-2 col-span-1",
-    "relative content-cols-grid"
+  const realColumnsClassName = calculateSectionColumnsClassName(
+    sectionColumnsClassName,
+    fullWidth
   );
+
+  return classNames(realRowsClassName, realColumnsClassName, contentClassName);
 }
 export const Section: React.FC<
   PropsWithChildren<{
     id?: string;
     componentName: string;
-    className?: string;
+    sectionGridClassName?: string;
+    sectionClassName?: string;
+    sectionRowsClassName?: string;
+    sectionColumnsClassName?: string;
     contentClassName?: string;
-    spacingClassName?: string;
     topSpacing?: boolean;
     bottomSpacing?: boolean;
     collapse?: boolean;
@@ -64,9 +101,11 @@ export const Section: React.FC<
 > = ({
   id,
   componentName,
-  className,
+  sectionGridClassName,
+  sectionClassName,
+  sectionRowsClassName,
+  sectionColumnsClassName,
   contentClassName,
-  spacingClassName,
   topSpacing = true,
   bottomSpacing = true,
   collapse = false,
@@ -79,18 +118,23 @@ export const Section: React.FC<
   <Element
     id={id}
     data-component={componentName}
-    className={calculateSectionContainerClassNames(collapse, className)}
+    className={calculateSectionContainerClassNames({
+      sectionGridClassName,
+      sectionClassName,
+      collapse,
+    })}
   >
     {preChildren}
     {children && (
       <div
-        className={calculateSectionContentClassNames(
-          spacingClassName,
+        className={calculateSectionContentClassNames({
+          sectionRowsClassName,
+          sectionColumnsClassName,
           topSpacing,
           bottomSpacing,
           contentClassName,
-          fullWidth
-        )}
+          fullWidth,
+        })}
       >
         {children}
       </div>

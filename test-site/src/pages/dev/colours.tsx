@@ -1,11 +1,10 @@
 import React from "react";
 
 import classNames from "classnames";
-import { HeadFC, HeadProps, Slice } from "gatsby";
+import { HeadFC, Slice } from "gatsby";
 import { colours } from "../../design";
 import { IPageMetadata, Section } from "@bond-london/gatsby-theme";
 import { PageHead } from "../../components/PageHead";
-import { title } from "process";
 
 const name = "Website Color Palette";
 

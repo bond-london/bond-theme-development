@@ -1,6 +1,6 @@
 import { IPageMetadata, Section } from "@bond-london/gatsby-theme";
 import classNames from "classnames";
-import { HeadFC, HeadProps, Slice } from "gatsby";
+import { HeadFC, Slice } from "gatsby";
 import React, { Fragment } from "react";
 import { PageHead } from "../../components/PageHead";
 import { fontTable, sizes } from "../../design";
@@ -8,7 +8,7 @@ import { fontTable, sizes } from "../../design";
 const head = classNames("font-bold text-34-44");
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const retain = "h1h h1t h2h h2t h3h h4h p1h p2r p3r";
+const retain = "h1 h2 h3 h4 h5 h6 p1 p2 p3";
 
 const styles = ["", "italic"];
 
@@ -20,7 +20,7 @@ const Fonts: React.FC = () => {
       <Slice alias="analytics" />
       <Section
         componentName={name}
-        className="hidden desktop:grid"
+        sectionClassName="hidden laptop:grid"
         contentClassName="gap-y-s"
       >
         <h1 className={classNames(head, "col-span-2 uppercase")}>Font Info</h1>
@@ -77,7 +77,7 @@ const Fonts: React.FC = () => {
           }
         })}
       </Section>
-      <Section componentName={name} className="desktop:hidden">
+      <Section componentName={name} sectionClassName="laptop:hidden">
         Please view on a larger screen
       </Section>
       <Slice alias="footer-Footer" />

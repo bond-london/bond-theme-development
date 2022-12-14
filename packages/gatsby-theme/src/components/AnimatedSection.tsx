@@ -21,9 +21,11 @@ export const AnimatedSection: React.FC<
     id?: string;
     componentName: string;
     animationClassName?: string;
-    className?: string;
+    sectionGridClassName?: string;
+    sectionClassName?: string;
+    sectionRowsClassName?: string;
+    sectionColumnsClassName?: string;
     contentClassName?: string;
-    spacingClassName?: string;
     topSpacing?: boolean;
     bottomSpacing?: boolean;
     collapse?: boolean;
@@ -35,9 +37,11 @@ export const AnimatedSection: React.FC<
 > = ({
   id,
   componentName,
-  className,
+  sectionGridClassName,
+  sectionClassName,
+  sectionRowsClassName,
+  sectionColumnsClassName,
   contentClassName,
-  spacingClassName,
   topSpacing = true,
   bottomSpacing = true,
   collapse = false,
@@ -71,22 +75,26 @@ export const AnimatedSection: React.FC<
       // eslint-disable-next-line @typescript-eslint/naming-convention
       "data-component": componentName,
       className: calculateSectionContainerClassNames(
-        collapse,
+        {
+          sectionGridClassName,
+          sectionClassName,
+          collapse,
+        },
         animationClassName && "animation-paused",
-        animationClassName,
-        className
+        animationClassName
       ),
     },
     preChildren,
     children && (
       <div
-        className={calculateSectionContentClassNames(
-          spacingClassName,
+        className={calculateSectionContentClassNames({
+          sectionRowsClassName,
+          sectionColumnsClassName,
           topSpacing,
           bottomSpacing,
           contentClassName,
-          fullWidth
-        )}
+          fullWidth,
+        })}
       >
         {children}
       </div>

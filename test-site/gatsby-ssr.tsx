@@ -1,10 +1,11 @@
 import { RenderBodyArgs } from "gatsby";
 import React from "react";
 
-const fontsToPreload = {
-//  "/fonts/heldane/test-heldane-display-bold.woff2": "woff2",
-//  "/fonts/tusker/TuskerGrotesk-5500Medium.otf": "otf",
+const fontsToPreload: { [path: string]: string } = {
+  //  "/fonts/heldane/test-heldane-display-bold.woff2": "woff2",
+  //  "/fonts/tusker/TuskerGrotesk-5500Medium.otf": "otf",
 };
+
 // eslint-disable-next-line import/no-unused-modules
 export function onRenderBody({
   setHtmlAttributes,

@@ -21,14 +21,16 @@ function calculateContentsClassName(length: number) {
   }
 }
 
-type ICollectionContent = ICollectionInformation | IComponentInformation;
+// eslint-disable-next-line import/no-unused-modules
+export type ICollectionContent = ICollectionInformation | IComponentInformation;
 function isContentCollection(
   content: ICollectionContent
 ): content is ICollectionInformation {
   return !!(content as ICollectionInformation).contents;
 }
 
-function isContentComponent(
+// eslint-disable-next-line import/no-unused-modules
+export function isContentComponent(
   content: ICollectionContent
 ): content is IComponentInformation {
   return !(content as ICollectionInformation).contents;
@@ -134,7 +136,7 @@ export const GenericCollection: React.FC<{
   return (
     <Section
       componentName={`${collectionType} collection`}
-      className={classNames(
+      sectionClassName={classNames(
         lookupColourClassNames(backgroundColour, textColour),
         unknown && "border-2 border-yellow"
       )}

@@ -38,13 +38,16 @@ const LinkOrButtonInside: React.FC<
 export const LinkOrButton: React.FC<{
   information: ILinkInformation;
   onClick?: () => void;
+  className?: string;
 }> = ({
   information: { internal, external, text, name, colour, isButton, icon },
   onClick,
+  className,
 }) => {
   const label = text || name;
   const realText = icon ? text : name;
   const outerClassName = classNames(
+    className,
     isButton
       ? ["button", colour && lookupColourClassNames(colour || "yellow")]
       : [LinkClassName, colour && lookupColourString(colour, "text")]
@@ -89,10 +92,35 @@ export const LinkOrButton: React.FC<{
     );
   }
 
+  if (onClick) {
+    return (
+      <button
+        aria-label={label}
+        onClick={onClick}
+        className={classNames(
+          outerClassName,
+          "inline-flex items-center justify-center"
+        )}
+      >
+        <LinkOrButtonInside text={realText} icon={icon} />
+      </button>
+    );
+  }
+
   return (
     <Unsupported
       component="LinkOrButton"
       message={`Link or button "${name}" needs somewhere to link to`}
     />
+  );
+};
+
+// eslint-disable-next-line import/no-unused-modules
+export const LinkOrButtonComponent: React.FC<
+  ILinkInformation & { onClick?: () => void; className?: string }
+> = (information) => {
+  const { onClick, className, ...props } = information;
+  return (
+    <LinkOrButton information={props} onClick={onClick} className={className} />
   );
 };

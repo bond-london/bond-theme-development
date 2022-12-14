@@ -3,7 +3,7 @@ import React from "react";
 
 const fontsToPreload = {
 //  "/fonts/heldane/test-heldane-display-bold.woff2": "woff2",
-//  "/fonts/tusker/TuskerGrotesk-5500Medium.otf": "opentype",
+//  "/fonts/tusker/TuskerGrotesk-5500Medium.otf": "otf",
 };
 // eslint-disable-next-line import/no-unused-modules
 export function onRenderBody({

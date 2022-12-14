@@ -129,12 +129,15 @@ export const GenericCollection: React.FC<{
   information: ICollectionInformation;
   collectionType: string;
   unknown?: boolean;
-}> = ({ collectionType, information }) => {
+}> = ({ collectionType, information, unknown }) => {
   const { backgroundImage, backgroundColour, textColour } = information;
   return (
     <Section
       componentName={`${collectionType} collection`}
-      className={lookupColourClassNames(backgroundColour, textColour)}
+      className={classNames(
+        lookupColourClassNames(backgroundColour, textColour),
+        unknown && "border-2 border-yellow"
+      )}
       preChildren={backgroundImage && <BondImage image={backgroundImage} />}
     >
       <CollectionInside information={information} />

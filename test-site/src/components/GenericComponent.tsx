@@ -1,8 +1,4 @@
-import {
-  IBondImage,
-  IBondVisual,
-  AnimatedSection,
-} from "@bond-london/gatsby-theme";
+import { IBondImage, IBondVisual, Section } from "@bond-london/gatsby-theme";
 import { IRichTextInformation } from "@bond-london/graphcms-rich-text";
 import classNames from "classnames";
 import React from "react";
@@ -48,13 +44,12 @@ export const GenericComponent: React.FC<{
   },
 }) => {
   return (
-    <AnimatedSection
+    <Section
       componentName={`${componentType} component`}
       className={classNames(
         lookupColourClassNames(backgroundColour, textColour),
         unknown && "border-2 border-yellow"
       )}
-      animationClassName="animate-enter-from-bottom animation-delay-2000"
     >
       <SectionHeading
         preHeading={preHeading}
@@ -65,6 +60,6 @@ export const GenericComponent: React.FC<{
       {icon && <SectionIcon icon={icon} className={SectionBodyClassName} />}
       {visual && <SectionVisual visual={visual} />}
       {links && <SectionLinks links={links} />}
-    </AnimatedSection>
+    </Section>
   );
 };

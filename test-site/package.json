@@ -27,6 +27,7 @@
     "rebuild": "run-s clean build",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --rulesdir ../node_modules/gatsby/dist/utils/eslint-rules --config .custom.eslintrc.json --max-warnings 0 \"src/**/*.{js,jsx,ts,tsx}\" \"gatsby-*.{js,jsx,ts,tsx}\"",
+    "prepare": "husky install",
     "css": "tailwindcss -i ./src/styles/index.css -o built.css"
   },
   "dependencies": {

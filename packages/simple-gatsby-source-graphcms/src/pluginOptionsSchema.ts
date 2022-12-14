@@ -78,5 +78,8 @@ export function pluginOptionsSchema(
     localCacheDir: Joi.string()
       .default(".bondgraphcmsassets")
       .description("Local cache folder to use"),
+    unusedAssetFile: Joi.string().description(
+      "Write the unused assets information to this file"
+    ),
   });
 }

@@ -17,15 +17,17 @@ export const BUILD_DESIGN = parseEnvBoolean("BUILD_DESIGN");
 export const COOKIE_NAME = process.env.COOKIE_NAME || "no-cookie-name";
 export const GOOGLE_TAG = process.env.GOOGLE_TAG || "GTM-XXXXXX";
 export const allowIndex = parseEnvBoolean("ALLOW_INDEX");
-export const siteUrl = process.env.GATSBY_SITE_URL;
+const possibleSiteUrl = process.env.GATSBY_SITE_URL;
 export const showDevPages = parseEnvBoolean("SHOW_DEV_PAGES");
 const NOT_PRODUCTION = parseEnvBoolean("NOT_PRODUCTION");
 const PRODUCTION = parseEnvBoolean("PRODUCTION");
 const PUBLISHED = "PUBLISHED" === process.env.GRAPHCMS_STAGE;
 
-if (!siteUrl) {
+if (!possibleSiteUrl) {
   reporter.panic("Site URL must be specified (GATSBY_SITE_URL)");
 }
+
+export const siteUrl = possibleSiteUrl;
 
 export const isProduction = !NOT_PRODUCTION && (PRODUCTION || PUBLISHED);
 export const articlesPerPage = 2;

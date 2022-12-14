@@ -1,4 +1,4 @@
-import { RenderBodyArgs } from "gatsby";
+import type { RenderBodyArgs } from "gatsby";
 import React from "react";
 
 const fontsToPreload: { [path: string]: string } = {

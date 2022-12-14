@@ -25,6 +25,7 @@ import { Sema } from "async-sema";
 import { ElementNode, RichTextContent } from "@graphcms/rich-text-types";
 import { cleanupRTFContent } from "./rtf";
 import { createLocalFileNode, getLocalFileName } from "./cacheGraphCmsAsset";
+import { writeFile } from "fs-extra";
 
 function isAssetUsed(
   node: IGraphCmsAsset,
@@ -98,7 +99,8 @@ async function processDownloadableAssets(
   pluginOptions: IPluginOptions,
   context: ISourcingContext,
   remoteNodes: AsyncIterable<IRemoteNode>,
-  usedAssetRemoteIds: Set<string>
+  usedAssetRemoteIds: Set<string>,
+  unusedAssets: Map<string, IGraphCmsAsset>
 ): Promise<void> {
   const { concurrentDownloads, maxImageWidth } = pluginOptions;
   const allRemoteNodes: Array<IRemoteNode> = [];
@@ -117,7 +119,8 @@ async function processDownloadableAssets(
           context,
           pluginOptions,
           remoteNode,
-          usedAssetRemoteIds
+          usedAssetRemoteIds,
+          unusedAssets
         );
       } finally {
         s.release();
@@ -130,7 +133,8 @@ async function createOrTouchAsset(
   context: ISourcingContext,
   pluginOptions: IPluginOptions,
   remoteNode: IRemoteNode,
-  usedAssetRemoteIds: Set<string>
+  usedAssetRemoteIds: Set<string>,
+  unusedAssets: Map<string, IGraphCmsAsset>
 ): Promise<void> {
   const { skipUnusedAssets, dontDownload, localCache } = pluginOptions;
   const { gatsbyApi } = context;
@@ -145,6 +149,9 @@ async function createOrTouchAsset(
   const asset = remoteNode as IGraphCmsAsset;
   const isUsed = isAssetUsed(asset, usedAssetRemoteIds);
   remoteNode.isUsed = isUsed;
+  if (!isUsed) {
+    unusedAssets.set(asset.id, asset);
+  }
 
   let reason: string | undefined;
   const contentDigest = createContentDigest(remoteNode);
@@ -636,11 +643,23 @@ export async function sourceNodes(
   await Promise.all(promises);
 
   const remoteAssets = fetchAllNodes(context, "Asset");
+  const unusedAssets = new Map<string, IGraphCmsAsset>();
+
   await processDownloadableAssets(
     pluginOptions,
     context,
     remoteAssets,
-    usedAssetRemoteIds
+    usedAssetRemoteIds,
+    unusedAssets
   );
+
+  if (pluginOptions.unusedAssetFile) {
+    const json = JSON.stringify(
+      Array.from(unusedAssets.values()),
+      undefined,
+      2
+    );
+    await writeFile(pluginOptions.unusedAssetFile, json);
+  }
   return undefined;
 }

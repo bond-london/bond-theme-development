@@ -7,6 +7,7 @@ export function buildTypography(
   config: IBondConfigurationOptions
 ): void {
   const components: CSSRuleObject = {};
+  const noMax = !Object.values(config.sizes).find(v => v.max);
   forEachObject(
     config.fontTable,
     ({
@@ -36,6 +37,11 @@ export function buildTypography(
           classes.push(`${key}:text-${size}`);
         }
       });
+      if (noMax) {
+        const last = classes.pop() as string;
+        const max = last.replace(":text-", ":text-max-");
+        classes.push(max);
+      }
       components[`.${name}`] = createApplyEntry(classes);
     }
   );

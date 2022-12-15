@@ -33,53 +33,79 @@ export function addFontSizes(
   config: IBondConfigurationOptions
 ): void {
   const results: CSSRuleObject = {};
-  const fontRatios = new Set<string>();
-  const fontSizes = new Set<number>();
+  const fontRatios = new Set<{ size: string; value: string }>();
+  const fontSizes = new Set<{ size: string; value: number }>();
   const sizes = ["default", ...Object.keys(config.sizes)];
+  const noMax = !Object.values(config.sizes).find(v => v.max);
+
   forEachObject(config.fontTable, ({ value: entry }) => {
     for (const size of sizes) {
       const value = entry[size];
       switch (typeof value) {
         case "string":
-          fontRatios.add(value);
+          fontRatios.add({ size, value });
           break;
         case "number":
-          fontSizes.add(value);
+          fontSizes.add({ size, value });
           break;
       }
     }
   });
-  fontRatios.forEach(fontSize => {
+  fontRatios.forEach(({ size, value: fontRatio }) => {
     const { pixels, lineHeightPixels, name } =
-      calculateFontAndLineSizePixels(fontSize);
-    const sizeRem = calculateRemSize(pixels);
-    const lineHeightRem = calculateRemSize(lineHeightPixels);
-    const bottomFontOffsetRem = calculateRemSize(
-      (lineHeightPixels - pixels) / 2
+      calculateFontAndLineSizePixels(fontRatio);
+    addFontEntry(
+      results,
+      name,
+      pixels,
+      lineHeightPixels,
+      noMax ? config.sizes[size]?.breakpoint : undefined
     );
-    results[`.text-${name}`] = {
-      "font-size": sizeRem,
-      "line-height": lineHeightRem,
-      "--bond-line-height": lineHeightRem,
-      "--bond-font-size": sizeRem,
-      "--bond-bottom-font-offset": bottomFontOffsetRem,
-    };
   });
 
   const lineHeight = config.lineHeight || 1;
-  fontSizes.forEach(size => {
-    const sizeRem = calculateRemSize(size);
-    const lineHeightRem = calculateRemSize(size * lineHeight);
-    const bottomFontOffsetRem = calculateRemSize(
-      (size * lineHeight - size) / 2
+  fontSizes.forEach(({ size, value: fontSize }) => {
+    addFontEntry(
+      results,
+      `${fontSize}`,
+      fontSize,
+      fontSize * lineHeight,
+      noMax ? config.sizes[size]?.breakpoint : undefined
     );
-    results[`.text-${size}`] = {
-      "font-size": sizeRem,
-      "line-height": lineHeightRem,
-      "--bond-line-height": lineHeightRem,
-      "--bond-font-size": sizeRem,
-      "--bond-bottom-font-offset": bottomFontOffsetRem,
-    };
   });
   addUtilities(results);
+}
+
+function addFontEntry(
+  results: CSSRuleObject,
+  name: string,
+  fontSizePixels: number,
+  lineHeightPixels: number,
+  screenWidthPixels?: number
+): void {
+  const sizeRem = calculateRemSize(fontSizePixels);
+  const lineHeightRem = calculateRemSize(lineHeightPixels);
+  const bottomFontOffsetRem = calculateRemSize(
+    (lineHeightPixels - fontSizePixels) / 2
+  );
+  results[`.text-${name}`] = {
+    "font-size": sizeRem,
+    "line-height": lineHeightRem,
+    "--bond-line-height": lineHeightRem,
+    "--bond-font-size": sizeRem,
+    "--bond-bottom-font-offset": bottomFontOffsetRem,
+  };
+  if (screenWidthPixels) {
+    const ratio = (fontSizePixels / screenWidthPixels) * 100;
+    const lineHeightRatio = (lineHeightPixels / screenWidthPixels) * 100;
+    const bottomFontOffsetRatio =
+      ((lineHeightPixels - fontSizePixels) / 2 / screenWidthPixels) * 100;
+    results[`.text-max-${name}`] = {
+      "font-size": `${Math.floor(ratio)}vw`,
+      "line-height": `${Math.floor(lineHeightRatio)}vw`,
+      "--bond-line-height": `${Math.floor(ratio)}vw`,
+      "--bond-font-size": `${Math.floor(ratio)}vw`,
+      "--bond-bottom-font-offset": `${Math.floor(bottomFontOffsetRatio)}vw`,
+    };
+  }
 }

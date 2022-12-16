@@ -48,8 +48,7 @@
       "breakpoint": 1440
     },
     "4k": {
-      "breakpoint": 1920,
-      "max": 1770
+      "breakpoint": 1920
     }
   },
   "lineHeight": 1.25,

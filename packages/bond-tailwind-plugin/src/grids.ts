@@ -4,6 +4,7 @@ import { IBondConfigurationOptions } from ".";
 import {
   calculateNumbers,
   calculateRemSize,
+  calculateVwSize,
   createApplyEntry,
   forEachObject,
 } from "./utils";
@@ -12,6 +13,7 @@ function addContainerGrid(
   helpers: PluginAPI,
   config: IBondConfigurationOptions
 ): void {
+  const noMax = !Object.values(config.sizes).find(v => v.max);
   const { addUtilities, addComponents } = helpers;
   addUtilities({
     ".container-rows-grid": {
@@ -52,7 +54,7 @@ function addContainerGrid(
     if (cols) {
       contentGrid.push(`${prefix}grid-cols-${key}-content`);
     }
-    if (gap) {
+    if (gap || noMax) {
       const gapClassName = `${prefix}gap-x-${key}-gap`;
       contentGrid.push(gapClassName);
       gridGap.push(gapClassName);
@@ -73,16 +75,27 @@ export function buildGrid(
   addContainerGrid(helpers, config);
 }
 
+function calculateSize(
+  noMax: boolean,
+  breakpoint: number | undefined,
+  pixels: number
+): string {
+  if (!noMax) {
+    return calculateRemSize(pixels);
+  }
+  return calculateVwSize(breakpoint || 375, pixels);
+}
+
 export function buildGridSpacing(
   config: IBondConfigurationOptions
 ): CSSRuleObject {
   const results: CSSRuleObject = {};
   const maximumWidth = Math.max(
-    ...Object.values(config.sizes)
-      .filter(v => v.max)
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      .map(v => v.max!)
+    ...(Object.values(config.sizes)
+      .map(v => v.max)
+      .filter(v => v) as Array<number>)
   );
+  const noMax = !Object.values(config.sizes).find(v => v.max);
 
   const maxWidthRem = calculateRemSize(maximumWidth);
 
@@ -94,36 +107,42 @@ export function buildGridSpacing(
     config.sizes,
     ({
       key: name,
-      value: { margin: possibleMargin, gap: possibleGap, cols: possibleCols },
+      value: {
+        breakpoint,
+        margin: possibleMargin,
+        gap: possibleGap,
+        cols: possibleCols,
+      },
     }) => {
       const margin = possibleMargin || lastMargin;
       lastMargin = margin;
       const cols = (lastCols = possibleCols || lastCols);
       const gap = (lastGap = possibleGap || lastGap);
 
-      const gapRem = calculateRemSize(gap);
-      const totalGapRem = calculateRemSize(gap * (cols - 1));
-      const marginRem = calculateRemSize(margin);
-      const totalMarginRem = calculateRemSize(2 * margin);
+      const gapSize = calculateSize(noMax, breakpoint, gap);
+      console.log("gapSize", { maximumWidth, gapSize, noMax, breakpoint, gap });
+      const totalGapSize = calculateSize(noMax, breakpoint, gap * (cols - 1));
+      const marginSize = calculateSize(noMax, breakpoint, margin);
+      const totalMarginSize = calculateSize(noMax, breakpoint, 2 * margin);
       const calculateColSize =
         maximumWidth > 0
-          ? `((min((100 * var(--bond-vw)) - ${totalMarginRem}, ${maxWidthRem}) - ${totalGapRem}) / ${cols})`
+          ? `((min((100 * var(--bond-vw)) - ${totalMarginSize}, ${maxWidthRem}) - ${totalGapSize}) / ${cols})`
           : "((100 * var(--bond-vw)) - ${totalMarginRem})";
 
-      results[`${name}-gap`] = gapRem;
+      results[`${name}-gap`] = gapSize;
 
-      results[`${name}-margin`] = marginRem;
+      results[`${name}-margin`] = marginSize;
 
       results[`${name}-half-col`] = `calc(${calculateColSize} * 0.5)`;
 
       for (let i = 1; i <= cols; i++) {
         results[
           `${name}-${i}-cols`
-        ] = `calc((${calculateColSize} * ${i}) + (${gapRem} * ${i - 1}))`;
+        ] = `calc((${calculateColSize} * ${i}) + (${gapSize} * ${i - 1}))`;
 
         results[
           `${name}-${i}-gap-cols`
-        ] = `calc((${calculateColSize} * ${i}) + (${gapRem} * ${i}))`;
+        ] = `calc((${calculateColSize} * ${i}) + (${gapSize} * ${i}))`;
       }
     }
   );
@@ -134,12 +153,16 @@ export function createGridCols(
   config: IBondConfigurationOptions
 ): CSSRuleObject {
   const grids: CSSRuleObject = {};
+  const noMax = !Object.values(config.sizes).find(v => v.max);
   let lastMargin: number | undefined;
   forEachObject(
     config.sizes,
-    ({ key: name, value: { margin: possibleMargin, cols, max: maxWidth } }) => {
+    ({
+      key: name,
+      value: { breakpoint, margin: possibleMargin, cols, max: maxWidth },
+    }) => {
       const margin = possibleMargin || lastMargin || 0;
-      const marginRem = calculateRemSize(margin);
+      const marginSize = calculateSize(noMax, breakpoint, margin);
       lastMargin = margin;
       if (cols) {
         Object.assign(
@@ -148,7 +171,7 @@ export function createGridCols(
             1,
             cols,
             v => `${name}-left-${v}`,
-            v => `${marginRem} repeat(${v}, 1fr)`
+            v => `${marginSize} repeat(${v}, 1fr)`
           )
         );
         Object.assign(
@@ -157,23 +180,23 @@ export function createGridCols(
             1,
             cols,
             v => `${name}-right-${v}`,
-            v => `repeat(${v}, 1fr) ${marginRem}`
+            v => `repeat(${v}, 1fr) ${marginSize}`
           )
         );
 
         grids[
           `${name}-full`
-        ] = `${marginRem} repeat(${cols}, 1fr) ${marginRem}`;
+        ] = `${marginSize} repeat(${cols}, 1fr) ${marginSize}`;
         grids[`${name}-content`] = `repeat(${cols}, 1fr)`;
       }
       if (maxWidth) {
         grids[
           `${name}-container`
-        ] = `minmax(${marginRem},1fr) minmax(auto, ${calculateRemSize(
+        ] = `minmax(${marginSize},1fr) minmax(auto, ${calculateRemSize(
           maxWidth
-        )}) minmax(${marginRem},1fr)`;
+        )}) minmax(${marginSize},1fr)`;
       } else {
-        grids[`${name}-container`] = `${marginRem} auto ${marginRem}`;
+        grids[`${name}-container`] = `${marginSize} auto ${marginSize}`;
       }
     }
   );

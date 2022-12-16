@@ -10,6 +10,12 @@ export function calculateRemSize(pixels: number): string {
   return `${rounded}rem`;
 }
 
+export function calculateVwSize(widthPixels: number, pixels: number): string {
+  const vw = (pixels / widthPixels) * 100;
+  const rounded = Math.floor(vw * rounding) / rounding;
+  return `${rounded}vw`;
+}
+
 export function defaultKeyFn(value: string | number): string {
   return `${value}`;
 }

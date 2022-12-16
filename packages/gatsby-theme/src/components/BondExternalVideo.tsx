@@ -11,6 +11,7 @@ import { IBondSimpleVideo } from "./BondSimpleVideo";
 import { ICmsVideo } from "./BondVideo";
 import ReactPlayer from "react-player/lazy";
 import { VideoControls } from "./VideoControls";
+import { BondVideoPoster } from "./BondVideoPoster";
 
 export type IBondExternalVideo = IBondSimpleVideo & {
   external: string;
@@ -20,22 +21,18 @@ export type IBondExternalVideo = IBondSimpleVideo & {
 export function convertCmsVideoToBondExternalVideo(
   cms: ICmsVideo
 ): IBondExternalVideo {
-  const preview = cms.preview.localFile?.childGatsbyVideo?.transformed;
-
-  if (!preview) {
-    throw new Error("No preview found");
-  }
-
+  const preview = cms.preview?.localFile?.childGatsbyVideo?.transformed;
   const external = cms.external || undefined;
 
   if (!external) {
     throw new Error("No external video found");
   }
 
-  const posterFile = cms.poster?.localFile?.publicURL || undefined;
+  const posterSrc = cms.poster?.localFile?.publicURL || undefined;
 
   return {
-    videoData: posterFile ? { ...preview, poster: posterFile } : preview,
+    videoData: preview,
+    posterSrc,
     loop: cms.loop || undefined,
     external,
     dontCrop: cms.dontCrop,
@@ -44,78 +41,58 @@ export function convertCmsVideoToBondExternalVideo(
   };
 }
 
-export const BondExternalVideo: React.FC<
+const BondExternalVideoInside: React.FC<
   {
-    video: IBondExternalVideo;
-    autoLoad?: boolean;
-    videoClassName?: string;
-    videoStyle?: CSSProperties;
-    noPoster?: boolean;
+    external: string;
+    showFullRequest: boolean;
+    onFullRequested: () => void;
+    fullRequested: boolean;
+    onFullLoaded: () => void;
+    fullHasLoaded: boolean;
     playButton?: React.FC<{ playVideo?: () => void }>;
     pauseButton?: React.FC<{ pauseVideo?: () => void }>;
     muteButton?: React.FC<{ muteVideo?: () => void }>;
     unmuteButton?: React.FC<{ unmuteVideo?: () => void }>;
+    loadFull: boolean;
+    objectFit?: CSSProperties["objectFit"];
+    objectPosition?: CSSProperties["objectPosition"];
     showAudioControls?: boolean;
   } & Omit<
     VideoHTMLAttributes<HTMLVideoElement>,
     "poster" | "objectFit" | "objectPosition"
   >
-> = props => {
+> = ({
+  external,
+  showFullRequest,
+  onFullRequested,
+  fullRequested,
+  onFullLoaded,
+  fullHasLoaded,
+  playButton,
+  pauseButton,
+  muteButton,
+  unmuteButton,
+  loadFull,
+  objectFit,
+  objectPosition,
+  loop,
+  showAudioControls,
+  ...videoProps
+}) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [previewHasStarted, setPreviewHasStarted] = useState(false);
-  const [fullRequested, setFullRequested] = useState(false);
-  const [fullHasLoaded, setFullHasLoaded] = useState(false);
   const [fullHasStarted, setFullHasStarted] = useState(false);
 
-  const onPreviewHasStarted = useCallback(() => setPreviewHasStarted(true), []);
-  const onFullRequested = useCallback(() => setFullRequested(true), []);
-  const onFullLoaded = useCallback(() => setFullHasLoaded(true), []);
   const onFullStarted = useCallback(() => setFullHasStarted(true), []);
   const playVideo = useCallback(() => setIsPlaying(true), []);
   const pauseVideo = useCallback(() => setIsPlaying(false), []);
   const muteVideo = useCallback(() => setIsMuted(true), []);
   const unmuteVideo = useCallback(() => setIsMuted(false), []);
 
-  const {
-    video,
-    playButton,
-    pauseButton,
-    muteButton,
-    unmuteButton,
-    showAudioControls,
-    loop,
-    ...videoProps
-  } = props;
-  const {
-    dontCrop,
-    horizontalCropPosition,
-    verticalCropPosition,
-    external,
-    videoData,
-    loop: videoLoop,
-  } = video;
-  const { objectFit, objectPosition } = calculateCropDetails({
-    dontCrop,
-    horizontalCropPosition,
-    verticalCropPosition,
-  });
-
-  const loadFull = (props.autoLoad && previewHasStarted) || fullRequested;
-  const showFullRequest = !loadFull && !props.autoLoad && !fullRequested;
   const fullShouldPlay = isPlaying || (fullRequested && !fullHasStarted);
 
   return (
-    <GatsbyVideo
-      {...videoProps}
-      loop={true}
-      video={videoData}
-      onTimeUpdate={!previewHasStarted ? onPreviewHasStarted : undefined}
-      pause={fullHasLoaded ? true : undefined}
-      objectFit={objectFit}
-      objectPosition={objectPosition}
-      videoClassName={fullHasLoaded ? "opacity-0" : "opacity-100"}
-    >
+    <>
       {showFullRequest && (
         <VideoControls playVideo={onFullRequested} playButton={playButton} />
       )}
@@ -131,7 +108,7 @@ export const BondExternalVideo: React.FC<
           controls={false}
           playing={fullShouldPlay}
           muted={isMuted}
-          loop={loop || videoLoop}
+          loop={loop}
           playsinline={videoProps.playsInline}
         />
       )}
@@ -150,6 +127,130 @@ export const BondExternalVideo: React.FC<
           showAudioControls={showAudioControls}
         />
       )}
-    </GatsbyVideo>
+    </>
+  );
+};
+
+export const BondExternalVideo: React.FC<
+  {
+    video: IBondExternalVideo;
+    autoLoad?: boolean;
+    videoClassName?: string;
+    videoStyle?: CSSProperties;
+    noPoster?: boolean;
+    playButton?: React.FC<{ playVideo?: () => void }>;
+    pauseButton?: React.FC<{ pauseVideo?: () => void }>;
+    muteButton?: React.FC<{ muteVideo?: () => void }>;
+    unmuteButton?: React.FC<{ unmuteVideo?: () => void }>;
+    showAudioControls?: boolean;
+  } & Omit<
+    VideoHTMLAttributes<HTMLVideoElement>,
+    "poster" | "objectFit" | "objectPosition"
+  >
+> = props => {
+  const [previewHasStarted, setPreviewHasStarted] = useState(false);
+  const onPreviewHasStarted = useCallback(() => setPreviewHasStarted(true), []);
+
+  const [fullRequested, setFullRequested] = useState(false);
+  const onFullRequested = useCallback(() => setFullRequested(true), []);
+
+  const [fullHasLoaded, setFullHasLoaded] = useState(false);
+  const onFullLoaded = useCallback(() => setFullHasLoaded(true), []);
+
+  const {
+    video,
+    loop,
+    playButton,
+    pauseButton,
+    muteButton,
+    unmuteButton,
+    showAudioControls,
+    ...videoProps
+  } = props;
+  const {
+    dontCrop,
+    horizontalCropPosition,
+    verticalCropPosition,
+    external,
+    videoData,
+    loop: videoLoop,
+  } = video;
+  const { objectFit, objectPosition } = calculateCropDetails({
+    dontCrop,
+    horizontalCropPosition,
+    verticalCropPosition,
+  });
+
+  const loadFull = (props.autoLoad && previewHasStarted) || fullRequested;
+  const showFullRequest = !loadFull && !props.autoLoad && !fullRequested;
+  const posterSrc = props.noPoster
+    ? undefined
+    : props.video.posterSrc || undefined;
+
+  if (videoData) {
+    return (
+      <GatsbyVideo
+        {...videoProps}
+        data-component="Bond External Video"
+        posterSrc={posterSrc}
+        loop={true}
+        video={videoData}
+        onTimeUpdate={!previewHasStarted ? onPreviewHasStarted : undefined}
+        pause={fullHasLoaded ? true : undefined}
+        objectFit={objectFit}
+        objectPosition={objectPosition}
+        videoClassName={fullHasLoaded ? "opacity-0" : "opacity-100"}
+      >
+        <BondExternalVideoInside
+          external={external}
+          showFullRequest={showFullRequest}
+          onFullRequested={onFullRequested}
+          fullRequested={fullRequested}
+          onFullLoaded={onFullLoaded}
+          fullHasLoaded={fullHasLoaded}
+          loop={loop || videoLoop}
+          loadFull={loadFull}
+          objectFit={objectFit}
+          objectPosition={objectPosition}
+          pauseButton={pauseButton}
+          playButton={playButton}
+          muteButton={muteButton}
+          unmuteButton={unmuteButton}
+          showAudioControls={showAudioControls}
+          {...videoProps}
+        />
+      </GatsbyVideo>
+    );
+  }
+
+  return (
+    <BondVideoPoster
+      data-component="Bond External Video"
+      posterSrc={posterSrc}
+      onLoaded={onPreviewHasStarted}
+      objectFit={objectFit}
+      objectPosition={objectPosition}
+      className={videoProps.className}
+      posterClassName={fullHasLoaded ? "opacity-0" : "opacity-100"}
+    >
+      <BondExternalVideoInside
+        external={external}
+        showFullRequest={showFullRequest}
+        onFullRequested={onFullRequested}
+        fullRequested={fullRequested}
+        onFullLoaded={onFullLoaded}
+        fullHasLoaded={fullHasLoaded}
+        loop={loop || videoLoop}
+        loadFull={loadFull}
+        objectFit={objectFit}
+        objectPosition={objectPosition}
+        pauseButton={pauseButton}
+        playButton={playButton}
+        muteButton={muteButton}
+        unmuteButton={unmuteButton}
+        showAudioControls={showAudioControls}
+        {...videoProps}
+      />
+    </BondVideoPoster>
   );
 };

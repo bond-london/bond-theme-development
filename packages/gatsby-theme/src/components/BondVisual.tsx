@@ -1,3 +1,4 @@
+import { getPosterSrc } from "@bond-london/gatsby-transformer-video";
 import { IGatsbyImageData } from "gatsby-plugin-image";
 import React, {
   CSSProperties,
@@ -35,7 +36,7 @@ interface ICmsVisual {
   readonly dontCrop?: boolean | null;
   readonly verticalCropPosition?: Vertical | null;
   readonly horizontalCropPosition?: Horizontal | null;
-  readonly mainAsset: {
+  readonly mainAsset?: {
     readonly localFile: {
       readonly internal: { readonly mediaType: string | null };
       readonly childGatsbyVideo: {
@@ -51,7 +52,7 @@ interface ICmsVisual {
         readonly extracted: Record<string, unknown>;
       } | null;
     } | null;
-  };
+  } | null;
   readonly posterImage?: {
     readonly localFile: {
       readonly publicURL: string | null;
@@ -81,14 +82,18 @@ export function convertCmsVisualToBondVisual(
 ): IBondVisual | undefined {
   if (!cms) return undefined;
 
-  const image = cms.mainAsset.localFile?.childImageSharp?.gatsbyImageData;
-  const svg = cms.mainAsset.localFile?.childGatsbySvg?.extracted;
-  const animation = cms.mainAsset.localFile?.childGatsbyAnimation?.extracted;
-  const preview = cms.mainAsset.localFile?.childGatsbyVideo?.transformed;
+  const image = cms.mainAsset?.localFile?.childImageSharp?.gatsbyImageData;
+  const svg = cms.mainAsset?.localFile?.childGatsbySvg?.extracted;
+  const animation = cms.mainAsset?.localFile?.childGatsbyAnimation?.extracted;
+  const preview = cms.mainAsset?.localFile?.childGatsbyVideo?.transformed;
   const full = cms.fullLengthVideo?.localFile?.childGatsbyVideo?.transformed;
 
-  const posterFile = cms.posterImage?.localFile?.publicURL || undefined;
-  const videoData = posterFile ? { ...preview, poster: posterFile } : preview;
+  const posterSrc =
+    cms.posterImage?.localFile?.publicURL ||
+    getPosterSrc(preview) ||
+    getPosterSrc(full);
+
+  const videoData = preview;
   const external = cms.externalVideo || undefined;
   const {
     loop,
@@ -104,6 +109,7 @@ export function convertCmsVisualToBondVisual(
   if (external) {
     return {
       videoData,
+      posterSrc,
       external,
       dontCrop,
       verticalCropPosition,
@@ -116,6 +122,7 @@ export function convertCmsVisualToBondVisual(
   if (full) {
     return {
       videoData,
+      posterSrc,
       full,
       dontCrop,
       verticalCropPosition,
@@ -128,6 +135,7 @@ export function convertCmsVisualToBondVisual(
   if (videoData) {
     return {
       videoData,
+      posterSrc,
       dontCrop,
       verticalCropPosition,
       horizontalCropPosition,

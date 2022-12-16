@@ -18,7 +18,7 @@ export interface ICmsVideo {
   readonly dontCrop?: boolean | null;
   readonly verticalCropPosition?: Vertical | null;
   readonly horizontalCropPosition?: Horizontal | null;
-  readonly preview: ICmsVideoAsset;
+  readonly preview?: ICmsVideoAsset | null;
   readonly poster?: {
     readonly localFile: {
       readonly publicURL: string | null;
@@ -55,13 +55,20 @@ export function convertCmsVideoToBondVideo(
   cms: ICmsVideo | null
 ): IBondVideo | undefined {
   if (!cms) return undefined;
-  const preview = cms.preview.localFile?.childGatsbyVideo?.transformed;
+  const preview = cms.preview?.localFile?.childGatsbyVideo?.transformed;
 
   if (!preview) {
     throw new Error("No preview found");
   }
 
   const full = cms.full?.localFile?.childGatsbyVideo?.transformed;
+  const external = cms.external || undefined;
+  if (external && full) {
+    throw new Error("Can only have external or full, not both");
+  }
+  if (!external && !full && !preview) {
+    throw new Error("Video must have some video content!");
+  }
 
   const posterFile = cms.poster?.localFile?.publicURL || undefined;
   const videoData = posterFile ? { ...preview, poster: posterFile } : preview;
@@ -72,11 +79,6 @@ export function convertCmsVideoToBondVideo(
     verticalCropPosition,
     horizontalCropPosition,
   } = cms;
-
-  const external = cms.external || undefined;
-  if (external && full) {
-    throw new Error("Can only have external or full, not both");
-  }
 
   if (external) {
     return {

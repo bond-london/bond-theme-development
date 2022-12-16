@@ -10,9 +10,11 @@ import React, {
 import { IVisualCommon } from "../types";
 import { calculateCropDetails } from "../utils";
 import { ICmsVideo } from "./BondVideo";
+import { BondVideoPoster } from "./BondVideoPoster";
 
 export type IBondSimpleVideo = IVisualCommon & {
-  videoData: IGatsbyTransformedVideo;
+  videoData?: IGatsbyTransformedVideo;
+  posterSrc?: string | null;
   loop?: boolean | null;
   loopDelay?: number | null;
 };
@@ -20,13 +22,12 @@ export type IBondSimpleVideo = IVisualCommon & {
 export function convertCmsVideoToBondSimpleVideo(
   cms: ICmsVideo
 ): IBondSimpleVideo {
-  const preview = cms.preview.localFile?.childGatsbyVideo?.transformed;
-
-  if (!preview) {
-    throw new Error("No preview found");
-  }
+  const preview = cms.preview?.localFile?.childGatsbyVideo?.transformed;
 
   const posterFile = cms.poster?.localFile?.publicURL || undefined;
+  if (!preview && !posterFile) {
+    throw new Error("No video data");
+  }
 
   return {
     videoData: posterFile ? { ...preview, poster: posterFile } : preview,
@@ -65,16 +66,31 @@ export const BondSimpleVideo: React.FC<
     verticalCropPosition,
   });
 
+  if (videoData) {
+    return (
+      <GatsbyVideo
+        {...videoProps}
+        data-component="Bond Simple Video"
+        loop={loop || videoLoop || undefined}
+        loopDelay={loopDelay || videoLoopDelay || undefined}
+        video={videoData}
+        objectFit={objectFit}
+        objectPosition={objectPosition}
+      >
+        {children}
+      </GatsbyVideo>
+    );
+  }
+
   return (
-    <GatsbyVideo
-      {...videoProps}
-      loop={loop || videoLoop || undefined}
-      loopDelay={loopDelay || videoLoopDelay || undefined}
-      video={videoData}
+    <BondVideoPoster
+      data-component="Bond Simple Video"
+      posterSrc={videoProps.noPoster ? undefined : video.posterSrc}
+      className={videoProps.className}
       objectFit={objectFit}
       objectPosition={objectPosition}
     >
       {children}
-    </GatsbyVideo>
+    </BondVideoPoster>
   );
 };

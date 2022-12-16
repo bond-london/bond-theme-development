@@ -9,7 +9,7 @@ import React, {
 import type { IGatsbyTransformedVideo, IGatsbyVideo } from "../types";
 import { GatsbyInternalVideo } from "./GatsbyInternalVideo";
 
-function getWrapperProps({
+function getVideoWrapperProps({
   width,
   height,
   layout,
@@ -59,10 +59,18 @@ const Sizer: React.FC<{ video: IGatsbyVideo }> = ({
   return null;
 };
 
+export function getPosterSrc(
+  video: IGatsbyTransformedVideo | undefined | null
+): string | undefined {
+  const gatsbyVideo = video as unknown as IGatsbyVideo;
+  return gatsbyVideo?.poster || undefined;
+}
+
 export const GatsbyVideo: React.FC<
   PropsWithChildren<
     {
       video: IGatsbyTransformedVideo;
+      posterSrc?: string;
       noPoster?: boolean;
       loopDelay?: number;
       objectFit?: CSSProperties["objectFit"];
@@ -76,6 +84,7 @@ export const GatsbyVideo: React.FC<
   const {
     children,
     video,
+    posterSrc,
     noPoster,
     loopDelay,
     loop,
@@ -91,9 +100,9 @@ export const GatsbyVideo: React.FC<
     ...otherProps
   } = allProps;
   const videoRef = useRef<HTMLVideoElement>(null);
-  const { style: wrapperStyle, className: wrapperClassName } = getWrapperProps(
-    video as unknown as IGatsbyVideo
-  );
+  const gatsbyVideo = video as unknown as IGatsbyVideo;
+  const { style: wrapperStyle, className: wrapperClassName } =
+    getVideoWrapperProps(gatsbyVideo);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -128,22 +137,24 @@ export const GatsbyVideo: React.FC<
     }
   }, [pause]);
 
+  const poster = noPoster ? undefined : posterSrc || gatsbyVideo.poster;
+
   return (
     <div
       style={{ ...style, ...wrapperStyle }}
       className={`${wrapperClassName}${className ? ` ${className}` : ``}`}
     >
-      <Sizer video={video as unknown as IGatsbyVideo} />
+      <Sizer video={gatsbyVideo} />
       <GatsbyInternalVideo
-        video={video as unknown as IGatsbyVideo}
+        video={gatsbyVideo}
         videoRef={videoRef}
         {...otherProps}
         loop={loopDelay ? false : loop}
-        muted={!video.hasAudio || muted}
+        muted={!gatsbyVideo.hasAudio || muted}
         style={{ ...videoStyle, objectFit, objectPosition }}
         className={videoClassName}
         controls={controls}
-        poster={noPoster ? undefined : (video.poster as string | undefined)}
+        poster={poster}
       />
       {children}
     </div>

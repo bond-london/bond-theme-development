@@ -3,6 +3,7 @@ import {
   IGatsbyTransformedVideo,
   GatsbyVideo,
   GatsbyInternalVideo,
+  getPosterSrc,
 } from "@bond-london/gatsby-transformer-video";
 import { IGatsbyVideo } from "@bond-london/gatsby-transformer-video/src/types";
 import React, {
@@ -15,6 +16,7 @@ import React, {
 import { calculateCropDetails } from "../utils";
 import { IBondSimpleVideo } from "./BondSimpleVideo";
 import { ICmsVideo } from "./BondVideo";
+import { BondVideoPoster } from "./BondVideoPoster";
 import { VideoControls } from "./VideoControls";
 
 export type IBondFullVideo = IBondSimpleVideo & {
@@ -23,22 +25,22 @@ export type IBondFullVideo = IBondSimpleVideo & {
 };
 
 export function convertCmsVideoToBondFullVideo(cms: ICmsVideo): IBondFullVideo {
-  const preview = cms.preview.localFile?.childGatsbyVideo?.transformed;
+  const preview = cms.preview?.localFile?.childGatsbyVideo?.transformed;
 
   const full = cms.full?.localFile?.childGatsbyVideo?.transformed;
-
-  if (!preview) {
-    throw new Error("No preview found");
-  }
 
   if (!full) {
     throw new Error("No full video found");
   }
 
-  const posterFile = cms.poster?.localFile?.publicURL || undefined;
+  const posterSrc =
+    cms.poster?.localFile?.publicURL ||
+    getPosterSrc(preview) ||
+    getPosterSrc(full);
 
   return {
-    videoData: posterFile ? { ...preview, poster: posterFile } : preview,
+    videoData: preview,
+    posterSrc,
     full,
     loop: cms.loop || undefined,
     dontCrop: cms.dontCrop,
@@ -47,37 +49,53 @@ export function convertCmsVideoToBondFullVideo(cms: ICmsVideo): IBondFullVideo {
   };
 }
 
-export const BondFullVideo: React.FC<
+const BondFullVideoInside: React.FC<
   {
-    video: IBondFullVideo;
-    autoLoad?: boolean;
-    videoClassName?: string;
-    videoStyle?: CSSProperties;
-    noPoster?: boolean;
+    full: IGatsbyVideo;
+    showFullRequest: boolean;
+    onFullRequested: () => void;
+    fullRequested: boolean;
+    onFullLoaded: () => void;
+    fullHasLoaded: boolean;
     playButton?: React.FC<{ playVideo?: () => void }>;
     pauseButton?: React.FC<{ pauseVideo?: () => void }>;
     muteButton?: React.FC<{ muteVideo?: () => void }>;
     unmuteButton?: React.FC<{ unmuteVideo?: () => void }>;
+    loadFull: boolean;
+    objectFit?: CSSProperties["objectFit"];
+    objectPosition?: CSSProperties["objectPosition"];
     showAudioControls?: boolean;
   } & Omit<
     VideoHTMLAttributes<HTMLVideoElement>,
     "poster" | "objectFit" | "objectPosition"
   >
-> = props => {
-  const [isPlaying, setIsPlaying] = useState(false);
+> = ({
+  full,
+  showFullRequest,
+  onFullRequested,
+  fullRequested,
+  onFullLoaded,
+  fullHasLoaded,
+  playButton,
+  pauseButton,
+  muteButton,
+  unmuteButton,
+  loadFull,
+  objectFit,
+  objectPosition,
+  loop,
+  showAudioControls,
+  ...videoProps
+}) => {
+  const fullVideoRef = useRef<HTMLVideoElement>(null);
+
   const [isMuted, setIsMuted] = useState(false);
-  const [previewHasStarted, setPreviewHasStarted] = useState(false);
-  const [fullRequested, setFullRequested] = useState(false);
-  const [fullHasLoaded, setFullHasLoaded] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [fullHasStarted, setFullHasStarted] = useState(false);
 
-  const onPreviewHasStarted = useCallback(() => setPreviewHasStarted(true), []);
-  const onFullRequested = useCallback(() => setFullRequested(true), []);
-  const onFullLoaded = useCallback(() => setFullHasLoaded(true), []);
   const onFullTimeUpdate = useCallback(() => setFullHasStarted(true), []);
   const onFullEnded = useCallback(() => setIsPlaying(false), []);
   const onPlaying = useCallback(() => setIsPlaying(true), []);
-  const fullVideoRef = useRef<HTMLVideoElement>(null);
 
   const playVideo = useCallback(() => {
     fullVideoRef.current
@@ -106,44 +124,8 @@ export const BondFullVideo: React.FC<
     }
   }, [fullVideoRef]);
 
-  const {
-    video,
-    playButton,
-    pauseButton,
-    muteButton,
-    unmuteButton,
-    showAudioControls,
-    loop,
-    ...videoProps
-  } = props;
-  const {
-    dontCrop,
-    horizontalCropPosition,
-    verticalCropPosition,
-    full,
-    videoData,
-    loop: videoLoop,
-  } = video;
-  const { objectFit, objectPosition } = calculateCropDetails({
-    dontCrop,
-    horizontalCropPosition,
-    verticalCropPosition,
-  });
-
-  const loadFull = (props.autoLoad && previewHasStarted) || fullRequested;
-  const showFullRequest = !loadFull && !props.autoLoad && !fullRequested;
-
   return (
-    <GatsbyVideo
-      {...videoProps}
-      loop={true}
-      video={videoData}
-      onTimeUpdate={!previewHasStarted ? onPreviewHasStarted : undefined}
-      pause={fullHasLoaded ? true : undefined}
-      objectFit={objectFit}
-      objectPosition={objectPosition}
-      videoClassName={fullHasLoaded ? "opacity-0" : "opacity-100"}
-    >
+    <>
       {showFullRequest && (
         <VideoControls playVideo={onFullRequested} playButton={playButton} />
       )}
@@ -158,7 +140,7 @@ export const BondFullVideo: React.FC<
           onTimeUpdate={onFullTimeUpdate}
           className={fullHasStarted ? "opacity-100" : "opacity-0"}
           onEnded={onFullEnded}
-          loop={loop || videoLoop}
+          loop={loop}
           playsInline={videoProps.playsInline}
         />
       )}
@@ -177,6 +159,129 @@ export const BondFullVideo: React.FC<
           showAudioControls={showAudioControls}
         />
       )}
-    </GatsbyVideo>
+    </>
+  );
+};
+
+export const BondFullVideo: React.FC<
+  {
+    video: IBondFullVideo;
+    autoLoad?: boolean;
+    videoClassName?: string;
+    videoStyle?: CSSProperties;
+    noPoster?: boolean;
+    posterSrc?: string;
+    playButton?: React.FC<{ playVideo?: () => void }>;
+    pauseButton?: React.FC<{ pauseVideo?: () => void }>;
+    muteButton?: React.FC<{ muteVideo?: () => void }>;
+    unmuteButton?: React.FC<{ unmuteVideo?: () => void }>;
+    showAudioControls?: boolean;
+  } & Omit<
+    VideoHTMLAttributes<HTMLVideoElement>,
+    "poster" | "objectFit" | "objectPosition"
+  >
+> = props => {
+  const [previewHasStarted, setPreviewHasStarted] = useState(false);
+  const onPreviewHasStarted = useCallback(() => setPreviewHasStarted(true), []);
+
+  const [fullRequested, setFullRequested] = useState(false);
+  const onFullRequested = useCallback(() => setFullRequested(true), []);
+
+  const [fullHasLoaded, setFullHasLoaded] = useState(false);
+  const onFullLoaded = useCallback(() => setFullHasLoaded(true), []);
+
+  const {
+    video,
+    loop,
+    playButton,
+    pauseButton,
+    muteButton,
+    unmuteButton,
+    showAudioControls,
+    ...videoProps
+  } = props;
+  const {
+    dontCrop,
+    horizontalCropPosition,
+    verticalCropPosition,
+    full,
+    videoData,
+    loop: videoLoop,
+  } = video;
+  const { objectFit, objectPosition } = calculateCropDetails({
+    dontCrop,
+    horizontalCropPosition,
+    verticalCropPosition,
+  });
+
+  const loadFull = (props.autoLoad && previewHasStarted) || fullRequested;
+  const showFullRequest = !loadFull && !props.autoLoad && !fullRequested;
+  const posterSrc = props.noPoster ? undefined : props.posterSrc;
+
+  if (videoData) {
+    return (
+      <GatsbyVideo
+        data-component="Bond Full Video"
+        {...videoProps}
+        posterSrc={posterSrc}
+        loop={true}
+        video={videoData}
+        onTimeUpdate={!previewHasStarted ? onPreviewHasStarted : undefined}
+        pause={fullHasLoaded ? true : undefined}
+        objectFit={objectFit}
+        objectPosition={objectPosition}
+        videoClassName={fullHasLoaded ? "opacity-0" : "opacity-100"}
+      >
+        <BondFullVideoInside
+          full={full as unknown as IGatsbyVideo}
+          showFullRequest={showFullRequest}
+          onFullRequested={onFullRequested}
+          fullRequested={fullRequested}
+          onFullLoaded={onFullLoaded}
+          fullHasLoaded={fullHasLoaded}
+          loop={loop || videoLoop}
+          loadFull={loadFull}
+          objectFit={objectFit}
+          objectPosition={objectPosition}
+          pauseButton={pauseButton}
+          playButton={playButton}
+          muteButton={muteButton}
+          unmuteButton={unmuteButton}
+          showAudioControls={showAudioControls}
+          {...videoProps}
+        />
+      </GatsbyVideo>
+    );
+  }
+
+  return (
+    <BondVideoPoster
+      data-component="Bond Full Video no preview"
+      posterSrc={posterSrc}
+      onLoaded={onPreviewHasStarted}
+      objectFit={objectFit}
+      objectPosition={objectPosition}
+      className={videoProps.className}
+      posterClassName={fullHasLoaded ? "opacity-0" : "opacity-100"}
+    >
+      <BondFullVideoInside
+        full={full as unknown as IGatsbyVideo}
+        showFullRequest={showFullRequest}
+        onFullRequested={onFullRequested}
+        fullRequested={fullRequested}
+        onFullLoaded={onFullLoaded}
+        fullHasLoaded={fullHasLoaded}
+        loop={loop || videoLoop}
+        loadFull={loadFull}
+        objectFit={objectFit}
+        objectPosition={objectPosition}
+        pauseButton={pauseButton}
+        playButton={playButton}
+        muteButton={muteButton}
+        unmuteButton={unmuteButton}
+        showAudioControls={showAudioControls}
+        {...videoProps}
+      />
+    </BondVideoPoster>
   );
 };

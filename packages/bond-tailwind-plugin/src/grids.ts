@@ -120,7 +120,6 @@ export function buildGridSpacing(
       const gap = (lastGap = possibleGap || lastGap);
 
       const gapSize = calculateSize(noMax, breakpoint, gap);
-      console.log("gapSize", { maximumWidth, gapSize, noMax, breakpoint, gap });
       const totalGapSize = calculateSize(noMax, breakpoint, gap * (cols - 1));
       const marginSize = calculateSize(noMax, breakpoint, margin);
       const totalMarginSize = calculateSize(noMax, breakpoint, 2 * margin);

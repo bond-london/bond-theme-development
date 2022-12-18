@@ -22,7 +22,7 @@ import {
   ICmsImageAsset,
   isBondImage,
 } from "./BondImage";
-import { IBondSimpleVideo } from "./BondSimpleVideo";
+import { IBondSimpleVideo, IBondSubtitle } from "./BondSimpleVideo";
 import {
   BondVideo,
   convertCmsAssetToBondVideo,
@@ -82,8 +82,35 @@ export function isBondVisual(obj: unknown): obj is IBondVisual {
   return isBondImage(obj) || isBondAnimation(obj) || isBondVideo(obj);
 }
 
+export function convertSingleSubtitle(
+  asset?: {
+    readonly localFile: {
+      readonly publicURL: string | null;
+    } | null;
+  } | null,
+  label = "English",
+  isDefault = true,
+  srcLang = "en,"
+): ReadonlyArray<IBondSubtitle> | undefined {
+  const url = asset?.localFile?.publicURL || undefined;
+  if (url) {
+    return [
+      {
+        default: isDefault,
+        label,
+        src: url,
+        srcLang,
+      },
+    ];
+  }
+  return undefined;
+}
+
 export function convertCmsVisualToBondVisual(
-  cms: ICmsVisual | null
+  cms: ICmsVisual | null,
+  label = "English",
+  isDefault = true,
+  srcLang = "en,"
 ): IBondVisual | undefined {
   if (!cms) return undefined;
 
@@ -109,18 +136,12 @@ export function convertCmsVisualToBondVisual(
     name,
   } = cms;
 
-  const subtitleUrl = cms.subtitles?.localFile?.publicURL || undefined;
-  const subtitles = subtitleUrl
-    ? [
-        {
-          default: true,
-          kind: "subtitles",
-          label: "English",
-          src: subtitleUrl,
-          srcLang: "en",
-        },
-      ]
-    : undefined;
+  const subtitles = convertSingleSubtitle(
+    cms.subtitles,
+    label,
+    isDefault,
+    srcLang
+  );
 
   if (external && full)
     throw new Error("Videos can either have external or full, not both");
@@ -133,6 +154,7 @@ export function convertCmsVisualToBondVisual(
       verticalCropPosition,
       horizontalCropPosition,
       loop,
+      loopDelay,
       name,
     } as IBondExternalVideo;
   }
@@ -146,6 +168,7 @@ export function convertCmsVisualToBondVisual(
       verticalCropPosition,
       horizontalCropPosition,
       loop,
+      loopDelay,
       name,
       subtitles,
     } as IBondFullVideo;
@@ -159,6 +182,7 @@ export function convertCmsVisualToBondVisual(
       verticalCropPosition,
       horizontalCropPosition,
       loop,
+      loopDelay,
       name,
       subtitles,
     } as IBondSimpleVideo;

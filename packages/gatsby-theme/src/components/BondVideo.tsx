@@ -5,6 +5,7 @@ import { Horizontal, Vertical } from "../types";
 import { BondExternalVideo, IBondExternalVideo } from "./BondExternalVideo";
 import { BondFullVideo, IBondFullVideo } from "./BondFullVideo";
 import { BondSimpleVideo, IBondSimpleVideo } from "./BondSimpleVideo";
+import { convertSingleSubtitle } from "./BondVisual";
 
 export interface ICmsVideoAsset {
   readonly localFile: {
@@ -15,6 +16,7 @@ export interface ICmsVideoAsset {
   } | null;
 }
 export interface ICmsVideo {
+  readonly name?: string | null;
   readonly external?: string | null;
   readonly dontCrop?: boolean | null;
   readonly verticalCropPosition?: Vertical | null;
@@ -58,7 +60,10 @@ export function isBondVideo(obj: unknown): obj is IBondVideo {
 }
 
 export function convertCmsVideoToBondVideo(
-  cms: ICmsVideo | null
+  cms: ICmsVideo | null,
+  label = "English",
+  isDefault = true,
+  srcLang = "en,"
 ): IBondVideo | undefined {
   if (!cms) return undefined;
   const preview = cms.preview?.localFile?.childGatsbyVideo?.transformed;
@@ -79,6 +84,7 @@ export function convertCmsVideoToBondVideo(
 
   const videoData = preview;
   const {
+    name,
     loop,
     loopDelay,
     dontCrop,
@@ -86,16 +92,24 @@ export function convertCmsVideoToBondVideo(
     horizontalCropPosition,
   } = cms;
 
+  const subtitles = convertSingleSubtitle(
+    cms.subtitles,
+    label,
+    isDefault,
+    srcLang
+  );
+
   if (external) {
     return {
       videoData,
       posterSrc,
-      loop,
-      loopDelay,
       external,
       dontCrop,
       verticalCropPosition,
       horizontalCropPosition,
+      loop,
+      loopDelay,
+      name,
     } as IBondExternalVideo;
   }
 
@@ -103,23 +117,27 @@ export function convertCmsVideoToBondVideo(
     return {
       videoData,
       posterSrc,
-      loop,
-      loopDelay,
       full,
       dontCrop,
       verticalCropPosition,
       horizontalCropPosition,
+      loop,
+      loopDelay,
+      name,
+      subtitles,
     } as IBondFullVideo;
   }
 
   return {
     videoData,
     posterSrc,
-    loop,
-    loopDelay,
     dontCrop,
     verticalCropPosition,
     horizontalCropPosition,
+    loop,
+    loopDelay,
+    name,
+    subtitles,
   } as IBondSimpleVideo;
 }
 

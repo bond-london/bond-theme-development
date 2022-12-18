@@ -166,6 +166,11 @@ export const ConstrainedCmsVisualFragment = graphql`
     externalVideo
     loop
     loopDelay
+    subtitles {
+      localFile {
+        publicURL
+      }
+    }
   }
 `;
 
@@ -193,6 +198,11 @@ export const FullWidthCmsVisualFragment = graphql`
     externalVideo
     loop
     loopDelay
+    subtitles {
+      localFile {
+        publicURL
+      }
+    }
   }
 `;
 
@@ -383,6 +393,11 @@ export const ConstrainedCmsVisualComponentFragment = graphql`
     externalVideo
     loop
     loopDelay
+    subtitles {
+      localFile {
+        publicURL
+      }
+    }
   }
 `;
 
@@ -410,6 +425,11 @@ export const FullWidthCmsVisualComponentFragment = graphql`
     externalVideo
     loop
     loopDelay
+    subtitles {
+      localFile {
+        publicURL
+      }
+    }
   }
 `;
 

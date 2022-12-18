@@ -9,7 +9,7 @@ import React, {
 import type { IGatsbyTransformedVideo, IGatsbyVideo } from "../types";
 import { GatsbyInternalVideo } from "./GatsbyInternalVideo";
 
-function getVideoWrapperProps({
+export function getVideoWrapperProps({
   width,
   height,
   layout,
@@ -30,9 +30,9 @@ function getVideoWrapperProps({
   return { className, style };
 }
 
-const Sizer: React.FC<{ video: IGatsbyVideo }> = ({
-  video: { width, height, layout },
-}) => {
+export const VideoSizer: React.FC<{
+  video: IGatsbyVideo;
+}> = ({ video: { width, height, layout } }) => {
   if (layout === "fullWidth") {
     return (
       <div aria-hidden style={{ paddingTop: `${(height / width) * 100}%` }} />
@@ -144,7 +144,7 @@ export const GatsbyVideo: React.FC<
       style={{ ...style, ...wrapperStyle }}
       className={`${wrapperClassName}${className ? ` ${className}` : ``}`}
     >
-      <Sizer video={gatsbyVideo} />
+      <VideoSizer video={gatsbyVideo} />
       <GatsbyInternalVideo
         video={gatsbyVideo}
         videoRef={videoRef}

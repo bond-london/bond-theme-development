@@ -1,6 +1,7 @@
 import {
   IGatsbyTransformedVideo,
   GatsbyVideo,
+  getPosterSrc,
 } from "@bond-london/gatsby-transformer-video";
 import React, {
   CSSProperties,
@@ -12,11 +13,19 @@ import { calculateCropDetails } from "../utils";
 import { ICmsVideo } from "./BondVideo";
 import { BondVideoPoster } from "./BondVideoPoster";
 
+export interface IBondSubtitle {
+  default?: boolean | undefined;
+  label?: string | undefined;
+  src?: string | undefined;
+  srcLang?: string | undefined;
+}
+
 export type IBondSimpleVideo = IVisualCommon & {
   videoData?: IGatsbyTransformedVideo;
   posterSrc?: string | null;
   loop?: boolean | null;
   loopDelay?: number | null;
+  subtitles?: ReadonlyArray<IBondSubtitle>;
 };
 
 export function convertCmsVideoToBondSimpleVideo(
@@ -24,13 +33,14 @@ export function convertCmsVideoToBondSimpleVideo(
 ): IBondSimpleVideo {
   const preview = cms.preview?.localFile?.childGatsbyVideo?.transformed;
 
-  const posterFile = cms.poster?.localFile?.publicURL || undefined;
-  if (!preview && !posterFile) {
+  const posterSrc = cms.poster?.localFile?.publicURL || getPosterSrc(preview);
+  if (!preview && !posterSrc) {
     throw new Error("No video data");
   }
 
   return {
-    videoData: posterFile ? { ...preview, poster: posterFile } : preview,
+    videoData: preview,
+    posterSrc,
     dontCrop: cms.dontCrop,
     verticalCropPosition: cms.verticalCropPosition,
     horizontalCropPosition: cms.horizontalCropPosition,
@@ -44,6 +54,7 @@ export const BondSimpleVideo: React.FC<
       videoClassName?: string;
       videoStyle?: CSSProperties;
       noPoster?: boolean;
+      posterSrc?: string;
       loopDelay?: number | null;
     } & Omit<
       VideoHTMLAttributes<HTMLVideoElement>,
@@ -51,7 +62,15 @@ export const BondSimpleVideo: React.FC<
     >
   >
 > = props => {
-  const { children, video, loop, loopDelay, ...videoProps } = props;
+  const {
+    children,
+    video,
+    loop,
+    loopDelay,
+    noPoster,
+    posterSrc,
+    ...videoProps
+  } = props;
   const {
     dontCrop,
     horizontalCropPosition,
@@ -66,10 +85,15 @@ export const BondSimpleVideo: React.FC<
     verticalCropPosition,
   });
 
+  const realPosterSrc = noPoster
+    ? undefined
+    : posterSrc || video.posterSrc || undefined;
+
   if (videoData) {
     return (
       <GatsbyVideo
         {...videoProps}
+        posterSrc={realPosterSrc}
         data-component="Bond Simple Video"
         loop={loop || videoLoop || undefined}
         loopDelay={loopDelay || videoLoopDelay || undefined}
@@ -85,7 +109,7 @@ export const BondSimpleVideo: React.FC<
   return (
     <BondVideoPoster
       data-component="Bond Simple Video"
-      posterSrc={videoProps.noPoster ? undefined : video.posterSrc}
+      posterSrc={realPosterSrc}
       className={videoProps.className}
       objectFit={objectFit}
       objectPosition={objectPosition}

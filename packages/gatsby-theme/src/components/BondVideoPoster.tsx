@@ -1,22 +1,36 @@
+import {
+  getVideoWrapperProps,
+  IGatsbyTransformedVideo,
+  VideoSizer,
+} from "@bond-london/gatsby-transformer-video";
+import { IGatsbyVideo } from "@bond-london/gatsby-transformer-video/src/types";
 import classNames from "classnames";
 import React, { PropsWithChildren, useEffect, CSSProperties } from "react";
 
 const BondVideoPosterNoPoster: React.FC<
   PropsWithChildren<{
     className?: string;
+    forVideo?: IGatsbyVideo;
     onLoaded?: () => void;
+    style?: CSSProperties;
   }>
-> = ({ children, onLoaded, className, ...props }) => {
+> = ({ children, onLoaded, className, forVideo, style, ...props }) => {
   useEffect(() => onLoaded?.(), [onLoaded]);
+  const videoWrapperProps = forVideo
+    ? getVideoWrapperProps(forVideo)
+    : undefined;
 
   return (
     <div
       {...props}
+      style={{ ...style, ...videoWrapperProps?.style }}
       className={classNames(
-        "gatsby-video-wrapper aspect-w-4 aspect-h-3",
+        !forVideo && " aspect-w-4 aspect-h-3",
+        videoWrapperProps?.className,
         className
       )}
     >
+      {forVideo && <VideoSizer video={forVideo} />}
       {children}
     </div>
   );
@@ -29,7 +43,9 @@ const BondVideoPosterWithPoster: React.FC<
     posterClassName?: string;
     objectFit?: CSSProperties["objectFit"];
     objectPosition?: CSSProperties["objectPosition"];
+    forVideo?: IGatsbyVideo;
     onLoaded?: () => void;
+    style?: CSSProperties;
   }>
 > = ({
   children,
@@ -39,20 +55,32 @@ const BondVideoPosterWithPoster: React.FC<
   posterClassName,
   objectFit,
   objectPosition,
+  forVideo,
+  style,
   ...props
-}) => (
-  <div className={classNames("gatsby-video-wrapper", className)} {...props}>
-    <img
-      src={posterSrc}
-      onLoad={onLoaded}
-      onError={onLoaded}
-      alt=""
-      className={posterClassName}
-      style={{ objectFit, objectPosition }}
-    />
-    {children}
-  </div>
-);
+}) => {
+  const videoWrapperProps = forVideo
+    ? getVideoWrapperProps(forVideo)
+    : undefined;
+  return (
+    <div
+      {...props}
+      style={{ ...style, ...videoWrapperProps?.style }}
+      className={classNames(videoWrapperProps?.className, className)}
+    >
+      {forVideo && <VideoSizer video={forVideo} />}
+      <img
+        src={posterSrc}
+        onLoad={onLoaded}
+        onError={onLoaded}
+        alt=""
+        className={classNames("inside", posterClassName)}
+        style={{ objectFit, objectPosition }}
+      />
+      {children}
+    </div>
+  );
+};
 
 export const BondVideoPoster: React.FC<
   PropsWithChildren<{
@@ -62,6 +90,7 @@ export const BondVideoPoster: React.FC<
     objectFit?: CSSProperties["objectFit"];
     objectPosition?: CSSProperties["objectPosition"];
     onLoaded?: () => void;
+    forVideo?: IGatsbyTransformedVideo;
   }>
 > = ({
   children,
@@ -71,8 +100,11 @@ export const BondVideoPoster: React.FC<
   posterClassName,
   objectFit,
   objectPosition,
+  forVideo,
   ...props
 }) => {
+  const forGatsbyVideo = forVideo as unknown as IGatsbyVideo;
+
   if (posterSrc) {
     return (
       <BondVideoPosterWithPoster
@@ -82,6 +114,7 @@ export const BondVideoPoster: React.FC<
         posterClassName={posterClassName}
         objectFit={objectFit}
         objectPosition={objectPosition}
+        forVideo={forGatsbyVideo}
         {...props}
       >
         {children}
@@ -92,6 +125,7 @@ export const BondVideoPoster: React.FC<
     <BondVideoPosterNoPoster
       onLoaded={onLoaded}
       className={className}
+      forVideo={forGatsbyVideo}
       {...props}
     >
       {children}

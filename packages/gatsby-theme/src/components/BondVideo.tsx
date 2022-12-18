@@ -1,3 +1,4 @@
+import { getPosterSrc } from "@bond-london/gatsby-transformer-video";
 import React from "react";
 import { CSSProperties, VideoHTMLAttributes } from "react";
 import { Horizontal, Vertical } from "../types";
@@ -27,6 +28,11 @@ export interface ICmsVideo {
   readonly full?: ICmsVideoAsset | null;
   readonly loop?: boolean | null;
   readonly loopDelay?: number | null;
+  readonly subtitles?: {
+    readonly localFile: {
+      readonly publicURL: string | null;
+    } | null;
+  } | null;
 }
 
 export type IBondVideo = IBondSimpleVideo | IBondFullVideo | IBondExternalVideo;
@@ -57,10 +63,6 @@ export function convertCmsVideoToBondVideo(
   if (!cms) return undefined;
   const preview = cms.preview?.localFile?.childGatsbyVideo?.transformed;
 
-  if (!preview) {
-    throw new Error("No preview found");
-  }
-
   const full = cms.full?.localFile?.childGatsbyVideo?.transformed;
   const external = cms.external || undefined;
   if (external && full) {
@@ -70,8 +72,12 @@ export function convertCmsVideoToBondVideo(
     throw new Error("Video must have some video content!");
   }
 
-  const posterFile = cms.poster?.localFile?.publicURL || undefined;
-  const videoData = posterFile ? { ...preview, poster: posterFile } : preview;
+  const posterSrc =
+    cms.poster?.localFile?.publicURL ||
+    getPosterSrc(preview) ||
+    getPosterSrc(full);
+
+  const videoData = preview;
   const {
     loop,
     loopDelay,
@@ -83,6 +89,7 @@ export function convertCmsVideoToBondVideo(
   if (external) {
     return {
       videoData,
+      posterSrc,
       loop,
       loopDelay,
       external,
@@ -95,6 +102,7 @@ export function convertCmsVideoToBondVideo(
   if (full) {
     return {
       videoData,
+      posterSrc,
       loop,
       loopDelay,
       full,
@@ -106,6 +114,7 @@ export function convertCmsVideoToBondVideo(
 
   return {
     videoData,
+    posterSrc,
     loop,
     loopDelay,
     dontCrop,
@@ -140,6 +149,7 @@ export const BondVideo: React.FC<
     videoClassName?: string;
     videoStyle?: CSSProperties;
     noPoster?: boolean;
+    posterSrc?: string;
     playButton?: React.FC<{ playVideo?: () => void }>;
     pauseButton?: React.FC<{ pauseVideo?: () => void }>;
     muteButton?: React.FC<{ muteVideo?: () => void }>;

@@ -1,5 +1,6 @@
 import React, {
   DetailedHTMLProps,
+  PropsWithChildren,
   RefObject,
   VideoHTMLAttributes,
 } from "react";
@@ -20,14 +21,19 @@ function calculateVideoSizes({ width, height, layout }: IGatsbyVideo): {
 }
 
 export const GatsbyInternalVideo: React.FC<
-  {
-    video: IGatsbyVideo;
-    videoRef?: RefObject<HTMLVideoElement>;
-  } & Omit<
-    DetailedHTMLProps<VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement>,
-    "src" | "ref" | "width" | "height"
+  PropsWithChildren<
+    {
+      video: IGatsbyVideo;
+      videoRef?: RefObject<HTMLVideoElement>;
+    } & Omit<
+      DetailedHTMLProps<
+        VideoHTMLAttributes<HTMLVideoElement>,
+        HTMLVideoElement
+      >,
+      "src" | "ref" | "width" | "height"
+    >
   >
-> = ({ video, videoRef, ...otherProps }) => {
+> = ({ children, video, videoRef, ...otherProps }) => {
   const { width, height } = calculateVideoSizes(
     video as unknown as IGatsbyVideo
   );
@@ -37,6 +43,7 @@ export const GatsbyInternalVideo: React.FC<
       <source type={`video/webm`} src={video.webm} />
       <source type={`video/mp4; codecs="hvc1"`} src={video.mp4Hvc1} />
       <source type={`video/mp4; codecs="avc1"`} src={video.mp4Avc1} />
+      {children}
     </video>
   );
 };

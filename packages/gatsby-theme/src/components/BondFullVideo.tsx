@@ -14,7 +14,7 @@ import React, {
   VideoHTMLAttributes,
 } from "react";
 import { calculateCropDetails } from "../utils";
-import { IBondSimpleVideo } from "./BondSimpleVideo";
+import { IBondSimpleVideo, IBondSubtitle } from "./BondSimpleVideo";
 import { ICmsVideo } from "./BondVideo";
 import { BondVideoPoster } from "./BondVideoPoster";
 import { VideoControls } from "./VideoControls";
@@ -38,9 +38,21 @@ export function convertCmsVideoToBondFullVideo(cms: ICmsVideo): IBondFullVideo {
     getPosterSrc(preview) ||
     getPosterSrc(full);
 
+  const subtitles = cms.subtitles?.localFile?.publicURL || undefined;
+
   return {
     videoData: preview,
     posterSrc,
+    subtitles: subtitles
+      ? [
+          {
+            default: true,
+            label: "English",
+            src: subtitles,
+            srcLang: "en",
+          },
+        ]
+      : undefined,
     full,
     loop: cms.loop || undefined,
     dontCrop: cms.dontCrop,
@@ -57,6 +69,8 @@ const BondFullVideoInside: React.FC<
     fullRequested: boolean;
     onFullLoaded: () => void;
     fullHasLoaded: boolean;
+    onFullStarted: () => void;
+    fullHasStarted: boolean;
     playButton?: React.FC<{ playVideo?: () => void }>;
     pauseButton?: React.FC<{ pauseVideo?: () => void }>;
     muteButton?: React.FC<{ muteVideo?: () => void }>;
@@ -65,6 +79,7 @@ const BondFullVideoInside: React.FC<
     objectFit?: CSSProperties["objectFit"];
     objectPosition?: CSSProperties["objectPosition"];
     showAudioControls?: boolean;
+    subtitles?: ReadonlyArray<IBondSubtitle>;
   } & Omit<
     VideoHTMLAttributes<HTMLVideoElement>,
     "poster" | "objectFit" | "objectPosition"
@@ -76,6 +91,8 @@ const BondFullVideoInside: React.FC<
   fullRequested,
   onFullLoaded,
   fullHasLoaded,
+  onFullStarted,
+  fullHasStarted,
   playButton,
   pauseButton,
   muteButton,
@@ -83,17 +100,16 @@ const BondFullVideoInside: React.FC<
   loadFull,
   objectFit,
   objectPosition,
-  loop,
   showAudioControls,
+  subtitles,
+  controls,
   ...videoProps
 }) => {
   const fullVideoRef = useRef<HTMLVideoElement>(null);
 
   const [isMuted, setIsMuted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [fullHasStarted, setFullHasStarted] = useState(false);
 
-  const onFullTimeUpdate = useCallback(() => setFullHasStarted(true), []);
   const onFullEnded = useCallback(() => setIsPlaying(false), []);
   const onPlaying = useCallback(() => setIsPlaying(true), []);
 
@@ -124,6 +140,18 @@ const BondFullVideoInside: React.FC<
     }
   }, [fullVideoRef]);
 
+  const onTimeUpdate = useCallback(
+    (event: React.SyntheticEvent<HTMLVideoElement>) => {
+      const video = event.currentTarget as HTMLVideoElement;
+      if (video.currentTime > 0) {
+        onFullStarted();
+      }
+    },
+    [onFullStarted]
+  );
+
+  const showOurControls = subtitles ? false : controls;
+
   return (
     <>
       {showFullRequest && (
@@ -137,14 +165,25 @@ const BondFullVideoInside: React.FC<
           videoRef={fullVideoRef}
           onCanPlay={onFullLoaded}
           onPlaying={onPlaying}
-          onTimeUpdate={onFullTimeUpdate}
+          onTimeUpdate={onTimeUpdate}
           className={fullHasStarted ? "opacity-100" : "opacity-0"}
           onEnded={onFullEnded}
-          loop={loop}
-          playsInline={videoProps.playsInline}
-        />
+          controls={!showOurControls}
+          {...videoProps}
+        >
+          {subtitles?.map(s => (
+            <track
+              key={s.srcLang}
+              label={s.label}
+              kind="subtitles"
+              srcLang={s.srcLang}
+              src={s.src}
+              default={s.default}
+            />
+          ))}
+        </GatsbyInternalVideo>
       )}
-      {fullHasLoaded && (
+      {fullHasLoaded && showOurControls && (
         <VideoControls
           isPlaying={isPlaying}
           isMuted={isMuted}
@@ -190,6 +229,9 @@ export const BondFullVideo: React.FC<
   const [fullHasLoaded, setFullHasLoaded] = useState(false);
   const onFullLoaded = useCallback(() => setFullHasLoaded(true), []);
 
+  const [fullHasStarted, setFullHasStarted] = useState(false);
+  const onFullStarted = useCallback(() => setFullHasStarted(true), []);
+
   const {
     video,
     loop,
@@ -198,6 +240,8 @@ export const BondFullVideo: React.FC<
     muteButton,
     unmuteButton,
     showAudioControls,
+    noPoster,
+    posterSrc,
     ...videoProps
   } = props;
   const {
@@ -205,8 +249,9 @@ export const BondFullVideo: React.FC<
     horizontalCropPosition,
     verticalCropPosition,
     full,
-    videoData,
+    videoData: preview,
     loop: videoLoop,
+    subtitles,
   } = video;
   const { objectFit, objectPosition } = calculateCropDetails({
     dontCrop,
@@ -216,21 +261,23 @@ export const BondFullVideo: React.FC<
 
   const loadFull = (props.autoLoad && previewHasStarted) || fullRequested;
   const showFullRequest = !loadFull && !props.autoLoad && !fullRequested;
-  const posterSrc = props.noPoster ? undefined : props.posterSrc;
+  const realPosterSrc = noPoster
+    ? undefined
+    : posterSrc || video.posterSrc || undefined;
 
-  if (videoData) {
+  if (preview) {
     return (
       <GatsbyVideo
         data-component="Bond Full Video"
         {...videoProps}
-        posterSrc={posterSrc}
+        posterSrc={realPosterSrc}
         loop={true}
-        video={videoData}
+        video={preview}
         onTimeUpdate={!previewHasStarted ? onPreviewHasStarted : undefined}
         pause={fullHasLoaded ? true : undefined}
         objectFit={objectFit}
         objectPosition={objectPosition}
-        videoClassName={fullHasLoaded ? "opacity-0" : "opacity-100"}
+        videoClassName={fullHasStarted ? "opacity-0" : "opacity-100"}
       >
         <BondFullVideoInside
           full={full as unknown as IGatsbyVideo}
@@ -239,6 +286,8 @@ export const BondFullVideo: React.FC<
           fullRequested={fullRequested}
           onFullLoaded={onFullLoaded}
           fullHasLoaded={fullHasLoaded}
+          onFullStarted={onFullStarted}
+          fullHasStarted={fullHasStarted}
           loop={loop || videoLoop}
           loadFull={loadFull}
           objectFit={objectFit}
@@ -248,6 +297,7 @@ export const BondFullVideo: React.FC<
           muteButton={muteButton}
           unmuteButton={unmuteButton}
           showAudioControls={showAudioControls}
+          subtitles={subtitles}
           {...videoProps}
         />
       </GatsbyVideo>
@@ -257,12 +307,13 @@ export const BondFullVideo: React.FC<
   return (
     <BondVideoPoster
       data-component="Bond Full Video no preview"
-      posterSrc={posterSrc}
+      posterSrc={realPosterSrc}
       onLoaded={onPreviewHasStarted}
       objectFit={objectFit}
       objectPosition={objectPosition}
       className={videoProps.className}
-      posterClassName={fullHasLoaded ? "opacity-0" : "opacity-100"}
+      posterClassName={fullHasStarted ? "opacity-0" : "opacity-100"}
+      forVideo={full}
     >
       <BondFullVideoInside
         full={full as unknown as IGatsbyVideo}
@@ -271,6 +322,8 @@ export const BondFullVideo: React.FC<
         fullRequested={fullRequested}
         onFullLoaded={onFullLoaded}
         fullHasLoaded={fullHasLoaded}
+        onFullStarted={onFullStarted}
+        fullHasStarted={fullHasStarted}
         loop={loop || videoLoop}
         loadFull={loadFull}
         objectFit={objectFit}
@@ -280,6 +333,7 @@ export const BondFullVideo: React.FC<
         muteButton={muteButton}
         unmuteButton={unmuteButton}
         showAudioControls={showAudioControls}
+        subtitles={subtitles}
         {...videoProps}
       />
     </BondVideoPoster>

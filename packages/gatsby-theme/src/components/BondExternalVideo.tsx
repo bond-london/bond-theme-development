@@ -1,5 +1,8 @@
 "use client";
-import { GatsbyVideo } from "@bond-london/gatsby-transformer-video";
+import {
+  GatsbyVideo,
+  getPosterSrc,
+} from "@bond-london/gatsby-transformer-video";
 import React, {
   CSSProperties,
   useCallback,
@@ -28,7 +31,7 @@ export function convertCmsVideoToBondExternalVideo(
     throw new Error("No external video found");
   }
 
-  const posterSrc = cms.poster?.localFile?.publicURL || undefined;
+  const posterSrc = cms.poster?.localFile?.publicURL || getPosterSrc(preview);
 
   return {
     videoData: preview,
@@ -138,6 +141,7 @@ export const BondExternalVideo: React.FC<
     videoClassName?: string;
     videoStyle?: CSSProperties;
     noPoster?: boolean;
+    posterSrc?: string;
     playButton?: React.FC<{ playVideo?: () => void }>;
     pauseButton?: React.FC<{ pauseVideo?: () => void }>;
     muteButton?: React.FC<{ muteVideo?: () => void }>;
@@ -165,6 +169,8 @@ export const BondExternalVideo: React.FC<
     muteButton,
     unmuteButton,
     showAudioControls,
+    noPoster,
+    posterSrc,
     ...videoProps
   } = props;
   const {
@@ -183,16 +189,16 @@ export const BondExternalVideo: React.FC<
 
   const loadFull = (props.autoLoad && previewHasStarted) || fullRequested;
   const showFullRequest = !loadFull && !props.autoLoad && !fullRequested;
-  const posterSrc = props.noPoster
+  const realPosterSrc = noPoster
     ? undefined
-    : props.video.posterSrc || undefined;
+    : posterSrc || video.posterSrc || undefined;
 
   if (videoData) {
     return (
       <GatsbyVideo
         {...videoProps}
         data-component="Bond External Video"
-        posterSrc={posterSrc}
+        posterSrc={realPosterSrc}
         loop={true}
         video={videoData}
         onTimeUpdate={!previewHasStarted ? onPreviewHasStarted : undefined}
@@ -226,7 +232,7 @@ export const BondExternalVideo: React.FC<
   return (
     <BondVideoPoster
       data-component="Bond External Video"
-      posterSrc={posterSrc}
+      posterSrc={realPosterSrc}
       onLoaded={onPreviewHasStarted}
       objectFit={objectFit}
       objectPosition={objectPosition}

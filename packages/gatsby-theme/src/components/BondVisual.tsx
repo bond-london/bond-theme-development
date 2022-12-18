@@ -69,6 +69,11 @@ interface ICmsVisual {
   readonly externalVideo?: string | null;
   readonly loop?: boolean | null;
   readonly loopDelay?: number | null;
+  readonly subtitles?: {
+    readonly localFile: {
+      readonly publicURL: string | null;
+    } | null;
+  } | null;
 }
 
 export type IBondVisual = IBondVideo | IBondAnimation | IBondImage;
@@ -104,6 +109,19 @@ export function convertCmsVisualToBondVisual(
     name,
   } = cms;
 
+  const subtitleUrl = cms.subtitles?.localFile?.publicURL || undefined;
+  const subtitles = subtitleUrl
+    ? [
+        {
+          default: true,
+          kind: "subtitles",
+          label: "English",
+          src: subtitleUrl,
+          srcLang: "en",
+        },
+      ]
+    : undefined;
+
   if (external && full)
     throw new Error("Videos can either have external or full, not both");
   if (external) {
@@ -129,6 +147,7 @@ export function convertCmsVisualToBondVisual(
       horizontalCropPosition,
       loop,
       name,
+      subtitles,
     } as IBondFullVideo;
   }
 
@@ -141,6 +160,7 @@ export function convertCmsVisualToBondVisual(
       horizontalCropPosition,
       loop,
       name,
+      subtitles,
     } as IBondSimpleVideo;
   }
 

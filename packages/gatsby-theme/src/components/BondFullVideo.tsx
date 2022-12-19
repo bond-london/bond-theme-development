@@ -247,6 +247,7 @@ export const BondFullVideo: React.FC<
     showControls,
     noPoster,
     posterSrc,
+    muted,
     ...videoProps
   } = props;
   const {
@@ -274,6 +275,7 @@ export const BondFullVideo: React.FC<
     return (
       <GatsbyVideo
         data-component="Bond Full Video"
+        muted={muted}
         {...videoProps}
         posterSrc={realPosterSrc}
         loop={true}
@@ -294,6 +296,7 @@ export const BondFullVideo: React.FC<
           onFullStarted={onFullStarted}
           fullHasStarted={fullHasStarted}
           loop={loop || videoLoop}
+          muted={false}
           loadFull={loadFull}
           objectFit={objectFit}
           objectPosition={objectPosition}
@@ -331,6 +334,7 @@ export const BondFullVideo: React.FC<
         onFullStarted={onFullStarted}
         fullHasStarted={fullHasStarted}
         loop={loop || videoLoop}
+        muted={false}
         loadFull={loadFull}
         objectFit={objectFit}
         objectPosition={objectPosition}

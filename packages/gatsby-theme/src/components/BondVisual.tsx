@@ -255,6 +255,7 @@ export const BondVisual: React.FC<
     muteButton?: React.FC<{ muteVideo?: () => void }>;
     unmuteButton?: React.FC<{ unmuteVideo?: () => void }>;
     showAudioControls?: boolean;
+    showControls?: boolean;
     imgClassName?: string;
     imgStyle?: CSSProperties;
     onLoad?: (props: { wasCached: boolean }) => void;

@@ -173,6 +173,7 @@ export const BondVideo: React.FC<
     muteButton?: React.FC<{ muteVideo?: () => void }>;
     unmuteButton?: React.FC<{ unmuteVideo?: () => void }>;
     showAudioControls?: boolean;
+    showControls?: boolean;
   } & Omit<
     VideoHTMLAttributes<HTMLVideoElement>,
     "poster" | "objectFit" | "objectPosition"
@@ -184,7 +185,7 @@ export const BondVideo: React.FC<
   muteButton,
   unmuteButton,
   showAudioControls,
-
+  showControls,
   ...props
 }) => {
   if (isBondFullVideo(video)) {
@@ -198,6 +199,7 @@ export const BondVideo: React.FC<
         muteButton={muteButton}
         unmuteButton={unmuteButton}
         showAudioControls={showAudioControls}
+        showControls={showControls}
       />
     );
   }
@@ -212,6 +214,7 @@ export const BondVideo: React.FC<
         muteButton={muteButton}
         unmuteButton={unmuteButton}
         showAudioControls={showAudioControls}
+        showControls={showControls}
       />
     );
   }

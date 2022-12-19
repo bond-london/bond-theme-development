@@ -60,6 +60,7 @@ const BondExternalVideoInside: React.FC<
     objectFit?: CSSProperties["objectFit"];
     objectPosition?: CSSProperties["objectPosition"];
     showAudioControls?: boolean;
+    showControls?: boolean;
   } & Omit<
     VideoHTMLAttributes<HTMLVideoElement>,
     "poster" | "objectFit" | "objectPosition"
@@ -80,6 +81,8 @@ const BondExternalVideoInside: React.FC<
   objectPosition,
   loop,
   showAudioControls,
+  showControls,
+  controls,
   ...videoProps
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -108,14 +111,14 @@ const BondExternalVideoInside: React.FC<
           onPlay={onFullStarted}
           width="100%"
           height="100%"
-          controls={false}
+          controls={controls}
           playing={fullShouldPlay}
           muted={isMuted}
           loop={loop}
           playsinline={videoProps.playsInline}
         />
       )}
-      {fullHasLoaded && (
+      {fullHasLoaded && showControls && (
         <VideoControls
           isPlaying={isPlaying}
           isMuted={isMuted}
@@ -147,6 +150,7 @@ export const BondExternalVideo: React.FC<
     muteButton?: React.FC<{ muteVideo?: () => void }>;
     unmuteButton?: React.FC<{ unmuteVideo?: () => void }>;
     showAudioControls?: boolean;
+    showControls?: boolean;
   } & Omit<
     VideoHTMLAttributes<HTMLVideoElement>,
     "poster" | "objectFit" | "objectPosition"
@@ -169,6 +173,7 @@ export const BondExternalVideo: React.FC<
     muteButton,
     unmuteButton,
     showAudioControls,
+    showControls,
     noPoster,
     posterSrc,
     ...videoProps
@@ -223,6 +228,7 @@ export const BondExternalVideo: React.FC<
           muteButton={muteButton}
           unmuteButton={unmuteButton}
           showAudioControls={showAudioControls}
+          showControls={showControls}
           {...videoProps}
         />
       </GatsbyVideo>
@@ -255,6 +261,7 @@ export const BondExternalVideo: React.FC<
         muteButton={muteButton}
         unmuteButton={unmuteButton}
         showAudioControls={showAudioControls}
+        showControls={showControls}
         {...videoProps}
       />
     </BondVideoPoster>

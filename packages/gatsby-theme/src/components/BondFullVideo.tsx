@@ -79,6 +79,7 @@ const BondFullVideoInside: React.FC<
     objectFit?: CSSProperties["objectFit"];
     objectPosition?: CSSProperties["objectPosition"];
     showAudioControls?: boolean;
+    showControls?: boolean;
     subtitles?: ReadonlyArray<IBondSubtitle>;
   } & Omit<
     VideoHTMLAttributes<HTMLVideoElement>,
@@ -101,6 +102,7 @@ const BondFullVideoInside: React.FC<
   objectFit,
   objectPosition,
   showAudioControls,
+  showControls,
   subtitles,
   controls,
   ...videoProps
@@ -150,7 +152,8 @@ const BondFullVideoInside: React.FC<
     [onFullStarted]
   );
 
-  const showOurControls = subtitles ? false : controls;
+  const showOurControls = subtitles ? false : showControls;
+  const showNativeControls = subtitles ? true : controls;
 
   return (
     <>
@@ -168,7 +171,7 @@ const BondFullVideoInside: React.FC<
           onTimeUpdate={onTimeUpdate}
           className={fullHasStarted ? "opacity-100" : "opacity-0"}
           onEnded={onFullEnded}
-          controls={!showOurControls}
+          controls={showNativeControls}
           {...videoProps}
         >
           {subtitles?.map(s => (
@@ -215,6 +218,7 @@ export const BondFullVideo: React.FC<
     muteButton?: React.FC<{ muteVideo?: () => void }>;
     unmuteButton?: React.FC<{ unmuteVideo?: () => void }>;
     showAudioControls?: boolean;
+    showControls?: boolean;
   } & Omit<
     VideoHTMLAttributes<HTMLVideoElement>,
     "poster" | "objectFit" | "objectPosition"
@@ -240,6 +244,7 @@ export const BondFullVideo: React.FC<
     muteButton,
     unmuteButton,
     showAudioControls,
+    showControls,
     noPoster,
     posterSrc,
     ...videoProps
@@ -297,6 +302,7 @@ export const BondFullVideo: React.FC<
           muteButton={muteButton}
           unmuteButton={unmuteButton}
           showAudioControls={showAudioControls}
+          showControls={showControls}
           subtitles={subtitles}
           {...videoProps}
         />
@@ -333,6 +339,7 @@ export const BondFullVideo: React.FC<
         muteButton={muteButton}
         unmuteButton={unmuteButton}
         showAudioControls={showAudioControls}
+        showControls={showControls}
         subtitles={subtitles}
         {...videoProps}
       />

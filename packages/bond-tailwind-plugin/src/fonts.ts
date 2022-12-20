@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { CSSRuleObject, PluginAPI } from "tailwindcss/types/config";
 import { IBondConfigurationOptions } from ".";
-import { calculateRemSize, forEachObject } from "./utils";
+import { calculateRemSize, forEachObject, round } from "./utils";
 
 function calculateFontAndLineSizePixels(info: string): {
   pixels: number;
@@ -28,6 +28,7 @@ function calculateFontAndLineSizePixels(info: string): {
   const pixels = parseInt(info);
   return { pixels, lineHeightPixels: pixels, name: info };
 }
+
 export function addFontSizes(
   { addUtilities }: PluginAPI,
   config: IBondConfigurationOptions
@@ -101,11 +102,11 @@ function addFontEntry(
     const bottomFontOffsetRatio =
       ((lineHeightPixels - fontSizePixels) / 2 / screenWidthPixels) * 100;
     results[`.text-max-${name}`] = {
-      "font-size": `${Math.floor(ratio)}vw`,
-      "line-height": `${Math.floor(lineHeightRatio)}vw`,
-      "--bond-line-height": `${Math.floor(ratio)}vw`,
-      "--bond-font-size": `${Math.floor(ratio)}vw`,
-      "--bond-bottom-font-offset": `${Math.floor(bottomFontOffsetRatio)}vw`,
+      "font-size": `${round(ratio)}vw`,
+      "line-height": `${round(lineHeightRatio)}vw`,
+      "--bond-line-height": `${round(ratio)}vw`,
+      "--bond-font-size": `${round(ratio)}vw`,
+      "--bond-bottom-font-offset": `${round(bottomFontOffsetRatio)}vw`,
     };
   }
 }

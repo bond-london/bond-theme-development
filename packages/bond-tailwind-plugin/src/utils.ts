@@ -4,15 +4,20 @@ export const remSize = 16;
 
 export const rounding = 1000;
 
+export function round(value: number): number {
+  const rounded = Math.floor(value * rounding) / rounding;
+  return rounded;
+}
+
 export function calculateRemSize(pixels: number): string {
   const rems = pixels / remSize;
-  const rounded = Math.floor(rems * rounding) / rounding;
+  const rounded = round(rems);
   return `${rounded}rem`;
 }
 
 export function calculateVwSize(widthPixels: number, pixels: number): string {
   const vw = (pixels / widthPixels) * 100;
-  const rounded = Math.floor(vw * rounding) / rounding;
+  const rounded = round(vw);
   return `${rounded}vw`;
 }
 

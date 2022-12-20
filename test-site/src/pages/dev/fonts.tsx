@@ -1,9 +1,10 @@
 import { IPageMetadata, Section } from "@bond-london/gatsby-theme";
 import classNames from "classnames";
-import { HeadFC, Slice } from "gatsby";
+import { HeadFC } from "gatsby";
 import React, { Fragment } from "react";
 import { PageHead } from "../../components/PageHead";
 import { fontTable, sizes } from "../../design";
+import { DevPageLayout } from "../../layouts/DevPageLayout";
 
 const head = classNames("font-bold text-34-44");
 
@@ -15,9 +16,7 @@ const styles = ["", "italic"];
 const name = "Typography";
 const Fonts: React.FC = () => {
   return (
-    <>
-      <Slice alias="navigation-Menu" />
-      <Slice alias="analytics" />
+    <DevPageLayout name="Fonts">
       <Section
         componentName={name}
         sectionClassName="hidden laptop:grid"
@@ -80,8 +79,7 @@ const Fonts: React.FC = () => {
       <Section componentName={name} sectionClassName="laptop:hidden">
         Please view on a larger screen
       </Section>
-      <Slice alias="footer-Footer" />
-    </>
+    </DevPageLayout>
   );
 };
 

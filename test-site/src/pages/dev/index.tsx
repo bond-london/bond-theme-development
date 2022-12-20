@@ -1,14 +1,13 @@
 import { IPageMetadata } from "@bond-london/gatsby-theme";
-import { HeadFC, Slice } from "gatsby";
+import { HeadFC } from "gatsby";
 import React from "react";
 import { PageHead } from "../../components/PageHead";
+import { DevPageLayout } from "../../layouts/DevPageLayout";
 
 const DevIndex: React.FC = () => {
   return (
     <>
-      <Slice alias="navigation-Menu" />
-      <Slice alias="analytics" />
-      <Slice alias="footer-Footer" />
+      <DevPageLayout name="Dev Page Index" />
     </>
   );
 };

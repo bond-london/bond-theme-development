@@ -1,18 +1,17 @@
 import React from "react";
 
 import classNames from "classnames";
-import { HeadFC, Slice } from "gatsby";
+import { HeadFC } from "gatsby";
 import { colours } from "../../design";
 import { IPageMetadata, Section } from "@bond-london/gatsby-theme";
 import { PageHead } from "../../components/PageHead";
+import { DevPageLayout } from "../../layouts/DevPageLayout";
 
 const name = "Website Color Palette";
 
 const Colours: React.FC = () => {
   return (
-    <>
-      <Slice alias="navigation-Menu" />
-      <Slice alias="analytics" />
+    <DevPageLayout name="Colours">
       <Section componentName={name} contentClassName="gap-y-s">
         {colours.map(({ key, value }) => (
           <div
@@ -30,8 +29,7 @@ const Colours: React.FC = () => {
           </div>
         ))}
       </Section>
-      <Slice alias="footer-Footer" />
-    </>
+    </DevPageLayout>
   );
 };
 // eslint-disable-next-line import/no-unused-modules

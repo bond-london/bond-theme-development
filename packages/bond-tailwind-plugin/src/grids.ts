@@ -126,7 +126,7 @@ export function buildGridSpacing(
       const calculateColSize =
         maximumWidth > 0
           ? `((min((100 * var(--bond-vw)) - ${totalMarginSize}, ${maxWidthRem}) - ${totalGapSize}) / ${cols})`
-          : "((100 * var(--bond-vw)) - ${totalMarginRem})";
+          : `(((100 * var(--bond-vw)) - ${totalMarginSize}) / ${cols})`;
 
       results[`${name}-gap`] = gapSize;
 

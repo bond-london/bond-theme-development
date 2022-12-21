@@ -5,8 +5,8 @@ import {
   siteUrl,
   GOOGLE_TAG,
   allowIndex,
-  isProduction,
   showDevPages,
+  isProduction,
 } from "./gatsby-env";
 
 function readEnvVar(envVarName: string): string {
@@ -24,7 +24,7 @@ const themeOptions: Partial<IBondThemeOptions> = {
   projectName: name,
   useVideoCache: true,
   videoCacheConnectionString: readEnvVar("VIDEO_CACHE_CONNECTION_STRING"),
-  productionImageFormats: ["auto", "webp"],
+  productionImageFormats: ["auto", "webp", "avif"],
   maxImageWidth: 1920,
   videoWidth: 1920,
   graphCMSToken: readEnvVar("GRAPHCMS_TOKEN"),
@@ -47,12 +47,11 @@ const themeOptions: Partial<IBondThemeOptions> = {
 const config: GatsbyConfig = {
   siteMetadata: {
     siteName: themeOptions.projectName,
-    description: "Starter project for Bond London and GraphCMS with Gatsby",
     siteUrl,
     logo: `${siteUrl}/icons/icon-512x512.png`,
     cookieName: COOKIE_NAME,
     googleTag: GOOGLE_TAG,
-    declinedCookieName: "declined",
+    declinedCookieName: "cookies-declined",
   },
   trailingSlash: "always",
   graphqlTypegen: {

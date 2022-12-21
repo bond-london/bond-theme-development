@@ -124,3 +124,28 @@ export const LinkOrButtonComponent: React.FC<
     <LinkOrButton information={props} onClick={onClick} className={className} />
   );
 };
+
+// eslint-disable-next-line import/no-unused-modules
+export const SimpleLink: React.FC<
+  PropsWithChildren<{ link?: ILinkInformation; className?: string }>
+> = ({ link, className, children }) => {
+  if (link) {
+    const { internal, external, name } = link;
+    if (internal) {
+      return (
+        <Link to={internal} className={className} aria-label={name}>
+          {children}
+        </Link>
+      );
+    }
+    if (external) {
+      return (
+        <a href={external} aria-label={name} className={className}>
+          {children}
+        </a>
+      );
+    }
+  }
+
+  return <div className={className}>{children}</div>;
+};

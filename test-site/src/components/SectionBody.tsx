@@ -6,11 +6,15 @@ import { SectionBodyClassName } from "../styles";
 
 export const SectionBody: React.FC<{
   content: IRichTextInformation;
-}> = ({ content }) => {
+  className?: string;
+}> = ({ content, className }) => {
   return (
     <RTF
       content={content}
-      className={classNames(SectionBodyClassName, "flex flex-col gap-y-xs")}
+      className={classNames(
+        className || SectionBodyClassName,
+        "flex flex-col gap-y-xs"
+      )}
     />
   );
 };

@@ -2,6 +2,7 @@ import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
 import classNames from "classnames";
 import React from "react";
 import { lookupColourClassNames } from "../../colors";
+import { DefaultButtonColour } from "../../styles";
 import { ArticleLink } from "./ArticleLink";
 import { ArticleTypeLink } from "./ArticleTypeLink";
 import { PageLink } from "./PageLink";
@@ -29,7 +30,7 @@ export const Link: React.FC<{ fragment: Queries.CmsLinkFragment }> = ({
           rel="noreferrer"
           className={classNames(
             "button",
-            lookupColourClassNames(colour || "White")
+            lookupColourClassNames(colour || DefaultButtonColour)
           )}
         >
           {realText}

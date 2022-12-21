@@ -7,8 +7,10 @@ import {
 import { getRTFInformation } from "@bond-london/graphcms-rich-text";
 import { convertCmsImageToBondImage } from "@bond-london/gatsby-theme";
 import { convertCmsComponentInformation } from "./CmsComponent";
+import { tryHandleCustomCollection } from "./CustomCmsCollection";
 
 function convertCmsCollectionCoreInformation({
+  id,
   heading,
   showHeading,
   preHeading,
@@ -19,6 +21,7 @@ function convertCmsCollectionCoreInformation({
   textColour,
 }: Queries.CmsCollectionCoreFragment) {
   return {
+    id,
     name: heading,
     preHeading: showHeading ? preHeading : undefined,
     heading: showHeading ? heading : undefined,
@@ -53,23 +56,27 @@ export const CmsCollection: React.FC<{
 }> = ({ fragment }) => {
   const converted = convertCmsCollectionInformation(fragment);
   const collectionType = fragment.collectionType;
-  switch (collectionType) {
-    case "Generic":
-      return (
-        <GenericCollection
-          information={converted}
-          collectionType={collectionType}
-        />
-      );
-    default:
-      return (
-        <GenericCollection
-          information={converted}
-          collectionType={collectionType}
-          unknown={true}
-        />
-      );
+  const element = tryHandleCustomCollection(converted, collectionType);
+  if (typeof element === "undefined") {
+    switch (collectionType) {
+      case "Generic":
+        return (
+          <GenericCollection
+            information={converted}
+            collectionType={collectionType}
+          />
+        );
+      default:
+        return (
+          <GenericCollection
+            information={converted}
+            collectionType={collectionType}
+            unknown={true}
+          />
+        );
+    }
   }
+  return element;
 };
 
 // eslint-disable-next-line import/no-unused-modules

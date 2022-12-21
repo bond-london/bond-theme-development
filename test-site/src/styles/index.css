@@ -8,6 +8,11 @@
   body {
     @apply bg-white font-light text-black;
   }
+
+  .unknown-component {
+    @apply border-2 border-yellow;
+  }
+
   ::cue {
     @apply p1;
   }

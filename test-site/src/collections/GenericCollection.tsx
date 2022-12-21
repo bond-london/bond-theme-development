@@ -36,6 +36,7 @@ export function isContentComponent(
   return !(content as ICollectionInformation).contents;
 }
 export interface ICollectionInformation {
+  id: string;
   name: string;
   preHeading?: string | null;
   heading?: string | null;
@@ -138,7 +139,7 @@ export const GenericCollection: React.FC<{
       componentName={`${collectionType} collection`}
       sectionClassName={classNames(
         lookupColourClassNames(backgroundColour, textColour),
-        unknown && "border-2 border-yellow"
+        unknown && "unknown-component"
       )}
       preChildren={backgroundImage && <BondImage image={backgroundImage} />}
     >

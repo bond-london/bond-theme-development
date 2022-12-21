@@ -7,3 +7,5 @@ export const SectionBodyClassName =
 export const SectionBodyGridClassName =
   "grid grid-cols-4 gap-x-mobile-gap tablet:grid-cols-4 tablet:gap-x-tablet-gap laptop:grid-cols-8 laptop:gap-x-laptop-gap";
 export const LinkClassName = "text-blue underline hover:font-bold";
+
+export const DefaultButtonColour = "Yellow";

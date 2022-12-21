@@ -5,14 +5,20 @@ import React from "react";
 export const SectionIcon: React.FC<{
   icon: IBondImage;
   className?: string;
-}> = ({ icon, className }) => {
+  iconHeightClassName?: string;
+}> = ({
+  icon,
+  className,
+  iconHeightClassName = "h-mobile-icon laptop:h-laptop-icon",
+}) => {
   const raw = icon.svg?.raw as string;
   if (raw) {
     return (
       <div
         className={classNames(
           className,
-          "h-mobile-icon laptop:h-laptop-icon flex icon-container"
+          iconHeightClassName,
+          "relative flex icon-container"
         )}
         dangerouslySetInnerHTML={{ __html: raw }}
       />
@@ -22,10 +28,7 @@ export const SectionIcon: React.FC<{
   return (
     <BondImage
       image={{ ...icon, dontCrop: true }}
-      className={classNames(
-        className,
-        "relative h-mobile-icon laptop:h-laptop-icon flex"
-      )}
+      className={classNames(className, iconHeightClassName, "relative flex")}
       imgStyle={{ height: "100%" }}
     />
   );

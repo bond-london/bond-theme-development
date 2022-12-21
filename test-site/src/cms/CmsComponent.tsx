@@ -10,8 +10,10 @@ import {
   convertCmsVisualToBondVisual,
 } from "@bond-london/gatsby-theme";
 import { convertCmsLink } from "./CmsLink";
+import { tryHandleCustomComponent } from "./CustomCmsComponent";
 
 export function convertCmsComponentInformation({
+  id,
   heading,
   showHeading,
   preHeading,
@@ -24,6 +26,7 @@ export function convertCmsComponentInformation({
   links,
 }: Queries.CmsComponentFragment): IComponentInformation {
   return {
+    id,
     name: heading,
     preHeading: showHeading ? preHeading : undefined,
     heading: showHeading ? heading : undefined,
@@ -42,23 +45,27 @@ export const CmsComponent: React.FC<{
 }> = ({ fragment }) => {
   const converted = convertCmsComponentInformation(fragment);
   const componentType = fragment.componentType;
-  switch (componentType) {
-    case "Generic":
-      return (
-        <GenericComponent
-          information={converted}
-          componentType={componentType}
-        />
-      );
-    default:
-      return (
-        <GenericComponent
-          information={converted}
-          componentType={componentType}
-          unknown={true}
-        />
-      );
+  const element = tryHandleCustomComponent(converted, componentType);
+  if (typeof element === "undefined") {
+    switch (componentType) {
+      case "Generic":
+        return (
+          <GenericComponent
+            information={converted}
+            componentType={componentType}
+          />
+        );
+      default:
+        return (
+          <GenericComponent
+            information={converted}
+            componentType={componentType}
+            unknown={true}
+          />
+        );
+    }
   }
+  return element;
 };
 
 // eslint-disable-next-line import/no-unused-modules

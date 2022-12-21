@@ -12,6 +12,7 @@ import { SectionLinks } from "./SectionLinks";
 import { SectionVisual } from "./SectionVisual";
 
 export interface IComponentInformation {
+  id: string;
   name: string;
   preHeading?: string | null;
   heading?: string | null;
@@ -48,7 +49,7 @@ export const GenericComponent: React.FC<{
       componentName={`${componentType} component`}
       sectionClassName={classNames(
         lookupColourClassNames(backgroundColour, textColour),
-        unknown && "border-2 border-yellow"
+        unknown && "unknown-component"
       )}
     >
       <SectionHeading

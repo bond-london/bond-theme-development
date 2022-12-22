@@ -1,4 +1,5 @@
 import { IBondImage } from "@bond-london/gatsby-theme";
+import classNames from "classnames";
 import React from "react";
 import { ColourName } from "../../colors";
 import { MenuItem } from "./MenuItem";
@@ -17,12 +18,16 @@ export interface INavigationItem {
 
 export const NavigationMenu: React.FC<{
   menu: ReadonlyArray<INavigationItem>;
-  closeMenu: () => void;
-}> = ({ menu, closeMenu }) => {
+  className?: string;
+  closeMenu?: () => void;
+}> = ({ menu, className, closeMenu }) => {
   const { containerRef, handleActive, handleClose, activeItem } =
     useMenuInformation(closeMenu);
   return (
-    <ul ref={containerRef} className="flex flex-col laptop:flex-row gap-s">
+    <ul
+      ref={containerRef}
+      className={classNames("flex flex-col laptop:flex-row gap-s", className)}
+    >
       {menu.map((m) => (
         <li
           key={m.name}

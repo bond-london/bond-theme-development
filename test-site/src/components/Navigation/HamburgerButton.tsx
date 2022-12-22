@@ -22,6 +22,7 @@ const SingleHamburgerLine: React.FC<{ className: string }> = ({
   );
 };
 
+// eslint-disable-next-line import/no-unused-modules
 export const HamburgerButton: React.FC<{
   toggleMenu: () => void;
   isOpen: boolean;

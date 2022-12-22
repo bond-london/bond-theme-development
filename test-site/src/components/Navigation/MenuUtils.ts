@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { INavigationItem } from "./NavigationMenu";
 
-export function useMenuInformation(closeMenu: () => void) {
+export function useMenuInformation(closeMenu?: () => void) {
   const [activeItem, setActiveItem] = useState<{
     timeStamp: number;
     link: INavigationItem;
@@ -30,7 +30,7 @@ export function useMenuInformation(closeMenu: () => void) {
   );
   const handleClose = useCallback(() => {
     setActiveItem(undefined);
-    closeMenu();
+    closeMenu?.();
   }, [closeMenu]);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export function useMenuInformation(closeMenu: () => void) {
 
 export function useNestedMenu(
   item: INavigationItem,
-  activateMenu: (
+  activateMenu?: (
     timeStamp: number,
     item?: INavigationItem,
     from?: INavigationItem
@@ -58,20 +58,20 @@ export function useNestedMenu(
 ) {
   const handleButtonClick = useCallback(
     (ev: React.MouseEvent<HTMLButtonElement>) => {
-      activateMenu(ev.timeStamp, item);
+      activateMenu?.(ev.timeStamp, item);
     },
     [activateMenu, item]
   );
 
   const handleMouseEnter = useCallback(
     (ev: React.MouseEvent<HTMLDivElement>) => {
-      activateMenu(ev.timeStamp, item);
+      activateMenu?.(ev.timeStamp, item);
     },
     [activateMenu, item]
   );
   const handleMouseLeave = useCallback(
     (ev: React.MouseEvent<HTMLDivElement>) =>
-      activateMenu(ev.timeStamp, undefined, item),
+      activateMenu?.(ev.timeStamp, undefined, item),
     [activateMenu, item]
   );
 

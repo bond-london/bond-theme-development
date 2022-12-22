@@ -1,3 +1,4 @@
+// Try not to change this file. For new components edit tryHandleCustomComponent
 import { graphql } from "gatsby";
 import React from "react";
 import {

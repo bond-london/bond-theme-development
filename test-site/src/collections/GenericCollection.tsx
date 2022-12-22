@@ -138,6 +138,7 @@ export const GenericCollection: React.FC<{
     <Section
       componentName={`${collectionType} collection`}
       sectionClassName={classNames(
+        "overflow-hidden",
         lookupColourClassNames(backgroundColour, textColour),
         unknown && "unknown-component"
       )}

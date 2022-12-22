@@ -5,17 +5,19 @@ import { NestedMenu } from "./NestedMenu";
 
 export const MenuItem: React.FC<{
   item: INavigationItem;
-  closeMenu: () => void;
-  active: boolean;
-  activateMenu: (
+  className?: string;
+  closeMenu?: () => void;
+  active?: boolean;
+  activateMenu?: (
     timeStamp: number,
     item?: INavigationItem,
     from?: INavigationItem
   ) => void;
-}> = ({ item, active, closeMenu, activateMenu }) => {
+}> = ({ item, className, active, closeMenu, activateMenu }) => {
   if (item.entries && item.entries.length > 0) {
     return (
       <NestedMenu
+        className={className}
         item={item}
         active={active}
         closeMenu={closeMenu}
@@ -23,5 +25,11 @@ export const MenuItem: React.FC<{
       />
     );
   }
-  return <LinkOrButton information={item} onClick={closeMenu} />;
+  return (
+    <LinkOrButton
+      information={item}
+      onClick={closeMenu}
+      className={className}
+    />
+  );
 };

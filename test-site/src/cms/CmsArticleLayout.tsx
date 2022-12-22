@@ -1,6 +1,6 @@
 import { PageProps, Slice } from "gatsby";
 import React from "react";
-import { CmsContent } from "./CmsContents";
+import { CmsContent } from "./CmsContent";
 
 export const CmsArticleLayout: React.FC<
   PageProps<Queries.SingleArticleQuery>

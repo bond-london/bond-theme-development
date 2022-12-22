@@ -1,6 +1,6 @@
 import { PageProps, Slice } from "gatsby";
 import React from "react";
-import { CmsContent } from "./CmsContents";
+import { CmsContent } from "./CmsContent";
 
 export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
   props

@@ -151,6 +151,14 @@ function buildConfig(
     ],
   };
 
+  if (options.showDevPages) {
+    gatsbyConfig.plugins?.push({
+      resolve: "gatsby-plugin-gatsby-cloud",
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      options: { headers: { "/*": ["X-Frame-Options: SAMEORIGIN"] } },
+    });
+  }
+
   if (options.enableEslint) {
     gatsbyConfig.plugins?.push({
       resolve: "gatsby-plugin-eslint",

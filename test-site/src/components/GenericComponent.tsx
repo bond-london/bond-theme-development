@@ -48,6 +48,7 @@ export const GenericComponent: React.FC<{
     <Section
       componentName={`${componentType} component`}
       sectionClassName={classNames(
+        "overflow-hidden",
         lookupColourClassNames(backgroundColour, textColour),
         unknown && "unknown-component"
       )}

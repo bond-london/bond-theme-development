@@ -1,3 +1,4 @@
+// Try not to change this file. For new collections edit tryHandleCustomCollection
 import { graphql } from "gatsby";
 import React from "react";
 import {

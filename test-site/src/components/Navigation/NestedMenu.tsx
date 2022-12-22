@@ -7,20 +7,21 @@ import { INavigationItem } from "./NavigationMenu";
 
 export const NestedMenu: React.FC<{
   item: INavigationItem;
-  closeMenu: () => void;
-  active: boolean;
-  activateMenu: (
+  className?: string;
+  closeMenu?: () => void;
+  active?: boolean;
+  activateMenu?: (
     timeStamp: number,
     item?: INavigationItem,
     from?: INavigationItem
   ) => void;
-}> = ({ item, active, closeMenu, activateMenu }) => {
+}> = ({ item, className, active, closeMenu, activateMenu }) => {
   const { handleButtonClick, handleMouseEnter, handleMouseLeave } =
     useNestedMenu(item, activateMenu);
 
   return (
     <div
-      className="inline-flex"
+      className={classNames("inline-flex", className)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

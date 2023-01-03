@@ -175,6 +175,10 @@ function buildConfig(
       },
     });
   }
+
+  if (options.additionalPlugins) {
+    gatsbyConfig.plugins?.push(...options.additionalPlugins);
+  }
   return gatsbyConfig;
 }
 

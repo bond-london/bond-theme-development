@@ -1,4 +1,4 @@
-import { IPluginRefOptions } from "gatsby";
+import { IPluginRefOptions, PluginRef } from "gatsby";
 
 export type Maybe<T> = T | null;
 export type Vertical = "Top" | "Middle" | "Bottom";
@@ -30,4 +30,5 @@ export interface IBondThemeOptions extends IPluginRefOptions {
   maxImageWidth?: number;
   manifestOptions: IPluginRefOptions;
   sourceOptions: IPluginRefOptions;
+  additionalPlugins?: [PluginRef];
 }

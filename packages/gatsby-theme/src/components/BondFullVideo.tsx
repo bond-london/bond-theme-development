@@ -247,6 +247,7 @@ export const BondFullVideo: React.FC<
     showControls,
     noPoster,
     posterSrc,
+    autoPlay,
     muted,
     ...videoProps
   } = props;
@@ -265,8 +266,9 @@ export const BondFullVideo: React.FC<
     verticalCropPosition,
   });
 
-  const loadFull = (props.autoLoad && previewHasStarted) || fullRequested;
-  const showFullRequest = !loadFull && !props.autoLoad && !fullRequested;
+  const autoLoadFull = props.autoLoad && previewHasStarted;
+  const loadFull = autoLoadFull || fullRequested;
+  const showFullRequest = !loadFull && previewHasStarted && !props.autoLoad;
   const realPosterSrc = noPoster
     ? undefined
     : posterSrc || video.posterSrc || undefined;
@@ -275,10 +277,11 @@ export const BondFullVideo: React.FC<
     return (
       <GatsbyVideo
         data-component="Bond Full Video"
-        muted={muted}
         {...videoProps}
         posterSrc={realPosterSrc}
         loop={true}
+        muted={true}
+        autoPlay={autoPlay}
         video={preview}
         onTimeUpdate={!previewHasStarted ? onPreviewHasStarted : undefined}
         pause={fullHasLoaded ? true : undefined}
@@ -296,7 +299,8 @@ export const BondFullVideo: React.FC<
           onFullStarted={onFullStarted}
           fullHasStarted={fullHasStarted}
           loop={loop || videoLoop}
-          muted={false}
+          muted={muted}
+          autoPlay={true}
           loadFull={loadFull}
           objectFit={objectFit}
           objectPosition={objectPosition}
@@ -334,7 +338,8 @@ export const BondFullVideo: React.FC<
         onFullStarted={onFullStarted}
         fullHasStarted={fullHasStarted}
         loop={loop || videoLoop}
-        muted={false}
+        muted={muted}
+        autoPlay={true}
         loadFull={loadFull}
         objectFit={objectFit}
         objectPosition={objectPosition}

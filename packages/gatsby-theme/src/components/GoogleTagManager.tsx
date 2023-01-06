@@ -18,10 +18,14 @@ export function useBondCookie(
     if (!cookieName) return;
     if (!window.bondHadCookie) {
       window.localStorage.setItem(cookieName, "true");
-      window.dataLayer.push("consent", "update", {
-        ad_storage: "granted",
-        analytics_storage: "granted",
-      });
+      window.dataLayer.push([
+        "consent",
+        "update",
+        {
+          ad_storage: "granted",
+          analytics_storage: "granted",
+        },
+      ]);
     }
   }, [cookieName]);
 
@@ -49,10 +53,10 @@ export const GoogleTagManager: React.FC<{
             window.bondHadCookie = true;
           }
        
-          window.dataLayer.push('consent', 'default', {
+          window.dataLayer.push(['consent', 'default', {
             'ad_storage': status,
             'analytics_storage': status
-          });
+          }]);
 
           (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

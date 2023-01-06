@@ -36,7 +36,7 @@ export interface IBondConfigurationOptions {
   fontTable: {
     [font: string]: IFontTableEntry & { [key: string]: string | number };
   };
-  spacing: { [spacing: string]: number };
+  spacing: { section: number; [spacing: string]: number };
   lineHeight?: number;
 }
 

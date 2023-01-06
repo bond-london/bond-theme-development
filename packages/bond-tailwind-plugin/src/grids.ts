@@ -15,14 +15,17 @@ function addContainerGrid(
 ): void {
   const noMax = !Object.values(config.sizes).find(v => v.max);
   const { addUtilities, addComponents } = helpers;
+  if (typeof config.spacing.section === undefined) {
+    throw new Error("Need a config spacing section defined");
+  }
   addUtilities({
     ".container-rows-grid": {
-      "--bond-container-row-1": calculateRemSize(config.spacing.s),
+      "--bond-container-row-1": calculateRemSize(config.spacing.section),
       "--bond-container-row-2": "1fr",
       "--bond-container-row-3": "1fr",
       "--bond-container-row-4": "1fr",
       "--bond-container-row-5": "1fr",
-      "--bond-container-row-6": calculateRemSize(config.spacing.s),
+      "--bond-container-row-6": calculateRemSize(config.spacing.section),
       "grid-template-rows": `var(--bond-container-row-1) var(--bond-container-row-2) var(--bond-container-row-3) var(--bond-container-row-4) var(--bond-container-row-5) var(--bond-container-row-6)`,
     },
   });

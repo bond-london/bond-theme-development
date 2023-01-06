@@ -19,6 +19,7 @@
     "red": "yellow"
   },
   "spacing": {
+    "section": 32,
     "xxxs": 8,
     "xxs": 10,
     "xs": 16,

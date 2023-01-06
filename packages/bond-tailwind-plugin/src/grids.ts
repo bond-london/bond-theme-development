@@ -15,7 +15,7 @@ function addContainerGrid(
 ): void {
   const noMax = !Object.values(config.sizes).find(v => v.max);
   const { addUtilities, addComponents } = helpers;
-  if (typeof config.spacing.section === undefined) {
+  if (typeof config.spacing.section === "undefined") {
     throw new Error("Need a config spacing section defined");
   }
   addUtilities({

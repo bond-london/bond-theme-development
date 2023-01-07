@@ -20,16 +20,34 @@
   ::cue {
     @apply p1;
   }
-}
 
-.button {
-  @apply p4 inline-flex justify-center rounded-[2px] py-s px-s;
-}
+  .footer-spacing {
+    @apply gap-x-s gap-y-xxs;
+  }
 
-.button-primary {
-  @apply p4 inline-flex justify-center rounded-[2px] py-s px-s;
-}
+  .footer-container {
+    @apply col-span-full justify-between flex flex-col laptop:flex-row;
+  }
 
+  .menu-button {
+    @apply p4 inline-flex justify-center py-xxs px-s;
+  }
+
+  .button {
+    @apply p4 inline-flex justify-center rounded-[2px] py-xxs px-s border-2;
+  }
+
+  .button-primary {
+    @apply p4 inline-flex justify-center rounded-[2px] py-s px-s;
+  }
+
+  .paginator-current {
+    @apply rounded-full bg-blue text-black;
+  }
+  .paginator-other {
+    @apply text-black;
+  }
+}
 table.lined tbody tr {
   @apply border-t-2;
 }

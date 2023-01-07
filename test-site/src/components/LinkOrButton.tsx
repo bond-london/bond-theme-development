@@ -22,15 +22,21 @@ export interface ILinkInformation {
 }
 
 const LinkOrButtonInside: React.FC<
-  PropsWithChildren<{ text?: string; icon?: IBondImage }>
-> = ({ children, text, icon }) => {
+  PropsWithChildren<{
+    text?: string;
+    icon?: IBondImage;
+    iconHeightClassName?: string;
+  }>
+> = ({ children, text, icon, iconHeightClassName }) => {
   if (children) {
     return <>{children}</>;
   }
   return (
     <>
       {text && <>{text}</>}
-      {icon && <SectionIcon icon={icon} />}
+      {icon && (
+        <SectionIcon icon={icon} iconHeightClassName={iconHeightClassName} />
+      )}
     </>
   );
 };
@@ -39,17 +45,23 @@ export const LinkOrButton: React.FC<{
   information: ILinkInformation;
   onClick?: () => void;
   className?: string;
+  iconHeightClassName?: string;
+  buttonClassName?: string;
+  allowEmpty?: boolean;
 }> = ({
   information: { internal, external, text, name, colour, isButton, icon },
   onClick,
   className,
+  iconHeightClassName,
+  buttonClassName = "button",
+  allowEmpty,
 }) => {
   const label = text || name;
   const realText = icon ? text : name;
   const outerClassName = classNames(
     className,
     isButton
-      ? ["button", colour && lookupColourClassNames(colour || "yellow")]
+      ? [buttonClassName, colour && lookupColourClassNames(colour || "yellow")]
       : [LinkClassName, colour && lookupColourString(colour, "text")]
   );
   if (internal) {
@@ -60,7 +72,11 @@ export const LinkOrButton: React.FC<{
         to={internal}
         aria-label={name}
       >
-        <LinkOrButtonInside text={realText} icon={icon} />
+        <LinkOrButtonInside
+          text={realText}
+          icon={icon}
+          iconHeightClassName={iconHeightClassName}
+        />
       </Link>
     );
   }
@@ -74,7 +90,11 @@ export const LinkOrButton: React.FC<{
           onClick={onClick}
           className={classNames(outerClassName, "inline-flex items-center")}
         >
-          <LinkOrButtonInside text={realText} icon={icon} />
+          <LinkOrButtonInside
+            text={realText}
+            icon={icon}
+            iconHeightClassName={iconHeightClassName}
+          />
         </a>
       );
     }
@@ -87,7 +107,11 @@ export const LinkOrButton: React.FC<{
         target="_blank"
         rel="noreferrer"
       >
-        <LinkOrButtonInside text={realText} icon={icon} />
+        <LinkOrButtonInside
+          text={realText}
+          icon={icon}
+          iconHeightClassName={iconHeightClassName}
+        />
       </a>
     );
   }
@@ -102,8 +126,24 @@ export const LinkOrButton: React.FC<{
           "inline-flex items-center justify-center"
         )}
       >
-        <LinkOrButtonInside text={realText} icon={icon} />
+        <LinkOrButtonInside
+          text={realText}
+          icon={icon}
+          iconHeightClassName={iconHeightClassName}
+        />
       </button>
+    );
+  }
+
+  if (allowEmpty) {
+    return (
+      <div className={classNames(outerClassName, "inline-flex items-center")}>
+        <LinkOrButtonInside
+          text={realText}
+          icon={icon}
+          iconHeightClassName={iconHeightClassName}
+        />
+      </div>
     );
   }
 

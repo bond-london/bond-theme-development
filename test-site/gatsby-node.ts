@@ -255,7 +255,7 @@ function updateSpecialPageMap(
     if (typeof hidden !== "undefined") {
       existing.hidden = hidden;
     }
-    if (typeof redirectTo !== "undefined") {
+    if (typeof redirectTo !== "undefined" && redirectTo) {
       existing.redirectTo = redirectTo;
     }
   } else {
@@ -318,14 +318,16 @@ export async function createPages(args: CreatePagesArgs) {
           }
         }
         redirectArticles: allGraphCmsArticle(
-          filter: { redirectTo: { ne: null } }
+          filter: { redirectTo: { ne: null, regex: "/^.+$/" } }
         ) {
           nodes {
             id
             redirectTo
           }
         }
-        redirectPages: allGraphCmsPage(filter: { redirectTo: { ne: null } }) {
+        redirectPages: allGraphCmsPage(
+          filter: { redirectTo: { ne: null, regex: "/^.+$/" } }
+        ) {
           nodes {
             id
             redirectTo

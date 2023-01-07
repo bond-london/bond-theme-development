@@ -1,10 +1,13 @@
 import React from "react";
+import { ColourName } from "../../colors";
 import { LinkOrButton } from "../LinkOrButton";
 import { INavigationItem } from "./NavigationMenu";
 import { NestedMenu } from "./NestedMenu";
 
 export const MenuItem: React.FC<{
   item: INavigationItem;
+  backgroundColour?: ColourName | null;
+  textColour?: ColourName | null;
   className?: string;
   closeMenu?: () => void;
   active?: boolean;
@@ -13,12 +16,22 @@ export const MenuItem: React.FC<{
     item?: INavigationItem,
     from?: INavigationItem
   ) => void;
-}> = ({ item, className, active, closeMenu, activateMenu }) => {
+}> = ({
+  item,
+  backgroundColour,
+  textColour,
+  className,
+  active,
+  closeMenu,
+  activateMenu,
+}) => {
   if (item.entries && item.entries.length > 0) {
     return (
       <NestedMenu
         className={className}
         item={item}
+        backgroundColour={backgroundColour}
+        textColour={textColour}
         active={active}
         closeMenu={closeMenu}
         activateMenu={activateMenu}
@@ -30,6 +43,9 @@ export const MenuItem: React.FC<{
       information={item}
       onClick={closeMenu}
       className={className}
+      iconHeightClassName="h-line-height"
+      buttonClassName="menu-button"
+      allowEmpty={true}
     />
   );
 };

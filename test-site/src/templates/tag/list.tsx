@@ -1,10 +1,10 @@
-import { convertCmsAssetToBondImage } from "@bond-london/gatsby-theme";
+import { convertCmsAssetToBondVisual } from "@bond-london/gatsby-theme";
 import { graphql, PageProps, Slice } from "gatsby";
 import React, { useCallback } from "react";
 import { CmsTagHead } from "../../cms/CmsTagLayout";
 import { ArticleList } from "../../components/ArticleList";
 import { Paginator } from "../../components/Paginator";
-import { SectionHero } from "../../components/SectionHero";
+import { Hero } from "../../components/SectionHero";
 
 const TagLayout: React.FC<PageProps<Queries.TagListQuery>> = (props) => {
   const {
@@ -18,6 +18,7 @@ const TagLayout: React.FC<PageProps<Queries.TagListQuery>> = (props) => {
     throw new Error("Tag does not exist");
   }
 
+  const { title, featuredImage, backgroundColour, textColour } = graphCmsTag;
   const buildLink = useCallback(
     (page: number) => {
       const pagePart = page === 1 ? "" : `${page}/`;
@@ -30,13 +31,11 @@ const TagLayout: React.FC<PageProps<Queries.TagListQuery>> = (props) => {
     <>
       <Slice alias="navigation-Menu" />
       <Slice alias="analytics" />
-      <h1 className="h1">Generic tag list page</h1>
-
-      <SectionHero
-        header={graphCmsTag.title}
-        visual={convertCmsAssetToBondImage(graphCmsTag.featuredImage)}
-        textColour={graphCmsTag.textColour}
-        backgroundColour={graphCmsTag.backgroundColour}
+      <Hero
+        heading={title}
+        visual={convertCmsAssetToBondVisual(featuredImage)}
+        backgroundColour={backgroundColour}
+        textColour={textColour}
       />
       <ArticleList articles={edges.map((e) => e.node)} />
       <Paginator

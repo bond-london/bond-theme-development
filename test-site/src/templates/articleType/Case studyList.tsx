@@ -1,10 +1,10 @@
-import { convertCmsAssetToBondImage } from "@bond-london/gatsby-theme";
+import { convertCmsAssetToBondVisual } from "@bond-london/gatsby-theme";
 import { graphql, PageProps, Slice } from "gatsby";
 import React, { useCallback } from "react";
 import { CmsArticleTypeHead } from "../../cms/CmsArticleTypeLayout";
 import { ArticleList } from "../../components/ArticleList";
 import { Paginator } from "../../components/Paginator";
-import { SectionHero } from "../../components/SectionHero";
+import { Hero } from "../../components/SectionHero";
 
 const CaseStudyArticleTypeLayout: React.FC<
   PageProps<Queries.CaseStudyArticleTypeListQuery>
@@ -20,6 +20,8 @@ const CaseStudyArticleTypeLayout: React.FC<
     throw new Error("Article Type does not exist");
   }
 
+  const { featuredImage, backgroundColour, textColour } = graphCmsArticleType;
+
   const buildLink = useCallback(
     (page: number) => {
       const pagePart = page === 1 ? "" : `${page}/`;
@@ -32,12 +34,11 @@ const CaseStudyArticleTypeLayout: React.FC<
     <>
       <Slice alias="navigation-Menu" />
       <Slice alias="analytics" />
-      <h1 className="h1">Case Study ArticleType page</h1>
-      <SectionHero
-        header={graphCmsArticleType.title}
-        visual={convertCmsAssetToBondImage(graphCmsArticleType.featuredImage)}
-        textColour={graphCmsArticleType.textColour}
-        backgroundColour={graphCmsArticleType.backgroundColour}
+      <Hero
+        heading="Case studies"
+        visual={convertCmsAssetToBondVisual(featuredImage)}
+        backgroundColour={backgroundColour}
+        textColour={textColour}
       />
       <ArticleList articles={edges.map((e) => e.node)} />
       <Paginator

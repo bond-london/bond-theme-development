@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import React from "react";
+import { ColourName, lookupColourClassNames } from "../../colors";
 import { LinkOrButton } from "../LinkOrButton";
 import { SectionIcon } from "../SectionIcon";
 import { useNestedMenu } from "./MenuUtils";
@@ -7,6 +8,8 @@ import { INavigationItem } from "./NavigationMenu";
 
 export const NestedMenu: React.FC<{
   item: INavigationItem;
+  backgroundColour?: ColourName | null;
+  textColour?: ColourName | null;
   className?: string;
   closeMenu?: () => void;
   active?: boolean;
@@ -15,12 +18,21 @@ export const NestedMenu: React.FC<{
     item?: INavigationItem,
     from?: INavigationItem
   ) => void;
-}> = ({ item, className, active, closeMenu, activateMenu }) => {
+}> = ({
+  item,
+  backgroundColour,
+  textColour,
+  className,
+  active,
+  closeMenu,
+  activateMenu,
+}) => {
   const { handleButtonClick, handleMouseEnter, handleMouseLeave } =
     useNestedMenu(item, activateMenu);
 
   return (
     <div
+      data-component="Nested menu"
       className={classNames("inline-flex", className)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -36,11 +48,12 @@ export const NestedMenu: React.FC<{
         <div
           className={classNames(
             "absolute z-[1000] flex w-menu overflow-hidden transition-all laptop:top-xs laptop:-left-m",
+            lookupColourClassNames(backgroundColour, textColour),
             active ? "max-h-screen" : "max-h-0"
           )}
         >
-          <div className="bg-white pt-xxs">
-            <ul className="flex flex-col divide-y divide-gray">
+          <div className="pt-xxs">
+            <ul className="flex flex-col">
               {item.entries?.map((i) => (
                 <li key={i.name} className="px-s py-xs">
                   <LinkOrButton onClick={closeMenu} information={i} />

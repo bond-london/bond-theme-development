@@ -6,6 +6,7 @@ import { MenuItem } from "./MenuItem";
 import { useMenuInformation } from "./MenuUtils";
 
 export interface INavigationItem {
+  id: string;
   internal?: string;
   external?: string;
   text?: string;
@@ -18,9 +19,11 @@ export interface INavigationItem {
 
 export const NavigationMenu: React.FC<{
   menu: ReadonlyArray<INavigationItem>;
+  backgroundColour?: ColourName | null;
+  textColour?: ColourName | null;
   className?: string;
   closeMenu?: () => void;
-}> = ({ menu, className, closeMenu }) => {
+}> = ({ menu, backgroundColour, textColour, className, closeMenu }) => {
   const { containerRef, handleActive, handleClose, activeItem } =
     useMenuInformation(closeMenu);
   return (
@@ -29,12 +32,11 @@ export const NavigationMenu: React.FC<{
       className={classNames("flex flex-col laptop:flex-row gap-s", className)}
     >
       {menu.map((m) => (
-        <li
-          key={m.name}
-          className="flex border-b border-blue py-xs laptop:border-b-0"
-        >
+        <li key={m.id} className="flex">
           <MenuItem
             item={m}
+            backgroundColour={backgroundColour}
+            textColour={textColour}
             closeMenu={handleClose}
             activateMenu={handleActive}
             active={activeItem?.link === m}

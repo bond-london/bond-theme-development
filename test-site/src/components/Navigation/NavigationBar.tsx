@@ -7,6 +7,7 @@ import { MenuItem } from "./MenuItem";
 import { INavigationItem, NavigationMenu } from "./NavigationMenu";
 
 export interface INavigation {
+  id: string;
   name: string;
   entries: ReadonlyArray<INavigationItem>;
   textColour?: ColourName | null;
@@ -34,7 +35,7 @@ export const NavigationBar: React.FC<{
         "fixed top-0 left-0 right-0 z-50 container-cols-grid"
       )}
     >
-      <div className="row-start-1 row-span-6 col-start-2 col-span-1 relative content-cols-grid">
+      <div className="col-start-2 col-span-1 relative content-cols-grid">
         <MenuItem item={firstMenu} className="col-start-1 row-start-1" />
         <div
           className={classNames(
@@ -42,7 +43,12 @@ export const NavigationBar: React.FC<{
             "row-start-2 col-span-4 col-start-1 tablet:col-start-1 tablet:col-span-8 laptop:row-start-1 laptop:col-span-12 laptop:col-start-1 laptop:justify-end"
           )}
         >
-          <NavigationMenu menu={otherMenu} closeMenu={closeMenu} />
+          <NavigationMenu
+            menu={otherMenu}
+            closeMenu={closeMenu}
+            backgroundColour={backgroundColour}
+            textColour={textColour}
+          />
         </div>
         <HamburgerButton toggleMenu={toggleMenu} isOpen={isOpen} />
       </div>

@@ -7,7 +7,14 @@ import { convertCMSInternalLink } from "./CmsLink";
 type NavigationItemFragment = Queries.CmsNavigationItemCoreFragment & {
   navigationItems: ReadonlyArray<Queries.CmsNavigationItemCoreFragment> | null;
 };
+
+function arrayOrUndefined<T>(array?: ReadonlyArray<T>) {
+  if (array && array.length > 0) {
+    return array;
+  }
+}
 function convertCmsNavigationItem({
+  id,
   title,
   useTitle,
   link,
@@ -18,6 +25,7 @@ function convertCmsNavigationItem({
   navigationItems,
 }: NavigationItemFragment): INavigationItem {
   return {
+    id,
     name: title,
     text: useTitle ? title : undefined,
     external: link || undefined,
@@ -27,21 +35,25 @@ function convertCmsNavigationItem({
     icon: convertCmsAssetToBondImage(icon),
     colour: colour || undefined,
     isButton: isButton || undefined,
-    entries: navigationItems?.map((i) =>
-      convertCmsNavigationItem(i as NavigationItemFragment)
+    entries: arrayOrUndefined(
+      navigationItems?.map((i) =>
+        convertCmsNavigationItem(i as NavigationItemFragment)
+      )
     ),
   };
 }
 
 export function convertCmsNavigation({
+  id,
   name,
   entries,
   textColour,
   backgroundColour,
 }: Queries.CmsNavigationFragment): INavigation {
   return {
+    id,
     name,
-    entries: entries?.map(convertCmsNavigationItem),
+    entries: arrayOrUndefined(entries?.map(convertCmsNavigationItem)) || [],
     textColour,
     backgroundColour,
   };
@@ -50,6 +62,7 @@ export function convertCmsNavigation({
 // eslint-disable-next-line import/no-unused-modules
 export const CmsNavigationItemCoreFragment = graphql`
   fragment CmsNavigationItemCore on GraphCMS_NavigationItem {
+    id
     title
     useTitle
     remoteInternal {
@@ -87,6 +100,7 @@ export const CmsNavigationItem = graphql`
 // eslint-disable-next-line import/no-unused-modules
 export const CmsNavigationFragment = graphql`
   fragment CmsNavigation on GraphCMS_Navigation {
+    id
     name
     backgroundColour
     textColour

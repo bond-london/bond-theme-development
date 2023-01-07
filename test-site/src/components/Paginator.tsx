@@ -21,8 +21,8 @@ export const Paginator: React.FC<{
                 to={buildLink(entry)}
                 className={classNames(
                   entry === currentPage
-                    ? "rounded-full bg-red text-gray"
-                    : "text-black",
+                    ? "paginator-current"
+                    : "paginator-other",
                   "flex h-s w-s items-center justify-center tabular-nums"
                 )}
               >

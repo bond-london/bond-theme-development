@@ -14,7 +14,7 @@ const ArticleListEntry: React.FC<{
   const bondImage = convertCmsAssetToBondImage(embedImage);
   const path = calculateArticleLinkPath(article);
   return (
-    <>
+    <div className="flex flex-col gap-y-xs">
       {path ? (
         <Link to={path}>
           <h3 className="h3 text-center">{title}</h3>
@@ -23,7 +23,7 @@ const ArticleListEntry: React.FC<{
         <h3 className="h3 text-center">{title}</h3>
       )}
       {bondImage && <BondImage image={bondImage} />}
-    </>
+    </div>
   );
 };
 

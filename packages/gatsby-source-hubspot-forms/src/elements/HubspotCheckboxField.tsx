@@ -3,6 +3,7 @@ import {
   IFieldProps,
   registerFieldTypeHandler,
 } from "./HubspotFormFieldFactory";
+import { IHubspotFormFormFieldOptionsDefinition } from "./shared";
 
 function buildSet(value?: string): ReadonlyArray<string> {
   if (!value || value.length === 0) {
@@ -67,29 +68,35 @@ const HubspotCheckboxField: React.FC<IFieldProps> = ({
   return (
     <>
       <div className={options.checkboxContainerClassName}>
-        <input type="hidden" name={field.name} value={currentStringValue} />
-        {fieldOptions
-          .filter(o => o.value)
-          .map(option => {
-            const value = option.value as string;
-            const checked = currentValue.includes(value);
-            return (
-              <label key={value} className={options.checkboxLabelClassName}>
-                <input
-                  className={options.checkboxFieldClassName}
-                  type="checkbox"
-                  checked={checked}
-                  id={option.value}
-                  value={option.value}
-                  onInput={onInteracted}
-                  onChange={handleChange}
-                />
-                {options.renderCheckbox &&
-                  options.renderCheckbox(value, option.label)}
-                <span>{option.label}</span>
-              </label>
-            );
-          })}
+        <input
+          type="hidden"
+          name={field.name || undefined}
+          value={currentStringValue}
+        />
+        {(
+          fieldOptions.filter(
+            o => o && o.value
+          ) as ReadonlyArray<IHubspotFormFormFieldOptionsDefinition>
+        ).map(option => {
+          const value = option.value as string;
+          const checked = currentValue.includes(value);
+          return (
+            <label key={value} className={options.checkboxLabelClassName}>
+              <input
+                className={options.checkboxFieldClassName}
+                type="checkbox"
+                checked={checked}
+                id={option.value || undefined}
+                value={option.value || undefined}
+                onInput={onInteracted}
+                onChange={handleChange}
+              />
+              {options.renderCheckbox &&
+                options.renderCheckbox(value, option.label)}
+              <span>{option.label}</span>
+            </label>
+          );
+        })}
       </div>
     </>
   );

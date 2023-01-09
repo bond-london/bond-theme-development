@@ -12,7 +12,10 @@ export const HubspotFormField: React.FC<{
 }> = ({ field, value, onInteracted, onChange, options }) => (
   <div className={options.fieldContainerClassName}>
     {options.showLabels && field.label && !field.hidden && (
-      <label className={options.labelClassName} htmlFor={field.name}>
+      <label
+        className={options.labelClassName}
+        htmlFor={field.name || undefined}
+      >
         <p dangerouslySetInnerHTML={{ __html: field.label }} />
         {field.required && options.requiredText && (
           <span className={options.requiredClassName}>

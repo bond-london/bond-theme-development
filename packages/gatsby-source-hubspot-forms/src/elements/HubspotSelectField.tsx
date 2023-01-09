@@ -4,6 +4,7 @@ import {
   IFieldProps,
   registerFieldTypeHandler,
 } from "./HubspotFormFieldFactory";
+import { IHubspotFormFormFieldOptionsDefinition } from "./shared";
 
 const HubspotSelectField: React.FC<IFieldProps> = ({
   field,
@@ -25,11 +26,11 @@ const HubspotSelectField: React.FC<IFieldProps> = ({
   return (
     <>
       <select
-        id={field.name}
-        name={field.name}
+        id={field.name || undefined}
+        name={field.name || undefined}
         placeholder={field.placeholder ? field.placeholder : undefined}
-        hidden={field.hidden}
-        required={field.required}
+        hidden={field.hidden || undefined}
+        required={field.required || undefined}
         className={options.fieldClassName}
         onChange={handleChange}
         value={currentValue}
@@ -39,8 +40,16 @@ const HubspotSelectField: React.FC<IFieldProps> = ({
             {options.selectText}
           </option>
         )}
-        {field.options?.map(o => (
-          <option key={o.label} label={o.label} value={o.value}>
+        {(
+          field.options?.filter(
+            o => o
+          ) as ReadonlyArray<IHubspotFormFormFieldOptionsDefinition>
+        ).map(o => (
+          <option
+            key={o.label}
+            label={o.label || undefined}
+            value={o.value || undefined}
+          >
             {o.label}
           </option>
         ))}

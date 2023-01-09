@@ -16,7 +16,7 @@ export const HubspotDependentField: React.FC<{
   const isDisplayed = useMemo(() => {
     if (filters && parentValue) {
       const valid = filters.find(filter => {
-        switch (filter.operator) {
+        switch (filter?.operator) {
           case "SET_ANY":
             if (parentValue === filter.strValue) {
               return true;
@@ -30,7 +30,7 @@ export const HubspotDependentField: React.FC<{
 
           default:
             throw new Error(
-              `Don't support filter operator ${filter.operator || "??"}`
+              `Don't support filter operator ${filter?.operator || "??"}`
             );
         }
         return false;

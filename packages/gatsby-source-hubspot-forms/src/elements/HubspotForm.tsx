@@ -9,6 +9,7 @@ import type {
   EventReporter,
   IHubspotFormDefinition,
   IHubspotFormFieldDefinition,
+  IHubspotFormFieldGroupsDefinition,
 } from "./shared";
 import { HubspotFormField } from "./HubspotFormField";
 import { defaultShowError, IHubspotFormOptions } from "./shared";
@@ -44,7 +45,7 @@ export function useFormHandler(
   formDefinition: IHubspotFormDefinition,
   handleFormData?: (formData: FormData) => void,
   reportEvent?: EventReporter,
-  title?: string,
+  pageName?: string,
   ipAddress?: string
 ): {
   submitForm: (form: HTMLFormElement, onSuccess?: () => void) => void;
@@ -107,7 +108,7 @@ export function useFormHandler(
         const request = {
           fields,
           context: {
-            pageName: title,
+            pageName,
             pageUri: window.location.pathname,
             hutk: getCookieValue("hubspotutk"),
             ipAddress,
@@ -117,7 +118,7 @@ export function useFormHandler(
           const field = fieldMapping[k];
           if (field) {
             fields.push({
-              objectTypeId: field.objectTypeId,
+              objectTypeId: field.objectTypeId || undefined,
               name: k,
               value: Array.isArray(v) ? v.join(";") : v.toString(),
             });
@@ -189,7 +190,7 @@ export function useFormHandler(
       formDefinition.name,
       reportEvent,
       handleFormData,
-      title,
+      pageName,
       ipAddress,
       fieldMapping,
     ]
@@ -233,8 +234,11 @@ export function buildHubspotFormInformation(
   const fieldMapping: { [name: string]: IHubspotFormFieldDefinition } = {};
   const allFields: Array<IHubspotFormFieldDefinition> = [];
   if (formDefinition) {
-    formDefinition.formFieldGroups
-      ?.filter(ffg => ffg.default)
+    (
+      formDefinition.formFieldGroups?.filter(
+        ffg => ffg && ffg.default
+      ) as ReadonlyArray<IHubspotFormFieldGroupsDefinition>
+    )
       .flatMap(ffg => ffg.fields)
       .forEach(field => {
         if (field?.name) {
@@ -243,7 +247,7 @@ export function buildHubspotFormInformation(
         }
         if (field?.dependentFieldFilters) {
           field.dependentFieldFilters.forEach(dff => {
-            if (dff.dependentFormField?.name) {
+            if (dff?.dependentFormField?.name) {
               fieldMapping[dff.dependentFormField.name] =
                 dff.dependentFormField;
             }
@@ -265,7 +269,8 @@ export const HubspotForm: React.FC<{
   values?: { [name: string]: string | number | undefined };
   handleFormData?: (formData: FormData) => void;
   reportEvent?: EventReporter;
-  title?: string;
+  pageName?: string;
+  formAnchor?: string;
   ipAddress?: string;
 }> = ({
   form: formDefinition,
@@ -273,8 +278,9 @@ export const HubspotForm: React.FC<{
   options = {},
   handleFormData,
   reportEvent,
-  title,
+  pageName,
   ipAddress,
+  formAnchor,
 }) => {
   const {
     status,
@@ -287,7 +293,7 @@ export const HubspotForm: React.FC<{
     formDefinition,
     handleFormData,
     reportEvent,
-    title,
+    pageName,
     ipAddress
   );
 
@@ -340,7 +346,9 @@ export const HubspotForm: React.FC<{
     }
   }
 
-  const name = (formDefinition.name || formDefinition.id).replace(/\s+/g, "");
+  const name =
+    formAnchor ||
+    (formDefinition.name || formDefinition.id).replace(/\s+/g, "");
   const submitText =
     formDefinition.submitText || options.defaultSubmitText || "Submit";
 

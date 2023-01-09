@@ -27,12 +27,15 @@
   "main": "src/index.ts",
   "files": [
     "dist",
+    "src",
     "gatsby-node.js"
   ],
   "scripts": {
-    "build:tsc": "tsc --outDir dist/",
+    "build:gatsby-node": "tsc --downlevelIteration true --skipLibCheck true --esModuleInterop true --outDir dist/ src/gatsby-node.ts",
+    "build:tsc": "tsc --noEmit",
     "build": "npm-run-all -s clean build:*",
     "watch": "npm-run-all -s watch:*",
+    "watch:gatsby-node": "yarn build:gatsby-node -w",
     "watch:tsc": "yarn build:tsc -w",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "clean": "del-cli dist/*"

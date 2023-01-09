@@ -6,22 +6,24 @@ import {
 } from "./shared";
 
 export const HubspotDependentFields: React.FC<{
-  fields: ReadonlyArray<IHubspotFormFormDependentFieldDefinition>;
+  fields: ReadonlyArray<IHubspotFormFormDependentFieldDefinition | null>;
   parentValue?: string;
   options: IHubspotFormOptions;
   onInteracted: () => void;
 }> = ({ fields, parentValue, options, onInteracted }) => (
   <>
-    {fields
-      .filter(field => field.dependentFormField?.enabled)
-      .map(field => (
-        <HubspotDependentField
-          key={field.dependentFormField?.label}
-          field={field}
-          parentValue={parentValue}
-          options={options}
-          onInteracted={onInteracted}
-        />
-      ))}
+    {(
+      fields.filter(
+        field => field?.dependentFormField?.enabled
+      ) as ReadonlyArray<IHubspotFormFormDependentFieldDefinition>
+    ).map(field => (
+      <HubspotDependentField
+        key={field.dependentFormField?.label}
+        field={field}
+        parentValue={parentValue}
+        options={options}
+        onInteracted={onInteracted}
+      />
+    ))}
   </>
 );

@@ -12,7 +12,7 @@ import { IHubspotFormFieldDefinition } from "./shared";
 
 function calculateInputType(
   field: IHubspotFormFieldDefinition
-): HTMLInputTypeAttribute | undefined {
+): HTMLInputTypeAttribute | undefined | null {
   const { name, type } = field;
   switch (type) {
     case "string":
@@ -51,12 +51,12 @@ const HubspotTextField: React.FC<IFieldProps> = ({
   return (
     <input
       value={currentValue}
-      id={field.name}
-      name={field.name}
-      placeholder={field.placeholder}
-      type={calculateInputType(field)}
-      hidden={field.hidden}
-      required={field.required}
+      id={field.name || undefined}
+      name={field.name || undefined}
+      placeholder={field.placeholder || undefined}
+      type={calculateInputType(field) || undefined}
+      hidden={field.hidden || undefined}
+      required={field.required || undefined}
       className={options.fieldClassName}
       onInput={onInteracted}
       onChange={handleChange}

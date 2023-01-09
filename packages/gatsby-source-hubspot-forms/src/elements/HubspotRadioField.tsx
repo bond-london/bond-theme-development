@@ -4,6 +4,7 @@ import {
   IFieldProps,
   registerFieldTypeHandler,
 } from "./HubspotFormFieldFactory";
+import { IHubspotFormFormFieldOptionsDefinition } from "./shared";
 
 const HubspotRadioField: React.FC<IFieldProps> = ({
   field,
@@ -30,16 +31,20 @@ const HubspotRadioField: React.FC<IFieldProps> = ({
   return (
     <>
       <div className={options.radioContainerClassName}>
-        {fieldOptions.map(option => {
+        {(
+          fieldOptions.filter(
+            o => o
+          ) as ReadonlyArray<IHubspotFormFormFieldOptionsDefinition>
+        ).map(option => {
           const checked = option.value === currentValue;
           return (
             <label key={option.value} className={options.radioLabelClassName}>
               <input
                 className={options.radioFieldClassName}
                 type="radio"
-                name={field.name}
+                name={field.name || undefined}
                 checked={checked}
-                value={option.value}
+                value={option.value || undefined}
                 onInput={onInteracted}
                 onChange={handleChange}
               />

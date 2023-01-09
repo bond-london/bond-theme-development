@@ -30,7 +30,7 @@ export interface IHubspotFormOptions {
   hideSubmitButton?: boolean;
   renderSubmitButton?: (text: string) => React.ReactElement;
   showError?: (message: string) => React.ReactElement;
-  renderCheckbox?: (value: string, label?: string) => React.ReactElement;
+  renderCheckbox?: (value: string, label?: string | null) => React.ReactElement;
 }
 
 export type EventReporter = (
@@ -41,103 +41,103 @@ export type EventReporter = (
 export interface IHubspotFormDefinition {
   readonly __typename?: "HubspotForm";
   readonly id: string;
-  readonly portalId?: string;
-  readonly guid?: string;
-  readonly name?: string;
-  readonly action?: string;
-  readonly method?: string;
-  readonly cssClass?: string;
-  readonly redirect?: string;
-  readonly submitText?: string;
-  readonly followUpId?: string;
-  readonly notifyRecipients?: string;
-  readonly leadNurturingCampaignId?: string;
-  readonly formFieldGroups?: ReadonlyArray<IHubspotFormFieldGroupsDefinition>;
-  readonly metaData?: ReadonlyArray<IHubspotFormMetaDataDefinition>;
-  readonly inlineMessage?: string;
-  readonly isPublished?: boolean;
-  readonly thankYouMessageJson?: string;
+  readonly portalId?: string | null;
+  readonly guid?: string | null;
+  readonly name?: string | null;
+  readonly action?: string | null;
+  readonly method?: string | null;
+  readonly cssClass?: string | null;
+  readonly redirect?: string | null;
+  readonly submitText?: string | null;
+  readonly followUpId?: string | null;
+  readonly notifyRecipients?: string | null;
+  readonly leadNurturingCampaignId?: string | null;
+  readonly formFieldGroups?: ReadonlyArray<IHubspotFormFieldGroupsDefinition | null> | null;
+  readonly metaData?: ReadonlyArray<IHubspotFormMetaDataDefinition | null> | null;
+  readonly inlineMessage?: string | null;
+  readonly isPublished?: boolean | null;
+  readonly thankYouMessageJson?: string | null;
 }
 
 export interface IHubspotFormMetaDataDefinition {
   readonly __typename?: "HubspotFormMetaData";
-  readonly name?: string;
-  readonly value?: string;
+  readonly name?: string | null;
+  readonly value?: string | null;
 }
 
 export interface IHubspotFormFieldGroupsDefinition {
   readonly __typename?: "HubspotFormFormFieldGroups";
-  readonly fields?: ReadonlyArray<IHubspotFormFieldDefinition>;
-  readonly default?: boolean;
-  readonly isSmartGroup?: boolean;
-  readonly richText?: IHubspotFormRichTextDefinition;
-  readonly isPageBreak?: boolean;
+  readonly fields?: ReadonlyArray<IHubspotFormFieldDefinition | null> | null;
+  readonly default?: boolean | null;
+  readonly isSmartGroup?: boolean | null;
+  readonly richText?: IHubspotFormRichTextDefinition | null;
+  readonly isPageBreak?: boolean | null;
 }
 
 export interface IHubspotFormRichTextDefinition {
   readonly __typename?: "HubspotFormFormFieldGroupsRichText";
-  readonly content?: string;
-  readonly type?: string;
+  readonly content?: string | null;
+  readonly type?: string | null;
 }
 
 export interface IHubspotFormFieldDefinition {
   readonly __typename?: "HubspotFormFormFieldGroupsFields";
-  readonly name?: string;
-  readonly label?: string;
-  readonly type?: string;
-  readonly fieldType?: string;
-  readonly description?: string;
-  readonly groupName?: string;
-  readonly displayOrder?: number;
-  readonly required?: boolean;
-  readonly options?: ReadonlyArray<IHubspotFormFormFieldOptionsDefinition>;
-  readonly validation?: IHubspotFormFormFieldValidationDefinition;
-  readonly enabled?: boolean;
-  readonly hidden?: boolean;
-  readonly defaultValue?: string;
-  readonly isSmartField?: boolean;
-  readonly unselectedLabel?: string;
-  readonly placeholder?: string;
-  readonly dependentFieldFilters?: ReadonlyArray<IHubspotFormFormDependentFieldDefinition>;
-  readonly labelHidden?: boolean;
-  readonly propertyObjectType?: string;
-  readonly objectTypeId?: string;
+  readonly name?: string | null;
+  readonly label?: string | null;
+  readonly type?: string | null;
+  readonly fieldType?: string | null;
+  readonly description?: string | null;
+  readonly groupName?: string | null;
+  readonly displayOrder?: number | null;
+  readonly required?: boolean | null;
+  readonly options?: ReadonlyArray<IHubspotFormFormFieldOptionsDefinition | null> | null;
+  readonly validation?: IHubspotFormFormFieldValidationDefinition | null;
+  readonly enabled?: boolean | null;
+  readonly hidden?: boolean | null;
+  readonly defaultValue?: string | null;
+  readonly isSmartField?: boolean | null;
+  readonly unselectedLabel?: string | null;
+  readonly placeholder?: string | null;
+  readonly dependentFieldFilters?: ReadonlyArray<IHubspotFormFormDependentFieldDefinition | null> | null;
+  readonly labelHidden?: boolean | null;
+  readonly propertyObjectType?: string | null;
+  readonly objectTypeId?: string | null;
 }
 
 export interface IHubspotFormFormFieldOptionsDefinition {
   readonly __typename?: "HubspotFormFormFieldGroupsFieldsOptions";
-  readonly label?: string;
-  readonly value?: string;
-  readonly displayOrder?: number;
-  readonly doubleData?: number;
-  readonly hidden?: boolean;
-  readonly description?: string;
-  readonly readOnly?: boolean;
+  readonly label?: string | null;
+  readonly value?: string | null;
+  readonly displayOrder?: number | null;
+  readonly doubleData?: number | null;
+  readonly hidden?: boolean | null;
+  readonly description?: string | null;
+  readonly readOnly?: boolean | null;
 }
 
 export interface IHubspotFormFormFieldValidationDefinition {
   readonly __typename?: "HubspotFormFormFieldGroupsFieldsValidation";
-  readonly name?: string;
-  readonly message?: string;
-  readonly data?: string;
-  readonly useDefaultBlockList?: boolean;
+  readonly name?: string | null;
+  readonly message?: string | null;
+  readonly data?: string | null;
+  readonly useDefaultBlockList?: boolean | null;
 }
 
 export interface IHubspotFormFormDependentFieldDefinition {
   readonly __typename?: "HubspotFormFormFieldGroupsFieldsDependentFieldFilters";
-  readonly filters?: ReadonlyArray<IHubspotFormFormDependentFieldFiltersDefinition>;
+  readonly filters?: ReadonlyArray<IHubspotFormFormDependentFieldFiltersDefinition | null> | null;
   readonly dependentFormField?: Omit<
     IHubspotFormFieldDefinition,
     "dependentFieldFilters"
-  >;
-  readonly formFieldAction?: string;
+  > | null;
+  readonly formFieldAction?: string | null;
 }
 
 export interface IHubspotFormFormDependentFieldFiltersDefinition {
   readonly __typename?: "HubspotFormFormFieldGroupsFieldsDependentFieldFiltersFilters";
-  readonly operator?: string;
-  readonly strValue?: string;
-  readonly boolValue?: boolean;
-  readonly numberValue?: number;
-  readonly strValues?: ReadonlyArray<string>;
+  readonly operator?: string | null;
+  readonly strValue?: string | null;
+  readonly boolValue?: boolean | null;
+  readonly numberValue?: number | null;
+  readonly strValues?: ReadonlyArray<string | null> | null;
 }

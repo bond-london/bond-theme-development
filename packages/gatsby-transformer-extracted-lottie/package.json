@@ -1,7 +1,7 @@
 {
   "name": "@bond-london/gatsby-transformer-extracted-lottie",
   "sideEffects": false,
-  "version": "5.1.1",
+  "version": "5.2.0",
   "description": "Gatsby plugin to transform lottie files and extract a preview svg",
   "author": "Nick Randell <nick.randell@bond.fi>",
   "license": "MIT",

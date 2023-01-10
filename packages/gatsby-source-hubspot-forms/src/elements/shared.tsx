@@ -2,6 +2,7 @@ import React from "react";
 export function defaultShowError(message: string): JSX.Element {
   return <pre>{message}</pre>;
 }
+
 export interface IHubspotFormOptions {
   radioContainerClassName?: string;
   radioLabelClassName?: string;
@@ -9,6 +10,7 @@ export interface IHubspotFormOptions {
   checkboxContainerClassName?: string;
   checkboxLabelClassName?: string;
   checkboxFieldClassName?: string;
+  fieldGroupClassName?: string;
   fieldContainerClassName?: string;
   labelClassName?: string;
   requiredClassName?: string;
@@ -141,3 +143,5 @@ export interface IHubspotFormFormDependentFieldFiltersDefinition {
   readonly numberValue?: number | null;
   readonly strValues?: ReadonlyArray<string | null> | null;
 }
+
+export type IHubspotFormFieldGroup = ReadonlyArray<IHubspotFormFieldDefinition>;

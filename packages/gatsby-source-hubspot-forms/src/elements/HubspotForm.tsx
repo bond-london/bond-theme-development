@@ -9,9 +9,9 @@ import type {
   EventReporter,
   IHubspotFormDefinition,
   IHubspotFormFieldDefinition,
+  IHubspotFormFieldGroup,
   IHubspotFormFieldGroupsDefinition,
 } from "./shared";
-import { HubspotFormField } from "./HubspotFormField";
 import { defaultShowError, IHubspotFormOptions } from "./shared";
 import { registerHubspotTextField } from "./HubspotTextField";
 import { registerTextAreaField } from "./HubspotTextAreaField";
@@ -19,6 +19,7 @@ import { registerSelectField } from "./HubspotSelectField";
 import { registerRadioField } from "./HubspotRadioField";
 import { registerCheckboxField } from "./HubspotCheckboxField";
 import { useFirstVisibleToUser } from "@bond-london/gatsby-theme";
+import { HubspotFormGroup } from "./HubspotFormGroup";
 
 function register(): void {
   registerHubspotTextField();
@@ -49,7 +50,7 @@ export function useFormHandler(
   ipAddress?: string
 ): {
   submitForm: (form: HTMLFormElement, onSuccess?: () => void) => void;
-  allFields: ReadonlyArray<IHubspotFormFieldDefinition>;
+  allGroups: ReadonlyArray<IHubspotFormFieldGroup>;
   status: "Idle" | "Success" | "Failed";
   formResponse: IHubspotFormResponse | undefined;
   formRef: React.Ref<HTMLFormElement>;
@@ -86,7 +87,7 @@ export function useFormHandler(
       });
     }
   }, [formVisible, formDefinition, formRef, reportEvent]);
-  const { allFields, fieldMapping } = useMemo(
+  const { allGroups, fieldMapping } = useMemo(
     () => buildHubspotFormInformation(formDefinition),
     [formDefinition]
   );
@@ -198,7 +199,7 @@ export function useFormHandler(
 
   return {
     submitForm,
-    allFields,
+    allGroups,
     status,
     formResponse,
     formRef,
@@ -228,21 +229,21 @@ export function handleFormAbandoned(
 export function buildHubspotFormInformation(
   formDefinition?: IHubspotFormDefinition
 ): {
-  allFields: ReadonlyArray<IHubspotFormFieldDefinition>;
+  allGroups: ReadonlyArray<IHubspotFormFieldGroup>;
   fieldMapping: { [name: string]: IHubspotFormFieldDefinition };
 } {
   const fieldMapping: { [name: string]: IHubspotFormFieldDefinition } = {};
-  const allFields: Array<IHubspotFormFieldDefinition> = [];
+  const allGroups: Array<IHubspotFormFieldGroup> = [];
   if (formDefinition) {
     (
       formDefinition.formFieldGroups?.filter(
         ffg => ffg && ffg.default
       ) as ReadonlyArray<IHubspotFormFieldGroupsDefinition>
-    )
-      .flatMap(ffg => ffg.fields)
-      .forEach(field => {
+    ).forEach(ffg => {
+      const groupFields: Array<IHubspotFormFieldDefinition> = [];
+      ffg.fields?.forEach(field => {
         if (field?.name) {
-          allFields.push(field);
+          groupFields.push(field);
           fieldMapping[field.name] = field;
         }
         if (field?.dependentFieldFilters) {
@@ -254,8 +255,12 @@ export function buildHubspotFormInformation(
           });
         }
       });
+      if (groupFields.length > 0) {
+        allGroups.push(groupFields);
+      }
+    });
   }
-  return { allFields, fieldMapping };
+  return { allGroups, fieldMapping };
 }
 
 export interface IDynamicFormState {
@@ -286,7 +291,7 @@ export const HubspotForm: React.FC<{
     status,
     formResponse,
     submitForm,
-    allFields,
+    allGroups,
     formRef,
     handleFormInteracted,
   } = useFormHandler(
@@ -377,13 +382,13 @@ export const HubspotForm: React.FC<{
             ))}
           </div>
         )}
-        {allFields.map(field => (
-          <HubspotFormField
-            key={field.name}
-            field={field}
+        {allGroups.map((group, index) => (
+          <HubspotFormGroup
+            key={index}
+            group={group}
             options={options}
             onInteracted={handleFormInteracted}
-            value={values && field.name ? values[field.name] : ""}
+            values={values}
           />
         ))}
         {!options.hideSubmitButton && (

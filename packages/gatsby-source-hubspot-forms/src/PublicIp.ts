@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 
 async function queryPublicIp(): Promise<string> {
-  const response = await fetch("/api/ip");
-  const result = (await response.json()) as { ip: string };
-  if (result.ip && result.ip !== "0.0.0.0") {
-    return result.ip;
-  }
-
   const external = await fetch("https://api.ipify.org?format=json");
   const externalResult = (await external.json()) as { ip: string };
   return externalResult.ip;

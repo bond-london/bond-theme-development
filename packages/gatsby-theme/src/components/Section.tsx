@@ -79,7 +79,12 @@ export function calculateSectionContentClassNames({
     fullWidth
   );
 
-  return classNames(realRowsClassName, realColumnsClassName, contentClassName);
+  return classNames(
+    "z-sectionContent",
+    realRowsClassName,
+    realColumnsClassName,
+    contentClassName
+  );
 }
 export const Section: React.FC<
   PropsWithChildren<{

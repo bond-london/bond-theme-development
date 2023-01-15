@@ -11,6 +11,7 @@ import {
   calculateRemSize,
   remValueFn,
   forEachObject,
+  mapNumbers,
 } from "./utils";
 
 export const defaultNumbers = {
@@ -122,6 +123,11 @@ export function configureTheme(
           ...mapObject(config.spacing, defaultKeyFn, remValueFn),
         },
         fontWeight: {
+          ...mapNumbers(
+            [100, 200, 300, 400, 500, 600, 700, 800, 900],
+            defaultKeyFn,
+            defaultKeyFn
+          ),
           regular: "400",
         },
       },

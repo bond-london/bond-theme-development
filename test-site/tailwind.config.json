@@ -53,10 +53,6 @@
     }
   },
   "lineHeight": 1.25,
-  "fontWeight": {
-    "light": 300,
-    "bold": 700
-  },
   "fontTable": {
     "h1": {
       "font": "sans",

@@ -11,6 +11,7 @@ export interface IHubspotFormOptions {
   checkboxLabelClassName?: string;
   checkboxFieldClassName?: string;
   fieldGroupClassName?: string;
+  hiddenFieldGroupClassName?: string;
   fieldContainerClassName?: string;
   labelClassName?: string;
   requiredClassName?: string;

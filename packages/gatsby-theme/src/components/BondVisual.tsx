@@ -260,6 +260,7 @@ export const BondVisual: React.FC<
     imgStyle?: CSSProperties;
     onLoad?: (props: { wasCached: boolean }) => void;
     onStartLoad?: (props: { wasCached: boolean }) => void;
+    animationClassName?: string;
   } & Omit<
     VideoHTMLAttributes<HTMLVideoElement>,
     "poster" | "objectFit" | "objectPosition"

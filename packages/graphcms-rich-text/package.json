@@ -35,6 +35,11 @@
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "clean": "del-cli dist/*"
   },
+  "peerDependencies": {
+    "gatsby": "^5",
+    "react": "^18",
+    "react-dom": "^18"
+  },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",

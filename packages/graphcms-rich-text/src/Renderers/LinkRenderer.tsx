@@ -1,3 +1,4 @@
+import { Link } from "gatsby";
 import React, { PropsWithChildren } from "react";
 import { RenderEmbedProps } from "../RenderEmbed";
 import { RenderLinkTo, RenderLinkToProps } from "../RenderLinkTo";
@@ -27,13 +28,21 @@ const BasicLinkRenderer: React.FC<
 
   const realClassName = className || classNameOverrides?.["a"];
 
-  if (href) aProps.href = encodeURI(href);
   if (realClassName) aProps.className = realClassName;
   if (openInNewTab) {
     aProps.target = "_blank";
     aProps.rel = "noreferrer";
   }
 
+  if (href?.startsWith("/")) {
+    return (
+      <Link to={href} {...aProps}>
+        {children}
+      </Link>
+    );
+  }
+
+  if (href) aProps.href = encodeURI(href);
   return <a {...aProps}>{children}</a>;
 };
 

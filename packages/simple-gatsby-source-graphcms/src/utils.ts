@@ -22,6 +22,7 @@ import {
   isNonNullType,
   isListType,
 } from "graphql";
+import pThrottle from "p-throttle";
 
 export const stateCache: IPluginState = {};
 
@@ -94,6 +95,12 @@ interface IGraphCMSResponse {
   errors?: Array<string>;
 }
 
+const throttler = pThrottle({ limit: 5, interval: 1000 });
+
+type Fetcher = Promise<
+  ExecutionResult<{ [key: string]: unknown }, { [key: string]: unknown }>
+>;
+
 export function createExecutor(
   gatsbyApi: NodePluginArgs,
   pluginOptions: IPluginOptions
@@ -101,11 +108,7 @@ export function createExecutor(
   const { endpoint, stages, token } = pluginOptions;
   const { reporter } = gatsbyApi;
   const defaultStage = stages[0];
-  const execute = (
-    args: IQueryExecutionArgs
-  ): Promise<
-    ExecutionResult<{ [key: string]: unknown }, { [key: string]: unknown }>
-  > => {
+  const execute = (args: IQueryExecutionArgs): Fetcher => {
     const { operationName, query, variables = {} } = args;
     return fetch(endpoint, {
       method: "POST",
@@ -155,7 +158,7 @@ export function createExecutor(
         )
       );
   };
-  return execute;
+  return throttler(execute);
 }
 
 export async function createSourcingConfig(

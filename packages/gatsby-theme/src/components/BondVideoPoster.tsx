@@ -5,7 +5,12 @@ import {
 } from "@bond-london/gatsby-transformer-video";
 import { IGatsbyVideo } from "@bond-london/gatsby-transformer-video/src/types";
 import classNames from "classnames";
-import React, { PropsWithChildren, useEffect, CSSProperties } from "react";
+import React, {
+  PropsWithChildren,
+  useEffect,
+  CSSProperties,
+  useCallback,
+} from "react";
 
 const BondVideoPosterNoPoster: React.FC<
   PropsWithChildren<{
@@ -62,6 +67,15 @@ const BondVideoPosterWithPoster: React.FC<
   const videoWrapperProps = forVideo
     ? getVideoWrapperProps(forVideo)
     : undefined;
+
+  const imgRef = useCallback(
+    (img: HTMLImageElement | null) => {
+      if (img && img.complete) {
+        onLoaded?.();
+      }
+    },
+    [onLoaded]
+  );
   return (
     <div
       {...props}
@@ -71,6 +85,7 @@ const BondVideoPosterWithPoster: React.FC<
       {forVideo && <VideoSizer video={forVideo} />}
       <img
         src={posterSrc}
+        ref={imgRef}
         onLoad={onLoaded}
         onError={onLoaded}
         alt=""

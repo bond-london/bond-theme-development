@@ -24,9 +24,9 @@ export interface ICmsVideo {
   readonly horizontalCropPosition?: Horizontal | null;
   readonly preview?: ICmsVideoAsset | null;
   readonly poster?: {
-    readonly localFile: {
-      readonly publicURL: string | null;
-      readonly childImageSharp: {
+    readonly localFile?: {
+      readonly publicURL?: string | null;
+      readonly childImageSharp?: {
         readonly gatsbyImageData: IGatsbyImageData;
       } | null;
     } | null;
@@ -37,9 +37,6 @@ export interface ICmsVideo {
   readonly subtitles?: {
     readonly localFile: {
       readonly publicURL: string | null;
-      readonly childImageSharp: {
-        readonly gatsbyImageData: IGatsbyImageData;
-      } | null;
     } | null;
   } | null;
 }

@@ -54,9 +54,9 @@ interface ICmsVisual {
     } | null;
   } | null;
   readonly posterImage?: {
-    readonly localFile: {
-      readonly publicURL: string | null;
-      readonly childImageSharp: {
+    readonly localFile?: {
+      readonly publicURL?: string | null;
+      readonly childImageSharp?: {
         readonly gatsbyImageData: IGatsbyImageData;
       } | null;
     } | null;

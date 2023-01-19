@@ -321,6 +321,7 @@ export const BondFullVideo: React.FC<
     <BondVideoPoster
       data-component="Bond Full Video no preview"
       posterSrc={realPosterSrc}
+      posterData={video.posterData}
       onLoaded={onPreviewHasStarted}
       objectFit={objectFit}
       objectPosition={objectPosition}

@@ -1,4 +1,5 @@
 import { getPosterSrc } from "@bond-london/gatsby-transformer-video";
+import { IGatsbyImageData } from "gatsby-plugin-image";
 import React from "react";
 import { CSSProperties, VideoHTMLAttributes } from "react";
 import { Horizontal, Vertical } from "../types";
@@ -25,6 +26,9 @@ export interface ICmsVideo {
   readonly poster?: {
     readonly localFile: {
       readonly publicURL: string | null;
+      readonly childImageSharp: {
+        readonly gatsbyImageData: IGatsbyImageData;
+      } | null;
     } | null;
   } | null;
   readonly full?: ICmsVideoAsset | null;
@@ -33,6 +37,9 @@ export interface ICmsVideo {
   readonly subtitles?: {
     readonly localFile: {
       readonly publicURL: string | null;
+      readonly childImageSharp: {
+        readonly gatsbyImageData: IGatsbyImageData;
+      } | null;
     } | null;
   } | null;
 }
@@ -82,6 +89,8 @@ export function convertCmsVideoToBondVideo(
     getPosterSrc(preview) ||
     getPosterSrc(full);
 
+  const posterData = cms.poster?.localFile?.childImageSharp?.gatsbyImageData;
+
   const videoData = preview;
   const {
     name,
@@ -103,6 +112,7 @@ export function convertCmsVideoToBondVideo(
     return {
       videoData,
       posterSrc,
+      posterData,
       external,
       dontCrop,
       verticalCropPosition,
@@ -117,6 +127,7 @@ export function convertCmsVideoToBondVideo(
     return {
       videoData,
       posterSrc,
+      posterData,
       full,
       dontCrop,
       verticalCropPosition,
@@ -131,6 +142,7 @@ export function convertCmsVideoToBondVideo(
   return {
     videoData,
     posterSrc,
+    posterData,
     dontCrop,
     verticalCropPosition,
     horizontalCropPosition,
@@ -168,6 +180,7 @@ export const BondVideo: React.FC<
     videoStyle?: CSSProperties;
     noPoster?: boolean;
     posterSrc?: string;
+    posterData?: IGatsbyImageData;
     playButton?: React.FC<{ playVideo?: () => void }>;
     pauseButton?: React.FC<{ pauseVideo?: () => void }>;
     muteButton?: React.FC<{ muteVideo?: () => void }>;

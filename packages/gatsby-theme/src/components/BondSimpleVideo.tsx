@@ -3,6 +3,7 @@ import {
   GatsbyVideo,
   getPosterSrc,
 } from "@bond-london/gatsby-transformer-video";
+import { IGatsbyImageData } from "gatsby-plugin-image";
 import React, {
   CSSProperties,
   PropsWithChildren,
@@ -23,6 +24,7 @@ export interface IBondSubtitle {
 export type IBondSimpleVideo = IVisualCommon & {
   videoData?: IGatsbyTransformedVideo;
   posterSrc?: string | null;
+  posterData?: IGatsbyImageData | null;
   loop?: boolean | null;
   loopDelay?: number | null;
   subtitles?: ReadonlyArray<IBondSubtitle>;

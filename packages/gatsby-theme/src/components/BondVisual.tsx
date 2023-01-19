@@ -56,6 +56,9 @@ interface ICmsVisual {
   readonly posterImage?: {
     readonly localFile: {
       readonly publicURL: string | null;
+      readonly childImageSharp: {
+        readonly gatsbyImageData: IGatsbyImageData;
+      } | null;
     } | null;
   } | null;
   readonly fullLengthVideo?: {
@@ -125,6 +128,9 @@ export function convertCmsVisualToBondVisual(
     getPosterSrc(preview) ||
     getPosterSrc(full);
 
+  const posterData =
+    cms.posterImage?.localFile?.childImageSharp?.gatsbyImageData;
+
   const videoData = preview;
   const external = cms.externalVideo || undefined;
   const {
@@ -149,6 +155,7 @@ export function convertCmsVisualToBondVisual(
     return {
       videoData,
       posterSrc,
+      posterData,
       external,
       dontCrop,
       verticalCropPosition,
@@ -163,6 +170,7 @@ export function convertCmsVisualToBondVisual(
     return {
       videoData,
       posterSrc,
+      posterData,
       full,
       dontCrop,
       verticalCropPosition,
@@ -178,6 +186,7 @@ export function convertCmsVisualToBondVisual(
     return {
       videoData,
       posterSrc,
+      posterData,
       dontCrop,
       verticalCropPosition,
       horizontalCropPosition,
@@ -277,12 +286,32 @@ export const BondVisual: React.FC<
       | "objectPosition"
     >
 > = props => {
-  const { visual, ...rest } = props;
+  const {
+    visual,
+    showControls,
+    showAudioControls,
+    playButton,
+    pauseButton,
+    muteButton,
+    unmuteButton,
+    ...rest
+  } = props;
   if (isBondAnimation(visual)) {
     return <BondAnimation animation={visual} {...rest} />;
   }
   if (isBondVideo(visual)) {
-    return <BondVideo video={visual} {...rest} />;
+    return (
+      <BondVideo
+        video={visual}
+        {...rest}
+        showAudioControls={showAudioControls}
+        showControls={showControls}
+        playButton={playButton}
+        pauseButton={pauseButton}
+        muteButton={muteButton}
+        unmuteButton={unmuteButton}
+      />
+    );
   }
   if (isBondImage(visual)) {
     return <BondImage image={visual} {...rest} />;

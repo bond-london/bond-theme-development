@@ -11,6 +11,7 @@ import React, {
   CSSProperties,
   useCallback,
 } from "react";
+import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 
 const BondVideoPosterNoPoster: React.FC<
   PropsWithChildren<{
@@ -43,7 +44,8 @@ const BondVideoPosterNoPoster: React.FC<
 
 const BondVideoPosterWithPoster: React.FC<
   PropsWithChildren<{
-    posterSrc: string;
+    posterSrc?: string | null;
+    posterData?: IGatsbyImageData | null;
     className?: string;
     posterClassName?: string;
     objectFit?: CSSProperties["objectFit"];
@@ -54,6 +56,7 @@ const BondVideoPosterWithPoster: React.FC<
   }>
 > = ({
   children,
+  posterData,
   posterSrc,
   onLoaded,
   className,
@@ -83,15 +86,31 @@ const BondVideoPosterWithPoster: React.FC<
       className={classNames(videoWrapperProps?.className, className)}
     >
       {forVideo && <VideoSizer video={forVideo} />}
-      <img
-        src={posterSrc}
-        ref={imgRef}
-        onLoad={onLoaded}
-        onError={onLoaded}
-        alt="Video poster"
-        className={classNames("inside", posterClassName)}
-        style={{ objectFit, objectPosition }}
-      />
+      {posterData ? (
+        <GatsbyImage
+          alt="Video poster"
+          image={{
+            ...posterData,
+            placeholder: undefined,
+            backgroundColor: undefined,
+          }}
+          className={classNames("inside", posterClassName)}
+          objectFit={objectFit}
+          objectPosition={objectPosition}
+        />
+      ) : (
+        posterSrc && (
+          <img
+            src={posterSrc}
+            ref={imgRef}
+            onLoad={onLoaded}
+            onError={onLoaded}
+            alt="Video poster"
+            className={classNames("inside", posterClassName)}
+            style={{ objectFit, objectPosition }}
+          />
+        )
+      )}
       {children}
     </div>
   );
@@ -100,6 +119,7 @@ const BondVideoPosterWithPoster: React.FC<
 export const BondVideoPoster: React.FC<
   PropsWithChildren<{
     posterSrc?: string | null;
+    posterData?: IGatsbyImageData | null;
     className?: string;
     posterClassName?: string;
     objectFit?: CSSProperties["objectFit"];
@@ -111,6 +131,7 @@ export const BondVideoPoster: React.FC<
   children,
   onLoaded,
   posterSrc,
+  posterData,
   className,
   posterClassName,
   objectFit,
@@ -120,10 +141,11 @@ export const BondVideoPoster: React.FC<
 }) => {
   const forGatsbyVideo = forVideo as unknown as IGatsbyVideo;
 
-  if (posterSrc) {
+  if (posterSrc || posterData) {
     return (
       <BondVideoPosterWithPoster
         posterSrc={posterSrc}
+        posterData={posterData}
         onLoaded={onLoaded}
         className={className}
         posterClassName={posterClassName}

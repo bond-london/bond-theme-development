@@ -88,7 +88,7 @@ const BondVideoPosterWithPoster: React.FC<
         ref={imgRef}
         onLoad={onLoaded}
         onError={onLoaded}
-        alt=""
+        alt="Video poster"
         className={classNames("inside", posterClassName)}
         style={{ objectFit, objectPosition }}
       />

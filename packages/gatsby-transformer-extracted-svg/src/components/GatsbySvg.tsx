@@ -68,6 +68,7 @@ export const GatsbySvg: React.FC<
       <Sizer svg={svg as unknown as IGatsbySvg} />
       {imgSrc && (
         <img
+          alt=""
           {...otherProps}
           style={{ ...svgStyle, objectFit, objectPosition }}
           className={svgClassName}

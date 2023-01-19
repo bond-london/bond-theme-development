@@ -156,6 +156,7 @@ export const GatsbyAnimation: React.FC<{
       <Sizer animation={animation as unknown as IGatsbyAnimation} />
       {showPoster && posterSrc && (
         <img
+          alt="Animation poster"
           style={{ objectFit, objectPosition }}
           className={animationClassName}
           width={width}

@@ -19,6 +19,11 @@ export async function onCreateNode(args: CreateNodeArgs): Promise<void> {
     fsNode.absolutePath,
     reporter
   );
+  reporter.info(
+    `Got video information ${JSON.stringify(videoInformation)} for "${
+      fsNode.absolutePath
+    }"`
+  );
 
   const videoNode: NodeInput = {
     id: createNodeId(`${node.id} >> GatsbyVideo`),

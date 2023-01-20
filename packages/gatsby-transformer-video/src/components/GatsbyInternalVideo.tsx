@@ -57,7 +57,7 @@ export const GatsbyInternalVideo: React.FC<
     {
       video: IGatsbyVideo;
       videoRef: RefObject<HTMLVideoElement>;
-      lazy?: boolean;
+      loading?: "eager" | "lazy" | undefined;
     } & Omit<
       DetailedHTMLProps<
         VideoHTMLAttributes<HTMLVideoElement>,
@@ -66,10 +66,12 @@ export const GatsbyInternalVideo: React.FC<
       "src" | "ref" | "width" | "height"
     >
   >
-> = ({ children, video, videoRef, lazy, poster, ...otherProps }) => {
+> = ({ children, video, videoRef, loading, poster, ...otherProps }) => {
   const { width, height } = calculateVideoSizes(
     video as unknown as IGatsbyVideo
   );
+
+  const lazy = loading === "lazy";
 
   useEffect(() => {
     const video = videoRef?.current;

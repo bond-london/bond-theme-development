@@ -58,7 +58,7 @@ export const BondSimpleVideo: React.FC<
       noPoster?: boolean;
       posterSrc?: string;
       loopDelay?: number | null;
-      lazy?: boolean;
+      loading?: "eager" | "lazy" | undefined;
     } & Omit<
       VideoHTMLAttributes<HTMLVideoElement>,
       "poster" | "objectFit" | "objectPosition"
@@ -96,6 +96,7 @@ export const BondSimpleVideo: React.FC<
     return (
       <GatsbyVideo
         {...videoProps}
+        muted={true}
         posterSrc={realPosterSrc}
         data-component="Bond Simple Video"
         loop={loop || videoLoop || undefined}

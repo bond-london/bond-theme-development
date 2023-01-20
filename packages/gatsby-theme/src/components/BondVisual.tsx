@@ -311,7 +311,7 @@ export const BondVisual: React.FC<
         pauseButton={pauseButton}
         muteButton={muteButton}
         unmuteButton={unmuteButton}
-        lazy={loading === "lazy"}
+        loading={loading}
       />
     );
   }

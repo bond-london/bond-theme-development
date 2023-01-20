@@ -154,6 +154,7 @@ const BondFullVideoInside: React.FC<
 
   const showOurControls = subtitles ? false : showControls;
   const showNativeControls = subtitles ? true : controls;
+  const realShowAudioControls = full.hasAudio ? showAudioControls : false;
 
   return (
     <>
@@ -163,7 +164,7 @@ const BondFullVideoInside: React.FC<
       {loadFull && (
         <GatsbyInternalVideo
           style={{ objectFit, objectPosition }}
-          video={full as unknown as IGatsbyVideo}
+          video={full}
           autoPlay={fullRequested}
           videoRef={fullVideoRef}
           onCanPlay={onFullLoaded}
@@ -198,7 +199,7 @@ const BondFullVideoInside: React.FC<
           pauseButton={pauseButton}
           muteButton={muteButton}
           unmuteButton={unmuteButton}
-          showAudioControls={showAudioControls}
+          showAudioControls={realShowAudioControls}
         />
       )}
     </>
@@ -219,7 +220,7 @@ export const BondFullVideo: React.FC<
     unmuteButton?: React.FC<{ unmuteVideo?: () => void }>;
     showAudioControls?: boolean;
     showControls?: boolean;
-    lazy?: boolean;
+    loading?: "eager" | "lazy" | undefined;
   } & Omit<
     VideoHTMLAttributes<HTMLVideoElement>,
     "poster" | "objectFit" | "objectPosition"
@@ -250,6 +251,7 @@ export const BondFullVideo: React.FC<
     posterSrc,
     autoPlay,
     muted,
+    loading,
     ...videoProps
   } = props;
   const {
@@ -289,6 +291,7 @@ export const BondFullVideo: React.FC<
         objectFit={objectFit}
         objectPosition={objectPosition}
         videoClassName={fullHasStarted ? "opacity-0" : "opacity-100"}
+        loading={loading}
       >
         <BondFullVideoInside
           full={full as unknown as IGatsbyVideo}
@@ -329,6 +332,7 @@ export const BondFullVideo: React.FC<
       className={videoProps.className}
       posterClassName={fullHasStarted ? "opacity-0" : "opacity-100"}
       forVideo={full}
+      loading={loading}
     >
       <BondFullVideoInside
         full={full as unknown as IGatsbyVideo}

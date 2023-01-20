@@ -8,7 +8,7 @@ const regex =
   /Stream.#(.*): (?<type>Video|Audio|Data)(.*, (?<width>\d+)x(?<height>\d+).*$|.*$)/gim;
 function parseFfmpegOutput(output: string): IGatsbyVideoInformation {
   const matches = output.matchAll(regex);
-  const info: Partial<IGatsbyVideoInformation> = {};
+  const info: Partial<IGatsbyVideoInformation> = { hasAudio: false };
   for (const match of matches) {
     switch (match.groups?.type) {
       case "Video":

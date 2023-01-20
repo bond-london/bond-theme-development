@@ -78,7 +78,7 @@ export const GatsbyVideo: React.FC<
       videoClassName?: string;
       videoStyle?: CSSProperties;
       pause?: boolean;
-      lazy?: boolean;
+      loading?: "eager" | "lazy" | undefined;
     } & Omit<VideoHTMLAttributes<HTMLVideoElement>, "poster" | "src">
   >
 > = allProps => {

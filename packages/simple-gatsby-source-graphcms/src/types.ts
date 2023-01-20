@@ -70,7 +70,6 @@ export interface IGraphCmsAsset extends Node {
   width?: number;
   size: number;
   urlToUse: string;
-  hasAudio?: boolean;
 }
 
 export interface IBasicFieldType {

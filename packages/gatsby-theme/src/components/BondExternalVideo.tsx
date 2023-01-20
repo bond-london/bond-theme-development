@@ -151,7 +151,7 @@ export const BondExternalVideo: React.FC<
     unmuteButton?: React.FC<{ unmuteVideo?: () => void }>;
     showAudioControls?: boolean;
     showControls?: boolean;
-    lazy?: boolean;
+    loading?: "eager" | "lazy" | undefined;
   } & Omit<
     VideoHTMLAttributes<HTMLVideoElement>,
     "poster" | "objectFit" | "objectPosition"
@@ -177,6 +177,8 @@ export const BondExternalVideo: React.FC<
     showControls,
     noPoster,
     posterSrc,
+    loading,
+    muted,
     ...videoProps
   } = props;
   const {
@@ -212,6 +214,8 @@ export const BondExternalVideo: React.FC<
         objectFit={objectFit}
         objectPosition={objectPosition}
         videoClassName={fullHasLoaded ? "opacity-0" : "opacity-100"}
+        loading={loading}
+        muted={true}
       >
         <BondExternalVideoInside
           external={external}
@@ -230,6 +234,7 @@ export const BondExternalVideo: React.FC<
           unmuteButton={unmuteButton}
           showAudioControls={showAudioControls}
           showControls={showControls}
+          muted={muted}
           {...videoProps}
         />
       </GatsbyVideo>
@@ -245,6 +250,7 @@ export const BondExternalVideo: React.FC<
       objectPosition={objectPosition}
       className={videoProps.className}
       posterClassName={fullHasLoaded ? "opacity-0" : "opacity-100"}
+      loading={loading}
     >
       <BondExternalVideoInside
         external={external}
@@ -263,6 +269,7 @@ export const BondExternalVideo: React.FC<
         unmuteButton={unmuteButton}
         showAudioControls={showAudioControls}
         showControls={showControls}
+        muted={muted}
         {...videoProps}
       />
     </BondVideoPoster>

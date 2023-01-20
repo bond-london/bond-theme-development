@@ -53,6 +53,7 @@ const BondVideoPosterWithPoster: React.FC<
     forVideo?: IGatsbyVideo;
     onLoaded?: () => void;
     style?: CSSProperties;
+    loading?: "eager" | "lazy" | undefined;
   }>
 > = ({
   children,
@@ -65,6 +66,7 @@ const BondVideoPosterWithPoster: React.FC<
   objectPosition,
   forVideo,
   style,
+  loading,
   ...props
 }) => {
   const videoWrapperProps = forVideo
@@ -99,6 +101,7 @@ const BondVideoPosterWithPoster: React.FC<
           objectPosition={objectPosition}
           onLoad={onLoaded}
           onError={onLoaded}
+          loading={loading}
         />
       ) : (
         posterSrc && (
@@ -128,6 +131,7 @@ export const BondVideoPoster: React.FC<
     objectPosition?: CSSProperties["objectPosition"];
     onLoaded?: () => void;
     forVideo?: IGatsbyTransformedVideo;
+    loading?: "eager" | "lazy" | undefined;
   }>
 > = ({
   children,
@@ -139,6 +143,7 @@ export const BondVideoPoster: React.FC<
   objectFit,
   objectPosition,
   forVideo,
+  loading,
   ...props
 }) => {
   const forGatsbyVideo = forVideo as unknown as IGatsbyVideo;
@@ -154,6 +159,7 @@ export const BondVideoPoster: React.FC<
         objectFit={objectFit}
         objectPosition={objectPosition}
         forVideo={forGatsbyVideo}
+        loading={loading}
         {...props}
       >
         {children}

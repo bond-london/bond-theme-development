@@ -3,8 +3,10 @@ import {
   IFieldProps,
   registerFieldTypeHandler,
 } from "./HubspotFormFieldFactory";
+import { makeInputId } from "./shared";
 
 const HubspotTextareaField: React.FC<IFieldProps> = ({
+  formName,
   field,
   onInteracted,
   onChange,
@@ -24,7 +26,7 @@ const HubspotTextareaField: React.FC<IFieldProps> = ({
   return (
     <textarea
       value={currentValue}
-      id={field.name || undefined}
+      id={makeInputId(formName, field.name)}
       name={field.name || undefined}
       placeholder={field.placeholder || undefined}
       hidden={field.hidden || undefined}

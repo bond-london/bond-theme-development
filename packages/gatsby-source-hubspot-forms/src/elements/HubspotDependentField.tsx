@@ -6,11 +6,12 @@ import {
 import { HubspotFormField } from "./HubspotFormField";
 
 export const HubspotDependentField: React.FC<{
+  formName: string;
   field: IHubspotFormFormDependentFieldDefinition;
   parentValue?: string;
   onInteracted: () => void;
   options: IHubspotFormOptions;
-}> = ({ field, parentValue, options, onInteracted }) => {
+}> = ({ formName, field, parentValue, options, onInteracted }) => {
   const { filters, dependentFormField } = field;
 
   const isDisplayed = useMemo(() => {
@@ -45,6 +46,7 @@ export const HubspotDependentField: React.FC<{
   if (isDisplayed && dependentFormField) {
     return (
       <HubspotFormField
+        formName={formName}
         field={dependentFormField}
         options={options}
         onInteracted={onInteracted}

@@ -4,9 +4,10 @@ import {
   IFieldProps,
   registerFieldTypeHandler,
 } from "./HubspotFormFieldFactory";
-import { IHubspotFormFormFieldOptionsDefinition } from "./shared";
+import { IHubspotFormFormFieldOptionsDefinition, makeInputId } from "./shared";
 
 const HubspotRadioField: React.FC<IFieldProps> = ({
+  formName,
   field,
   onInteracted,
   onChange,
@@ -42,6 +43,7 @@ const HubspotRadioField: React.FC<IFieldProps> = ({
               <input
                 className={options.radioFieldClassName}
                 type="radio"
+                id={makeInputId(formName, field.name)}
                 name={field.name || undefined}
                 checked={checked}
                 value={option.value || undefined}
@@ -56,6 +58,7 @@ const HubspotRadioField: React.FC<IFieldProps> = ({
       {field.__typename === "HubspotFormFormFieldGroupsFields" &&
         field.dependentFieldFilters && (
           <HubspotDependentFields
+            formName={formName}
             fields={field.dependentFieldFilters}
             parentValue={currentValue as string}
             options={options}

@@ -4,9 +4,10 @@ import {
   IFieldProps,
   registerFieldTypeHandler,
 } from "./HubspotFormFieldFactory";
-import { IHubspotFormFormFieldOptionsDefinition } from "./shared";
+import { IHubspotFormFormFieldOptionsDefinition, makeInputId } from "./shared";
 
 const HubspotSelectField: React.FC<IFieldProps> = ({
+  formName,
   field,
   onInteracted,
   onChange,
@@ -26,7 +27,7 @@ const HubspotSelectField: React.FC<IFieldProps> = ({
   return (
     <>
       <select
-        id={field.name || undefined}
+        id={makeInputId(formName, field.name)}
         name={field.name || undefined}
         placeholder={field.placeholder ? field.placeholder : undefined}
         hidden={field.hidden || undefined}
@@ -57,6 +58,7 @@ const HubspotSelectField: React.FC<IFieldProps> = ({
       {field.__typename === "HubspotFormFormFieldGroupsFields" &&
         field.dependentFieldFilters && (
           <HubspotDependentFields
+            formName={formName}
             fields={field.dependentFieldFilters}
             parentValue={currentValue as string}
             options={options}

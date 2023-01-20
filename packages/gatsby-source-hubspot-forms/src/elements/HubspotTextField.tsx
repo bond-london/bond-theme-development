@@ -8,7 +8,7 @@ import {
   IFieldProps,
   registerFieldTypeHandler,
 } from "./HubspotFormFieldFactory";
-import { IHubspotFormFieldDefinition } from "./shared";
+import { IHubspotFormFieldDefinition, makeInputId } from "./shared";
 
 function calculateInputType(
   field: IHubspotFormFieldDefinition
@@ -32,6 +32,7 @@ function calculateInputType(
 }
 
 const HubspotTextField: React.FC<IFieldProps> = ({
+  formName,
   field,
   onInteracted,
   onChange,
@@ -51,6 +52,7 @@ const HubspotTextField: React.FC<IFieldProps> = ({
   return (
     <input
       value={currentValue}
+      id={makeInputId(formName, field.name)}
       name={field.name || undefined}
       placeholder={field.placeholder || undefined}
       type={calculateInputType(field) || undefined}

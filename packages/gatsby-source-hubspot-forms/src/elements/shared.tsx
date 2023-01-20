@@ -146,3 +146,11 @@ export interface IHubspotFormFormDependentFieldFiltersDefinition {
 }
 
 export type IHubspotFormFieldGroup = ReadonlyArray<IHubspotFormFieldDefinition>;
+
+export function makeInputId(
+  formName: string,
+  fieldName?: string | null
+): string | undefined {
+  if (fieldName) return `${formName}#${fieldName}`;
+  return undefined;
+}

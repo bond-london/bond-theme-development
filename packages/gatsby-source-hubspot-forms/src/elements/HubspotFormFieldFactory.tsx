@@ -6,6 +6,7 @@ import {
 } from "./shared";
 
 export interface IFieldProps {
+  formName: string;
   field: IHubspotFormFieldDefinition;
   value?: string | number;
   onInteracted: () => void;

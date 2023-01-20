@@ -3,7 +3,7 @@ import {
   IFieldProps,
   registerFieldTypeHandler,
 } from "./HubspotFormFieldFactory";
-import { IHubspotFormFormFieldOptionsDefinition } from "./shared";
+import { IHubspotFormFormFieldOptionsDefinition, makeInputId } from "./shared";
 
 function buildSet(value?: string): ReadonlyArray<string> {
   if (!value || value.length === 0) {
@@ -30,6 +30,7 @@ function removeValue(
 }
 
 const HubspotCheckboxField: React.FC<IFieldProps> = ({
+  formName,
   field,
   onInteracted,
   onChange,
@@ -70,6 +71,7 @@ const HubspotCheckboxField: React.FC<IFieldProps> = ({
       <div className={options.checkboxContainerClassName}>
         <input
           type="hidden"
+          id={makeInputId(formName, field.name)}
           name={field.name || undefined}
           value={currentStringValue}
         />

@@ -384,6 +384,7 @@ export const HubspotForm: React.FC<{
         )}
         {allGroups.map((group, index) => (
           <HubspotFormGroup
+            formName={name}
             key={index}
             group={group}
             options={options}

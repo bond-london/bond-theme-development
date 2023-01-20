@@ -86,7 +86,6 @@ const HubspotCheckboxField: React.FC<IFieldProps> = ({
                 className={options.checkboxFieldClassName}
                 type="checkbox"
                 checked={checked}
-                id={option.value || undefined}
                 value={option.value || undefined}
                 onInput={onInteracted}
                 onChange={handleChange}

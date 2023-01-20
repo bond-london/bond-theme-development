@@ -51,7 +51,6 @@ const HubspotTextField: React.FC<IFieldProps> = ({
   return (
     <input
       value={currentValue}
-      id={field.name || undefined}
       name={field.name || undefined}
       placeholder={field.placeholder || undefined}
       type={calculateInputType(field) || undefined}

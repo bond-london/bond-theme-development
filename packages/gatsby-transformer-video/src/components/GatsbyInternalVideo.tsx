@@ -2,9 +2,11 @@ import React, {
   DetailedHTMLProps,
   PropsWithChildren,
   RefObject,
+  useEffect,
   VideoHTMLAttributes,
 } from "react";
 import type { IGatsbyVideo } from "../types";
+import { createIntersectionObserver } from "./IntersectionObserver";
 
 function calculateVideoSizes({ width, height, layout }: IGatsbyVideo): {
   width: number;
@@ -20,11 +22,28 @@ function calculateVideoSizes({ width, height, layout }: IGatsbyVideo): {
   return { width, height };
 }
 
+function lazyLoadVideo(video: HTMLVideoElement): void {
+  console.log("lazy load video", video);
+  // eslint-disable-next-line guard-for-in
+  for (const source in video.children) {
+    const videoSource = video.children[source] as HTMLSourceElement;
+    if (
+      typeof videoSource.tagName === "string" &&
+      videoSource.tagName === "SOURCE"
+    ) {
+      videoSource.src = videoSource.dataset.src as string;
+      videoSource.dataset.src = undefined;
+      video.load();
+    }
+  }
+}
+
 export const GatsbyInternalVideo: React.FC<
   PropsWithChildren<
     {
       video: IGatsbyVideo;
-      videoRef?: RefObject<HTMLVideoElement>;
+      videoRef: RefObject<HTMLVideoElement>;
+      lazy?: boolean;
     } & Omit<
       DetailedHTMLProps<
         VideoHTMLAttributes<HTMLVideoElement>,
@@ -33,16 +52,44 @@ export const GatsbyInternalVideo: React.FC<
       "src" | "ref" | "width" | "height"
     >
   >
-> = ({ children, video, videoRef, ...otherProps }) => {
+> = ({ children, video, videoRef, lazy, ...otherProps }) => {
   const { width, height } = calculateVideoSizes(
     video as unknown as IGatsbyVideo
   );
 
+  useEffect(() => {
+    const video = videoRef?.current;
+    if (video && lazy) {
+      const io = createIntersectionObserver(() => {
+        lazyLoadVideo(video);
+      });
+
+      const unobserve = io(video);
+
+      return () => {
+        unobserve();
+      };
+    }
+    return undefined;
+  }, [lazy, videoRef]);
+
   return (
     <video {...otherProps} ref={videoRef} width={width} height={height}>
-      <source type={`video/webm`} src={video.webm} />
-      <source type={`video/mp4; codecs="hvc1"`} src={video.mp4Hvc1} />
-      <source type={`video/mp4; codecs="avc1"`} src={video.mp4Avc1} />
+      <source
+        type={`video/webm`}
+        src={lazy ? undefined : video.webm}
+        data-src={lazy ? video.webm : undefined}
+      />
+      <source
+        type={`video/mp4; codecs="hvc1"`}
+        src={lazy ? undefined : video.mp4Hvc1}
+        data-src={lazy ? video.mp4Hvc1 : undefined}
+      />
+      <source
+        type={`video/mp4; codecs="avc1"`}
+        src={lazy ? undefined : video.mp4Avc1}
+        data-src={lazy ? video.mp4Avc1 : undefined}
+      />
       {children}
     </video>
   );

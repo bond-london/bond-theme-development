@@ -219,6 +219,7 @@ export const BondFullVideo: React.FC<
     unmuteButton?: React.FC<{ unmuteVideo?: () => void }>;
     showAudioControls?: boolean;
     showControls?: boolean;
+    lazy?: boolean;
   } & Omit<
     VideoHTMLAttributes<HTMLVideoElement>,
     "poster" | "objectFit" | "objectPosition"

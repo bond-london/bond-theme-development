@@ -58,6 +58,7 @@ export const BondSimpleVideo: React.FC<
       noPoster?: boolean;
       posterSrc?: string;
       loopDelay?: number | null;
+      lazy?: boolean;
     } & Omit<
       VideoHTMLAttributes<HTMLVideoElement>,
       "poster" | "objectFit" | "objectPosition"

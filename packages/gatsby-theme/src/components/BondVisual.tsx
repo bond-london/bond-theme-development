@@ -294,6 +294,7 @@ export const BondVisual: React.FC<
     pauseButton,
     muteButton,
     unmuteButton,
+    loading,
     ...rest
   } = props;
   if (isBondAnimation(visual)) {
@@ -310,11 +311,12 @@ export const BondVisual: React.FC<
         pauseButton={pauseButton}
         muteButton={muteButton}
         unmuteButton={unmuteButton}
+        lazy={loading === "lazy"}
       />
     );
   }
   if (isBondImage(visual)) {
-    return <BondImage image={visual} {...rest} />;
+    return <BondImage image={visual} loading={loading} {...rest} />;
   }
 
   throw new Error("Invalid data for bond visual");

@@ -25,9 +25,11 @@ function calculateVideoSizes({ width, height, layout }: IGatsbyVideo): {
 function lazyLoadVideo(video: HTMLVideoElement): void {
   console.log("lazy load video", video);
   const poster = video.dataset.poster;
+  let changed = false;
   if (poster) {
     video.poster = poster;
-    video.dataset.poster = undefined;
+    delete video.dataset.poster;
+    changed = true;
   }
   // eslint-disable-next-line guard-for-in
   for (const source in video.children) {
@@ -39,11 +41,15 @@ function lazyLoadVideo(video: HTMLVideoElement): void {
       const src = videoSource.dataset.src;
       if (src) {
         videoSource.src = src;
-        videoSource.dataset.src = undefined;
+        delete videoSource.dataset.src;
+        changed = true;
       }
     }
   }
-  video.load();
+
+  if (changed) {
+    video.load();
+  }
 }
 
 export const GatsbyInternalVideo: React.FC<
@@ -101,7 +107,7 @@ export const GatsbyInternalVideo: React.FC<
         data-src={lazy ? video.mp4Hvc1 : undefined}
       />
       <source
-        type={`video/mp4; codecs="avc1"`}
+        type={`video/mp4`}
         src={lazy ? undefined : video.mp4Avc1}
         data-src={lazy ? video.mp4Avc1 : undefined}
       />

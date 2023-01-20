@@ -10,10 +10,12 @@ const connection =
   (navigator as any).webkitConnection;
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
-// These match the thresholds used in Chrome's native lazy loading
+// Distance thresholds are smaller than used in Chrome's native lazy loading
+// Mainly because videos are larger and there could be a poster loaded as well which shows
+// that there is something there
 // @see https://web.dev/browser-level-image-lazy-loading/#distance-from-viewport-thresholds
-const FAST_CONNECTION_THRESHOLD = `1250px`;
-const SLOW_CONNECTION_THRESHOLD = `2500px`;
+const FAST_CONNECTION_THRESHOLD = `750px`;
+const SLOW_CONNECTION_THRESHOLD = `1250px`;
 
 export function createIntersectionObserver(
   callback: () => void

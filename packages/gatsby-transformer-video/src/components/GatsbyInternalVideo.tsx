@@ -24,6 +24,11 @@ function calculateVideoSizes({ width, height, layout }: IGatsbyVideo): {
 
 function lazyLoadVideo(video: HTMLVideoElement): void {
   console.log("lazy load video", video);
+  const poster = video.dataset.poster;
+  if (poster) {
+    video.poster = poster;
+    video.dataset.poster = undefined;
+  }
   // eslint-disable-next-line guard-for-in
   for (const source in video.children) {
     const videoSource = video.children[source] as HTMLSourceElement;
@@ -31,11 +36,14 @@ function lazyLoadVideo(video: HTMLVideoElement): void {
       typeof videoSource.tagName === "string" &&
       videoSource.tagName === "SOURCE"
     ) {
-      videoSource.src = videoSource.dataset.src as string;
-      videoSource.dataset.src = undefined;
-      video.load();
+      const src = videoSource.dataset.src;
+      if (src) {
+        videoSource.src = src;
+        videoSource.dataset.src = undefined;
+      }
     }
   }
+  video.load();
 }
 
 export const GatsbyInternalVideo: React.FC<
@@ -52,7 +60,7 @@ export const GatsbyInternalVideo: React.FC<
       "src" | "ref" | "width" | "height"
     >
   >
-> = ({ children, video, videoRef, lazy, ...otherProps }) => {
+> = ({ children, video, videoRef, lazy, poster, ...otherProps }) => {
   const { width, height } = calculateVideoSizes(
     video as unknown as IGatsbyVideo
   );
@@ -74,7 +82,14 @@ export const GatsbyInternalVideo: React.FC<
   }, [lazy, videoRef]);
 
   return (
-    <video {...otherProps} ref={videoRef} width={width} height={height}>
+    <video
+      {...otherProps}
+      poster={lazy ? undefined : poster}
+      data-poster={lazy ? poster : undefined}
+      ref={videoRef}
+      width={width}
+      height={height}
+    >
       <source
         type={`video/webm`}
         src={lazy ? undefined : video.webm}

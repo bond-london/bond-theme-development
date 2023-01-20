@@ -82,7 +82,7 @@ const BondVideoPosterWithPoster: React.FC<
   return (
     <div
       {...props}
-      style={{ ...style, ...videoWrapperProps?.style }}
+      style={style}
       className={classNames(videoWrapperProps?.className, className)}
     >
       {forVideo && <VideoSizer video={forVideo} />}
@@ -97,6 +97,8 @@ const BondVideoPosterWithPoster: React.FC<
           className={classNames("inside", posterClassName)}
           objectFit={objectFit}
           objectPosition={objectPosition}
+          onLoad={onLoaded}
+          onError={onLoaded}
         />
       ) : (
         posterSrc && (

@@ -31,16 +31,19 @@
     "css": "tailwindcss -i ./src/styles/index.css -o built.css"
   },
   "dependencies": {
+    "@bond-london/eslint-config-bond-gatsby": "^2.1.0",
     "@bond-london/gatsby-theme": "^2.0.0",
     "@bond-london/gatsby-transformer-extracted-lottie": "^5.0.2",
     "@bond-london/gatsby-transformer-extracted-svg": "^4.0.1",
     "@bond-london/gatsby-transformer-video": "^3.0.2",
     "@bond-london/graphcms-rich-text": "^3.0.1",
+    "@graphcms/rich-text-types": "^0.5.0",
     "@sindresorhus/slugify": "^2.1.1",
     "classnames": "^2.3.1",
     "gatsby": "^5.0.0",
     "gatsby-cli": "^5.3.1",
     "gatsby-plugin-image": "^3.2.0",
+    "pure-react-carousel": "^1.30.1",
     "react": "18",
     "react-cookie-consent": "^8.0.1",
     "react-dom": "18"

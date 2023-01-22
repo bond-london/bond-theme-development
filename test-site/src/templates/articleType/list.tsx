@@ -1,60 +1,11 @@
-import { convertCmsAssetToBondVisual } from "@bond-london/gatsby-theme";
-import { graphql, PageProps, Slice } from "gatsby";
-import React, { useCallback } from "react";
-import { CmsArticleTypeHead } from "../../cms/CmsArticleTypeLayout";
-import { ArticleList } from "../../components/ArticleList";
-import { Paginator } from "../../components/Paginator";
-import { Hero } from "../../components/SectionHero";
-
-const ArticleTypeLayout: React.FC<PageProps<Queries.ArticleTypeListQuery>> = (
-  props
-) => {
-  const {
-    graphCmsArticleType,
-    allGraphCmsArticle: {
-      edges,
-      pageInfo: { currentPage, pageCount },
-    },
-  } = props.data;
-  if (!graphCmsArticleType) {
-    throw new Error("Article Type does not exist");
-  }
-
-  const { title, featuredImage, backgroundColour, textColour } =
-    graphCmsArticleType;
-
-  const buildLink = useCallback(
-    (page: number) => {
-      const pagePart = page === 1 ? "" : `${page}/`;
-      return `/${graphCmsArticleType.slug}/${pagePart}`;
-    },
-    [graphCmsArticleType.slug]
-  );
-
-  return (
-    <>
-      <Slice alias="navigation-Menu" />
-      <Slice alias="analytics" />
-      <Hero
-        heading={title}
-        visual={convertCmsAssetToBondVisual(featuredImage)}
-        backgroundColour={backgroundColour}
-        textColour={textColour}
-      />
-      <ArticleList articles={edges.map((e) => e.node)} />
-      <Paginator
-        totalPages={pageCount}
-        currentPage={currentPage}
-        buildLink={buildLink}
-      />
-
-      <Slice alias="footer-Footer" />
-    </>
-  );
-};
+import { graphql } from "gatsby";
+import {
+  CmsArticleTypeHead,
+  CmsArticleTypeLayout,
+} from "../../cms/CmsArticleTypeLayout";
 
 // eslint-disable-next-line import/no-unused-modules
-export default ArticleTypeLayout;
+export default CmsArticleTypeLayout;
 
 // eslint-disable-next-line import/no-unused-modules
 export const ArticleTypeListQuery = graphql`

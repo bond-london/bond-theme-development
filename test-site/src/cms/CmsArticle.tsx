@@ -11,8 +11,8 @@ export function calculateArticleLinkPath({
 }
 
 // eslint-disable-next-line import/no-unused-modules
-export const CmsArticleLinkFragment = graphql`
-  fragment CmsArticleLink on GraphCMS_Article {
+export const CoreCmsArticleFragment = graphql`
+  fragment CoreCmsArticle on GraphCMS_Article {
     __typename
     id
     remoteId
@@ -36,9 +36,20 @@ export const CmsArticleLinkFragment = graphql`
 // eslint-disable-next-line import/no-unused-modules
 export const CmsArticleFragment = graphql`
   fragment CmsArticle on GraphCMS_Article {
-    ...CmsArticleLink
+    ...CoreCmsArticle
+    articleType {
+      ...CmsArticleTypeLink
+      menu {
+        ...CmsNavigation
+      }
+      footer {
+        ...CmsNavigation
+      }
+      template {
+        ...Template
+      }
+    }
     indexed
-    description
     backgroundColour
     textColour
     seoImage: featuredImage {
@@ -51,6 +62,12 @@ export const CmsArticleFragment = graphql`
       __typename
       ...CmsComponent
       ...CmsCollection
+    }
+    menu {
+      ...CmsNavigation
+    }
+    footer {
+      ...CmsNavigation
     }
   }
 `;

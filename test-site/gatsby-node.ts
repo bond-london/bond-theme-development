@@ -24,29 +24,7 @@ function tryLoadTemplate(templateName: string) {
   return undefined;
 }
 
-function buildSlices(
-  { actions: { createSlice } }: CreatePagesArgs,
-  nodes: Queries.AllContentQuery["allGraphCmsNavigation"]["nodes"]
-) {
-  for (const { name, isFooter } of nodes) {
-    if (isFooter) {
-      createSlice({
-        id: `footer-${name}`,
-        component: resolve("./src/cms/CmsFooter.tsx"),
-        context: {
-          name,
-        },
-      });
-    } else {
-      createSlice({
-        id: `navigation-${name}`,
-        component: resolve("./src/cms/CmsNavigationMenu.tsx"),
-        context: {
-          name,
-        },
-      });
-    }
-  }
+function buildSlices({ actions: { createSlice } }: CreatePagesArgs) {
   createSlice({
     id: "analytics",
     component: resolve("./src/components/Analytics.tsx"),
@@ -59,6 +37,7 @@ function buildListPages<T = unknown>(
   customTemplateName: string,
   pageCount: number,
   slug: string,
+  name: string,
   context: T
 ) {
   if (pageCount) {
@@ -69,11 +48,10 @@ function buildListPages<T = unknown>(
 
     for (let page = 0; page < pageCount; page++) {
       const path = page === 0 ? `/${slug}/` : `/${slug}/${page + 1}/`;
-      reporter.info(`Creating page ${page}`);
+      reporter.info(`Creating ${name} page ${page}`);
       createPage({
         path,
         component,
-        defer: page > 0,
         context: {
           ...context,
           articlesPerPage,
@@ -130,6 +108,7 @@ async function buildTagIndexPages(
       `tag/${name}List`,
       pageCount,
       slug,
+      name,
       { id }
     );
   }
@@ -175,9 +154,10 @@ async function buildArticleTypeIndexPages(
     buildListPages(
       args,
       `./src/templates/articleType/list.tsx`,
-      `articleType/${name}List`,
+      `articleType/${slug}/list`,
       data.allGraphCmsArticle.pageInfo.pageCount,
       slug,
+      name,
       { id }
     );
   }
@@ -227,9 +207,10 @@ async function buildArticleTypeTagIndexPages(
     buildListPages(
       args,
       `./src/templates/articleType/tag/list.tsx`,
-      `articleType/${articleTypeName}/${tagName}List`,
+      `articleType/${slug}/list`,
       data.allGraphCmsArticle.pageInfo.pageCount,
       slug,
+      articleTypeName,
       { articleTypeId, tagId }
     );
   }
@@ -281,17 +262,15 @@ function buildHiddenMaps(data: Queries.AllContentQuery) {
 }
 
 export async function createPages(args: CreatePagesArgs) {
-  // eslint-disable-next-line @typescript-eslint/unbound-method
-  const { reporter, graphql } = args;
+  const {
+    reporter,
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    graphql,
+    actions: { createRedirect },
+  } = args;
   const results = await graphql<Queries.AllContentQuery>(
     `
       query AllContent {
-        allGraphCmsNavigation {
-          nodes {
-            name
-            isFooter
-          }
-        }
         allGraphCmsTag {
           nodes {
             id
@@ -343,6 +322,8 @@ export async function createPages(args: CreatePagesArgs) {
     return reporter.panicOnBuild("No data");
   }
 
+  createRedirect({ fromPath: "/index/", toPath: "/" });
+
   for (const { id, slug, name } of data.allGraphCmsTag.nodes) {
     await buildTagIndexPages(args, id, slug, name);
   }
@@ -363,7 +344,7 @@ export async function createPages(args: CreatePagesArgs) {
   }
 
   buildHiddenMaps(data);
-  buildSlices(args, data.allGraphCmsNavigation.nodes);
+  buildSlices(args);
 }
 
 export function onCreatePage(args: CreatePageArgs) {

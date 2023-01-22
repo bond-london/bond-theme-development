@@ -7,10 +7,13 @@
   "tailwindCSS.experimental.classRegex": [
     // "classNames\\(\"(.*)\"\\)",
     "[cC]lasses\\s*=\\s*\"([^\"]*)\"",
-    ".+[cC]lassName\\s*=\\s*\"([^\"]*)\"",
+    ".+[cC]lassName\\s*[:=]\\s*\"([^\"]*)\"",
     "const\\s+.*[cC]lassName\\s*=\\s*\"([^']*)\""
   ],
   "tailwindCSS.lint.cssConflict": "ignore",
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
   "files.exclude": {
     ".cache": true,
     "node_modules": true,

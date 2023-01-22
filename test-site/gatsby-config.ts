@@ -5,8 +5,8 @@ import {
   siteUrl,
   GOOGLE_TAG,
   allowIndex,
-  showDevPages,
   isProduction,
+  showDevPages,
 } from "./gatsby-env";
 
 function readEnvVar(envVarName: string): string {

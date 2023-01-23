@@ -1,23 +1,25 @@
-import { graphql, SliceComponentProps } from "gatsby";
+import { graphql, useStaticQuery } from "gatsby";
 import React from "react";
 import { Footer } from "../components/Navigation/Footer";
 import { convertCmsNavigation } from "./CmsNavigation";
 
-const CmsFooter: React.FC<SliceComponentProps<Queries.FooterQuery>> = ({
-  data: { graphCmsNavigation },
-}) => {
-  if (!graphCmsNavigation) throw new Error("No navigation for footer");
-  return <Footer menu={convertCmsNavigation(graphCmsNavigation)} />;
-};
-
-// eslint-disable-next-line import/no-unused-modules
-export default CmsFooter;
-
-// eslint-disable-next-line import/no-unused-modules
-export const query = graphql`
-  query Footer($name: String) {
-    graphCmsNavigation(name: { eq: $name }) {
-      ...CmsNavigation
+export const CmsFooter: React.FC<{
+  page?: Queries.CmsNavigationFragment | null;
+  template?: Queries.CmsNavigationFragment | null;
+}> = ({ page, template }) => {
+  const data = useStaticQuery<Queries.FooterQuery>(graphql`
+    query Footer {
+      graphCmsNavigation(name: { eq: "Footer" }) {
+        ...CmsNavigation
+      }
     }
+  `);
+
+  const footer = page || template || data.graphCmsNavigation;
+  if (!footer) {
+    throw new Error("No footer");
+    return null;
   }
-`;
+
+  return <Footer menu={convertCmsNavigation(footer)} />;
+};

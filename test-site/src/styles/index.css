@@ -1,5 +1,12 @@
 @import "./fonts.css";
 
+.menu-item svg,
+.menu-item img,
+.footer-entry svg,
+.footer-entry img {
+  @apply !w-auto;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -22,7 +29,7 @@
   }
 
   .footer-spacing {
-    @apply gap-x-s gap-y-xxs;
+    @apply gap-x-xs gap-y-xxs desktop:gap-x-s;
   }
 
   .footer-container {
@@ -30,22 +37,30 @@
   }
 
   .menu-button {
-    @apply p4 inline-flex justify-center py-xxs px-s;
+    @apply inline-flex items-center justify-center hover:text-blue border-b-2 border-transparent hover:border-blue;
+  }
+
+  .menu-icon {
+    @apply inline-flex items-center justify-center;
+  }
+
+  .filled-menu-button {
+    @apply inline-flex items-center justify-center py-xxs px-s hover:text-white;
   }
 
   .button {
-    @apply p4 inline-flex justify-center rounded-[2px] py-xxs px-s border-2;
+    @apply h3 inline-flex justify-center rounded-[4px] py-xxs px-s border-2 border-current;
   }
 
   .button-primary {
-    @apply p4 inline-flex justify-center rounded-[2px] py-s px-s;
+    @apply h3 inline-flex justify-center rounded-[4px] py-s px-s;
   }
 
   .paginator-current {
     @apply rounded-full bg-blue text-black;
   }
   .paginator-other {
-    @apply text-black;
+    @apply rounded-full border-blue border-2 text-white;
   }
 }
 table.lined tbody tr {

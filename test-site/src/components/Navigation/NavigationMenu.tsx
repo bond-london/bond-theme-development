@@ -1,4 +1,4 @@
-import { IBondImage } from "@bond-london/gatsby-theme";
+import { IBondVisual } from "@bond-london/gatsby-theme";
 import classNames from "classnames";
 import React from "react";
 import { ColourName } from "../../colors";
@@ -13,7 +13,7 @@ export interface INavigationItem {
   name: string;
   colour?: ColourName;
   isButton?: boolean;
-  icon?: IBondImage;
+  icon?: IBondVisual;
   entries?: ReadonlyArray<INavigationItem>;
 }
 

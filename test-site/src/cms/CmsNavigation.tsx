@@ -1,4 +1,4 @@
-import { convertCmsAssetToBondImage } from "@bond-london/gatsby-theme";
+import { convertCmsAssetToBondVisual } from "@bond-london/gatsby-theme";
 import { graphql } from "gatsby";
 import { INavigation } from "../components/Navigation/NavigationBar";
 import { INavigationItem } from "../components/Navigation/NavigationMenu";
@@ -32,7 +32,7 @@ function convertCmsNavigationItem({
     internal: remoteInternal
       ? convertCMSInternalLink(remoteInternal)
       : undefined,
-    icon: convertCmsAssetToBondImage(icon),
+    icon: convertCmsAssetToBondVisual(icon, { loop: true, loopDelay: 5000 }),
     colour: colour || undefined,
     isButton: isButton || undefined,
     entries: arrayOrUndefined(
@@ -77,6 +77,7 @@ export const CmsNavigationItemCoreFragment = graphql`
     isButton
     icon {
       ...ConstrainedImageAsset
+      ...ConstrainedAnimationAsset
     }
   }
 `;

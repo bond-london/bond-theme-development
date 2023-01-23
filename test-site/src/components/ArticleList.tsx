@@ -6,6 +6,7 @@ import {
 import { Link } from "gatsby";
 import React from "react";
 import { calculateArticleLinkPath } from "../cms/CmsArticle";
+import { ColourName, lookupColourClassNames } from "../colors";
 
 const ArticleListEntry: React.FC<{
   article: Queries.CmsArticleLinkFragment;
@@ -28,11 +29,16 @@ const ArticleListEntry: React.FC<{
 };
 
 export const ArticleList: React.FC<{
+  textColour?: ColourName | null;
+  backgroundColour?: ColourName | null;
   articles: ReadonlyArray<Queries.CmsArticleLinkFragment>;
-}> = ({ articles }) => {
+}> = ({ backgroundColour, textColour, articles }) => {
   if (articles.length === 0) {
     return (
-      <Section componentName="No articles">
+      <Section
+        componentName="No articles"
+        sectionClassName={lookupColourClassNames(backgroundColour, textColour)}
+      >
         <h2>No articles found</h2>
       </Section>
     );
@@ -41,6 +47,7 @@ export const ArticleList: React.FC<{
     <Section
       componentName="Articles"
       contentClassName="grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 gap-x-mobile-gap"
+      sectionClassName={lookupColourClassNames(backgroundColour, textColour)}
     >
       {articles.map((a) => (
         <ArticleListEntry key={a.id} article={a} />

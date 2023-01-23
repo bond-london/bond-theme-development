@@ -1,29 +1,21 @@
-import { BondImage, IBondImage, Section } from "@bond-london/gatsby-theme";
+import { BondVisual, IBondVisual, Section } from "@bond-london/gatsby-theme";
 import { IRichTextInformation } from "@bond-london/graphcms-rich-text";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
 import classNames from "classnames";
 import React from "react";
 import { ColourName, lookupColourClassNames } from "../colors";
-import { IComponentInformation } from "../components/GenericComponent";
+import {
+  GenericComponentInside,
+  IComponentInformation,
+} from "../components/GenericComponent";
+import { ILinkInformation } from "../components/LinkOrButton";
 import { SectionBody } from "../components/SectionBody";
 import { SectionHeading } from "../components/SectionHeading";
-import { SectionIcon } from "../components/SectionIcon";
-import { SectionVisual } from "../components/SectionVisual";
-
-function calculateContentsClassName(length: number) {
-  switch (length) {
-    case 1:
-      return "col-span-full tablet:col-start-3 tablet:col-span-4 laptop:col-start-4 laptop:col-span-8 grid grid-cols-1";
-    case 2:
-      return "col-span-full tablet:col-start-2 tablet:col-span-6 laptop:col-start-3 laptop:col-span-8 grid grid-cols-2";
-    default:
-      return "col-span-full tablet:col-start-2 tablet:col-span-6 laptop:col-start-2 laptop:col-span-10 grid grid-cols-2 laptop:grid-cols-3";
-  }
-}
 
 // eslint-disable-next-line import/no-unused-modules
 export type ICollectionContent = ICollectionInformation | IComponentInformation;
-function isContentCollection(
+// eslint-disable-next-line import/no-unused-modules
+export function isContentCollection(
   content: ICollectionContent
 ): content is ICollectionInformation {
   return !!(content as ICollectionInformation).contents;
@@ -38,14 +30,16 @@ export function isContentComponent(
 export interface ICollectionInformation {
   id: string;
   name: string;
+  anchor: string | null;
   preHeading?: string | null;
   heading?: string | null;
   postHeading?: string | null;
   body?: IRichTextInformation;
   backgroundColour?: ColourName | null;
   textColour?: ColourName | null;
-  backgroundImage?: IBondImage;
+  backgroundVisual?: IBondVisual;
   contents: ReadonlyArray<ICollectionContent>;
+  links?: ReadonlyArray<ILinkInformation>;
 }
 
 const GenericCollectionContent: React.FC<{ content: ICollectionContent }> = ({
@@ -66,18 +60,9 @@ const GenericCollectionContent: React.FC<{ content: ICollectionContent }> = ({
 };
 
 const ComponentInside: React.FC<{ information: IComponentInformation }> = ({
-  information: {
-    heading,
-    preHeading,
-    postHeading,
-    body,
-    // links,
-    visual,
-    backgroundColour,
-    textColour,
-    icon,
-  },
+  information,
 }) => {
+  const { backgroundColour, textColour } = information;
   return (
     <div
       data-component="Component Inside"
@@ -86,28 +71,13 @@ const ComponentInside: React.FC<{ information: IComponentInformation }> = ({
         "flex flex-col"
       )}
     >
-      <SectionHeading
-        preHeading={preHeading}
-        heading={heading}
-        postHeading={postHeading}
-      />
-      {body && <SectionBody content={body} />}
-      {icon && <SectionIcon icon={icon} />}
-      {visual && <SectionVisual visual={visual} />}
+      <GenericComponentInside information={information} />
     </div>
   );
 };
 
 const CollectionInside: React.FC<{ information: ICollectionInformation }> = ({
-  information: {
-    heading,
-    preHeading,
-    postHeading,
-    body,
-    // links,
-    // icon,
-    contents,
-  },
+  information: { heading, preHeading, postHeading, body, contents },
 }) => {
   return (
     <>
@@ -117,13 +87,9 @@ const CollectionInside: React.FC<{ information: ICollectionInformation }> = ({
         postHeading={postHeading}
       />
       {body && <SectionBody content={body} />}
-      {contents.length && (
-        <div className={calculateContentsClassName(contents.length)}>
-          {contents.map((content, index) => (
-            <GenericCollectionContent key={index} content={content} />
-          ))}
-        </div>
-      )}
+      {contents.map((content, index) => (
+        <GenericCollectionContent key={index} content={content} />
+      ))}
     </>
   );
 };
@@ -133,16 +99,23 @@ export const GenericCollection: React.FC<{
   collectionType: string;
   unknown?: boolean;
 }> = ({ collectionType, information, unknown }) => {
-  const { backgroundImage, backgroundColour, textColour } = information;
+  const { anchor, backgroundVisual, backgroundColour, textColour } =
+    information;
   return (
     <Section
+      id={anchor || undefined}
       componentName={`${collectionType} collection`}
       sectionClassName={classNames(
         "overflow-hidden",
         lookupColourClassNames(backgroundColour, textColour),
         unknown && "unknown-component"
       )}
-      preChildren={backgroundImage && <BondImage image={backgroundImage} />}
+      sectionColumnsClassName="col-start-2 col-span-1 grid grid-cols-2 grid-gap tablet:grid-cols-3 laptop:grid-cols-4"
+      preChildren={
+        backgroundVisual && (
+          <BondVisual visual={backgroundVisual} autoPlay={true} loop={true} />
+        )
+      }
     >
       <CollectionInside information={information} />
     </Section>

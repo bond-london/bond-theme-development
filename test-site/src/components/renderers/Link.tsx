@@ -13,7 +13,7 @@ export const Link: React.FC<{ fragment: Queries.CmsLinkFragment }> = ({
     name,
     useName,
     linkText,
-    remoteInternal,
+    internal,
     external,
     isButton,
     colour,
@@ -44,17 +44,17 @@ export const Link: React.FC<{ fragment: Queries.CmsLinkFragment }> = ({
     );
   }
 
-  if (remoteInternal) {
-    const typename = remoteInternal.__typename;
+  if (internal) {
+    const typename = internal.__typename;
     switch (typename) {
       case "GraphCMS_Article":
-        return <ArticleLink fragment={remoteInternal} />;
+        return <ArticleLink fragment={internal} />;
       case "GraphCMS_ArticleType":
-        return <ArticleTypeLink fragment={remoteInternal} />;
+        return <ArticleTypeLink fragment={internal} />;
       case "GraphCMS_Page":
-        return <PageLink fragment={remoteInternal} />;
+        return <PageLink fragment={internal} />;
       case "GraphCMS_Tag":
-        return <TagLink fragment={remoteInternal} />;
+        return <TagLink fragment={internal} />;
     }
     return (
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions

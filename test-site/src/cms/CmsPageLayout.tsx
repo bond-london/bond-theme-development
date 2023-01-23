@@ -1,6 +1,10 @@
+import classNames from "classnames";
 import { PageProps, Slice } from "gatsby";
 import React from "react";
+import { lookupColourClassNames } from "../colors";
 import { CmsContent } from "./CmsContent";
+import { CmsFooter } from "./CmsFooter";
+import { CmsNavigationMenu } from "./CmsNavigationMenu";
 
 export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
   props
@@ -11,9 +15,18 @@ export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
   }
 
   const template = page.template;
+
   return (
-    <>
-      <Slice alias="navigation-Menu" />
+    <div
+      className={classNames(
+        "overflow-hidden",
+        lookupColourClassNames(
+          page.backgroundColour || template?.backgroundColour,
+          page.textColour || template?.textColour
+        )
+      )}
+    >
+      <CmsNavigationMenu page={page.menu} template={template?.menu} />
       <Slice alias="analytics" />
 
       <CmsContent fragment={page.topContent} />
@@ -22,7 +35,7 @@ export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
       {template?.postContent && <CmsContent fragment={template.postContent} />}
       <CmsContent fragment={page.bottomContent} />
 
-      <Slice alias="footer-Footer" />
-    </>
+      <CmsFooter page={page.footer} template={template?.footer} />
+    </div>
   );
 };

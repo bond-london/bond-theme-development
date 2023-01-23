@@ -156,9 +156,7 @@ export const ConstrainedCmsVisualFragment = graphql`
       ...ConstrainedVideoAsset
     }
     posterImage {
-      localFile {
-        publicURL
-      }
+      ...ConstrainedImageAsset
     }
     fullLengthVideo {
       ...ConstrainedVideoAsset
@@ -188,9 +186,7 @@ export const FullWidthCmsVisualFragment = graphql`
       ...FullWidthVideoAsset
     }
     posterImage {
-      localFile {
-        publicURL
-      }
+      ...FullWidthImageAsset
     }
     fullLengthVideo {
       ...FullWidthVideoAsset
@@ -202,183 +198,6 @@ export const FullWidthCmsVisualFragment = graphql`
       localFile {
         publicURL
       }
-    }
-  }
-`;
-
-export const ConstrainedCmsImageFragment = graphql`
-  fragment ConstrainedCmsImage on GraphCMS_Image {
-    __typename
-    id
-    name
-    dontCrop
-    horizontalCropPosition
-    verticalCropPosition
-    remoteId
-    image {
-      ...ConstrainedImageAsset
-    }
-  }
-`;
-
-export const FixedCmsImageFragment = graphql`
-  fragment FixedCmsImage on GraphCMS_Image {
-    __typename
-    id
-    name
-    dontCrop
-    horizontalCropPosition
-    verticalCropPosition
-    remoteId
-    image {
-      ...FixedImageAsset
-    }
-  }
-`;
-
-export const FullWidthCmsImageFragment = graphql`
-  fragment FullWidthCmsImage on GraphCMS_Image {
-    __typename
-    id
-    name
-    dontCrop
-    horizontalCropPosition
-    verticalCropPosition
-    remoteId
-    image {
-      ...FullWidthImageAsset
-    }
-  }
-`;
-
-export const ConstrainedCmsVideoFragment = graphql`
-  fragment ConstrainedCmsVideo on GraphCMS_Video {
-    __typename
-    id
-    dontCrop
-    horizontalCropPosition
-    verticalCropPosition
-    remoteId
-    preview {
-      ...ConstrainedVideoAsset
-    }
-    poster {
-      id
-      localFile {
-        id
-        publicURL
-      }
-    }
-    full {
-      ...ConstrainedVideoAsset
-    }
-    external
-    subtitles {
-      localFile {
-        publicURL
-      }
-    }
-  }
-`;
-
-export const FixedCmsVideoFragment = graphql`
-  fragment FixedCmsVideo on GraphCMS_Video {
-    __typename
-    id
-    dontCrop
-    horizontalCropPosition
-    verticalCropPosition
-    remoteId
-    preview {
-      ...FixedVideoAsset
-    }
-    poster {
-      id
-      localFile {
-        id
-        publicURL
-      }
-    }
-    full {
-      ...FixedVideoAsset
-    }
-    external
-    subtitles {
-      localFile {
-        publicURL
-      }
-    }
-  }
-`;
-
-export const FullWidthCmsVideoFragment = graphql`
-  fragment FullWidthCmsVideo on GraphCMS_Video {
-    __typename
-    id
-    dontCrop
-    horizontalCropPosition
-    verticalCropPosition
-    remoteId
-    preview {
-      ...FullWidthVideoAsset
-    }
-    poster {
-      id
-      localFile {
-        id
-        publicURL
-      }
-    }
-    full {
-      ...FullWidthVideoAsset
-    }
-    external
-    subtitles {
-      localFile {
-        publicURL
-      }
-    }
-  }
-`;
-
-export const ConstrainedCmsAnimationFragment = graphql`
-  fragment ConstrainedCmsAnimation on GraphCMS_Animation {
-    __typename
-    id
-    dontCrop
-    horizontalCropPosition
-    verticalCropPosition
-    remoteId
-    animation {
-      ...ConstrainedAnimationAsset
-    }
-  }
-`;
-
-export const FixedCmsAnimationFragment = graphql`
-  fragment FixedCmsAnimation on GraphCMS_Animation {
-    __typename
-    id
-    dontCrop
-    horizontalCropPosition
-    verticalCropPosition
-    remoteId
-    animation {
-      ...FixedAnimationAsset
-    }
-  }
-`;
-
-export const FullWidthCmsAnimationFragment = graphql`
-  fragment FullWidthCmsAnimation on GraphCMS_Animation {
-    __typename
-    id
-    dontCrop
-    horizontalCropPosition
-    verticalCropPosition
-    remoteId
-    animation {
-      ...FullWidthAnimationAsset
     }
   }
 `;
@@ -398,9 +217,7 @@ export const ConstrainedCmsVisualComponentFragment = graphql`
       ...ConstrainedVideoAsset
     }
     posterImage {
-      localFile {
-        publicURL
-      }
+      ...ConstrainedImageAsset
     }
     fullLengthVideo {
       ...ConstrainedVideoAsset
@@ -430,9 +247,7 @@ export const FullWidthCmsVisualComponentFragment = graphql`
       ...FullWidthVideoAsset
     }
     posterImage {
-      localFile {
-        publicURL
-      }
+      ...FullWidthImageAsset
     }
     fullLengthVideo {
       ...FullWidthVideoAsset
@@ -444,48 +259,6 @@ export const FullWidthCmsVisualComponentFragment = graphql`
       localFile {
         publicURL
       }
-    }
-  }
-`;
-
-export const ConstrainedCmsImageComponentFragment = graphql`
-  fragment ConstrainedCmsImageComponent on GraphCMS_ImageComponent {
-    __typename
-    id
-    name
-    dontCrop
-    horizontalCropPosition
-    verticalCropPosition
-    image {
-      ...ConstrainedImageAsset
-    }
-  }
-`;
-
-export const FixedCmsImageComponentFragment = graphql`
-  fragment FixedCmsImageComponent on GraphCMS_ImageComponent {
-    __typename
-    id
-    name
-    dontCrop
-    horizontalCropPosition
-    verticalCropPosition
-    image {
-      ...FixedImageAsset
-    }
-  }
-`;
-
-export const FullWidthCmsImageComponentFragment = graphql`
-  fragment FullWidthCmsImageComponent on GraphCMS_ImageComponent {
-    __typename
-    id
-    name
-    dontCrop
-    horizontalCropPosition
-    verticalCropPosition
-    image {
-      ...FullWidthImageAsset
     }
   }
 `;

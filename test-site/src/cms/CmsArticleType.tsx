@@ -33,5 +33,19 @@ export const CmsArticleTypeFragment = graphql`
     featuredImage {
       ...FullWidthImageAsset
     }
+    template {
+      ...Template
+    }
+    topContent {
+      __typename
+      ...CmsComponent
+      ...CmsCollection
+    }
+    menu {
+      ...CmsNavigation
+    }
+    footer {
+      ...CmsNavigation
+    }
   }
 `;

@@ -23,8 +23,8 @@ const Colours: React.FC = () => {
             style={{ backgroundColor: value }}
           >
             <div className="m-m flex flex-col">
-              <h3 className="p4">{key}</h3>
-              <p className="p4">{value}</p>
+              <h3 className="p3">{key}</h3>
+              <p className="p3">{value}</p>
             </div>
           </div>
         ))}

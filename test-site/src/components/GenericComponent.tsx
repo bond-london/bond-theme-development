@@ -1,4 +1,4 @@
-import { IBondImage, IBondVisual, Section } from "@bond-london/gatsby-theme";
+import { IBondVisual, Section } from "@bond-london/gatsby-theme";
 import { IRichTextInformation } from "@bond-london/graphcms-rich-text";
 import classNames from "classnames";
 import React from "react";
@@ -14,45 +14,25 @@ import { SectionVisual } from "./SectionVisual";
 export interface IComponentInformation {
   id: string;
   name: string;
+  anchor: string | null;
   preHeading?: string | null;
   heading?: string | null;
   postHeading?: string | null;
   body?: IRichTextInformation;
   backgroundColour?: ColourName | null;
   textColour?: ColourName | null;
-  icon?: IBondImage;
+  icon?: IBondVisual;
   visual?: IBondVisual;
   links?: ReadonlyArray<ILinkInformation>;
 }
 
-export const GenericComponent: React.FC<{
+export const GenericComponentInside: React.FC<{
   information: IComponentInformation;
-  componentType: string;
-  unknown?: boolean;
 }> = ({
-  componentType,
-  unknown,
-  information: {
-    heading,
-    preHeading,
-    postHeading,
-    body,
-    links,
-    visual,
-    backgroundColour,
-    textColour,
-    icon,
-  },
+  information: { heading, preHeading, postHeading, body, links, visual, icon },
 }) => {
   return (
-    <Section
-      componentName={`${componentType} component`}
-      sectionClassName={classNames(
-        "overflow-hidden",
-        lookupColourClassNames(backgroundColour, textColour),
-        unknown && "unknown-component"
-      )}
-    >
+    <>
       <SectionHeading
         preHeading={preHeading}
         heading={heading}
@@ -61,7 +41,28 @@ export const GenericComponent: React.FC<{
       {body && <SectionBody content={body} />}
       {icon && <SectionIcon icon={icon} className={SectionBodyClassName} />}
       {visual && <SectionVisual visual={visual} />}
-      {links && <SectionLinks links={links} />}
+      {links && <SectionLinks links={links} vertical={false} />}
+    </>
+  );
+};
+
+export const GenericComponent: React.FC<{
+  information: IComponentInformation;
+  componentType: string;
+  unknown?: boolean;
+}> = ({ componentType, unknown, information }) => {
+  const { anchor, backgroundColour, textColour } = information;
+  return (
+    <Section
+      id={anchor || undefined}
+      componentName={`${componentType} component`}
+      sectionClassName={classNames(
+        "overflow-hidden",
+        lookupColourClassNames(backgroundColour, textColour),
+        unknown && "unknown-component"
+      )}
+    >
+      <GenericComponentInside information={information} />
     </Section>
   );
 };

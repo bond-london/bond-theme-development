@@ -1,7 +1,10 @@
 import { Section } from "@bond-london/gatsby-theme";
 import { Link, Slice } from "gatsby";
 import React, { PropsWithChildren } from "react";
+import { CmsFooter } from "../cms/CmsFooter";
+import { CmsNavigationMenu } from "../cms/CmsNavigationMenu";
 import { SectionHeading } from "../components/SectionHeading";
+import { SectionSpacingClassName } from "../styles";
 
 const pages: { title: string; path: string }[] = [
   { title: "Development", path: "/dev" },
@@ -18,13 +21,13 @@ export const DevPageLayout: React.FC<PropsWithChildren<{ name?: string }>> = ({
 }) => {
   return (
     <>
-      <Slice alias="navigation-Menu" />
+      <CmsNavigationMenu />
       <Slice alias="analytics" />
 
       <Section
         componentName="Dev Page Header"
         contentClassName="gap-s"
-        sectionClassName="bond-row-1-xl"
+        sectionClassName={SectionSpacingClassName}
       >
         <SectionHeading heading={name} />
         <ul className="col-span-full my-m flex gap-x-l gap-y-m">
@@ -39,7 +42,7 @@ export const DevPageLayout: React.FC<PropsWithChildren<{ name?: string }>> = ({
       </Section>
       {children}
 
-      <Slice alias="footer-Footer" />
+      <CmsFooter />
     </>
   );
 };

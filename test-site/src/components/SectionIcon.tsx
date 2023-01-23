@@ -1,9 +1,13 @@
-import { BondImage, IBondImage } from "@bond-london/gatsby-theme";
+import {
+  BondVisual,
+  IBondVisual,
+  isBondImage,
+} from "@bond-london/gatsby-theme";
 import classNames from "classnames";
 import React from "react";
 
 export const SectionIcon: React.FC<{
-  icon: IBondImage;
+  icon: IBondVisual;
   className?: string;
   iconHeightClassName?: string;
 }> = ({
@@ -11,23 +15,24 @@ export const SectionIcon: React.FC<{
   className,
   iconHeightClassName = "h-mobile-icon laptop:h-laptop-icon",
 }) => {
-  const raw = icon.svg?.raw as string;
-  if (raw) {
-    return (
-      <div
-        className={classNames(
-          className,
-          iconHeightClassName,
-          "relative flex icon-container"
-        )}
-        dangerouslySetInnerHTML={{ __html: raw }}
-      />
-    );
+  if (isBondImage(icon)) {
+    const raw = icon.svg?.raw as string;
+    if (raw) {
+      return (
+        <div
+          className={classNames(
+            className,
+            iconHeightClassName,
+            "relative flex icon-container"
+          )}
+          dangerouslySetInnerHTML={{ __html: raw }}
+        />
+      );
+    }
   }
-
   return (
-    <BondImage
-      image={{ ...icon, dontCrop: true }}
+    <BondVisual
+      visual={{ ...icon, dontCrop: true }}
       className={classNames(className, iconHeightClassName, "relative flex")}
       imgStyle={{ height: "100%" }}
     />

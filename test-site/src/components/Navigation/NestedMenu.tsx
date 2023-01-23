@@ -37,30 +37,25 @@ export const NestedMenu: React.FC<{
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <button
-        className="p3 inline-flex w-full items-center laptop:p4"
-        onClick={handleButtonClick}
-      >
+      <button className="menu-button" onClick={handleButtonClick}>
         {item.text && <>{item.text}</>}
         {item.icon && <SectionIcon icon={item.icon} />}
       </button>
       <div className="relative">
         <div
           className={classNames(
-            "absolute z-[1000] flex w-menu overflow-hidden transition-all laptop:top-xs laptop:-left-m",
+            "absolute laptop:fixed -left-l z-[1000] flex transition-all laptop:top-laptop-nav laptop:left-0 laptop:right-0 laptop:h-laptop-nav laptop:justify-center overflow-hidden w-menu laptop:w-auto ",
             lookupColourClassNames(backgroundColour, textColour),
             active ? "max-h-screen" : "max-h-0"
           )}
         >
-          <div className="pt-xxs">
-            <ul className="flex flex-col">
-              {item.entries?.map((i) => (
-                <li key={i.name} className="px-s py-xs">
-                  <LinkOrButton onClick={closeMenu} information={i} />
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul className="pt-xxs laptop:pt-0 flex flex-col laptop:flex-row">
+            {item.entries?.map((i) => (
+              <li key={i.name} className="px-s py-xs">
+                <LinkOrButton onClick={closeMenu} information={i} />
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

@@ -1,59 +1,30 @@
-import { convertCmsAssetToBondVisual } from "@bond-london/gatsby-theme";
-import { graphql, PageProps, Slice } from "gatsby";
-import React, { useCallback } from "react";
-import { CmsArticleTypeHead } from "../../../cms/CmsArticleTypeLayout";
-import { ArticleList } from "../../../components/ArticleList";
-import { Paginator } from "../../../components/Paginator";
-import { Hero } from "../../../components/SectionHero";
+import { graphql, PageProps } from "gatsby";
+import React from "react";
+import {
+  CmsArticleTypeHead,
+  CmsArticleTypeLayout,
+} from "../../../cms/CmsArticleTypeLayout";
+import { ColourName } from "../../../colors";
+import { CustomArticleList } from "../../../components/CustomArticleList";
+
+const ArticleTypeTagList: React.FC<{
+  textColour?: ColourName | null;
+  backgroundColour?: ColourName | null;
+  articles: ReadonlyArray<Queries.CmsArticleLinkFragment>;
+}> = ({ textColour, backgroundColour, articles }) => (
+  <CustomArticleList
+    customName="Article Type / Tag"
+    textColour={textColour}
+    backgroundColour={backgroundColour}
+    articles={articles}
+  />
+);
 
 const ArticleTypeTagLayout: React.FC<
-  PageProps<Queries.ArticleTypeTagListQuery>
+  PageProps<Queries.ArticleTypeListQuery>
 > = (props) => {
-  const {
-    graphCmsArticleType,
-    graphCmsTag,
-    allGraphCmsArticle: {
-      edges,
-      pageInfo: { currentPage, pageCount },
-    },
-  } = props.data;
-  if (!graphCmsArticleType) {
-    throw new Error("Article Type does not exist");
-  }
-  if (!graphCmsTag) {
-    throw new Error("Tag does not exist");
-  }
-
-  const { title, featuredImage, backgroundColour, textColour } =
-    graphCmsArticleType;
-
-  const buildLink = useCallback(
-    (page: number) => {
-      const pagePart = page === 1 ? "" : `${page}/`;
-      return `/${graphCmsArticleType.slug}/${graphCmsTag.slug}/${pagePart}`;
-    },
-    [graphCmsArticleType.slug, graphCmsTag.slug]
-  );
-
   return (
-    <>
-      <Slice alias="navigation-Menu" />
-      <Slice alias="analytics" />
-      <Hero
-        heading={`${title}/${graphCmsTag.title} lists`}
-        visual={convertCmsAssetToBondVisual(featuredImage)}
-        backgroundColour={backgroundColour}
-        textColour={textColour}
-      />
-      <ArticleList articles={edges.map((e) => e.node)} />
-      <Paginator
-        totalPages={pageCount}
-        currentPage={currentPage}
-        buildLink={buildLink}
-      />
-
-      <Slice alias="footer-Footer" />
-    </>
+    <CmsArticleTypeLayout {...props} articleListElement={ArticleTypeTagList} />
   );
 };
 

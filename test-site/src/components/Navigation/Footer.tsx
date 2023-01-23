@@ -11,7 +11,7 @@ const FooterItem: React.FC<{ item: INavigationItem }> = ({ item }) => {
     <LinkOrButton
       information={item}
       className="footer-entry"
-      iconHeightClassName="h-line-height"
+      iconHeightClassName="h-mobile-menu-logo laptop:h-laptop-menu-logo"
       buttonClassName="menu-button"
       allowEmpty={true}
     />
@@ -46,7 +46,7 @@ export const Footer: React.FC<{ menu: INavigation }> = ({
       sectionClassName={classNames(
         lookupColourClassNames(backgroundColour, textColour)
       )}
-      contentClassName="footer-spacing"
+      contentClassName="footer-spacing p3"
     >
       {isMultiple ? (
         entries.map((entry) =>

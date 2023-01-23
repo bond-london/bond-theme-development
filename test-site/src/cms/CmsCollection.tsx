@@ -6,31 +6,36 @@ import {
   ICollectionInformation,
 } from "../collections/GenericCollection";
 import { getRTFInformation } from "@bond-london/graphcms-rich-text";
-import { convertCmsImageToBondImage } from "@bond-london/gatsby-theme";
+import { convertCmsVisualToBondVisual } from "@bond-london/gatsby-theme";
 import { convertCmsComponentInformation } from "./CmsComponent";
 import { tryHandleCustomCollection } from "./CustomCmsCollection";
+import { convertCmsLink } from "./CmsLink";
 
 function convertCmsCollectionCoreInformation({
   id,
   heading,
   showHeading,
+  anchor,
   preHeading,
   postHeading,
   body,
-  backgroundImage,
+  backgroundVisual,
   backgroundColour,
   textColour,
+  links,
 }: Queries.CmsCollectionCoreFragment) {
   return {
     id,
     name: heading,
+    anchor,
     preHeading: showHeading ? preHeading : undefined,
     heading: showHeading ? heading : undefined,
     postHeading: showHeading ? postHeading : undefined,
     body: getRTFInformation(body),
     backgroundColour,
     textColour,
-    backgroundImage: convertCmsImageToBondImage(backgroundImage),
+    backgroundVisual: convertCmsVisualToBondVisual(backgroundVisual),
+    links: links?.map(convertCmsLink),
   };
 }
 
@@ -88,19 +93,16 @@ export const coreFragment = graphql`
     heading
     collectionType
     showHeading
+    anchor
     preHeading
     postHeading
     body {
       cleaned
       references {
-        ...FullWidthCmsAnimation
         ...CmsArticleLink
         ...CmsArticleTypeLink
-        ...FullWidthCmsImage
-        ...CmsLink
         ...CmsPageLink
         ...CmsTagLink
-        ...FullWidthCmsVideo
         ...FullWidthCmsVisual
       }
     }
@@ -112,8 +114,8 @@ export const coreFragment = graphql`
     icon {
       ...ConstrainedImageAsset
     }
-    backgroundImage {
-      ...FullWidthCmsImageComponent
+    backgroundVisual {
+      ...FullWidthCmsVisualComponent
     }
   }
 `;

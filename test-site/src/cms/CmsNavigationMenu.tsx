@@ -1,23 +1,25 @@
-import { graphql, SliceComponentProps } from "gatsby";
+import { graphql, useStaticQuery } from "gatsby";
 import React from "react";
 import { NavigationBar } from "../components/Navigation/NavigationBar";
 import { convertCmsNavigation } from "./CmsNavigation";
 
-const CmsNavigationMenu: React.FC<
-  SliceComponentProps<Queries.NavigationMenuQuery>
-> = ({ data: { graphCmsNavigation } }) => {
-  if (!graphCmsNavigation) throw new Error("No naviation menu");
-  return <NavigationBar menu={convertCmsNavigation(graphCmsNavigation)} />;
-};
-
-// eslint-disable-next-line import/no-unused-modules
-export default CmsNavigationMenu;
-
-// eslint-disable-next-line import/no-unused-modules
-export const query = graphql`
-  query NavigationMenu($name: String) {
-    graphCmsNavigation(name: { eq: $name }) {
-      ...CmsNavigation
+export const CmsNavigationMenu: React.FC<{
+  page?: Queries.CmsNavigationFragment | null;
+  template?: Queries.CmsNavigationFragment | null;
+}> = ({ page, template }) => {
+  const data = useStaticQuery<Queries.NavigationMenuQuery>(graphql`
+    query NavigationMenu {
+      graphCmsNavigation(name: { eq: "Menu" }) {
+        ...CmsNavigation
+      }
     }
+  `);
+
+  const menu = page || template || data.graphCmsNavigation;
+  if (!menu) {
+    throw new Error("No menu");
+    return null;
   }
-`;
+
+  return <NavigationBar menu={convertCmsNavigation(menu)} />;
+};

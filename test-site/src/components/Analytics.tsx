@@ -21,20 +21,20 @@ const Analytics: React.FC<SliceComponentProps<Queries.AnalyticsQuery>> = ({
       <ReactCookieConsent
         cookieName={cookieName}
         declineCookieValue={declinedCookieName || undefined}
-        containerClasses="bg-error container-grid w-full z-[100] items-center py-xxxs relative"
+        containerClasses="bg-blue h4 text-black container-cols-grid fixed left-0 right-0 w-full z-[100] items-center py-xs gap-y-xs"
         disableStyles={true}
         disableButtonStyles={true}
-        location={"top"}
-        buttonWrapperClasses="flex col-start-2 col-span-1 justify-self-end row-start-1 gap-x-xs"
-        buttonClasses="bg-blue text-white px-xxxs"
+        location="bottom"
+        buttonWrapperClasses="flex row-start-2 laptop:row-start-1 col-start-2 col-span-1 justify-self-center laptop:justify-self-end gap-x-xs"
+        buttonClasses="button uppercase"
         buttonText="Accept"
         enableDeclineButton={!!declinedCookieName}
         declineButtonText="Decline"
-        declineButtonClasses="border border-blue text-blue px-xxs "
-        contentClasses="col-start-2 col-span-1 row-start-1"
+        declineButtonClasses="button uppercase"
+        contentClasses="col-start-2 col-span-1 row-start-1 text-center laptop:text-left"
         onAccept={onAccept}
       >
-        We use cookies to make this site awesome
+        We use cookies to make this site awesome.
       </ReactCookieConsent>
     </>
   );

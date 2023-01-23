@@ -1,27 +1,40 @@
 import classNames from "classnames";
 import React from "react";
-import { SectionHeadingClassName } from "../styles";
 
 export const SectionHeading: React.FC<{
   className?: string;
   heading?: string | null;
   preHeading?: string | null;
   postHeading?: string | null;
+  preHeadingFontClassName?: string;
+  headingFontClassName?: string;
+  postHeadingFontClassName?: string;
 }> = ({
   heading,
   preHeading,
   postHeading,
-  className = SectionHeadingClassName,
+  className = "text-center col-span-full",
+  preHeadingFontClassName = "h3",
+  headingFontClassName = "h3",
+  postHeadingFontClassName = "h3",
 }) => {
   if (!(heading || preHeading || postHeading)) return null;
   return (
     <>
       {preHeading && (
-        <h3 className={classNames("h3", className)}>{preHeading}</h3>
+        <h3 className={classNames(preHeadingFontClassName, className)}>
+          {preHeading}
+        </h3>
       )}
-      {heading && <h2 className={classNames("h2", className)}>{heading}</h2>}
+      {heading && (
+        <h2 className={classNames(headingFontClassName, className)}>
+          {heading}
+        </h2>
+      )}
       {postHeading && (
-        <h3 className={classNames("h3", className)}>{postHeading}</h3>
+        <h3 className={classNames(postHeadingFontClassName, className)}>
+          {postHeading}
+        </h3>
       )}
     </>
   );

@@ -1,8 +1,8 @@
 import React from "react";
-import {
-  GenericCollection,
-  ICollectionInformation,
-} from "../collections/GenericCollection";
+import { ICollectionInformation } from "../collections/GenericCollection";
+import { HalfCollection } from "../collections/HalfCollection";
+import { LogoGrid } from "../collections/LogoGrid";
+import { SmallCollection } from "../collections/SmallCollection";
 
 export function tryHandleCustomCollection(
   converted: ICollectionInformation,
@@ -10,12 +10,24 @@ export function tryHandleCustomCollection(
 ) {
   // Fill this in
   switch (collectionType) {
-    case "Generic":
+    case "HalfLeft":
+    case "HalfRight":
       return (
-        <GenericCollection
-          information={converted}
-          collectionType={collectionType}
+        <HalfCollection
+          collection={converted}
+          isLeft={collectionType === "HalfLeft"}
         />
       );
+    case "SmallLeft":
+    case "SmallRight":
+      return (
+        <SmallCollection
+          collection={converted}
+          isLeft={collectionType === "SmallLeft"}
+        />
+      );
+
+    case "LogoGrid":
+      return <LogoGrid collection={converted} />;
   }
 }

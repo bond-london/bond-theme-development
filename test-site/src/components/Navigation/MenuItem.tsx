@@ -43,9 +43,17 @@ export const MenuItem: React.FC<{
       information={item}
       onClick={closeMenu}
       className={className}
-      iconHeightClassName="h-line-height"
-      buttonClassName="menu-button"
+      iconHeightClassName="h-mobile-menu-logo laptop:h-laptop-menu-logo menu-item"
+      buttonClassName={
+        item.icon
+          ? "menu-icon"
+          : item.isButton
+          ? "filled-menu-button"
+          : "menu-button"
+      }
       allowEmpty={true}
+      colourIsBackground={item.isButton}
+      isButton={true}
     />
   );
 };

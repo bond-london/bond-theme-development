@@ -1,12 +1,25 @@
-import { convertCmsAssetToBondImage } from "@bond-london/gatsby-theme";
+import {
+  convertCmsAssetToBondImage,
+  IBondImage,
+} from "@bond-london/gatsby-theme";
 import { graphql } from "gatsby";
 import { ILinkInformation } from "../components/LinkOrButton";
 import { calculateArticleLinkPath } from "./CmsArticle";
 import { getArticleTypePath } from "./CmsArticleType";
 import { getTagPath } from "./CmsTag";
 
+function removeImagePlacholder(image?: IBondImage) {
+  if (image) {
+    return {
+      ...image,
+      image: image.image
+        ? { ...image.image, placeholder: undefined, backgroundColor: undefined }
+        : undefined,
+    };
+  }
+}
 export function convertCMSInternalLink(
-  internal: Queries.CmsLinkFragment["remoteInternal"]
+  internal: Queries.CmsLinkFragment["internal"]
 ): string | undefined {
   switch (internal?.__typename) {
     case "GraphCMS_Article":
@@ -21,22 +34,24 @@ export function convertCMSInternalLink(
   }
 }
 export function convertCmsLink({
+  id,
   name,
   useName,
   icon,
-  remoteInternal,
+  internal,
   external,
   colour,
   isButton,
 }: Queries.CmsLinkFragment): ILinkInformation {
   return {
+    id,
     name: name,
     text: useName ? name : undefined,
-    icon: convertCmsAssetToBondImage(icon),
+    icon: removeImagePlacholder(
+      convertCmsAssetToBondImage(icon, { dontCrop: true })
+    ),
     external: external || undefined,
-    internal: remoteInternal
-      ? convertCMSInternalLink(remoteInternal)
-      : undefined,
+    internal: internal ? convertCMSInternalLink(internal) : undefined,
     colour: colour || undefined,
     isButton: isButton || undefined,
   };
@@ -44,14 +59,13 @@ export function convertCmsLink({
 
 // eslint-disable-next-line import/no-unused-modules
 export const CmsLinkFragment = graphql`
-  fragment CmsLink on GraphCMS_Link {
+  fragment CmsLink on GraphCMS_LinkComponent {
     __typename
     id
-    remoteId
     name
     useName
     linkText
-    remoteInternal {
+    internal {
       __typename
       ...CmsArticleLink
       ...CmsArticleTypeLink

@@ -18,5 +18,11 @@ export const TemplateFragment = graphql`
     }
     backgroundColour
     textColour
+    menu {
+      ...CmsNavigation
+    }
+    footer {
+      ...CmsNavigation
+    }
   }
 `;

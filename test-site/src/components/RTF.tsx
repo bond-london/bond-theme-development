@@ -4,11 +4,11 @@ import {
   defaultRenderers,
   INodeRenderer,
   IRichTextInformation,
+  LinkRenderer,
   RealRTF,
 } from "@bond-london/graphcms-rich-text";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
 import React from "react";
-import { LinkClassName } from "../styles";
 import { ArticleEmbedLink, ArticleLink } from "./renderers/ArticleLink";
 import {
   ArticleTypeEmbedLink,
@@ -17,13 +17,12 @@ import {
 import { PageEmbedLink, PageLink } from "./renderers/PageLink";
 import { TagEmbedLink, TagLink } from "./renderers/TagLink";
 import { Link } from "./renderers/Link";
-import { RenderAnimation } from "./renderers/RenderAnimation";
-import { RenderImage } from "./renderers/RenderImage";
-import { RenderVideo } from "./renderers/RenderVideo";
 import { RenderSpecial } from "./renderers/RenderSpecialTable";
+import { CodeOrActionRenderer } from "./renderers/CodeOrActionRenderer";
+import { RenderVisual } from "./renderers/RenderVisual";
 
-const projectClassNameOverrides: ClassNameOverrides = {
-  a: LinkClassName,
+export const defaultProjectClassNameOverrides: ClassNameOverrides = {
+  a: "text-blue underline decoration-blue",
   h1: "h1",
   h2: "h2",
   h3: "h3",
@@ -31,7 +30,7 @@ const projectClassNameOverrides: ClassNameOverrides = {
   h5: "h5",
   h6: "h6",
   p: "p2",
-  div: "p2",
+  div: "p3",
   code: "p3 font-regular font-mono",
   pre: "p3 font-regular font-mono",
   ul: "list-disc list-inside",
@@ -39,7 +38,10 @@ const projectClassNameOverrides: ClassNameOverrides = {
 };
 
 const projectRenderers: Partial<INodeRenderer> = {
+  code: (props) => <CodeOrActionRenderer {...props} isInline={true} />,
+  code_block: (props) => <CodeOrActionRenderer {...props} isInline={false} />,
   p: (props) => <DefaultRenderer {...props} element="div" />,
+  a: (props) => <LinkRenderer {...props} />,
   blockquote: (props) => (
     <DefaultRenderer
       {...props}
@@ -55,12 +57,6 @@ const projectRenderers: Partial<INodeRenderer> = {
     special: { description: "Special table", renderer: RenderSpecial },
   },
   embed_node: {
-    Animation: (props) => (
-      <RenderAnimation
-        isInline={props.isInline}
-        fragment={props.reference as Queries.FullWidthCmsAnimationFragment}
-      />
-    ),
     Article: (props) => (
       <ArticleEmbedLink
         isInline={props.isInline}
@@ -71,12 +67,6 @@ const projectRenderers: Partial<INodeRenderer> = {
       <ArticleTypeEmbedLink
         isInline={props.isInline}
         fragment={props.reference as Queries.CmsArticleTypeLinkFragment}
-      />
-    ),
-    Image: (props) => (
-      <RenderImage
-        isInline={props.isInline}
-        fragment={props.reference as Queries.FullWidthCmsImageFragment}
       />
     ),
     Link: (props) => (
@@ -94,10 +84,10 @@ const projectRenderers: Partial<INodeRenderer> = {
         fragment={props.reference as Queries.CmsTagLinkFragment}
       />
     ),
-    Video: (props) => (
-      <RenderVideo
+    Visual: (props) => (
+      <RenderVisual
         isInline={props.isInline}
-        fragment={props.reference as Queries.FullWidthCmsVideoFragment}
+        fragment={props.reference as Queries.FullWidthCmsVisualFragment}
       />
     ),
   },
@@ -122,24 +112,10 @@ const projectRenderers: Partial<INodeRenderer> = {
     Tag: (props) => (
       <TagLink fragment={props.reference as Queries.CmsTagLinkFragment} />
     ),
-    Animation: () => (
+    Visual: () => (
       <Unsupported
         component="RTF"
-        message="Cannot link to an animation"
-        inline={true}
-      />
-    ),
-    Image: () => (
-      <Unsupported
-        component="RTF"
-        message="Cannot link to an image"
-        inline={true}
-      />
-    ),
-    Video: () => (
-      <Unsupported
-        component="RTF"
-        message="Cannot link to a video"
+        message="Cannot link to a visual"
         inline={true}
       />
     ),
@@ -153,8 +129,13 @@ const fullRenderers: INodeRenderer = {
 
 export const RTF: React.FC<{
   content: IRichTextInformation;
+  projectClassNameOverrides?: ClassNameOverrides;
   className?: string;
-}> = ({ content, className }) => {
+}> = ({
+  content,
+  className,
+  projectClassNameOverrides = defaultProjectClassNameOverrides,
+}) => {
   return (
     <RealRTF
       className={className}

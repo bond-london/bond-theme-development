@@ -27,31 +27,44 @@ export const NavigationBar: React.FC<{
   const [firstMenu, ...otherMenu] = entries;
 
   return (
-    <nav
-      ref={ref}
-      className={classNames(
-        lookupColourClassNames(backgroundColour, textColour),
-        isOpen ? "opacity-100" : "opacity-75",
-        "fixed top-0 left-0 right-0 z-50 container-cols-grid"
-      )}
-    >
-      <div className="col-start-2 col-span-1 relative content-cols-grid">
-        <MenuItem item={firstMenu} className="col-start-1 row-start-1" />
-        <div
-          className={classNames(
-            !isOpen && "hidden laptop:flex",
-            "row-start-2 col-span-4 col-start-1 tablet:col-start-1 tablet:col-span-8 laptop:row-start-1 laptop:col-span-12 laptop:col-start-1 laptop:justify-end"
-          )}
-        >
-          <NavigationMenu
-            menu={otherMenu}
-            closeMenu={closeMenu}
-            backgroundColour={backgroundColour}
-            textColour={textColour}
+    <>
+      <nav
+        ref={ref}
+        className={classNames(
+          lookupColourClassNames(backgroundColour, textColour),
+          isOpen ? "h-screen" : "h-mobile-nav",
+          "p3 fixed top-0 left-0 right-0 z-50 container-cols-grid laptop:h-laptop-nav transition-all transition-duration-300"
+        )}
+      >
+        <div className="col-start-2 col-span-1 relative grid grid-cols-3 grid-rows-mobile-nav laptop:grid-rows-laptop-nav">
+          <MenuItem
+            item={firstMenu}
+            className="col-start-1 row-start-1 justify-start self-center"
+          />
+          <div
+            className={classNames(
+              !isOpen && "hidden laptop:flex",
+              "row-start-2 col-start-1 col-span-full laptop:row-start-1 laptop:justify-end mt-s mb-l laptop:my-0"
+            )}
+          >
+            <NavigationMenu
+              menu={otherMenu}
+              closeMenu={closeMenu}
+              backgroundColour={backgroundColour}
+              textColour={textColour}
+            />
+          </div>
+          <HamburgerButton
+            toggleMenu={toggleMenu}
+            isOpen={isOpen}
+            className="laptop:hidden justify-self-end col-start-3 row-start-1 self-center"
           />
         </div>
-        <HamburgerButton toggleMenu={toggleMenu} isOpen={isOpen} />
-      </div>
-    </nav>
+      </nav>
+      <div
+        data-component="Nav spacer"
+        className="h-mobile-nav laptop:h-laptop-nav"
+      />
+    </>
   );
 };

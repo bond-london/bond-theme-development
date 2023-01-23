@@ -7,7 +7,8 @@ export const SectionLinks: React.FC<{
   links: ReadonlyArray<ILinkInformation>;
   vertical?: boolean;
   separator?: boolean;
-}> = ({ links, vertical, separator = true }) => {
+  iconHeightClassName?: string;
+}> = ({ links, vertical, separator, iconHeightClassName }) => {
   if (links.length === 0) return null;
 
   return (
@@ -20,12 +21,16 @@ export const SectionLinks: React.FC<{
     >
       {links.map((link, index) => (
         <Fragment key={link.name}>
-          {separator && index > 0 && vertical ? (
-            <p className="border-r-2 border-current" />
-          ) : (
-            <p className="border-b-2 border-current" />
-          )}
-          <LinkOrButton information={link} />
+          {index > 0 &&
+            (separator && index > 0 && vertical ? (
+              <p className="border-r-2 border-current" />
+            ) : (
+              <p className="border-b-2 border-current" />
+            ))}
+          <LinkOrButton
+            information={link}
+            iconHeightClassName={iconHeightClassName}
+          />
         </Fragment>
       ))}
     </div>

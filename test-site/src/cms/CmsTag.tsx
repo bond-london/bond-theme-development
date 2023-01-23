@@ -32,5 +32,19 @@ export const CmsTagFragment = graphql`
     featuredImage {
       ...FullWidthImageAsset
     }
+    template {
+      ...Template
+    }
+    topContent {
+      __typename
+      ...CmsComponent
+      ...CmsCollection
+    }
+    menu {
+      ...CmsNavigation
+    }
+    footer {
+      ...CmsNavigation
+    }
   }
 `;

@@ -1,4 +1,4 @@
-import { IBondImage } from "@bond-london/gatsby-theme";
+import { IBondImage, IBondVisual } from "@bond-london/gatsby-theme";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
 import classNames from "classnames";
 import { Link } from "gatsby";
@@ -12,6 +12,7 @@ import { LinkClassName } from "../styles";
 import { SectionIcon } from "./SectionIcon";
 
 export interface ILinkInformation {
+  id: string;
   internal?: string;
   external?: string;
   text?: string;
@@ -24,7 +25,7 @@ export interface ILinkInformation {
 const LinkOrButtonInside: React.FC<
   PropsWithChildren<{
     text?: string;
-    icon?: IBondImage;
+    icon?: IBondVisual;
     iconHeightClassName?: string;
   }>
 > = ({ children, text, icon, iconHeightClassName }) => {
@@ -48,28 +49,48 @@ export const LinkOrButton: React.FC<{
   iconHeightClassName?: string;
   buttonClassName?: string;
   allowEmpty?: boolean;
+  colourIsBackground?: boolean;
+  isButton?: boolean;
 }> = ({
-  information: { internal, external, text, name, colour, isButton, icon },
+  information: {
+    internal,
+    external,
+    text,
+    name,
+    colour,
+    isButton: informationIsButton,
+    icon,
+  },
   onClick,
   className,
   iconHeightClassName,
   buttonClassName = "button",
   allowEmpty,
+  colourIsBackground,
+  isButton: setIsButton,
 }) => {
+  const isButton = setIsButton || informationIsButton;
   const label = text || name;
   const realText = icon ? text : name;
   const outerClassName = classNames(
     className,
     isButton
-      ? [buttonClassName, colour && lookupColourClassNames(colour || "yellow")]
+      ? [
+          buttonClassName,
+          colour &&
+            (colourIsBackground
+              ? lookupColourClassNames(colour)
+              : lookupColourString(colour, "text")),
+        ]
       : [LinkClassName, colour && lookupColourString(colour, "text")]
   );
-  if (internal) {
+  const realInternal = external?.startsWith("/") ? external : internal;
+  if (realInternal) {
     return (
       <Link
         className={classNames(outerClassName, "inline-flex items-center")}
         onClick={onClick}
-        to={internal}
+        to={realInternal}
         aria-label={name}
       >
         <LinkOrButtonInside

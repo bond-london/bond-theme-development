@@ -19,13 +19,20 @@ export const CoreCmsArticleFragment = graphql`
     hidden
     slug
     title
+    description
     date
-    articleType {
-      ...CmsArticleTypeLink
-      slug
-    }
     tags {
       id
+    }
+  }
+`;
+
+// eslint-disable-next-line import/no-unused-modules
+export const CmsArticleLinkFragment = graphql`
+  fragment CmsArticleLink on GraphCMS_Article {
+    ...CoreCmsArticle
+    articleType {
+      ...CmsArticleTypeLink
     }
     embedImage: featuredImage {
       ...EmbedFeaturedImageAsset

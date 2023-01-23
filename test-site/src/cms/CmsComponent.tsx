@@ -7,7 +7,7 @@ import {
 } from "../components/GenericComponent";
 import { getRTFInformation } from "@bond-london/graphcms-rich-text";
 import {
-  convertCmsAssetToBondImage,
+  convertCmsAssetToBondVisual,
   convertCmsVisualToBondVisual,
 } from "@bond-london/gatsby-theme";
 import { convertCmsLink } from "./CmsLink";
@@ -17,6 +17,7 @@ export function convertCmsComponentInformation({
   id,
   heading,
   showHeading,
+  anchor,
   preHeading,
   postHeading,
   body,
@@ -29,13 +30,16 @@ export function convertCmsComponentInformation({
   return {
     id,
     name: heading,
+    anchor,
     preHeading: showHeading ? preHeading : undefined,
     heading: showHeading ? heading : undefined,
     postHeading: showHeading ? postHeading : undefined,
     body: getRTFInformation(body),
     backgroundColour,
     textColour,
-    icon: convertCmsAssetToBondImage(icon),
+    icon: convertCmsAssetToBondVisual(icon, {
+      dontCrop: true,
+    }),
     visual: convertCmsVisualToBondVisual(visual),
     links: links?.map(convertCmsLink),
   };
@@ -77,19 +81,16 @@ export const fragment = graphql`
     heading
     componentType
     showHeading
+    anchor
     preHeading
     postHeading
     body {
       cleaned
       references {
-        ...FullWidthCmsAnimation
         ...CmsArticleLink
         ...CmsArticleTypeLink
-        ...FullWidthCmsImage
-        ...CmsLink
         ...CmsPageLink
         ...CmsTagLink
-        ...FullWidthCmsVideo
         ...FullWidthCmsVisual
       }
     }
@@ -100,6 +101,7 @@ export const fragment = graphql`
     textColour
     icon {
       ...ConstrainedImageAsset
+      ...ConstrainedAnimationAsset
     }
     visual {
       ...FullWidthCmsVisualComponent

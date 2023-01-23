@@ -44,5 +44,11 @@ export const CmsPageFragment = graphql`
       ...CmsComponent
       ...CmsCollection
     }
+    menu {
+      ...CmsNavigation
+    }
+    footer {
+      ...CmsNavigation
+    }
   }
 `;

@@ -123,6 +123,7 @@ function buildConfig(
         options: {
           name: "images",
           path: "./src/images/",
+          fastHash: true,
         },
         __key: "images",
       },

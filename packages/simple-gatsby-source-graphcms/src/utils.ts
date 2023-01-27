@@ -180,9 +180,16 @@ export async function createSourcingConfig(
 
   const addSystemFieldArguments = (
     field: GraphQLField<unknown, unknown>
-  ): { variation: string } | undefined => {
+  ):
+    | {
+        [argName: string]: unknown;
+      }
+    | undefined => {
     if (["createdAt", "publishedAt", "updatedAt"].includes(field.name)) {
       return { variation: `COMBINED` };
+    }
+    if (field.args.find(a => a.name === "first")) {
+      return { first: 100 };
     }
     return undefined;
   };

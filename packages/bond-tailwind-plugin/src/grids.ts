@@ -14,6 +14,11 @@ function addContainerGrid(
   config: IBondConfigurationOptions
 ): void {
   const noMax = !Object.values(config.sizes).find(v => v.max);
+  const largest = Math.max(
+    ...(Object.values(config.sizes)
+      .map(v => v.breakpoint)
+      .filter(v => v) as ReadonlyArray<number>)
+  );
   const { addUtilities, addComponents } = helpers;
   if (typeof config.spacing.section === "undefined") {
     throw new Error("Need a config spacing section defined");
@@ -48,21 +53,25 @@ function addContainerGrid(
   const containerGrid = ["grid"];
   const contentGrid = ["grid"];
   const gridGap: Array<string> = [];
-  forEachObject(config.sizes, ({ key, value: { cols, gap, max }, index }) => {
-    const prefix = index === 0 ? "" : `${key}:`;
-    if (cols || max) {
-      containerGrid.push(`${prefix}grid-cols-${key}-container`);
-    }
+  forEachObject(
+    config.sizes,
+    ({ key, value: { breakpoint, cols, gap, max }, index }) => {
+      const isLargest = breakpoint === largest;
+      const prefix = index === 0 ? "" : `${key}:`;
+      if (cols || max || isLargest) {
+        containerGrid.push(`${prefix}grid-cols-${key}-container`);
+      }
 
-    if (cols) {
-      contentGrid.push(`${prefix}grid-cols-${key}-content`);
+      if (cols) {
+        contentGrid.push(`${prefix}grid-cols-${key}-content`);
+      }
+      if (gap || noMax) {
+        const gapClassName = `${prefix}gap-x-${key}-gap`;
+        contentGrid.push(gapClassName);
+        gridGap.push(gapClassName);
+      }
     }
-    if (gap || noMax) {
-      const gapClassName = `${prefix}gap-x-${key}-gap`;
-      contentGrid.push(gapClassName);
-      gridGap.push(gapClassName);
-    }
-  });
+  );
   components[`.container-cols-grid`] = createApplyEntry(containerGrid);
   components[".content-cols-grid"] = createApplyEntry(contentGrid);
   components[".grid-gap"] = createApplyEntry(gridGap);
@@ -79,14 +88,14 @@ export function buildGrid(
 }
 
 function calculateSize(
-  noMax: boolean,
   breakpoint: number | undefined,
-  pixels: number
+  pixels: number,
+  useVw: boolean
 ): string {
-  if (!noMax) {
-    return calculateRemSize(pixels);
+  if (useVw) {
+    return calculateVwSize(breakpoint || 375, pixels);
   }
-  return calculateVwSize(breakpoint || 375, pixels);
+  return calculateRemSize(pixels);
 }
 
 export function buildGridSpacing(
@@ -99,6 +108,11 @@ export function buildGridSpacing(
       .filter(v => v) as Array<number>)
   );
   const noMax = !Object.values(config.sizes).find(v => v.max);
+  const largest = Math.max(
+    ...(Object.values(config.sizes)
+      .map(v => v.breakpoint)
+      .filter(v => v) as ReadonlyArray<number>)
+  );
 
   const maxWidthRem = calculateRemSize(maximumWidth);
 
@@ -119,17 +133,33 @@ export function buildGridSpacing(
     }) => {
       const margin = possibleMargin || lastMargin;
       lastMargin = margin;
-      const cols = (lastCols = possibleCols || lastCols);
-      const gap = (lastGap = possibleGap || lastGap);
+      const cols = possibleCols || lastCols;
+      lastCols = cols;
+      const gap = possibleGap || lastGap;
+      lastGap = gap;
 
-      const gapSize = calculateSize(noMax, breakpoint, gap);
-      const totalGapSize = calculateSize(noMax, breakpoint, gap * (cols - 1));
-      const marginSize = calculateSize(noMax, breakpoint, margin);
-      const totalMarginSize = calculateSize(noMax, breakpoint, 2 * margin);
+      const isLargest = breakpoint === largest;
+      const useVw = noMax && isLargest;
+
+      // console.log({
+      //   isLargest,
+      //   largest,
+      //   breakpoint,
+      //   margin,
+      //   cols,
+      //   gap,
+      //   noMax,
+      //   useVw,
+      // });
+
+      const gapSize = calculateSize(breakpoint, gap, useVw);
+      const totalGapSize = calculateSize(breakpoint, gap * (cols - 1), useVw);
+      const marginSize = calculateSize(breakpoint, margin, useVw);
+      const totalMarginSize = calculateSize(breakpoint, 2 * margin, useVw);
       const calculateColSize =
         maximumWidth > 0
           ? `((min((100 * var(--bond-vw)) - ${totalMarginSize}, ${maxWidthRem}) - ${totalGapSize}) / ${cols})`
-          : `(((100 * var(--bond-vw)) - ${totalMarginSize}) / ${cols})`;
+          : `(((100 * var(--bond-vw)) - ${totalMarginSize} - ${totalGapSize}) / ${cols})`;
 
       results[`${name}-gap`] = gapSize;
 
@@ -156,6 +186,11 @@ export function createGridCols(
 ): CSSRuleObject {
   const grids: CSSRuleObject = {};
   const noMax = !Object.values(config.sizes).find(v => v.max);
+  const largest = Math.max(
+    ...(Object.values(config.sizes)
+      .map(v => v.breakpoint)
+      .filter(v => v) as ReadonlyArray<number>)
+  );
   let lastMargin: number | undefined;
   forEachObject(
     config.sizes,
@@ -164,7 +199,20 @@ export function createGridCols(
       value: { breakpoint, margin: possibleMargin, cols, max: maxWidth },
     }) => {
       const margin = possibleMargin || lastMargin || 0;
-      const marginSize = calculateSize(noMax, breakpoint, margin);
+      const isLargest = breakpoint === largest;
+      const useVw = noMax && isLargest;
+      const marginSize = calculateSize(breakpoint, margin, useVw);
+      // console.log({
+      //   name,
+      //   breakpoint,
+      //   margin,
+      //   marginSize,
+      //   cols,
+      //   maxWidth,
+      //   noMax,
+      //   isLargest,
+      //   useVw,
+      // });
       lastMargin = margin;
       if (cols) {
         Object.assign(

@@ -83,6 +83,7 @@ export function configureTheme(
         full: "9999px",
       },
       gridTemplateColumns: {
+        none: "none",
         ...calculateNumbers(
           1,
           maximumColumns,

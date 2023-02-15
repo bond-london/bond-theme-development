@@ -1,8 +1,11 @@
 import { IBondConfigurationOptions } from ".";
 import { forEachObject } from "./utils";
 import { pascalCase } from "pascal-case";
-import { writeFileSync } from "fs-extra";
+import { writeFileSync, readFileSync } from "fs-extra";
 import { CSSRuleObject } from "tailwindcss/types/config";
+import { createHash } from "crypto";
+
+let cachedContents = "";
 
 export function buildColours(config: IBondConfigurationOptions): CSSRuleObject {
   const colors: CSSRuleObject = {
@@ -110,11 +113,33 @@ export function lookupColourClassNames(backgroundColour?: ColourName | null, tex
 `);
   }
 
-  try {
-    writeFileSync(colorFile, code.join("\r"));
-  } catch {
-    // ignore as this could be in linting
+  const newContents = code.join("\r");
+  if (newContents !== cachedContents) {
+    cachedContents = newContents;
+    writeColorsIfRequired(newContents, colorFile);
   }
 
   return undefined;
+}
+
+function calculateMd5(content: string | Buffer): string {
+  const hash = createHash("md5");
+  hash.update(content);
+  return hash.digest("hex");
+}
+function writeColorsIfRequired(contents: string, colorFile: string): void {
+  const newHash = calculateMd5(contents);
+  let oldHash = "";
+  try {
+    const oldContents = readFileSync(colorFile);
+    oldHash = calculateMd5(oldContents);
+  } catch (error) {
+    // ignore this
+  }
+  if (oldHash === newHash) {
+    return;
+  }
+
+  console.log("Writing out new color file");
+  writeFileSync(colorFile, contents);
 }

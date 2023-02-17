@@ -235,6 +235,7 @@ export function convertCmsAssetToBondVisual(
     loop?: boolean | null;
     loopDelay?: number | null;
     dontCrop?: boolean | null;
+    dontCropPng?: boolean | null;
     verticalCropPosition?: Vertical | null;
     horizontalCropPosition?: Horizontal | null;
   }

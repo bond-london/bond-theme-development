@@ -12,7 +12,9 @@ const ArticleListEntry: React.FC<{
   article: Queries.CmsArticleLinkFragment;
 }> = ({ article }) => {
   const { title, embedImage } = article;
-  const bondImage = convertCmsAssetToBondImage(embedImage);
+  const bondImage = convertCmsAssetToBondImage(embedImage, {
+    dontCropPng: true,
+  });
   const path = calculateArticleLinkPath(article);
   return (
     <div className="flex flex-col gap-y-xs">

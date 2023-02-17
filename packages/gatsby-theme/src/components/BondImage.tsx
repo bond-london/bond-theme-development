@@ -61,9 +61,15 @@ export function convertCmsAssetToBondImage(
     dontCrop?: boolean | null;
     verticalCropPosition?: Vertical | null;
     horizontalCropPosition?: Horizontal | null;
+    dontCropPng?: boolean | null;
   }
 ): IBondImage | undefined {
   if (!asset) return undefined;
+  const dontCrop =
+    options?.dontCrop ||
+    (options?.dontCropPng
+      ? asset.localFile?.internal?.mediaType?.endsWith("/png")
+      : undefined);
   const image = asset.localFile?.childImageSharp?.gatsbyImageData;
   const svg = asset.localFile?.childGatsbySvg?.extracted;
   if (!image && !svg) return undefined;
@@ -71,6 +77,7 @@ export function convertCmsAssetToBondImage(
     image,
     svg,
     ...options,
+    dontCrop,
   };
 }
 

@@ -1,3 +1,4 @@
+"use client";
 import { useBodyScrollLock } from "@bond-london/gatsby-theme";
 import classNames from "classnames";
 import React, { useCallback, useState } from "react";

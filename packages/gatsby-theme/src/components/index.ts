@@ -7,3 +7,5 @@ export * from "./BondVisual";
 export * from "./Section";
 export * from "./GoogleTagManager";
 export * from "./AnimatedSection";
+export * from "./utils";
+export * from "./types";

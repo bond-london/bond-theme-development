@@ -1,9 +1,7 @@
 "use client";
 import {
-  IGatsbyTransformedVideo,
   GatsbyVideo,
   GatsbyInternalVideo,
-  getPosterSrc,
 } from "@bond-london/gatsby-transformer-video";
 import { IGatsbyVideo } from "@bond-london/gatsby-transformer-video/src/types";
 import React, {
@@ -14,52 +12,10 @@ import React, {
   VideoHTMLAttributes,
 } from "react";
 import { calculateCropDetails } from "../utils";
-import { IBondSimpleVideo, IBondSubtitle } from "./BondSimpleVideo";
-import { ICmsVideo } from "./BondVideo";
+import { IBondSubtitle } from "./BondSimpleVideo";
 import { BondVideoPoster } from "./BondVideoPoster";
+import { IBondFullVideo } from "./types";
 import { VideoControls } from "./VideoControls";
-
-export type IBondFullVideo = IBondSimpleVideo & {
-  full: IGatsbyTransformedVideo;
-  loop?: boolean;
-};
-
-export function convertCmsVideoToBondFullVideo(cms: ICmsVideo): IBondFullVideo {
-  const preview = cms.preview?.localFile?.childGatsbyVideo?.transformed;
-
-  const full = cms.full?.localFile?.childGatsbyVideo?.transformed;
-
-  if (!full) {
-    throw new Error("No full video found");
-  }
-
-  const posterSrc =
-    cms.poster?.localFile?.publicURL ||
-    getPosterSrc(preview) ||
-    getPosterSrc(full);
-
-  const subtitles = cms.subtitles?.localFile?.publicURL || undefined;
-
-  return {
-    videoData: preview,
-    posterSrc,
-    subtitles: subtitles
-      ? [
-          {
-            default: true,
-            label: "English",
-            src: subtitles,
-            srcLang: "en",
-          },
-        ]
-      : undefined,
-    full,
-    loop: cms.loop || undefined,
-    dontCrop: cms.dontCrop,
-    verticalCropPosition: cms.verticalCropPosition,
-    horizontalCropPosition: cms.horizontalCropPosition,
-  };
-}
 
 const BondFullVideoInside: React.FC<
   {

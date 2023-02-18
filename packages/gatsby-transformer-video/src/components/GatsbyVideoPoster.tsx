@@ -1,16 +1,6 @@
 import classNames from "classnames";
-import React, { PropsWithChildren, useEffect, CSSProperties } from "react";
-
-const GatsbyVideoPosterNoPoster: React.FC<
-  PropsWithChildren<{
-    className?: string;
-    onLoaded?: () => void;
-  }>
-> = ({ children, onLoaded, className }) => {
-  useEffect(() => onLoaded?.(), [onLoaded]);
-
-  return <div className={className}>{children}</div>;
-};
+import React, { PropsWithChildren, CSSProperties } from "react";
+import { GatsbyVideoPosterNoPoster } from "./GatsbyVideoPosterNoPoster";
 
 const GatsbyVideoPosterWithPoster: React.FC<
   PropsWithChildren<{

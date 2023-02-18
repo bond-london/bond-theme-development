@@ -1,3 +1,4 @@
+"use client";
 import React, {
   DetailedHTMLProps,
   PropsWithChildren,
@@ -23,7 +24,6 @@ function calculateVideoSizes({ width, height, layout }: IGatsbyVideo): {
 }
 
 function lazyLoadVideo(video: HTMLVideoElement): void {
-  console.log("lazy load video", video);
   const poster = video.dataset.poster;
   let changed = false;
   if (poster) {

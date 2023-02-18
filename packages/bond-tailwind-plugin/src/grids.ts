@@ -158,8 +158,8 @@ export function buildGridSpacing(
       const totalMarginSize = calculateSize(breakpoint, 2 * margin, useVw);
       const calculateColSize =
         maximumWidth > 0
-          ? `((min((100 * var(--bond-vw)) - ${totalMarginSize}, ${maxWidthRem}) - ${totalGapSize}) / ${cols})`
-          : `(((100 * var(--bond-vw)) - ${totalMarginSize} - ${totalGapSize}) / ${cols})`;
+          ? `((min(100dvw - ${totalMarginSize}, ${maxWidthRem}) - ${totalGapSize}) / ${cols})`
+          : `((100dvw - ${totalMarginSize} - ${totalGapSize}) / ${cols})`;
 
       results[`${name}-gap`] = gapSize;
 

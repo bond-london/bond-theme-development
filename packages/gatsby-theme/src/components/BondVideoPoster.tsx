@@ -5,42 +5,9 @@ import {
 } from "@bond-london/gatsby-transformer-video";
 import { IGatsbyVideo } from "@bond-london/gatsby-transformer-video/src/types";
 import classNames from "classnames";
-import React, {
-  PropsWithChildren,
-  useEffect,
-  CSSProperties,
-  useCallback,
-} from "react";
+import React, { PropsWithChildren, CSSProperties, useCallback } from "react";
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
-
-const BondVideoPosterNoPoster: React.FC<
-  PropsWithChildren<{
-    className?: string;
-    forVideo?: IGatsbyVideo;
-    onLoaded?: () => void;
-    style?: CSSProperties;
-  }>
-> = ({ children, onLoaded, className, forVideo, style, ...props }) => {
-  useEffect(() => onLoaded?.(), [onLoaded]);
-  const videoWrapperProps = forVideo
-    ? getVideoWrapperProps(forVideo)
-    : undefined;
-
-  return (
-    <div
-      {...props}
-      style={{ ...style, ...videoWrapperProps?.style }}
-      className={classNames(
-        !forVideo && " aspect-w-4 aspect-h-3",
-        videoWrapperProps?.className,
-        className
-      )}
-    >
-      {forVideo && <VideoSizer video={forVideo} />}
-      {children}
-    </div>
-  );
-};
+import { BondVideoPosterNoPoster } from "./BondVideoPosterNoPoster";
 
 const BondVideoPosterWithPoster: React.FC<
   PropsWithChildren<{

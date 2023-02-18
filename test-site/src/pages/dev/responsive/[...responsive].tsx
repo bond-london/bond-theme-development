@@ -1,3 +1,4 @@
+"use client";
 import classNames from "classnames";
 import { PageProps } from "gatsby";
 import React, { RefObject, useEffect, useRef, useState } from "react";

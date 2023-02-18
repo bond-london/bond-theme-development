@@ -13,8 +13,6 @@ import {
   ICmsAnimationAsset,
   isBondAnimation,
 } from "./BondAnimation";
-import { IBondExternalVideo } from "./BondExternalVideo";
-import { IBondFullVideo } from "./BondFullVideo";
 import {
   BondImage,
   convertCmsAssetToBondImage,
@@ -30,6 +28,7 @@ import {
   ICmsVideoAsset,
   isBondVideo,
 } from "./BondVideo";
+import { IBondExternalVideo, IBondFullVideo } from "./types";
 
 interface ICmsVisual {
   readonly name?: string | null;

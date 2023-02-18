@@ -1,21 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-function updateClientSize(): void {
-  const vw = document.documentElement.clientWidth / 100;
-  const vh = document.documentElement.clientHeight / 100;
-  document.documentElement.style.setProperty("--bond-vw", `${vw}px`);
-  document.documentElement.style.setProperty("--bond-vh", `${vh}px`);
-}
-
-export function useBondClientSize(): void {
-  useEffect(() => {
-    const observer = new ResizeObserver(updateClientSize);
-    updateClientSize();
-    observer.observe(document.documentElement);
-    return () => observer.unobserve(document.documentElement);
-  }, []);
-}
-
 export function useComponentSize<T extends HTMLElement>(): [
   React.RefObject<T>,
   Array<number>

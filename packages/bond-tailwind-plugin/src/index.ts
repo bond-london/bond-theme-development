@@ -48,7 +48,6 @@ module.exports = plugin.withOptions(
     const { addBase } = helpers;
     /* eslint-disable @typescript-eslint/naming-convention */
     addBase({
-      ":root": { "--bond-vw": "1vw", "--bond-vh": "1vh" },
       ".icon-container > :first-child": { width: "auto", height: "100%" },
     });
     /* eslint-enable @typescript-eslint/naming-convention */

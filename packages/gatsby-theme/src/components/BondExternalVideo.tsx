@@ -1,8 +1,5 @@
 "use client";
-import {
-  GatsbyVideo,
-  getPosterSrc,
-} from "@bond-london/gatsby-transformer-video";
+import { GatsbyVideo } from "@bond-london/gatsby-transformer-video";
 import React, {
   CSSProperties,
   useCallback,
@@ -10,39 +7,10 @@ import React, {
   VideoHTMLAttributes,
 } from "react";
 import { calculateCropDetails } from "../utils";
-import { IBondSimpleVideo } from "./BondSimpleVideo";
-import { ICmsVideo } from "./BondVideo";
 import ReactPlayer from "react-player/lazy";
 import { VideoControls } from "./VideoControls";
 import { BondVideoPoster } from "./BondVideoPoster";
-
-export type IBondExternalVideo = IBondSimpleVideo & {
-  external: string;
-  loop?: boolean;
-};
-
-export function convertCmsVideoToBondExternalVideo(
-  cms: ICmsVideo
-): IBondExternalVideo {
-  const preview = cms.preview?.localFile?.childGatsbyVideo?.transformed;
-  const external = cms.external || undefined;
-
-  if (!external) {
-    throw new Error("No external video found");
-  }
-
-  const posterSrc = cms.poster?.localFile?.publicURL || getPosterSrc(preview);
-
-  return {
-    videoData: preview,
-    posterSrc,
-    loop: cms.loop || undefined,
-    external,
-    dontCrop: cms.dontCrop,
-    verticalCropPosition: cms.verticalCropPosition,
-    horizontalCropPosition: cms.horizontalCropPosition,
-  };
-}
+import { IBondExternalVideo } from "./types";
 
 const BondExternalVideoInside: React.FC<
   {

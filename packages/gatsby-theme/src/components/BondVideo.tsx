@@ -2,11 +2,11 @@ import { getPosterSrc } from "@bond-london/gatsby-transformer-video";
 import { IGatsbyImageData } from "gatsby-plugin-image";
 import React from "react";
 import { CSSProperties, VideoHTMLAttributes } from "react";
+import { convertSingleSubtitle } from ".";
 import { Horizontal, Vertical } from "../types";
 import { BondExternalVideo } from "./BondExternalVideo";
 import { BondFullVideo } from "./BondFullVideo";
 import { BondSimpleVideo, IBondSimpleVideo } from "./BondSimpleVideo";
-import { convertSingleSubtitle } from "./BondVisual";
 import { IBondExternalVideo, IBondFullVideo } from "./types";
 
 export interface ICmsVideoAsset {

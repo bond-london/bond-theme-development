@@ -55,7 +55,7 @@
     "body-scroll-lock": "^4.0.0-beta.0",
     "classnames": "^2.3.1",
     "dotenv": "^16.0.1",
-    "eslint-webpack-plugin": "^3.2.0",
+    "eslint-webpack-plugin": "^4.0.0",
     "gatsby-plugin-canonical-urls": "^5.0.0",
     "gatsby-plugin-eslint": "^4.0.2",
     "gatsby-plugin-gatsby-cloud": "^5.3.1",

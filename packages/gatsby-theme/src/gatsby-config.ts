@@ -152,13 +152,23 @@ function buildConfig(
     ],
   };
 
+  const cloudPlugin = {
+    resolve: "gatsby-plugin-gatsby-cloud",
+    options: {
+      headers: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        "/fonts/*": ["Cache-Control: public, max-age=31536000, immutable"],
+      },
+    },
+  };
+
   if (options.showDevPages) {
-    gatsbyConfig.plugins?.push({
-      resolve: "gatsby-plugin-gatsby-cloud",
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      options: { headers: { "/*": ["X-Frame-Options: SAMEORIGIN"] } },
-    });
+    (cloudPlugin.options.headers as { [key: string]: Array<string> })["/*"] = [
+      "X-Frame-Options: SAMEORIGIN",
+    ];
   }
+
+  gatsbyConfig.plugins?.push(cloudPlugin);
 
   if (options.enableEslint) {
     gatsbyConfig.plugins?.push({

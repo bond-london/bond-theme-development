@@ -92,8 +92,7 @@ export const GatsbyInternalVideo: React.FC<
   return (
     <video
       {...otherProps}
-      poster={lazy ? undefined : poster}
-      data-poster={lazy ? poster : undefined}
+      poster={poster}
       ref={videoRef}
       width={width}
       height={height}

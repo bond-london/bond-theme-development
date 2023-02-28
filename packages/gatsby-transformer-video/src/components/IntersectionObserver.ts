@@ -4,24 +4,9 @@ export type Unobserver = () => void;
 
 const ioEntryMap = new WeakMap<HTMLElement, () => void>();
 
-// Distance thresholds are smaller than used in Chrome's native lazy loading
-// Mainly because videos are larger and there could be a poster loaded as well which shows
-// that there is something there
-// @see https://web.dev/browser-level-image-lazy-loading/#distance-from-viewport-thresholds
-const FAST_CONNECTION_THRESHOLD = `750px`;
-const SLOW_CONNECTION_THRESHOLD = `1250px`;
-
 export function createIntersectionObserver(
   callback: () => void
 ): (element: HTMLElement) => Unobserver {
-  /* eslint-disable @typescript-eslint/no-explicit-any  */
-  const connection =
-    (navigator as any).connection ||
-    (navigator as any).mozConnection ||
-    (navigator as any).webkitConnection;
-  /* eslint-enable @typescript-eslint/no-explicit-any */
-  const connectionType = connection?.effectiveType;
-
   // if we don't support intersectionObserver we don't lazy load (Sorry IE 11).
   if (!(`IntersectionObserver` in window)) {
     return function observe(): Unobserver {
@@ -43,10 +28,7 @@ export function createIntersectionObserver(
         });
       },
       {
-        rootMargin:
-          connectionType === `4g` && !connection?.saveData
-            ? FAST_CONNECTION_THRESHOLD
-            : SLOW_CONNECTION_THRESHOLD,
+        threshold: 0.5,
       }
     );
   }

@@ -54,6 +54,7 @@ export const BondVisual: React.FC<
     muteButton,
     unmuteButton,
     loading,
+    noPoster,
     ...rest
   } = props;
   if (isBondAnimation(visual)) {
@@ -71,6 +72,7 @@ export const BondVisual: React.FC<
         muteButton={muteButton}
         unmuteButton={unmuteButton}
         loading={loading}
+        noPoster={noPoster}
       />
     );
   }

@@ -98,6 +98,7 @@ export const BondSimpleVideo: React.FC<
         {...videoProps}
         muted={true}
         posterSrc={realPosterSrc}
+        noPoster={noPoster}
         data-component="Bond Simple Video"
         loop={loop || videoLoop || undefined}
         loopDelay={loopDelay || videoLoopDelay || undefined}

@@ -58,11 +58,9 @@ function buildConfig(
           env: {
             development: {
               policy: [{ userAgent: "*", disallow: ["/"] }],
-              host: null,
             },
             production: {
               policy: [{ userAgent: "*", allow: "/", disallow: ["/dev/"] }],
-              host: null,
             },
           },
         },

@@ -75,6 +75,7 @@ function buildConfig(
         resolve: "gatsby-plugin-canonical-urls",
         options: {
           siteUrl: options.siteUrl,
+          stripQueryString: true,
         },
       },
       {

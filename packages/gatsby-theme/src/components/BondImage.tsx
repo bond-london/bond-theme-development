@@ -113,6 +113,7 @@ export const BondImage: React.FC<
     onStartLoad,
     imgClassName,
     imgStyle,
+    alt,
     ...imageProps
   } = props;
   const { objectFit, objectPosition } = calculateCropDetails({
@@ -125,7 +126,7 @@ export const BondImage: React.FC<
     return (
       <GatsbyImage
         {...imageProps}
-        alt={name || ""}
+        alt={name || alt || ""}
         onLoad={onLoad}
         onStartLoad={onStartLoad}
         image={image}
@@ -140,6 +141,7 @@ export const BondImage: React.FC<
     return (
       <GatsbySvg
         {...imageProps}
+        alt={name || alt || ""}
         onLoad={onLoad ? (): void => onLoad({ wasCached: true }) : undefined}
         svg={svg}
         objectFit={objectFit}

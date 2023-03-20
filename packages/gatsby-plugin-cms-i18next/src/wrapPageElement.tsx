@@ -24,7 +24,7 @@ const PageElementWrapper: React.FC<
   }>
 > = ({ i18nextOptions, i18nextContext, pageContext, children }) => {
   const { resourcesJson } = pageContext;
-  const i18n = useMemo(() => {
+  const value = useMemo(() => {
     const options: InitOptions = {
       ...i18nextOptions,
       lng: i18nextContext.currentLanguage,
@@ -48,7 +48,7 @@ const PageElementWrapper: React.FC<
   }, [resourcesJson, i18nextContext.currentLanguage, i18nextOptions]);
 
   return (
-    <I18nextProvider i18n={i18n}>
+    <I18nextProvider i18n={value}>
       <I18nextContext.Provider value={i18nextContext}>
         {children}
       </I18nextContext.Provider>

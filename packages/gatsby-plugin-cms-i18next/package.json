@@ -30,9 +30,9 @@
   },
   "main": "src/index.ts",
   "files": [
+    "gatsby-browser.ts",
     "gatsby-node.js",
-    "gatsby-worker.js",
-    "gatsby-ssr.js",
+    "gatsby-ssr.ts",
     "dist",
     "src"
   ],

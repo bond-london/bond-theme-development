@@ -5,7 +5,6 @@
   },
   "tailwindCSS.validate": true,
   "tailwindCSS.experimental.classRegex": [
-    // "classNames\\(\"(.*)\"\\)",
     "[cC]lasses\\s*=\\s*\"([^\"]*)\"",
     ".+[cC]lassName\\s*[:=]\\s*\"([^\"]*)\"",
     "const\\s+.*[cC]lassName\\s*=\\s*\"([^']*)\""

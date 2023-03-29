@@ -109,7 +109,7 @@ export async function createSchemaCustomization(
   gatsbyApi: CreateSchemaCustomizationArgs,
   pluginOptions: IPluginOptions
 ): Promise<void> {
-  const { buildMarkdownNodes, typePrefix } = pluginOptions;
+  const { buildMarkdownNodes, typePrefix, enableImageCDN } = pluginOptions;
   const { schema, actions, reporter, store } = gatsbyApi;
   const { createTypes } = actions;
 
@@ -135,12 +135,16 @@ export async function createSchemaCustomization(
     schema.buildObjectType({
       name: `${typePrefix}Asset`,
       fields: {
-        gatsbyImageData: getGatsbyImageFieldConfig(async (...args) =>
-          resolveGatsbyImageData(...args, gatsbyApi)
-        ),
-        placeholderUrl: {
-          type: "String",
-        },
+        ...(enableImageCDN
+          ? {
+              gatsbyImageData: getGatsbyImageFieldConfig(async (...args) =>
+                resolveGatsbyImageData(...args, gatsbyApi)
+              ),
+              placeholderUrl: {
+                type: "String",
+              },
+            }
+          : {}),
         localFile: {
           type: "File",
           extensions: {

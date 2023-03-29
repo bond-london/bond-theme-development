@@ -193,7 +193,7 @@ async function createOrTouchAsset(
       contentDigest,
       type: context.typeNameTransform.toGatsbyTypeName("Asset"),
     },
-    ...(isImage
+    ...(isImage && enableImageCDN
       ? {
           placeholderUrl: `${realUrl.origin}/resize=w:%width%,h:%height%${realUrl.pathname}`,
         }

@@ -1,4 +1,4 @@
-import { Actions, CreateSchemaCustomizationArgs } from "gatsby";
+import { CreateSchemaCustomizationArgs } from "gatsby";
 import {
   ISchemaInformation,
   isSpecialField,
@@ -11,14 +11,19 @@ import {
 import { createSourcingConfig, getRealType, stateCache } from "./utils";
 import { createSchemaCustomization as createToolkitSchemaCustomization } from "@nrandell/gatsby-graphql-source-toolkit";
 import { GraphQLObjectType } from "graphql";
+import { addRemoteFilePolyfillInterface } from "gatsby-plugin-utils/polyfill-remote-file/index";
+import { getGatsbyImageFieldConfig } from "gatsby-plugin-image/graphql-utils";
+import { resolveGatsbyImageData } from "./imageHelpers";
 
 function customiseSchema(
-  { createTypes }: Actions,
+  gatsbyApi: CreateSchemaCustomizationArgs,
   { typePrefix }: IPluginOptions,
-  { gatsbyNodeTypes, schema }: ISchemaInformation
+  information: ISchemaInformation
 ): void {
-  gatsbyNodeTypes.forEach(gatsbyNodeType => {
-    const realType = schema.getType(
+  const { actions } = gatsbyApi;
+  const { createTypes } = actions;
+  information.gatsbyNodeTypes.forEach(gatsbyNodeType => {
+    const realType = information.schema.getType(
       gatsbyNodeType.remoteTypeName
     ) as GraphQLObjectType;
     const hasLocaleField = realType.getFields().locale;
@@ -104,8 +109,8 @@ export async function createSchemaCustomization(
   gatsbyApi: CreateSchemaCustomizationArgs,
   pluginOptions: IPluginOptions
 ): Promise<void> {
-  const { buildMarkdownNodes, downloadAllAssets, typePrefix } = pluginOptions;
-  const { actions, reporter } = gatsbyApi;
+  const { buildMarkdownNodes, typePrefix } = pluginOptions;
+  const { schema, actions, reporter, store } = gatsbyApi;
   const { createTypes } = actions;
 
   const schemaConfig = stateCache.schemaInformation;
@@ -123,14 +128,39 @@ export async function createSchemaCustomization(
     gatsbyApi,
     pluginOptions
   );
-  customiseSchema(actions, pluginOptions, schemaConfig);
+  customiseSchema(gatsbyApi, pluginOptions, schemaConfig);
   await createToolkitSchemaCustomization(config);
 
-  if (downloadAllAssets) {
-    createTypes(`type ${typePrefix}Asset implements Node {
-    localFile: File @link
-  }`);
-  }
+  const assetType = addRemoteFilePolyfillInterface(
+    schema.buildObjectType({
+      name: `${typePrefix}Asset`,
+      fields: {
+        gatsbyImageData: getGatsbyImageFieldConfig(async (...args) =>
+          resolveGatsbyImageData(...args, gatsbyApi)
+        ),
+        placeholderUrl: {
+          type: "String",
+        },
+        localFile: {
+          type: "File",
+          extensions: {
+            link: {
+              from: "localFile",
+            },
+          },
+        },
+      },
+      interfaces: ["Node", "RemoteFile"],
+    }),
+    { schema, actions, store }
+  );
+  createTypes(assetType);
+
+  // if (downloadAllAssets) {
+  //   createTypes(`type ${typePrefix}Asset implements Node {
+  //   localFile: File @link
+  // }`);
+  // }
 
   if (buildMarkdownNodes) {
     createTypes(`

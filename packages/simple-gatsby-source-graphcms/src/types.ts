@@ -21,6 +21,7 @@ export interface IPluginOptions {
   localCacheDir: string;
   maxImageWidth?: number;
   unusedAssetFile?: string;
+  enableImageCDN?: boolean;
 }
 
 export interface ISchemaInformation {

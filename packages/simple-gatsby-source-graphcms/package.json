@@ -53,6 +53,8 @@
   },
   "peerDependencies": {
     "gatsby": "^4 || ^5",
+    "gatsby-plugin-image": "^3.8.0",
+    "gatsby-plugin-sharp": "^5.8.0",
     "gatsby-plugin-utils": "^3 || ^4",
     "gatsby-source-filesystem": "^4 || ^5"
   },

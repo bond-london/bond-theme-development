@@ -136,7 +136,8 @@ async function createOrTouchAsset(
   usedAssetRemoteIds: Set<string>,
   unusedAssets: Map<string, IGraphCmsAsset>
 ): Promise<void> {
-  const { skipUnusedAssets, dontDownload, localCache } = pluginOptions;
+  const { skipUnusedAssets, dontDownload, localCache, enableImageCDN } =
+    pluginOptions;
   const { gatsbyApi } = context;
   const { actions, createContentDigest, getNode, reporter } = gatsbyApi;
   const { touchNode, createNode } = actions;
@@ -179,17 +180,30 @@ async function createOrTouchAsset(
     reason = "No existing node";
   }
 
+  const isImage =
+    asset.mimeType.startsWith("image/") && !asset.mimeType.includes("svg");
+
+  const realUrl = new URL(asset.url);
   const node: NodeInput = {
     ...remoteNode,
     id,
-    parent: asset.id,
+    filename: asset.fileName,
+    parent: null,
     internal: {
       contentDigest,
       type: context.typeNameTransform.toGatsbyTypeName("Asset"),
     },
+    ...(isImage
+      ? {
+          placeholderUrl: `${realUrl.origin}/resize=w:%width%,h:%height%${realUrl.pathname}`,
+        }
+      : {}),
   };
 
-  const shouldDownload = !dontDownload && (!skipUnusedAssets || isUsed);
+  const shouldDownload =
+    (!enableImageCDN || (enableImageCDN && !isImage)) &&
+    !dontDownload &&
+    (!skipUnusedAssets || isUsed);
   if (shouldDownload) {
     try {
       const localFileId = await (localCache
@@ -205,8 +219,7 @@ async function createOrTouchAsset(
     }
   }
 
-  createNode(node);
-  // createParentChildLink({ parent: asset, child: node });
+  await createNode(node);
 }
 
 async function processNodesOfType(

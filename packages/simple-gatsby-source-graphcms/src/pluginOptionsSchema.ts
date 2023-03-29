@@ -81,5 +81,8 @@ export function pluginOptionsSchema(
     unusedAssetFile: Joi.string().description(
       "Write the unused assets information to this file"
     ),
+    enableImageCDN: Joi.boolean()
+      .default(false)
+      .description("Enable imgage CDN"),
   });
 }

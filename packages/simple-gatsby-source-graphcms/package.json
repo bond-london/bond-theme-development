@@ -1,7 +1,7 @@
 {
   "name": "@bond-london/simple-gatsby-source-graphcms",
   "sideEffects": false,
-  "version": "8.3.0",
+  "version": "8.4.0",
   "description": "Bond version of the official Gatsby source plugin for GraphCMS projects",
   "author": "Nick Randell <nick.randell@bond.fi>",
   "engines": {

@@ -47,6 +47,7 @@ export type GraphCMS_Asset = GraphCMS_Node & {
   mimeType: string;
   url: string;
   fileName: string;
+  handle: string;
   height?: number;
   width?: number;
   size: number;
@@ -117,4 +118,10 @@ export function isSpecialObject(
   type: SpecialFieldEntry
 ): type is ISpecialFieldObject {
   return type.type === "Object";
+}
+
+export interface IImageOptions {
+  align?: string;
+  filter?: string;
+  crop?: string;
 }

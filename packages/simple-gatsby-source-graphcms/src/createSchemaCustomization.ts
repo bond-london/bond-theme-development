@@ -1,4 +1,4 @@
-import { CreateSchemaCustomizationArgs } from "gatsby";
+import { CreateSchemaCustomizationArgs, GatsbyGraphQLObjectType } from "gatsby";
 import {
   ISchemaInformation,
   isSpecialField,
@@ -14,6 +14,7 @@ import { GraphQLObjectType } from "graphql";
 import { addRemoteFilePolyfillInterface } from "gatsby-plugin-utils/polyfill-remote-file/index";
 import { getGatsbyImageFieldConfig } from "gatsby-plugin-image/graphql-utils";
 import { resolveGatsbyImageData } from "./imageHelpers";
+import { hasFeature } from "gatsby-plugin-utils/has-feature";
 
 function customiseSchema(
   gatsbyApi: CreateSchemaCustomizationArgs,
@@ -131,15 +132,24 @@ export async function createSchemaCustomization(
   customiseSchema(gatsbyApi, pluginOptions, schemaConfig);
   await createToolkitSchemaCustomization(config);
 
-  const assetType = addRemoteFilePolyfillInterface(
+  const wrapper = enableImageCDN
+    ? addRemoteFilePolyfillInterface
+    : (x: GatsbyGraphQLObjectType): GatsbyGraphQLObjectType => x;
+
+  const assetType = wrapper(
     schema.buildObjectType({
       name: `${typePrefix}Asset`,
       fields: {
         ...(enableImageCDN
           ? {
-              gatsbyImageData: getGatsbyImageFieldConfig(async (...args) =>
-                resolveGatsbyImageData(...args, gatsbyApi)
-              ),
+              gatsbyImageData: {
+                ...getGatsbyImageFieldConfig(async (...args) =>
+                  resolveGatsbyImageData(...args, gatsbyApi)
+                ),
+                type: hasFeature("graphql-typegen")
+                  ? "GatsbyImageData"
+                  : "JSON",
+              },
               placeholderUrl: {
                 type: "String",
               },

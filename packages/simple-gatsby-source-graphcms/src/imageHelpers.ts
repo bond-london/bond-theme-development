@@ -1,49 +1,92 @@
 import { CreateSchemaCustomizationArgs } from "gatsby";
-import { IGatsbyImageData, IImage, ImageFormat } from "gatsby-plugin-image";
+import {
+  Fit,
+  IGatsbyImageData,
+  IGatsbyImageHelperArgs,
+  IImage,
+  ImageFormat,
+  generateImageData,
+  getLowResolutionImageURL,
+} from "gatsby-plugin-image";
 import type { GraphQLResolveInfo } from "gatsby/graphql";
 import { IGatsbyImageFieldArgs } from "gatsby-plugin-image/graphql-utils";
-import { GraphCMS_Asset } from "./types";
+import { GraphCMS_Asset, IImageOptions } from "./types";
+import { fetchRemoteFile } from "gatsby-core-utils/fetch-remote-file";
+import { readFile } from "fs/promises";
+import { extname } from "path";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-function getBasicImageProps(
-  image: GraphCMS_Asset,
-  args: any
-): {
-  baseUrl: any;
-  contentType: any;
-  aspectRatio: number;
-  width: any;
-  height: any;
-} {
-  /* eslint-enable @typescript-eslint/no-explicit-any */
-  let aspectRatio;
-  if (args.width && args.height) {
-    aspectRatio = args.width / args.height;
-  } else if (image.width && image.height) {
-    aspectRatio = image.width / image.height;
-  } else {
-    aspectRatio = 1;
-  }
-
-  return {
-    baseUrl: image.url,
-    contentType: image.mimeType,
-    aspectRatio,
-    width: image.width,
-    height: image.height,
-  };
-}
+// @ts-ignore No plugin sharp
+import { getDominantColor } from "gatsby-plugin-sharp";
 
 function generateImageSource(
-  filename: string,
+  handle: string,
   width: number,
   height: number,
-  format: ImageFormat
-  //   fit?: Fit,
-  //   options?: Record<string, unknown>
+  format: ImageFormat,
+  fit?: Fit,
+  options?: IImageOptions
 ): IImage {
-  const src = `https://media.graphassets.com/${filename}`;
-  return { width, height, format, src };
+  const args = ["https://media.graphassets.com"];
+  if (width || height) {
+    let filestackFit = "crop";
+    switch (fit) {
+      case "contain":
+        filestackFit = "clip";
+        break;
+
+      case "fill":
+      case "inside":
+      case "outside":
+      case "cover":
+        filestackFit = "crop";
+        break;
+    }
+
+    args.push(
+      `resize=${width ? `w:${width},` : ""}${height ? `h:${height},` : ""}${
+        options?.align ? `a:${options.align},` : ""
+      }${options?.filter ? `ft:${options.filter},` : ""}f:${filestackFit}`
+    );
+  }
+
+  if (options?.crop) {
+    args.push(`crop=d:${options.crop}`);
+  }
+
+  let filestackFormat: ImageFormat;
+  switch (format) {
+    case "auto":
+      filestackFormat = "auto";
+      args.push("auto_image");
+      break;
+    case "avif":
+    case "webp":
+      filestackFormat = "webp";
+      args.push("output=f:webp");
+      break;
+    case "jpg":
+      filestackFormat = "jpg";
+      args.push("output=f:jpg");
+      break;
+    default:
+      filestackFormat = "png";
+      args.push("output=f:png");
+      break;
+  }
+
+  args.push(handle);
+  const src = args.join("/");
+  return { width, height, format: filestackFormat, src };
+}
+
+function getBase64DataURI(imageBase64: string): string {
+  return `data:image/png;base64,${imageBase64}`;
+}
+
+let haveWarnedAboutPlaceholder = false;
+
+function isImage(mimeType: string): boolean {
+  return mimeType.startsWith("image/") && mimeType.indexOf("/svg") === -1;
 }
 
 export async function resolveGatsbyImageData<TContext, TArgs>(
@@ -51,22 +94,31 @@ export async function resolveGatsbyImageData<TContext, TArgs>(
   options: TArgs & IGatsbyImageFieldArgs,
   _context: TContext,
   _info: GraphQLResolveInfo,
-  { reporter }: CreateSchemaCustomizationArgs
-): Promise<IGatsbyImageData> {
-  reporter.info(
-    `resolveGatsbyImageData(${JSON.stringify(image)}, ${JSON.stringify(
-      options
-    )})`
-  );
+  { reporter, cache }: CreateSchemaCustomizationArgs
+): Promise<IGatsbyImageData | null> {
+  if (!isImage(image.mimeType)) return null;
 
-  const { generateImageData } = await import(`gatsby-plugin-image`);
+  let format = image.mimeType.split("/")[1];
+  if (format === "jpeg") {
+    format = "jpg";
+  }
+
+  const sourceMetadata = {
+    width: image.width as number,
+    height: image.height as number,
+    format: format as ImageFormat,
+  };
+
+  const filename = image.handle;
 
   const { getPluginOptions, doMergeDefaults } = await import(
-    // @ts-ignore No file
+    // @ts-ignore Ignore plugin sharp
     `gatsby-plugin-sharp/plugin-options`
   );
 
   const sharpOptions = getPluginOptions();
+
+  const userDefaults = sharpOptions.defaults;
 
   const defaults = {
     tracedSVGOptions: {},
@@ -78,47 +130,53 @@ export async function resolveGatsbyImageData<TContext, TArgs>(
     avifOptions: {},
     quality: 50,
     placeholder: `dominantColor`,
-    ...sharpOptions.userDefaults,
+    ...userDefaults,
   };
 
-  const allOptions = doMergeDefaults(options, defaults);
-  if (allOptions.placeholder === "tracedSVG") {
-    allOptions.placeholder = "dominantColor";
+  options = doMergeDefaults(options, defaults);
+
+  if (options.placeholder && options.placeholder === "tracedSVG") {
+    if (!haveWarnedAboutPlaceholder) {
+      reporter.warn("Does not support tracedSVG");
+      haveWarnedAboutPlaceholder = true;
+    }
+    options.placeholder = "dominantColor";
   }
 
-  const { baseUrl, contentType, width, height } = getBasicImageProps(
-    image,
-    allOptions
-  );
-
-  let [, format] = contentType.split(`/`);
-  if (format === `jpeg`) {
-    format = `jpg`;
-  }
-
-  const imageProps = generateImageData({
-    ...allOptions,
-    pluginName: "@bond-london/simple-gatsby-source-graphcms",
-    sourceMetadata: { width, height, format },
-    filename: baseUrl,
+  const imageDataArgs: IGatsbyImageHelperArgs = {
+    ...options,
+    pluginName: "simple-gatsby-source-graphcms",
+    sourceMetadata,
+    filename,
     generateImageSource,
-    options: allOptions,
-  });
+    options,
+  };
 
-  if (options.placeholder === `dominantColor`) {
-    imageProps.backgroundColor = "rgba(0,0,0,0.5)";
+  const imageData = generateImageData(imageDataArgs);
+
+  if (
+    options.placeholder === "blurred" ||
+    options.placeholder == "dominantColor"
+  ) {
+    const lowResImageUrl = getLowResolutionImageURL(imageDataArgs, 20);
+    const filePath = await fetchRemoteFile({
+      url: lowResImageUrl,
+      name: image.handle,
+      directory: cache.directory,
+      ext: extname(image.fileName),
+      cacheKey: image.internal.contentDigest,
+    });
+
+    if (options.placeholder === "blurred") {
+      const buffer = await readFile(filePath);
+      const base64 = buffer.toString("base64");
+
+      imageData.placeholder = {
+        fallback: getBase64DataURI(base64),
+      };
+    } else {
+      imageData.backgroundColor = await getDominantColor(filePath);
+    }
   }
-
-  let placeholderDataURI = null;
-
-  if (options.placeholder === `blurred`) {
-    placeholderDataURI = "rgba(0,0,0,0.5)";
-  }
-
-  if (placeholderDataURI) {
-    imageProps.placeholder = { fallback: placeholderDataURI };
-  }
-
-  reporter.info(`Returning ${JSON.stringify(imageProps)}`);
-  return imageProps;
+  return imageData;
 }

@@ -1,7 +1,7 @@
 {
   "name": "@bond-london/gatsby-source-hubspot-forms",
   "sideEffects": false,
-  "version": "2.6.3",
+  "version": "2.7.0",
   "description": "Support hubspot forms inside gatsby",
   "author": "Nick Randell <nick.randell@bond.fi>",
   "engines": {

@@ -104,7 +104,7 @@ export const BondSEO: React.FC<IProps> = ({
   const imageSrc = image && getSrc(image);
   const imageUrl =
     imageSrc &&
-    siteUrl +
+    (imageSrc.startsWith("/") ? siteUrl : "") +
       imageSrc.replace(/[!()*]/g, c => `%${c.charCodeAt(0).toString(16)}`);
   const keywords = pageMetadata?.keywords;
 

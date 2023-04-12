@@ -159,16 +159,43 @@ export function convertCmsAssetToBondVideo(
     dontCrop?: boolean | null;
     verticalCropPosition?: Vertical | null;
     horizontalCropPosition?: Horizontal | null;
+    preview?: ICmsVideoAsset | null;
   }
-): IBondSimpleVideo | undefined {
+): IBondSimpleVideo | IBondSimpleVideo | undefined {
   if (!asset) return undefined;
+  const {
+    preview,
+    loop,
+    loopDelay,
+    dontCrop,
+    verticalCropPosition,
+    horizontalCropPosition,
+  } = options || {};
   const videoData = asset.localFile?.childGatsbyVideo?.transformed;
-  if (!videoData) return undefined;
+  const previewData = preview?.localFile?.childGatsbyVideo?.transformed;
+
+  if (!videoData && !previewData) return undefined;
+
+  if (previewData) {
+    return {
+      videoData: previewData,
+      full: videoData,
+      loop,
+      loopDelay,
+      dontCrop,
+      verticalCropPosition,
+      horizontalCropPosition,
+    } as IBondFullVideo;
+  }
 
   return {
     videoData,
-    ...options,
-  };
+    loop,
+    loopDelay,
+    dontCrop,
+    verticalCropPosition,
+    horizontalCropPosition,
+  } as IBondSimpleVideo;
 }
 
 export const BondVideo: React.FC<

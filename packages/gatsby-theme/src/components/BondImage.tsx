@@ -18,7 +18,9 @@ export type IBondImage = IVisualCommon & {
 };
 
 export interface ICmsImageAsset {
-  readonly localFile: {
+  readonly gatsbyImage?: IGatsbyImageData | null;
+  readonly gatsbyImageData?: IGatsbyImageData | null;
+  readonly localFile?: {
     readonly internal?: { readonly mediaType: string | null };
     readonly childImageSharp?: {
       readonly gatsbyImageData: IGatsbyImageData;
@@ -70,7 +72,10 @@ export function convertCmsAssetToBondImage(
     (options?.dontCropPng
       ? asset.localFile?.internal?.mediaType?.endsWith("/png")
       : undefined);
-  const image = asset.localFile?.childImageSharp?.gatsbyImageData;
+  const image =
+    asset.gatsbyImage ||
+    asset.gatsbyImageData ||
+    asset.localFile?.childImageSharp?.gatsbyImageData;
   const svg = asset.localFile?.childGatsbySvg?.extracted;
   if (!image && !svg) return undefined;
   return {

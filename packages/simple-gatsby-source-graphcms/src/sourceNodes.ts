@@ -136,8 +136,14 @@ async function createOrTouchAsset(
   usedAssetRemoteIds: Set<string>,
   unusedAssets: Map<string, IGraphCmsAsset>
 ): Promise<void> {
-  const { skipUnusedAssets, dontDownload, localCache, enableImageCDN } =
-    pluginOptions;
+  const {
+    skipUnusedAssets,
+    dontDownload,
+    localCache,
+    enableImageCDN,
+    downloadAllAssets,
+    downloadNonImageAssets,
+  } = pluginOptions;
   const { gatsbyApi } = context;
   const { actions, createContentDigest, getNode, reporter } = gatsbyApi;
   const { touchNode, createNode } = actions;
@@ -201,7 +207,7 @@ async function createOrTouchAsset(
   };
 
   const shouldDownload =
-    (!enableImageCDN || (enableImageCDN && !isImage)) &&
+    (downloadAllAssets || (!isImage && downloadNonImageAssets)) &&
     !dontDownload &&
     (!skipUnusedAssets || isUsed);
   if (shouldDownload) {

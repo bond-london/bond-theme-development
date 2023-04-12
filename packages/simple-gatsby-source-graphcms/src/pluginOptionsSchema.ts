@@ -22,6 +22,11 @@ export function pluginOptionsSchema(
       .description(
         `Download and cache all GraphCMS assets in your Gatsby project`
       )
+      .default(false),
+    downloadNonImageAssets: Joi.boolean()
+      .description(
+        `Download and cache all non image GraphCMS assets in your Gatsby project`
+      )
       .default(true),
     skipUnusedAssets: Joi.boolean()
       .description(`Skip downloading any unused assets`)

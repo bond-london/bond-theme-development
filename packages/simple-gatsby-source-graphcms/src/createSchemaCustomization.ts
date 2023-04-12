@@ -1,4 +1,4 @@
-import { CreateSchemaCustomizationArgs, GatsbyGraphQLObjectType } from "gatsby";
+import { CreateSchemaCustomizationArgs } from "gatsby";
 import {
   ISchemaInformation,
   isSpecialField,
@@ -132,49 +132,35 @@ export async function createSchemaCustomization(
   customiseSchema(gatsbyApi, pluginOptions, schemaConfig);
   await createToolkitSchemaCustomization(config);
 
-  const wrapper = enableImageCDN
-    ? addRemoteFilePolyfillInterface
-    : (x: GatsbyGraphQLObjectType): GatsbyGraphQLObjectType => x;
-
-  const assetType = wrapper(
-    schema.buildObjectType({
-      name: `${typePrefix}Asset`,
-      fields: {
-        ...(enableImageCDN
-          ? {
-              gatsbyImageData: {
-                ...getGatsbyImageFieldConfig(async (...args) =>
-                  resolveGatsbyImageData(...args, gatsbyApi)
-                ),
-                type: hasFeature("graphql-typegen")
-                  ? "GatsbyImageData"
-                  : "JSON",
-              },
-              placeholderUrl: {
-                type: "String",
-              },
-            }
-          : {}),
-        localFile: {
-          type: "File",
-          extensions: {
-            link: {
-              from: "localFile",
-            },
+  const objectType = schema.buildObjectType({
+    name: `${typePrefix}Asset`,
+    fields: {
+      gatsbyImageData: {
+        ...getGatsbyImageFieldConfig(async (...args) =>
+          resolveGatsbyImageData(...args, gatsbyApi)
+        ),
+        type: hasFeature("graphql-typegen") ? "GatsbyImageData" : "JSON",
+      },
+      placeholderUrl: {
+        type: "String",
+      },
+      localFile: {
+        type: "File",
+        extensions: {
+          link: {
+            from: "localFile",
           },
         },
       },
-      interfaces: ["Node", "RemoteFile"],
-    }),
-    { schema, actions, store }
-  );
-  createTypes(assetType);
+    },
+    interfaces: enableImageCDN ? ["Node", "RemoteFile"] : ["Node"],
+  });
 
-  // if (downloadAllAssets) {
-  //   createTypes(`type ${typePrefix}Asset implements Node {
-  //   localFile: File @link
-  // }`);
-  // }
+  const assetType = enableImageCDN
+    ? addRemoteFilePolyfillInterface(objectType, { schema, actions, store })
+    : objectType;
+
+  createTypes(assetType);
 
   if (buildMarkdownNodes) {
     createTypes(`

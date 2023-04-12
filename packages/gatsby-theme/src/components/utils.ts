@@ -290,6 +290,7 @@ export function convertCmsAssetToBondVisual(
     dontCropPng?: boolean | null;
     verticalCropPosition?: Vertical | null;
     horizontalCropPosition?: Horizontal | null;
+    preview?: ICmsVideoAsset | null;
   }
 ): IBondVisual | undefined {
   if (!asset) return undefined;

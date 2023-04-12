@@ -5,6 +5,7 @@ import { GraphQLSchema, GraphQLField } from "graphql";
 export interface IPluginOptions {
   buildMarkdownNodes: boolean;
   downloadAllAssets: boolean;
+  downloadNonImageAssets: boolean;
   skipUnusedAssets: boolean;
   endpoint: string;
   fragmentsPath?: string;

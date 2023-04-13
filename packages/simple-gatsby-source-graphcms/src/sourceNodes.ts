@@ -201,7 +201,7 @@ async function createOrTouchAsset(
     },
     ...(isImage && enableImageCDN
       ? {
-          placeholderUrl: `${realUrl.origin}/resize=w:%width%,h:%height%${realUrl.pathname}`,
+          placeholderUrl: `${realUrl.origin}/resize=w:%width%${realUrl.pathname}`,
         }
       : {}),
   };

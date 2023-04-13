@@ -26,6 +26,7 @@ function generateImageSource(
   fit?: Fit,
   options?: IImageOptions
 ): IImage {
+  if (!Number.isFinite(height)) height = width;
   const args = ["https://media.graphassets.com"];
   if (width || height) {
     let filestackFit = "crop";
@@ -43,12 +44,13 @@ function generateImageSource(
     }
 
     args.push(
-      `resize=${width ? `w:${width},` : ""}${height ? `h:${height},` : ""}${
-        options?.align ? `a:${options.align},` : ""
-      }${options?.filter ? `ft:${options.filter},` : ""}f:${filestackFit}`
+      `resize=${Number.isFinite(width) && width > 0 ? `w:${width},` : ""}${
+        Number.isFinite(height) && height > 0 ? `h:${height},` : ""
+      }${options?.align ? `a:${options.align},` : ""}${
+        options?.filter ? `ft:${options.filter},` : ""
+      }f:${filestackFit}`
     );
   }
-
   if (options?.crop) {
     args.push(`crop=d:${options.crop}`);
   }
@@ -76,6 +78,8 @@ function generateImageSource(
 
   args.push(handle);
   const src = args.join("/");
+  // console.log({ handle, width, height, format, src });
+
   return { width, height, format: filestackFormat, src };
 }
 

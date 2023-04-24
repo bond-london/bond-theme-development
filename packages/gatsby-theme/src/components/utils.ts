@@ -119,6 +119,9 @@ interface ICmsVisual {
   readonly verticalCropPosition?: Vertical | null;
   readonly horizontalCropPosition?: Horizontal | null;
   readonly mainAsset?: {
+    readonly mimeType?: string | null;
+    readonly gatsbyImage?: IGatsbyImageData | null;
+    readonly gatsbyImageData?: IGatsbyImageData | null;
     readonly localFile: {
       readonly internal: { readonly mediaType: string | null };
       readonly childGatsbyVideo: {
@@ -136,6 +139,9 @@ interface ICmsVisual {
     } | null;
   } | null;
   readonly posterImage?: {
+    readonly mimeType?: string | null;
+    readonly gatsbyImage?: IGatsbyImageData | null;
+    readonly gatsbyImageData?: IGatsbyImageData | null;
     readonly localFile?: {
       readonly publicURL?: string | null;
       readonly childImageSharp?: {
@@ -144,6 +150,7 @@ interface ICmsVisual {
     } | null;
   } | null;
   readonly fullLengthVideo?: {
+    readonly mimeType?: string | null;
     readonly localFile: {
       readonly internal: { readonly mediaType: string | null };
       readonly childGatsbyVideo: {
@@ -169,7 +176,10 @@ export function convertCmsVisualToBondVisual(
 ): IBondVisual | undefined {
   if (!cms) return undefined;
 
-  const image = cms.mainAsset?.localFile?.childImageSharp?.gatsbyImageData;
+  const image =
+    cms.mainAsset?.gatsbyImage ||
+    cms.mainAsset?.gatsbyImageData ||
+    cms.mainAsset?.localFile?.childImageSharp?.gatsbyImageData;
   const svg = cms.mainAsset?.localFile?.childGatsbySvg?.extracted;
   const animation = cms.mainAsset?.localFile?.childGatsbyAnimation?.extracted;
   const preview = cms.mainAsset?.localFile?.childGatsbyVideo?.transformed;
@@ -181,6 +191,8 @@ export function convertCmsVisualToBondVisual(
     getPosterSrc(full);
 
   const posterData =
+    cms.posterImage?.gatsbyImage ||
+    cms.posterImage?.gatsbyImageData ||
     cms.posterImage?.localFile?.childImageSharp?.gatsbyImageData;
 
   const videoData = preview;

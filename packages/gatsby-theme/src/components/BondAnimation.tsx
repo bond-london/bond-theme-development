@@ -17,6 +17,7 @@ export type IBondAnimation = IVisualCommon & {
 };
 
 export interface ICmsAnimationAsset {
+  readonly mimeType?: string | null;
   readonly localFile: {
     readonly internal: { readonly mediaType: string | null };
     readonly childGatsbyAnimation: {

@@ -18,6 +18,7 @@ export type IBondImage = IVisualCommon & {
 };
 
 export interface ICmsImageAsset {
+  readonly mimeType?: string | null;
   readonly gatsbyImage?: IGatsbyImageData | null;
   readonly gatsbyImageData?: IGatsbyImageData | null;
   readonly localFile?: {
@@ -43,7 +44,10 @@ export function convertCmsImageToBondImage(
   name?: string
 ): IBondImage | undefined {
   if (!cms?.image) return undefined;
-  const image = cms.image?.localFile?.childImageSharp?.gatsbyImageData;
+  const image =
+    cms.image?.gatsbyImage ||
+    cms.image?.gatsbyImageData ||
+    cms.image?.localFile?.childImageSharp?.gatsbyImageData;
   const svg = cms.image?.localFile?.childGatsbySvg?.extracted;
   if (!image && !svg) return undefined;
   return {
@@ -70,7 +74,9 @@ export function convertCmsAssetToBondImage(
   const dontCrop =
     options?.dontCrop ||
     (options?.dontCropPng
-      ? asset.localFile?.internal?.mediaType?.endsWith("/png")
+      ? (asset.mimeType || asset.localFile?.internal?.mediaType)?.endsWith(
+          "/png"
+        )
       : undefined);
   const image =
     asset.gatsbyImage ||

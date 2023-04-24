@@ -4,11 +4,12 @@ import { graphql } from "gatsby";
 export const ConstrainedImageAssetFragment = graphql`
   fragment ConstrainedImageAsset on GraphCMS_Asset {
     id
+    mimeType
+    gatsbyImageData(layout: CONSTRAINED)
     localFile {
       internal {
         mediaType
       }
-      ...ConstrainedImageFile
       ...ConstrainedSvgFile
     }
   }
@@ -17,6 +18,8 @@ export const ConstrainedImageAssetFragment = graphql`
 export const FixedImageAssetFragment = graphql`
   fragment FixedImageAsset on GraphCMS_Asset {
     id
+    mimeType
+    gatsbyImageData(layout: FIXED)
     localFile {
       internal {
         mediaType
@@ -30,11 +33,12 @@ export const FixedImageAssetFragment = graphql`
 export const FullWidthImageAssetFragment = graphql`
   fragment FullWidthImageAsset on GraphCMS_Asset {
     id
+    mimeType
+    gatsbyImageData(layout: FULL_WIDTH)
     localFile {
       internal {
         mediaType
       }
-      ...FullWidthImageFile
       ...FullWidthSvgFile
     }
   }
@@ -43,6 +47,7 @@ export const FullWidthImageAssetFragment = graphql`
 export const ConstrainedVideoAssetFragment = graphql`
   fragment ConstrainedVideoAsset on GraphCMS_Asset {
     id
+    mimeType
     localFile {
       internal {
         mediaType
@@ -55,6 +60,7 @@ export const ConstrainedVideoAssetFragment = graphql`
 export const FixedVideoAssetFragment = graphql`
   fragment FixedVideoAsset on GraphCMS_Asset {
     id
+    mimeType
     localFile {
       internal {
         mediaType
@@ -67,6 +73,7 @@ export const FixedVideoAssetFragment = graphql`
 export const FullWidthVideoAssetFragment = graphql`
   fragment FullWidthVideoAsset on GraphCMS_Asset {
     id
+    mimeType
     localFile {
       internal {
         mediaType
@@ -79,6 +86,7 @@ export const FullWidthVideoAssetFragment = graphql`
 export const ConstrainedAnimationAssetFragment = graphql`
   fragment ConstrainedAnimationAsset on GraphCMS_Asset {
     id
+    mimeType
     localFile {
       internal {
         mediaType
@@ -91,6 +99,7 @@ export const ConstrainedAnimationAssetFragment = graphql`
 export const FixedAnimationAssetFragment = graphql`
   fragment FixedAnimationAsset on GraphCMS_Asset {
     id
+    mimeType
     localFile {
       internal {
         mediaType
@@ -103,6 +112,7 @@ export const FixedAnimationAssetFragment = graphql`
 export const FullWidthAnimationAssetFragment = graphql`
   fragment FullWidthAnimationAsset on GraphCMS_Asset {
     id
+    mimeType
     localFile {
       internal {
         mediaType
@@ -115,28 +125,16 @@ export const FullWidthAnimationAssetFragment = graphql`
 export const SeoImageAssetFragment = graphql`
   fragment SeoImageAsset on GraphCMS_Asset {
     id
-    localFile {
-      internal {
-        mediaType
-      }
-      childImageSharp {
-        gatsbyImageData(layout: FIXED, width: 1200, height: 630)
-      }
-    }
+    mimeType
+    gatsbyImageData(layout: FIXED, width: 1200, height: 630)
   }
 `;
 
 export const EmbedFeaturedImageAssetFragment = graphql`
   fragment EmbedFeaturedImageAsset on GraphCMS_Asset {
     id
-    localFile {
-      internal {
-        mediaType
-      }
-      childImageSharp {
-        gatsbyImageData(layout: FULL_WIDTH)
-      }
-    }
+    mimeType
+    gatsbyImageData(layout: FULL_WIDTH)
   }
 `;
 

@@ -40,7 +40,7 @@ export const GenericComponentInside: React.FC<{
       />
       {body && <SectionBody content={body} />}
       {icon && <SectionIcon icon={icon} className={SectionBodyClassName} />}
-      {visual && <SectionVisual visual={visual} />}
+      {visual && <SectionVisual visual={visual} autoPlay={true} />}
       {links && <SectionLinks links={links} vertical={false} />}
     </>
   );

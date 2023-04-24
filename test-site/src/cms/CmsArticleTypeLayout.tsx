@@ -25,8 +25,7 @@ export const CmsArticleTypeHead: HeadFC<Queries.ArticleTypeListQuery> = (
   const pageMetadata: IPageMetadata = {
     title: graphCmsArticleType.title,
     description: graphCmsArticleType.description,
-    image:
-      graphCmsArticleType.seoImage?.localFile?.childImageSharp?.gatsbyImageData,
+    image: graphCmsArticleType.seoImage?.gatsbyImageData,
   };
 
   return <PageHead headProps={props} page={pageMetadata} />;

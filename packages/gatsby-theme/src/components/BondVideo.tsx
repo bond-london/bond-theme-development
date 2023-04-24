@@ -10,6 +10,7 @@ import { BondSimpleVideo, IBondSimpleVideo } from "./BondSimpleVideo";
 import { IBondExternalVideo, IBondFullVideo } from "./types";
 
 export interface ICmsVideoAsset {
+  readonly mimeType?: string | null;
   readonly localFile: {
     readonly internal: { readonly mediaType: string | null };
     readonly childGatsbyVideo: {
@@ -25,6 +26,9 @@ export interface ICmsVideo {
   readonly horizontalCropPosition?: Horizontal | null;
   readonly preview?: ICmsVideoAsset | null;
   readonly poster?: {
+    readonly mimeType?: string | null;
+    readonly gatsbyImage?: IGatsbyImageData | null;
+    readonly gatsbyImageData?: IGatsbyImageData | null;
     readonly localFile?: {
       readonly publicURL?: string | null;
       readonly childImageSharp?: {
@@ -87,7 +91,10 @@ export function convertCmsVideoToBondVideo(
     getPosterSrc(preview) ||
     getPosterSrc(full);
 
-  const posterData = cms.poster?.localFile?.childImageSharp?.gatsbyImageData;
+  const posterData =
+    cms.poster?.gatsbyImage ||
+    cms.poster?.gatsbyImageData ||
+    cms.poster?.localFile?.childImageSharp?.gatsbyImageData;
 
   const videoData = preview;
   const {

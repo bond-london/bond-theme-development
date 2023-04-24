@@ -122,18 +122,18 @@ interface ICmsVisual {
     readonly mimeType?: string | null;
     readonly gatsbyImage?: IGatsbyImageData | null;
     readonly gatsbyImageData?: IGatsbyImageData | null;
-    readonly localFile: {
-      readonly internal: { readonly mediaType: string | null };
-      readonly childGatsbyVideo: {
+    readonly localFile?: {
+      readonly internal?: { readonly mediaType: string | null };
+      readonly childGatsbyVideo?: {
         readonly transformed: Record<string, unknown>;
       } | null;
-      readonly childImageSharp: {
+      readonly childImageSharp?: {
         readonly gatsbyImageData: IGatsbyImageData;
       } | null;
-      readonly childGatsbySvg: {
+      readonly childGatsbySvg?: {
         readonly extracted: Record<string, unknown>;
       } | null;
-      readonly childGatsbyAnimation: {
+      readonly childGatsbyAnimation?: {
         readonly extracted: Record<string, unknown>;
       } | null;
     } | null;

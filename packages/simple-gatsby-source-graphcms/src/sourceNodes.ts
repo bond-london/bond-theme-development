@@ -3,15 +3,14 @@ import { NodeInput, SourceNodesArgs, NodePluginArgs } from "gatsby";
 import {
   createSourcingContext,
   fetchAllNodes,
-} from "@nrandell/gatsby-graphql-source-toolkit";
+} from "gatsby-graphql-source-toolkit";
 import {
   IRemoteId,
   IRemoteNode,
   ISourcingContext,
-} from "@nrandell/gatsby-graphql-source-toolkit/dist/types";
+} from "gatsby-graphql-source-toolkit/dist/types";
 import {
   IBasicFieldType,
-  GraphCMS_Node,
   IGraphCmsAsset,
   isSpecialField,
   isSpecialObject,
@@ -21,53 +20,10 @@ import {
 } from "./types";
 import { createSourcingConfig, stateCache } from "./utils";
 import { createRemoteFileNode } from "gatsby-source-filesystem";
-import { Sema } from "async-sema";
 import { ElementNode, RichTextContent } from "@graphcms/rich-text-types";
 import { cleanupRTFContent } from "./rtf";
 import { createLocalFileNode, getLocalFileName } from "./cacheGraphCmsAsset";
-import { writeFile } from "fs-extra";
 import { hasFeature } from "gatsby-plugin-utils/has-feature";
-
-function isAssetUsed(
-  node: IGraphCmsAsset,
-  usedAssetRemoteIds: Set<string>
-): boolean {
-  const fields = Object.entries(node);
-  const remoteId = node.remoteId as string;
-  if (!remoteId) return false;
-  if (usedAssetRemoteIds.has(remoteId)) {
-    return true;
-  }
-  for (const [, value] of fields) {
-    if (Array.isArray(value)) {
-      for (const entry of value as Array<IGraphCmsAsset>) {
-        if (entry.remoteId) {
-          return true;
-        }
-      }
-    }
-  }
-  return false;
-}
-
-function updateAssetUrl(
-  remoteAsset: IGraphCmsAsset,
-  maxWidth: number | undefined
-): void {
-  const { url, width, mimeType } = remoteAsset;
-
-  if (
-    width &&
-    maxWidth &&
-    mimeType.startsWith("image/") &&
-    !mimeType.includes("svg")
-  ) {
-    const parsed = new URL(url);
-    remoteAsset.urlToUse = `${parsed.origin}/resize=width:${maxWidth}${parsed.pathname}`;
-  } else {
-    remoteAsset.urlToUse = url;
-  }
-}
 
 async function downloadAsset(
   context: ISourcingContext,
@@ -79,7 +35,7 @@ async function downloadAsset(
   const fileName = getLocalFileName(remoteAsset);
   const ext = fileName && extname(fileName);
   const name = fileName && basename(fileName, ext);
-  const url = remoteAsset.urlToUse;
+  const url = remoteAsset.url;
 
   const fileNode = await createRemoteFileNode({
     url,
@@ -96,150 +52,101 @@ async function downloadAsset(
   return fileNode.id;
 }
 
+async function distributeWorkload(
+  workers: Array<() => Promise<void>>,
+  count = 50
+): Promise<void> {
+  const methods = workers.slice();
+
+  async function task(): Promise<void> {
+    while (methods.length > 0) {
+      const method = methods.pop();
+      if (method) {
+        await method();
+      }
+    }
+  }
+
+  await Promise.all(new Array(count).fill(undefined).map(() => task()));
+}
+
 async function processDownloadableAssets(
   pluginOptions: IPluginOptions,
   context: ISourcingContext,
+  remoteTypeName: string,
   remoteNodes: AsyncIterable<IRemoteNode>,
-  usedAssetRemoteIds: Set<string>,
-  unusedAssets: Map<string, IGraphCmsAsset>,
-  isStateful: boolean
-): Promise<void> {
-  const { concurrentDownloads, maxImageWidth } = pluginOptions;
-  const allRemoteNodes: Array<IRemoteNode> = [];
-
-  for await (const remoteNode of remoteNodes) {
-    updateAssetUrl(remoteNode as IGraphCmsAsset, maxImageWidth);
-    allRemoteNodes.push(remoteNode);
-  }
-
-  const s = new Sema(concurrentDownloads);
-  await Promise.all(
-    allRemoteNodes.map(async remoteNode => {
-      await s.acquire();
-      try {
-        await createOrTouchAsset(
-          context,
-          pluginOptions,
-          remoteNode,
-          usedAssetRemoteIds,
-          unusedAssets,
-          isStateful
-        );
-      } finally {
-        s.release();
-      }
-    })
-  );
-}
-
-async function createOrTouchAsset(
-  context: ISourcingContext,
-  pluginOptions: IPluginOptions,
-  remoteNode: IRemoteNode,
-  usedAssetRemoteIds: Set<string>,
-  unusedAssets: Map<string, IGraphCmsAsset>,
   isStateful: boolean
 ): Promise<void> {
   const {
-    skipUnusedAssets,
-    dontDownload,
-    localCache,
-    enableImageCDN,
+    concurrentDownloads,
     downloadAllAssets,
     downloadNonImageAssets,
+    dontDownload,
+    localCache,
   } = pluginOptions;
-  const { gatsbyApi } = context;
-  const { actions, createContentDigest, getNode, reporter } = gatsbyApi;
-  const { touchNode, createNode } = actions;
-
-  const def = context.gatsbyNodeDefs.get("Asset");
-  if (!def) {
-    throw new Error(`Cannot get definition for Asset`);
-  }
-
-  const asset = remoteNode as IGraphCmsAsset;
-  const isUsed = isAssetUsed(asset, usedAssetRemoteIds);
-  remoteNode.isUsed = isUsed;
-  if (!isUsed) {
-    unusedAssets.set(asset.id, asset);
-  }
-
-  const isImage =
-    asset.mimeType.startsWith("image/") && !asset.mimeType.includes("svg");
-
-  const shouldDownload =
-    (downloadAllAssets || (!isImage && downloadNonImageAssets)) &&
-    !dontDownload &&
-    (!skipUnusedAssets || isUsed);
-
-  let reason: string | undefined;
-  const contentDigest = createContentDigest(remoteNode);
-  const id = context.idTransform.remoteNodeToGatsbyId(remoteNode, def);
-  const existingNode = getNode(id);
-  if (existingNode) {
-    if (contentDigest === existingNode.internal.contentDigest) {
-      if (!shouldDownload) {
-        if (!isStateful) {
-          touchNode(existingNode);
-        }
-        return;
-      }
-      const localFileId = existingNode.localFile as string;
-      if (localFileId) {
-        const existingLocalFile = getNode(localFileId);
-        if (existingLocalFile) {
-          if (!isStateful) {
-            touchNode(existingNode);
-            // For the file, set the plugin as undefined to get round a core issue
-            touchNode(existingLocalFile, undefined);
-          }
-          return;
-        } else {
-          reason = "Local file does not exist";
-        }
-      } else {
-        reason = "No local file";
-      }
-    } else {
-      reason = "Content digetst differs";
-    }
-  } else {
-    reason = "No existing node";
-  }
-
-  const realUrl = new URL(asset.url);
-  const node: NodeInput = {
-    ...remoteNode,
-    id,
-    filename: asset.fileName,
-    parent: null,
-    internal: {
-      contentDigest,
-      type: context.typeNameTransform.toGatsbyTypeName("Asset"),
+  const {
+    gatsbyApi: {
+      reporter,
+      getNode,
+      actions: { createNodeField },
     },
-    ...(isImage && enableImageCDN
-      ? {
-          placeholderUrl: `${realUrl.origin}/resize=w:%width%${realUrl.pathname}`,
-        }
-      : {}),
-  };
+  } = context;
+  const nodesToDownload: Array<string> = [];
 
-  if (shouldDownload) {
-    try {
-      const localFileId = await (localCache
-        ? createLocalFileNode(context, asset, reason, pluginOptions)
-        : downloadAsset(context, asset));
-      node.localFile = localFileId;
-    } catch (error) {
-      reporter.panic(
-        `Failed to process asset ${asset.urlToUse} (${asset.fileName}): ${
-          (error as Error).message || ""
-        }`
-      );
+  for await (const remoteNode of remoteNodes) {
+    const asset = remoteNode as IGraphCmsAsset;
+    const isImage =
+      asset.mimeType.startsWith("image/") && !asset.mimeType.includes("svg");
+
+    const shouldDownload =
+      (downloadAllAssets || (!isImage && downloadNonImageAssets)) &&
+      !dontDownload;
+
+    const { id } = await createOrTouchNode(
+      pluginOptions,
+      context,
+      remoteTypeName,
+      remoteNode,
+      undefined,
+      isStateful,
+      true,
+      isImage
+    );
+    if (shouldDownload) {
+      nodesToDownload.push(id);
     }
   }
 
-  await createNode(node);
+  const bar = reporter.createProgress(
+    "Downloading hygraph assets",
+    nodesToDownload.length
+  );
+  bar.start();
+  await distributeWorkload(
+    nodesToDownload.map(nodeId => async () => {
+      try {
+        const node = await getNode(nodeId);
+        if (!node) {
+          reporter.warn(`Failed to find node for "${nodeId}"`);
+          return;
+        }
+
+        const asset = node as IGraphCmsAsset;
+        const localFileId = await (localCache
+          ? createLocalFileNode(context, asset, pluginOptions)
+          : downloadAsset(context, asset));
+        reporter.verbose(
+          `Using localFileId of ${localFileId} for ${asset.fileName} (${asset.url})`
+        );
+        createNodeField({ node, name: "localFile", value: localFileId });
+      } catch (error) {
+        reporter.error(`Error downloading node "${nodeId}"`, error as Error);
+      } finally {
+        bar.tick();
+      }
+    }),
+    concurrentDownloads
+  );
 }
 
 async function processNodesOfType(
@@ -248,7 +155,6 @@ async function processNodesOfType(
   remoteTypeName: string,
   remoteNodes: AsyncIterable<IRemoteNode>,
   specialFields: Array<SpecialFieldEntry> | undefined,
-  usedAssetRemoteIds: Set<string>,
   isStateful: boolean
 ): Promise<void> {
   const typeName = context.typeNameTransform.toGatsbyTypeName(remoteTypeName);
@@ -264,8 +170,9 @@ async function processNodesOfType(
       remoteTypeName,
       remoteNode,
       specialFields,
-      usedAssetRemoteIds,
-      isStateful
+      isStateful,
+      false,
+      false
     );
 
     if (touched) touchedCount++;
@@ -303,26 +210,11 @@ interface IRichTextField {
   json?: RichTextContent;
 }
 
-function addAssetReferences(
-  field: IRichTextField,
-  usedAssetRemoteIds: Set<string>
-): void {
-  if (field.references?.length) {
-    field.references.forEach(fieldRef => {
-      const remoteTypeName = fieldRef.remoteTypeName;
-      if (remoteTypeName === "Asset") {
-        usedAssetRemoteIds.add(fieldRef.remoteId as string);
-      }
-    });
-  }
-}
-
 function keepExistingNodeAlive(
   pluginOptions: IPluginOptions,
   context: ISourcingContext,
   remoteTypeName: string,
   specialFields: Array<SpecialFieldEntry> | undefined,
-  usedAssetRemoteIds: Set<string>,
   existingNode: IBasicFieldType,
   namePrefix: string
 ): void {
@@ -341,7 +233,6 @@ function keepExistingNodeAlive(
       const field = entry.field;
       switch (entry.type) {
         case "Asset":
-          usedAssetRemoteIds.add((value as GraphCMS_Node).remoteId as string);
           break;
 
         case "Markdown":
@@ -366,7 +257,6 @@ function keepExistingNodeAlive(
         case "RichText":
           {
             const processField = (field: IRichTextField): void => {
-              addAssetReferences(field, usedAssetRemoteIds);
               if (buildMarkdownNodes) {
                 const markdownNodeId = field.markdownNode;
                 if (markdownNodeId) {
@@ -393,7 +283,6 @@ function keepExistingNodeAlive(
             context,
             remoteTypeName,
             fields,
-            usedAssetRemoteIds,
             value as IBasicFieldType,
             fullName
           );
@@ -411,7 +300,6 @@ function keepExistingNodeAlive(
           context,
           remoteTypeName,
           entry.value,
-          usedAssetRemoteIds,
           value as IBasicFieldType,
           fullName
         );
@@ -429,11 +317,9 @@ function processRichTextField(
   field: IRichTextField,
   fieldName: string,
   parentId: string,
-  usedAssetRemoteIds: Set<string>,
   { cleanupRtf, buildMarkdownNodes, typePrefix }: IPluginOptions,
   { actions: { createNode }, createContentDigest }: NodePluginArgs
 ): void {
-  addAssetReferences(field, usedAssetRemoteIds);
   if (cleanupRtf) {
     const raw = field.raw || field.json;
     if (raw) {
@@ -464,7 +350,6 @@ function createSpecialNodes(
   context: ISourcingContext,
   remoteTypeName: string,
   specialFields: Array<SpecialFieldEntry> | undefined,
-  usedAssetRemoteIds: Set<string>,
   id: string,
   node: IBasicFieldType,
   namePrefix: string
@@ -483,10 +368,6 @@ function createSpecialNodes(
     if (isSpecialField(entry)) {
       switch (entry.type) {
         case "Asset":
-          {
-            const remoteId = (value as GraphCMS_Node).remoteId as string;
-            usedAssetRemoteIds.add(remoteId);
-          }
           break;
 
         case "Markdown": {
@@ -515,7 +396,6 @@ function createSpecialNodes(
                   field as IRichTextField,
                   fullName,
                   id,
-                  usedAssetRemoteIds,
                   pluginOptions,
                   gatsbyApi
                 )
@@ -525,7 +405,6 @@ function createSpecialNodes(
                 value as IRichTextField,
                 fullName,
                 id,
-                usedAssetRemoteIds,
                 pluginOptions,
                 gatsbyApi
               );
@@ -541,7 +420,6 @@ function createSpecialNodes(
             context,
             remoteTypeName,
             fields,
-            usedAssetRemoteIds,
             id,
             value as IBasicFieldType,
             fullName
@@ -560,7 +438,6 @@ function createSpecialNodes(
           context,
           remoteTypeName,
           entry.value,
-          usedAssetRemoteIds,
           id,
           value as IBasicFieldType,
           fullName
@@ -581,9 +458,11 @@ function createOrTouchNode(
   remoteTypeName: string,
   remoteNode: IRemoteNode,
   specialFields: Array<SpecialFieldEntry> | undefined,
-  usedAssetRemoteIds: Set<string>,
-  isStateful: boolean
+  isStateful: boolean,
+  isAsset: boolean,
+  isImage: boolean
 ): { id: string; touched: boolean } {
+  const { enableImageCDN } = pluginOptions;
   const { gatsbyApi } = context;
   const { actions, createContentDigest, getNode } = gatsbyApi;
   const { touchNode, createNode } = actions;
@@ -599,12 +478,19 @@ function createOrTouchNode(
     if (contentDigest === existingNode.internal.contentDigest) {
       if (!isStateful) {
         touchNode(existingNode);
+        const localFileNodeId = (existingNode.fields as { localFile?: string })
+          ?.localFile as string;
+        if (localFileNodeId) {
+          const localFileNode = getNode(localFileNodeId);
+          if (localFileNode) {
+            touchNode(localFileNode, undefined);
+          }
+        }
         keepExistingNodeAlive(
           pluginOptions,
           context,
           remoteTypeName,
           specialFields,
-          usedAssetRemoteIds,
           existingNode,
           ""
         );
@@ -622,13 +508,20 @@ function createOrTouchNode(
       type: context.typeNameTransform.toGatsbyTypeName(remoteTypeName),
     },
   };
+  if (isAsset) {
+    const asset = remoteNode as IGraphCmsAsset;
+    node.filename = asset.fileName;
+    if (isImage && enableImageCDN) {
+      const realUrl = new URL(asset.url);
+      node.placeholderUrl = `${realUrl.origin}/resize=w:%width%${realUrl.pathname}`;
+    }
+  }
 
   createSpecialNodes(
     pluginOptions,
     context,
     remoteTypeName,
     specialFields,
-    usedAssetRemoteIds,
     id,
     node,
     ""
@@ -642,7 +535,7 @@ function createOrTouchNode(
 export async function sourceNodes(
   gatsbyApi: SourceNodesArgs,
   pluginOptions: IPluginOptions
-): Promise<void> {
+): Promise<undefined> {
   const {
     reporter,
     actions: { enableStatefulSourceNodes },
@@ -670,8 +563,6 @@ export async function sourceNodes(
   if (!specialFields) {
     return reporter.panic("Special fields not initialised");
   }
-  const usedAssetRemoteIds = new Set<string>();
-
   for (const remoteTypeName of context.gatsbyNodeDefs.keys()) {
     reporter.verbose(`Processing nodes of type ${remoteTypeName}`);
     if (remoteTypeName !== "Asset") {
@@ -683,7 +574,6 @@ export async function sourceNodes(
         remoteTypeName,
         remoteNodes,
         specialFields.get(remoteTypeName),
-        usedAssetRemoteIds,
         isStateful
       );
       promises.push(promise);
@@ -692,24 +582,14 @@ export async function sourceNodes(
   await Promise.all(promises);
 
   const remoteAssets = fetchAllNodes(context, "Asset");
-  const unusedAssets = new Map<string, IGraphCmsAsset>();
 
   await processDownloadableAssets(
     pluginOptions,
     context,
+    "Asset",
     remoteAssets,
-    usedAssetRemoteIds,
-    unusedAssets,
     isStateful
   );
 
-  if (pluginOptions.unusedAssetFile) {
-    const json = JSON.stringify(
-      Array.from(unusedAssets.values()),
-      undefined,
-      2
-    );
-    await writeFile(pluginOptions.unusedAssetFile, json);
-  }
   return undefined;
 }

@@ -9,7 +9,7 @@ import {
   SpecialFieldMap,
 } from "./types";
 import { createSourcingConfig, getRealType, stateCache } from "./utils";
-import { createSchemaCustomization as createToolkitSchemaCustomization } from "@nrandell/gatsby-graphql-source-toolkit";
+import { createSchemaCustomization as createToolkitSchemaCustomization } from "gatsby-graphql-source-toolkit";
 import { GraphQLObjectType } from "graphql";
 import { addRemoteFilePolyfillInterface } from "gatsby-plugin-utils/polyfill-remote-file/index";
 import { getGatsbyImageFieldConfig } from "gatsby-plugin-image/graphql-utils";
@@ -148,7 +148,7 @@ export async function createSchemaCustomization(
         type: "File",
         extensions: {
           link: {
-            from: "localFile",
+            from: "fields.localFile",
           },
         },
       },

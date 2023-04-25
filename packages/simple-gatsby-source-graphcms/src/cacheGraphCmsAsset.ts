@@ -1,7 +1,7 @@
 import { IGraphCmsAsset, IPluginOptions } from "./types";
 import { ensureDir, readFile } from "fs-extra";
 import { join, extname, basename, dirname } from "path";
-import { ISourcingContext } from "@nrandell/gatsby-graphql-source-toolkit/dist/types";
+import { ISourcingContext } from "gatsby-graphql-source-toolkit/dist/types";
 import {
   createFileNodeFromBuffer,
   createRemoteFileNode,
@@ -14,23 +14,19 @@ export function getLocalFileName(remoteAsset: IGraphCmsAsset): string {
 async function internalCreateLocalFileNode(
   context: ISourcingContext,
   remoteAsset: IGraphCmsAsset,
-  reason: string,
   pluginOptions: IPluginOptions
 ): Promise<string> {
   const { gatsbyApi } = context;
   const { actions, reporter, createNodeId, getCache, store, cache } = gatsbyApi;
   const { createNode } = actions;
-  const { localCacheDir, maxImageWidth } = pluginOptions;
+  const { localCacheDir } = pluginOptions;
 
-  const originalUrl = remoteAsset.url;
-  const urlToUse = remoteAsset.urlToUse;
+  const url = remoteAsset.url;
   const fileName = getLocalFileName(remoteAsset);
   const ext = fileName && extname(fileName);
   const name = fileName && basename(fileName, ext);
 
-  const relativePath =
-    new URL(originalUrl).pathname +
-    (maxImageWidth && urlToUse !== originalUrl ? `-${maxImageWidth}` : "");
+  const relativePath = new URL(url).pathname;
   const fullPath = join(process.cwd(), localCacheDir, relativePath);
 
   const createFileNodeRequirements = {
@@ -50,22 +46,18 @@ async function internalCreateLocalFileNode(
       buffer,
       ...createFileNodeRequirements,
     });
-    reporter.verbose(
-      `Using cached asset ${fileName} from ${urlToUse} (${reason})`
-    );
+    reporter.verbose(`Using cached asset ${fileName} from ${fullPath}`);
     return fileNode.id;
   } catch {
     // ignore this - just download!
   }
 
-  reporter.verbose(
-    `Downloading asset ${fileName} from ${urlToUse} (${reason})`
-  );
+  reporter.verbose(`Downloading asset ${fileName} from ${url}`);
 
   const remoteFileNode = await retry(
     async () => {
       const node = await createRemoteFileNode({
-        url: urlToUse,
+        url,
         ...createFileNodeRequirements,
       });
       return node;
@@ -76,7 +68,7 @@ async function internalCreateLocalFileNode(
       minTimeout: 5000,
       onRetry: error => {
         reporter.warn(
-          `Error downloading url ${urlToUse}: ${
+          `Error downloading url ${url}: ${
             typeof error === "string" ? error : error.message
           }`
         );
@@ -85,7 +77,7 @@ async function internalCreateLocalFileNode(
   );
 
   if (!remoteFileNode) {
-    reporter.panic(`Failed to download url: ${urlToUse}`);
+    reporter.panic(`Failed to download url: ${url}`);
     throw new Error(`Failed to download`);
   }
   try {
@@ -94,7 +86,7 @@ async function internalCreateLocalFileNode(
   } catch (e) {
     reporter.panic("Failed to copy asset", e as Error);
   }
-  reporter.verbose(`Downloaded asset ${fileName} from ${urlToUse}`);
+  reporter.verbose(`Downloaded asset ${fileName} from ${url}`);
 
   return remoteFileNode.id;
 }
@@ -104,13 +96,12 @@ const promiseCache = new Map<string, Promise<string>>();
 export async function createLocalFileNode(
   context: ISourcingContext,
   remoteAsset: IGraphCmsAsset,
-  reason: string,
   pluginOptions: IPluginOptions
 ): Promise<string> {
   const {
     gatsbyApi: { reporter },
   } = context;
-  const url = remoteAsset.urlToUse;
+  const url = remoteAsset.url;
   const current = promiseCache.get(url);
   if (current) {
     reporter.verbose(`Using cached request for ${url}`);
@@ -120,7 +111,6 @@ export async function createLocalFileNode(
   const request = internalCreateLocalFileNode(
     context,
     remoteAsset,
-    reason,
     pluginOptions
   );
   promiseCache.set(url, request);

@@ -28,10 +28,6 @@ export function pluginOptionsSchema(
         `Download and cache all non image GraphCMS assets in your Gatsby project`
       )
       .default(true),
-    skipUnusedAssets: Joi.boolean()
-      .description(`Skip downloading any unused assets`)
-      .default(true),
-    maxImageWidth: Joi.number().description("The maximum width for images"),
     endpoint: Joi.string()
       .description(
         `The endpoint URL for the GraphCMS project. This can be found in the [project settings UI](https://graphcms.com/docs/guides/concepts/apis#working-with-apis)`
@@ -62,11 +58,6 @@ export function pluginOptionsSchema(
         `The string by which every generated type name is prefixed with. For example, a type of Post in GraphCMS would become GraphCMS_Post by default. If using multiple instances of the source plugin, you **must** provide a value here to prevent type conflicts`
       )
       .default(`GraphCMS_`),
-    concurrency: Joi.number()
-      .integer()
-      .min(1)
-      .default(1)
-      .description("The number of promises to run at one time"),
     concurrentDownloads: Joi.number()
       .integer()
       .min(1)
@@ -83,9 +74,6 @@ export function pluginOptionsSchema(
     localCacheDir: Joi.string()
       .default(".bondgraphcmsassets")
       .description("Local cache folder to use"),
-    unusedAssetFile: Joi.string().description(
-      "Write the unused assets information to this file"
-    ),
     enableImageCDN: Joi.boolean()
       .default(false)
       .description("Enable imgage CDN"),

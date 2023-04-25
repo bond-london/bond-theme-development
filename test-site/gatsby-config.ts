@@ -25,7 +25,6 @@ const themeOptions: Partial<IBondThemeOptions> = {
   useVideoCache: true,
   videoCacheConnectionString: readEnvVar("VIDEO_CACHE_CONNECTION_STRING"),
   productionImageFormats: ["auto", "webp", "avif"],
-  maxImageWidth: 1920,
   videoWidth: 1920,
   graphCMSToken: readEnvVar("GRAPHCMS_TOKEN"),
   graphCMSEndpoint: readEnvVar("GRAPHCMS_ENDPOINT"),

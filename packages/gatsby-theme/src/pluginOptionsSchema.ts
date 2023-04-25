@@ -45,7 +45,6 @@ export function pluginOptionsSchema(
       .default(false),
     icon: Joi.string().description("The icon for the site").required(),
     manifestOptions: Joi.object().description("Gatsby plugin manifest options"),
-    maxImageWidth: Joi.number().description("Maximum image width"),
     sourceOptions: Joi.object().description("GraphCMS source options"),
     additionalPlugins: Joi.array()
       .items(Joi.object())

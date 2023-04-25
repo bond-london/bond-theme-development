@@ -5,14 +5,13 @@ import {
   buildNodeDefinitions,
   compileNodeQueries,
   readOrGenerateDefaultFragments,
-  wrapQueryExecutorWithQueue,
   generateDefaultFragments,
-} from "@nrandell/gatsby-graphql-source-toolkit";
+} from "gatsby-graphql-source-toolkit";
 import {
   IQueryExecutionArgs,
   IQueryExecutor,
   ISourcingConfig,
-} from "@nrandell/gatsby-graphql-source-toolkit/dist/types";
+} from "gatsby-graphql-source-toolkit/dist/types";
 import { ISchemaInformation, IPluginOptions, IPluginState } from "./types";
 import { copyFile, existsSync, rename, rm } from "fs-extra";
 import {
@@ -166,7 +165,7 @@ export async function createSourcingConfig(
   gatsbyApi: ParentSpanPluginArgs,
   pluginOptions: IPluginOptions
 ): Promise<ISourcingConfig> {
-  const { fragmentsPath, typePrefix, concurrency } = pluginOptions;
+  const { fragmentsPath, typePrefix } = pluginOptions;
 
   const execute = createExecutor(gatsbyApi, pluginOptions);
   const { schema, gatsbyNodeTypes } = schemaConfig;
@@ -212,7 +211,7 @@ export async function createSourcingConfig(
   return {
     gatsbyApi,
     schema,
-    execute: wrapQueryExecutorWithQueue(execute, { concurrency }),
+    execute,
     gatsbyTypePrefix: typePrefix,
     gatsbyNodeDefs: buildNodeDefinitions({ gatsbyNodeTypes, documents }),
   };

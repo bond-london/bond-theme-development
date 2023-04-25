@@ -1,27 +1,23 @@
 import { Node } from "gatsby";
-import { IGatsbyNodeConfig } from "@nrandell/gatsby-graphql-source-toolkit/dist/types";
+import { IGatsbyNodeConfig } from "gatsby-graphql-source-toolkit/dist/types";
 import { GraphQLSchema, GraphQLField } from "graphql";
 
 export interface IPluginOptions {
   buildMarkdownNodes: boolean;
   downloadAllAssets: boolean;
   downloadNonImageAssets: boolean;
-  skipUnusedAssets: boolean;
   endpoint: string;
   fragmentsPath?: string;
   stages: Array<string>;
   token: string;
   typePrefix: string;
   locales: Array<string>;
-  concurrency: number;
   concurrentDownloads: number;
   markdownFields: { [key: string]: Array<string> };
   cleanupRtf: boolean;
   dontDownload: boolean;
   localCache: boolean;
   localCacheDir: string;
-  maxImageWidth?: number;
-  unusedAssetFile?: string;
   enableImageCDN?: boolean;
 }
 
@@ -72,7 +68,6 @@ export interface IGraphCmsAsset extends Node {
   height?: number;
   width?: number;
   size: number;
-  urlToUse: string;
 }
 
 export interface IBasicFieldType {

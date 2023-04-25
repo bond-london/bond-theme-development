@@ -1,5 +1,5 @@
 import { NodePluginArgs, ParentSpanPluginArgs, Reporter } from "gatsby";
-import { loadSchema } from "@nrandell/gatsby-graphql-source-toolkit";
+import { loadSchema } from "gatsby-graphql-source-toolkit";
 import {
   ISchemaInformation,
   IPluginOptions,
@@ -17,7 +17,7 @@ import {
   isUnionType,
   isObjectType,
 } from "graphql";
-import { IGatsbyNodeConfig } from "@nrandell/gatsby-graphql-source-toolkit/dist/types";
+import { IGatsbyNodeConfig } from "gatsby-graphql-source-toolkit/dist/types";
 import { isGatsbyNodeLifecycleSupported } from "gatsby-plugin-utils";
 
 const specialNames = new Set(["stage", "locale", "localizations"]);
@@ -231,13 +231,6 @@ async function initializeGlobalState(
   options: IPluginOptions
 ): Promise<void> {
   const { reporter } = args;
-  const { stages } = options;
-  const defaultStage = stages[0];
-  if (defaultStage) {
-    reporter.verbose(`using default GraphCMS stage: ${defaultStage}`);
-  } else {
-    reporter.panic(`no default stage for GraphCMS`);
-  }
 
   const schemaInformation = await retrieveSchema(args, options);
 

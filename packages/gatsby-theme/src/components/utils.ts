@@ -113,7 +113,7 @@ export function convertSingleSubtitle(
   return undefined;
 }
 
-interface ICmsVisual {
+export interface ICmsVisual {
   readonly name?: string | null;
   readonly dontCrop?: boolean | null;
   readonly verticalCropPosition?: Vertical | null;
@@ -146,6 +146,9 @@ interface ICmsVisual {
       readonly publicURL?: string | null;
       readonly childImageSharp?: {
         readonly gatsbyImageData: IGatsbyImageData;
+      } | null;
+      readonly childGatsbySvg?: {
+        readonly extracted: Record<string, unknown>;
       } | null;
     } | null;
   } | null;

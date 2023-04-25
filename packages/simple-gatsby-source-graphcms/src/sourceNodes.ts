@@ -26,6 +26,7 @@ import { ElementNode, RichTextContent } from "@graphcms/rich-text-types";
 import { cleanupRTFContent } from "./rtf";
 import { createLocalFileNode, getLocalFileName } from "./cacheGraphCmsAsset";
 import { writeFile } from "fs-extra";
+import { hasFeature } from "gatsby-plugin-utils/has-feature";
 
 function isAssetUsed(
   node: IGraphCmsAsset,
@@ -100,7 +101,8 @@ async function processDownloadableAssets(
   context: ISourcingContext,
   remoteNodes: AsyncIterable<IRemoteNode>,
   usedAssetRemoteIds: Set<string>,
-  unusedAssets: Map<string, IGraphCmsAsset>
+  unusedAssets: Map<string, IGraphCmsAsset>,
+  isStateful: boolean
 ): Promise<void> {
   const { concurrentDownloads, maxImageWidth } = pluginOptions;
   const allRemoteNodes: Array<IRemoteNode> = [];
@@ -120,7 +122,8 @@ async function processDownloadableAssets(
           pluginOptions,
           remoteNode,
           usedAssetRemoteIds,
-          unusedAssets
+          unusedAssets,
+          isStateful
         );
       } finally {
         s.release();
@@ -134,7 +137,8 @@ async function createOrTouchAsset(
   pluginOptions: IPluginOptions,
   remoteNode: IRemoteNode,
   usedAssetRemoteIds: Set<string>,
-  unusedAssets: Map<string, IGraphCmsAsset>
+  unusedAssets: Map<string, IGraphCmsAsset>,
+  isStateful: boolean
 ): Promise<void> {
   const {
     skipUnusedAssets,
@@ -175,16 +179,20 @@ async function createOrTouchAsset(
   if (existingNode) {
     if (contentDigest === existingNode.internal.contentDigest) {
       if (!shouldDownload) {
-        touchNode(existingNode);
+        if (!isStateful) {
+          touchNode(existingNode);
+        }
         return;
       }
       const localFileId = existingNode.localFile as string;
       if (localFileId) {
         const existingLocalFile = getNode(localFileId);
         if (existingLocalFile) {
-          touchNode(existingNode);
-          // For the file, set the plugin as undefined to get round a core issue
-          touchNode(existingLocalFile, undefined);
+          if (!isStateful) {
+            touchNode(existingNode);
+            // For the file, set the plugin as undefined to get round a core issue
+            touchNode(existingLocalFile, undefined);
+          }
           return;
         } else {
           reason = "Local file does not exist";
@@ -240,7 +248,8 @@ async function processNodesOfType(
   remoteTypeName: string,
   remoteNodes: AsyncIterable<IRemoteNode>,
   specialFields: Array<SpecialFieldEntry> | undefined,
-  usedAssetRemoteIds: Set<string>
+  usedAssetRemoteIds: Set<string>,
+  isStateful: boolean
 ): Promise<void> {
   const typeName = context.typeNameTransform.toGatsbyTypeName(remoteTypeName);
   const existing = context.gatsbyApi.getNodesByType(typeName);
@@ -255,7 +264,8 @@ async function processNodesOfType(
       remoteTypeName,
       remoteNode,
       specialFields,
-      usedAssetRemoteIds
+      usedAssetRemoteIds,
+      isStateful
     );
 
     if (touched) touchedCount++;
@@ -571,7 +581,8 @@ function createOrTouchNode(
   remoteTypeName: string,
   remoteNode: IRemoteNode,
   specialFields: Array<SpecialFieldEntry> | undefined,
-  usedAssetRemoteIds: Set<string>
+  usedAssetRemoteIds: Set<string>,
+  isStateful: boolean
 ): { id: string; touched: boolean } {
   const { gatsbyApi } = context;
   const { actions, createContentDigest, getNode } = gatsbyApi;
@@ -586,16 +597,18 @@ function createOrTouchNode(
   const existingNode = getNode(id);
   if (existingNode) {
     if (contentDigest === existingNode.internal.contentDigest) {
-      touchNode(existingNode);
-      keepExistingNodeAlive(
-        pluginOptions,
-        context,
-        remoteTypeName,
-        specialFields,
-        usedAssetRemoteIds,
-        existingNode,
-        ""
-      );
+      if (!isStateful) {
+        touchNode(existingNode);
+        keepExistingNodeAlive(
+          pluginOptions,
+          context,
+          remoteTypeName,
+          specialFields,
+          usedAssetRemoteIds,
+          existingNode,
+          ""
+        );
+      }
       return { id, touched: true };
     }
   }
@@ -630,11 +643,20 @@ export async function sourceNodes(
   gatsbyApi: SourceNodesArgs,
   pluginOptions: IPluginOptions
 ): Promise<void> {
-  const { reporter } = gatsbyApi;
+  const {
+    reporter,
+    actions: { enableStatefulSourceNodes },
+  } = gatsbyApi;
   const schemaConfig = stateCache.schemaInformation;
   if (!schemaConfig) {
     return reporter.panic("No schema configuration");
   }
+  const isStateful =
+    hasFeature("stateful-source-nodes") && !!enableStatefulSourceNodes;
+  if (isStateful) {
+    enableStatefulSourceNodes();
+  }
+
   const config = await createSourcingConfig(
     schemaConfig,
     gatsbyApi,
@@ -661,7 +683,8 @@ export async function sourceNodes(
         remoteTypeName,
         remoteNodes,
         specialFields.get(remoteTypeName),
-        usedAssetRemoteIds
+        usedAssetRemoteIds,
+        isStateful
       );
       promises.push(promise);
     }
@@ -676,7 +699,8 @@ export async function sourceNodes(
     context,
     remoteAssets,
     usedAssetRemoteIds,
-    unusedAssets
+    unusedAssets,
+    isStateful
   );
 
   if (pluginOptions.unusedAssetFile) {

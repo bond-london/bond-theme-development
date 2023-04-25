@@ -160,18 +160,31 @@ async function createOrTouchAsset(
     unusedAssets.set(asset.id, asset);
   }
 
+  const isImage =
+    asset.mimeType.startsWith("image/") && !asset.mimeType.includes("svg");
+
+  const shouldDownload =
+    (downloadAllAssets || (!isImage && downloadNonImageAssets)) &&
+    !dontDownload &&
+    (!skipUnusedAssets || isUsed);
+
   let reason: string | undefined;
   const contentDigest = createContentDigest(remoteNode);
   const id = context.idTransform.remoteNodeToGatsbyId(remoteNode, def);
   const existingNode = getNode(id);
   if (existingNode) {
     if (contentDigest === existingNode.internal.contentDigest) {
+      if (!shouldDownload) {
+        touchNode(existingNode);
+        return;
+      }
       const localFileId = existingNode.localFile as string;
       if (localFileId) {
         const existingLocalFile = getNode(localFileId);
         if (existingLocalFile) {
-          touchNode(existingLocalFile);
           touchNode(existingNode);
+          // For the file, set the plugin as undefined to get round a core issue
+          touchNode(existingLocalFile, undefined);
           return;
         } else {
           reason = "Local file does not exist";
@@ -185,9 +198,6 @@ async function createOrTouchAsset(
   } else {
     reason = "No existing node";
   }
-
-  const isImage =
-    asset.mimeType.startsWith("image/") && !asset.mimeType.includes("svg");
 
   const realUrl = new URL(asset.url);
   const node: NodeInput = {
@@ -206,10 +216,6 @@ async function createOrTouchAsset(
       : {}),
   };
 
-  const shouldDownload =
-    (downloadAllAssets || (!isImage && downloadNonImageAssets)) &&
-    !dontDownload &&
-    (!skipUnusedAssets || isUsed);
   if (shouldDownload) {
     try {
       const localFileId = await (localCache
@@ -266,6 +272,7 @@ async function processNodesOfType(
     existingSet.forEach(id => {
       const oldNode = existing.find(n => n.id === id);
       if (oldNode) {
+        context.gatsbyApi.actions.touchNode(oldNode);
         context.gatsbyApi.actions.deleteNode(oldNode);
         deletedNodes++;
       }

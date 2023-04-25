@@ -11,6 +11,7 @@ This simplifies and adds some new features
 - Handles locales
 - Produces clean RTF
 - Locally caches assets to prevent downloading multiple times
+- Uses the new enableStatefulSourceNodes to speed up
 
 ## Installation
 

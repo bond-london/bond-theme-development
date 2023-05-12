@@ -12,7 +12,6 @@ import { IBondExternalVideo, IBondFullVideo } from "./types";
 export interface ICmsVideoAsset {
   readonly mimeType?: string | null;
   readonly localFile: {
-    readonly internal: { readonly mediaType: string | null };
     readonly childGatsbyVideo: {
       readonly transformed: Record<string, unknown>;
     } | null;

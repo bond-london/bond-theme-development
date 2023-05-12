@@ -22,7 +22,6 @@ export interface ICmsImageAsset {
   readonly gatsbyImage?: IGatsbyImageData | null;
   readonly gatsbyImageData?: IGatsbyImageData | null;
   readonly localFile?: {
-    readonly internal?: { readonly mediaType: string | null };
     readonly childImageSharp?: {
       readonly gatsbyImageData: IGatsbyImageData;
     } | null;
@@ -73,11 +72,7 @@ export function convertCmsAssetToBondImage(
   if (!asset) return undefined;
   const dontCrop =
     options?.dontCrop ||
-    (options?.dontCropPng
-      ? (asset.mimeType || asset.localFile?.internal?.mediaType)?.endsWith(
-          "/png"
-        )
-      : undefined);
+    (options?.dontCropPng ? asset.mimeType?.endsWith("/png") : undefined);
   const image =
     asset.gatsbyImage ||
     asset.gatsbyImageData ||

@@ -22,6 +22,9 @@ import {
   isBondVideo,
 } from "./BondVideo";
 import { IBondExternalVideo, IBondFullVideo } from "./types";
+import { IGatsbyAnimation } from "@bond-london/gatsby-transformer-extracted-lottie";
+import { IGatsbyVideo } from "@bond-london/gatsby-transformer-video/src/types";
+import { IGatsbySvg } from "@bond-london/gatsby-transformer-extracted-svg";
 
 export function convertCmsVideoToBondExternalVideo(
   cms: ICmsVideo
@@ -123,7 +126,6 @@ export interface ICmsVisual {
     readonly gatsbyImage?: IGatsbyImageData | null;
     readonly gatsbyImageData?: IGatsbyImageData | null;
     readonly localFile?: {
-      readonly internal?: { readonly mediaType: string | null };
       readonly childGatsbyVideo?: {
         readonly transformed: Record<string, unknown>;
       } | null;
@@ -155,7 +157,6 @@ export interface ICmsVisual {
   readonly fullLengthVideo?: {
     readonly mimeType?: string | null;
     readonly localFile: {
-      readonly internal: { readonly mediaType: string | null };
       readonly childGatsbyVideo: {
         readonly transformed: Record<string, unknown>;
       } | null;
@@ -317,4 +318,34 @@ export function convertCmsAssetToBondVisual(
   const video = convertCmsAssetToBondVideo(asset as ICmsVideoAsset, options);
   if (!image && !animation && !video) return undefined;
   return animation || image || video;
+}
+
+export function getVisualSize(
+  visual?: IBondVisual
+): { width: number; height: number } | undefined {
+  if (isBondAnimation(visual)) {
+    const animation = visual.animation as unknown as IGatsbyAnimation;
+    if (!animation) return undefined;
+    const { width, height } = animation;
+    if (!width || !height) return undefined;
+    return { width, height };
+  }
+  if (isBondVideo(visual)) {
+    const video = visual.videoData as unknown as IGatsbyVideo;
+    if (!video) return undefined;
+    const { width, height } = video;
+    return { width, height };
+  }
+  if (isBondImage(visual)) {
+    const image = visual.image;
+    if (image) {
+      const { width, height } = image;
+      return { width, height };
+    }
+    const svg = visual.svg as unknown as IGatsbySvg;
+    if (!svg) return undefined;
+    const { width, height } = svg;
+    return { width, height };
+  }
+  return undefined;
 }

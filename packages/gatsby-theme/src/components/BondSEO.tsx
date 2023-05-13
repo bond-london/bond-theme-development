@@ -102,10 +102,14 @@ export const BondSEO: React.FC<IProps> = ({
   const description = pageMetadata?.description;
   const image = pageMetadata.image;
   const imageSrc = image && getSrc(image);
-  const imageUrl =
-    imageSrc &&
-    (imageSrc.startsWith("/") ? siteUrl : "") +
-      imageSrc.replace(/[!()*]/g, c => `%${c.charCodeAt(0).toString(16)}`);
+  const imageUrlObj = imageSrc
+    ? new URL((imageSrc.startsWith("/") ? siteUrl : "") + imageSrc)
+    : undefined;
+  const imageUrl = imageUrlObj?.href;
+
+  // imageSrc &&
+  // (imageSrc.startsWith("/") ? siteUrl : "") +
+  //   imageSrc.replace(/[!()*]/g, c => `%${c.charCodeAt(0).toString(16)}`);
   const keywords = pageMetadata?.keywords;
 
   const schemaOrg = buildSchemas(

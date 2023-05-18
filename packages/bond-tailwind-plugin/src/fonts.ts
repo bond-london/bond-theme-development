@@ -9,18 +9,18 @@ function calculateFontAndLineSizePixels(info: string): {
   name: string;
 } {
   const slashSplit = info.split("/");
-  if (slashSplit.length === 2) {
+  if (slashSplit.length > 1) {
     const pixels = parseInt(slashSplit[0]);
     const lineHeightProportion = parseInt(slashSplit[1]);
     const lineHeightPixels = pixels * (lineHeightProportion / 100);
     return {
       pixels,
       lineHeightPixels,
-      name: `${pixels}\\/${lineHeightProportion}`,
+      name: info.replaceAll("/", `\\/`),
     };
   }
   const dashSplit = info.split("-");
-  if (dashSplit.length === 2) {
+  if (dashSplit.length > 1) {
     const pixels = parseInt(dashSplit[0]);
     const lineHeightPixels = parseInt(dashSplit[1]);
     return { pixels, lineHeightPixels, name: info };

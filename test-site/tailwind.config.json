@@ -62,11 +62,10 @@
       "4k": "64/130"
     },
     "h2": {
-      "font": "sans",
       "weight": "bold",
-      "default": "28/124",
-      "desktop": "40/120",
-      "4k": "48/130"
+      "default": "28/124/serif",
+      "desktop": "40/120/serif",
+      "4k": "48/130/sans"
     },
     "h3": { "font": "sans", "weight": "bold", "default": 18, "desktop": 36 },
     "h4": { "font": "sans", "weight": "bold", "default": 16, "desktop": 20 },

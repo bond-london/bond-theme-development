@@ -206,11 +206,19 @@ const LottiePlayer: React.FC<{
       let remove: (() => void) | undefined;
       remove = animationItem.addEventListener("enterFrame", () => {
         onPlay();
-        remove?.();
+        try {
+          remove?.();
+        } catch {
+          // ignore
+        }
         remove = undefined;
       });
       return () => {
-        remove?.();
+        try {
+          remove?.();
+        } catch {
+          // ignore
+        }
       };
     }
     return undefined;

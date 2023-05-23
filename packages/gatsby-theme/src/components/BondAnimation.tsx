@@ -112,3 +112,5 @@ export const BondAnimation: React.FC<{
     />
   );
 };
+
+export default BondAnimation;

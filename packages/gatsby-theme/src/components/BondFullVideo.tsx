@@ -317,3 +317,5 @@ export const BondFullVideo: React.FC<
     </BondVideoPoster>
   );
 };
+
+export default BondFullVideo;

@@ -243,3 +243,5 @@ export const BondExternalVideo: React.FC<
     </BondVideoPoster>
   );
 };
+
+export default BondExternalVideo;

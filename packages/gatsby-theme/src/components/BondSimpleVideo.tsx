@@ -123,3 +123,5 @@ export const BondSimpleVideo: React.FC<
     </BondVideoPoster>
   );
 };
+
+export default BondSimpleVideo;

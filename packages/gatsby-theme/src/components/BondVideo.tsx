@@ -1,12 +1,14 @@
 import { getPosterSrc } from "@bond-london/gatsby-transformer-video";
 import { IGatsbyImageData } from "gatsby-plugin-image";
-import React from "react";
+import React, { lazy } from "react";
 import { CSSProperties, VideoHTMLAttributes } from "react";
 import { convertSingleSubtitle } from ".";
 import { Horizontal, Vertical } from "../types";
-import { BondExternalVideo } from "./BondExternalVideo";
-import { BondFullVideo } from "./BondFullVideo";
-import { BondSimpleVideo, IBondSimpleVideo } from "./BondSimpleVideo";
+const BondExternalVideo = lazy(() => import("./BondExternalVideo"));
+const BondFullVideo = lazy(() => import("./BondFullVideo"));
+const BondSimpleVideo = lazy(() => import("./BondSimpleVideo"));
+
+import { IBondSimpleVideo } from "./BondSimpleVideo";
 import { IBondExternalVideo, IBondFullVideo } from "./types";
 
 export interface ICmsVideoAsset {
@@ -265,3 +267,5 @@ export const BondVideo: React.FC<
   }
   return <BondSimpleVideo {...props} video={video} playsInline={true} />;
 };
+
+export default BondVideo;

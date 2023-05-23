@@ -160,3 +160,5 @@ export const BondImage: React.FC<
 
   return null;
 };
+
+export default BondImage;

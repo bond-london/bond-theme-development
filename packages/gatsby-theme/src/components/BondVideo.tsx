@@ -12,10 +12,12 @@ import { IBondSimpleVideo } from "./BondSimpleVideo";
 import { IBondExternalVideo, IBondFullVideo } from "./types";
 
 export interface ICmsVideoAsset {
+  readonly id?: string | null;
   readonly mimeType?: string | null;
-  readonly localFile: {
-    readonly childGatsbyVideo: {
-      readonly transformed: Record<string, unknown>;
+  readonly localFile?: {
+    readonly id?: string | null;
+    readonly childGatsbyVideo?: {
+      readonly transformed?: Record<string, unknown>;
     } | null;
   } | null;
 }

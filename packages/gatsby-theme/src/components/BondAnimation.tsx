@@ -17,10 +17,12 @@ export type IBondAnimation = IVisualCommon & {
 };
 
 export interface ICmsAnimationAsset {
+  readonly id?: string | null;
   readonly mimeType?: string | null;
-  readonly localFile: {
-    readonly childGatsbyAnimation: {
-      readonly extracted: Record<string, unknown>;
+  readonly localFile?: {
+    readonly id?: string | null;
+    readonly childGatsbyAnimation?: {
+      readonly extracted?: Record<string, unknown>;
     } | null;
   } | null;
 }

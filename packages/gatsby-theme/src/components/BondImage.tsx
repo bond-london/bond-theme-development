@@ -18,10 +18,12 @@ export type IBondImage = IVisualCommon & {
 };
 
 export interface ICmsImageAsset {
+  readonly id?: string | null;
   readonly mimeType?: string | null;
   readonly gatsbyImage?: IGatsbyImageData | null;
   readonly gatsbyImageData?: IGatsbyImageData | null;
   readonly localFile?: {
+    readonly id?: string | null;
     readonly childImageSharp?: {
       readonly gatsbyImageData: IGatsbyImageData;
     } | null;

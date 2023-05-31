@@ -6,12 +6,10 @@ import React, {
   lazy,
 } from "react";
 import { isBondAnimation } from "./BondAnimation";
-import { isBondImage } from "./BondImage";
-import { isBondVideo } from "./BondVideo";
+import BondImage, { isBondImage } from "./BondImage";
+import BondVideo, { isBondVideo } from "./BondVideo";
 import type { IBondVisual } from "./utils";
 
-const BondVideo = lazy(() => import("./BondVideo"));
-const BondImage = lazy(() => import("./BondImage"));
 const BondAnimation = lazy(() => import("./BondAnimation"));
 
 export const BondVisual: React.FC<

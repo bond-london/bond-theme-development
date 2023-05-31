@@ -5,8 +5,8 @@ import { CSSProperties, VideoHTMLAttributes } from "react";
 import { convertSingleSubtitle } from ".";
 import { Horizontal, Vertical } from "../types";
 const BondExternalVideo = lazy(() => import("./BondExternalVideo"));
-const BondFullVideo = lazy(() => import("./BondFullVideo"));
-const BondSimpleVideo = lazy(() => import("./BondSimpleVideo"));
+import BondFullVideo from "./BondFullVideo";
+import BondSimpleVideo from "./BondSimpleVideo";
 
 import { IBondSimpleVideo } from "./BondSimpleVideo";
 import { IBondExternalVideo, IBondFullVideo } from "./types";

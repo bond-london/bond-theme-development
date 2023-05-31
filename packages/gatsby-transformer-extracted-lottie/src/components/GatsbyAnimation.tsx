@@ -1,16 +1,13 @@
 "use client";
 import React, {
   CSSProperties,
-  lazy,
-  Suspense,
   useCallback,
   useEffect,
   useRef,
   useState,
 } from "react";
 import { IGatsbyAnimation } from "../types";
-
-const LottiePlayer = lazy(() => import("./LottiePlayer"));
+import LottiePlayer from "./LottiePlayer";
 
 function getSizerStyle({
   width,
@@ -165,19 +162,17 @@ export const GatsbyAnimation: React.FC<{
         />
       )}
       {loadAnimation && (
-        <Suspense>
-          <LottiePlayer
-            className={animationClassName}
-            containerRef={containerRef}
-            objectFit={objectFit}
-            objectPosition={objectPosition}
-            loop={loop || false}
-            loopDelay={loopDelay}
-            animationUrl={animation.animationUrl as string}
-            play={containerVisible}
-            onPlay={onPlay}
-          />
-        </Suspense>
+        <LottiePlayer
+          className={animationClassName}
+          containerRef={containerRef}
+          objectFit={objectFit}
+          objectPosition={objectPosition}
+          loop={loop || false}
+          loopDelay={loopDelay}
+          animationUrl={animation.animationUrl as string}
+          play={containerVisible}
+          onPlay={onPlay}
+        />
       )}
     </div>
   );

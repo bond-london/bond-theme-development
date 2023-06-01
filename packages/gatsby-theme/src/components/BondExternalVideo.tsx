@@ -2,12 +2,14 @@
 import { GatsbyVideo } from "@bond-london/gatsby-transformer-video";
 import React, {
   CSSProperties,
+  lazy,
+  Suspense,
   useCallback,
   useState,
   VideoHTMLAttributes,
 } from "react";
 import { calculateCropDetails } from "../utils";
-import ReactPlayer from "react-player/lazy";
+const ReactPlayer = lazy(() => import("react-player"));
 import { VideoControls } from "./VideoControls";
 import { BondVideoPoster } from "./BondVideoPoster";
 import { IBondExternalVideo } from "./types";
@@ -71,20 +73,26 @@ const BondExternalVideoInside: React.FC<
         <VideoControls playVideo={onFullRequested} playButton={playButton} />
       )}
       {loadFull && (
-        <ReactPlayer
-          url={external}
-          style={{ objectFit, objectPosition, opacity: fullHasStarted ? 1 : 0 }}
-          className="inside"
-          onReady={onFullLoaded}
-          onPlay={onFullStarted}
-          width="100%"
-          height="100%"
-          controls={controls}
-          playing={fullShouldPlay}
-          muted={isMuted}
-          loop={loop}
-          playsinline={videoProps.playsInline}
-        />
+        <Suspense>
+          <ReactPlayer
+            url={external}
+            style={{
+              objectFit,
+              objectPosition,
+              opacity: fullHasStarted ? 1 : 0,
+            }}
+            className="inside"
+            onReady={onFullLoaded}
+            onPlay={onFullStarted}
+            width="100%"
+            height="100%"
+            controls={controls}
+            playing={fullShouldPlay}
+            muted={isMuted}
+            loop={loop}
+            playsinline={videoProps.playsInline}
+          />
+        </Suspense>
       )}
       {fullHasLoaded && showControls && (
         <VideoControls

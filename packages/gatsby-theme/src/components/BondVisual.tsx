@@ -3,14 +3,11 @@ import React, {
   CSSProperties,
   ImgHTMLAttributes,
   VideoHTMLAttributes,
-  lazy,
 } from "react";
-import { isBondAnimation } from "./BondAnimation";
+import BondAnimation, { isBondAnimation } from "./BondAnimation";
 import BondImage, { isBondImage } from "./BondImage";
 import BondVideo, { isBondVideo } from "./BondVideo";
 import type { IBondVisual } from "./utils";
-
-const BondAnimation = lazy(() => import("./BondAnimation"));
 
 export const BondVisual: React.FC<
   {

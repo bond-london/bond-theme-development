@@ -1,8 +1,24 @@
 import { GatsbyImageProps } from "gatsby-plugin-image";
 import React, { CSSProperties } from "react";
 
-function getImgStyle({
+function getPictureStyle({
   backgroundColor,
+  image: { placeholder, backgroundColor: imageBackgroundColor },
+}: GatsbyImageProps): CSSProperties | undefined {
+  if (placeholder && placeholder.fallback) {
+    return {
+      backgroundImage: `url(${placeholder.fallback})`,
+      backgroundSize: "cover",
+      backgroundRepeat: "no-repeat",
+    };
+  } else if (backgroundColor || imageBackgroundColor) {
+    return { backgroundColor: backgroundColor || imageBackgroundColor };
+  }
+
+  return undefined;
+}
+
+function getImgStyle({
   image: { width, height, layout },
   objectFit,
   objectPosition,
@@ -11,9 +27,6 @@ function getImgStyle({
     padding: 0,
     maxWidth: "none",
   };
-  if (backgroundColor) {
-    style.backgroundColor = backgroundColor;
-  }
   if (layout === "fixed") {
     style.width = width;
     style.height = height;
@@ -49,30 +62,28 @@ export const SimpleGatsbyImage: React.FC<GatsbyImageProps> = allProps => {
     imgClassName,
     onLoad,
     onStartLoad,
-    ...props
+    sizes: propsSizes,
   } = allProps;
   const { width, height, images } = image;
-  const realStyle = getImgStyle(allProps);
 
   return (
     <picture
       className={className}
-      style={style}
+      style={{ ...getPictureStyle(allProps), ...style }}
       // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       onLoad={onLoad ? () => onLoad({ wasCached: false }) : undefined}
       onLoadStart={
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         onStartLoad ? () => onStartLoad({ wasCached: false }) : undefined
       }
-      {...props}
     >
-      {images.sources?.map(({ media, srcSet, type, sizes }) => (
+      {images.sources?.map(({ media, srcSet, type, sizes: imageSizes }) => (
         <source
           key={`${media}-${type}-${srcSet}`}
           type={type}
           media={media}
           srcSet={srcSet}
-          sizes={sizes}
+          sizes={propsSizes || imageSizes}
         />
       ))}
       <img
@@ -83,9 +94,10 @@ export const SimpleGatsbyImage: React.FC<GatsbyImageProps> = allProps => {
         alt={alt}
         src={images.fallback?.src}
         srcSet={images.fallback?.srcSet}
+        sizes={propsSizes || images.fallback?.sizes}
         decoding="async"
         style={{
-          ...realStyle,
+          ...getImgStyle(allProps),
           ...imgStyle,
         }}
       ></img>

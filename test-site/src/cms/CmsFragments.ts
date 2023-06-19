@@ -134,7 +134,7 @@ export const EmbedFeaturedImageAssetFragment = graphql`
   fragment EmbedFeaturedImageAsset on GraphCMS_Asset {
     id
     mimeType
-    gatsbyImage(layout: FULL_WIDTH, width: 3840)
+    gatsbyImage(layout: FULL_WIDTH, width: 3840, placeholder: BLURRED)
   }
 `;
 

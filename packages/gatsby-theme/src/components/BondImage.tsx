@@ -6,6 +6,7 @@ import {
   GatsbySvg,
   IGatsbyExtractedSvg,
 } from "@bond-london/gatsby-transformer-extracted-svg";
+import { SimpleGatsbyImage } from "./SimpleGatsbyImage";
 
 export function isBondImage(obj: unknown): obj is IBondImage {
   const image = obj as IBondImage;
@@ -91,6 +92,7 @@ export function convertCmsAssetToBondImage(
 
 export const BondImage: React.FC<
   {
+    simple?: boolean;
     image: IBondImage;
     imgClassName?: string;
     imgStyle?: CSSProperties;
@@ -122,6 +124,7 @@ export const BondImage: React.FC<
     imgClassName,
     imgStyle,
     alt,
+    simple,
     ...imageProps
   } = props;
   const { objectFit, objectPosition } = calculateCropDetails({
@@ -131,8 +134,9 @@ export const BondImage: React.FC<
   });
 
   if (image) {
+    const Image = simple ? SimpleGatsbyImage : GatsbyImage;
     return (
-      <GatsbyImage
+      <Image
         {...imageProps}
         alt={name || alt || ""}
         onLoad={onLoad}

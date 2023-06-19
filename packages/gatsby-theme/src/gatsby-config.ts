@@ -100,17 +100,6 @@ function buildConfig(
 
       {
         resolve: "gatsby-plugin-sharp",
-
-        options: {
-          defaults: {
-            formats: options.isProduction
-              ? options.productionImageFormats
-              : ["auto"],
-            breakpoints: options.isProduction
-              ? options.productionImageBreakpoints
-              : options.developmentImageBreakpoints,
-          },
-        },
       },
       {
         resolve: `gatsby-transformer-sharp`,

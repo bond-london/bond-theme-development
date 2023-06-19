@@ -29,6 +29,7 @@ export const BondVisual: React.FC<
     onLoad?: (props: { wasCached: boolean }) => void;
     onStartLoad?: (props: { wasCached: boolean }) => void;
     animationClassName?: string;
+    simple?: boolean;
   } & Omit<
     VideoHTMLAttributes<HTMLVideoElement>,
     "poster" | "objectFit" | "objectPosition"
@@ -55,6 +56,7 @@ export const BondVisual: React.FC<
     unmuteButton,
     loading,
     noPoster,
+    simple,
     ...rest
   } = props;
   if (isBondAnimation(visual)) {
@@ -77,7 +79,9 @@ export const BondVisual: React.FC<
     );
   }
   if (isBondImage(visual)) {
-    return <BondImage image={visual} loading={loading} {...rest} />;
+    return (
+      <BondImage image={visual} loading={loading} simple={simple} {...rest} />
+    );
   }
 
   throw new Error("Invalid data for bond visual");

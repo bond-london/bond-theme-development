@@ -3,6 +3,7 @@ import { IGatsbyImageData, GatsbyImage } from "gatsby-plugin-image";
 import classNames from "classnames";
 import { Link } from "gatsby";
 import { LinkClassName } from "../../styles";
+import { SimpleGatsbyImage } from "@bond-london/gatsby-theme/src/components/SimpleGatsbyImage";
 
 export const EmbedLink: React.FC<{
   className?: string;
@@ -12,7 +13,7 @@ export const EmbedLink: React.FC<{
 }> = ({ className, image, title, to }) => {
   return (
     <div className={classNames(className, "flex flex-col gap-y-xxs")}>
-      <GatsbyImage image={image} alt={title} />
+      <SimpleGatsbyImage image={image} alt={title} />
       <Link className={LinkClassName} to={to}>
         {title}
       </Link>

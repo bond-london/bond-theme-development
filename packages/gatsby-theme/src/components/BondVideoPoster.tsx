@@ -8,6 +8,7 @@ import classNames from "classnames";
 import React, { PropsWithChildren, CSSProperties, useCallback } from "react";
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import { BondVideoPosterNoPoster } from "./BondVideoPosterNoPoster";
+import { SimpleGatsbyImage } from "./SimpleGatsbyImage";
 
 const BondVideoPosterWithPoster: React.FC<
   PropsWithChildren<{
@@ -21,6 +22,7 @@ const BondVideoPosterWithPoster: React.FC<
     onLoaded?: () => void;
     style?: CSSProperties;
     loading?: "eager" | "lazy" | undefined;
+    simple?: boolean;
   }>
 > = ({
   children,
@@ -34,6 +36,7 @@ const BondVideoPosterWithPoster: React.FC<
   forVideo,
   style,
   loading,
+  simple,
   ...props
 }) => {
   const videoWrapperProps = forVideo
@@ -48,6 +51,7 @@ const BondVideoPosterWithPoster: React.FC<
     },
     [onLoaded]
   );
+  const Image = simple ? SimpleGatsbyImage : GatsbyImage;
   return (
     <div
       {...props}
@@ -56,7 +60,7 @@ const BondVideoPosterWithPoster: React.FC<
     >
       {forVideo && <VideoSizer video={forVideo} />}
       {posterData ? (
-        <GatsbyImage
+        <Image
           alt="Video poster"
           image={{
             ...posterData,

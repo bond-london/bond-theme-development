@@ -5,7 +5,7 @@ export const ConstrainedImageAssetFragment = graphql`
   fragment ConstrainedImageAsset on GraphCMS_Asset {
     id
     mimeType
-    gatsbyImageData(layout: CONSTRAINED)
+    gatsbyImage(layout: CONSTRAINED, width: 3840)
     localFile {
       internal {
         mediaType
@@ -19,7 +19,7 @@ export const FixedImageAssetFragment = graphql`
   fragment FixedImageAsset on GraphCMS_Asset {
     id
     mimeType
-    gatsbyImageData(layout: FIXED)
+    gatsbyImage(layout: FIXED, width: 3840)
     localFile {
       internal {
         mediaType
@@ -34,7 +34,7 @@ export const FullWidthImageAssetFragment = graphql`
   fragment FullWidthImageAsset on GraphCMS_Asset {
     id
     mimeType
-    gatsbyImageData(layout: FULL_WIDTH)
+    gatsbyImage(layout: FULL_WIDTH, width: 3840)
     localFile {
       internal {
         mediaType
@@ -134,7 +134,7 @@ export const EmbedFeaturedImageAssetFragment = graphql`
   fragment EmbedFeaturedImageAsset on GraphCMS_Asset {
     id
     mimeType
-    gatsbyImageData(layout: FULL_WIDTH)
+    gatsbyImage(layout: FULL_WIDTH, width: 3840)
   }
 `;
 

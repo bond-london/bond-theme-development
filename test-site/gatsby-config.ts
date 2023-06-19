@@ -41,6 +41,9 @@ const themeOptions: Partial<IBondThemeOptions> = {
     display: "minimal-ui",
     icon,
   },
+  sourceOptions: {
+    enableImageCDN: true,
+  },
 };
 
 const config: GatsbyConfig = {

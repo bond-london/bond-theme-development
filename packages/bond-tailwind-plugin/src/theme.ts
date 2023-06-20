@@ -20,20 +20,35 @@ export const defaultNumbers = {
   unset: "unset",
 };
 
-function buildLetterSpacing(config: IBondConfigurationOptions): CSSRuleObject {
-  const letterSpacings = new Set<number>();
+export function buildLetterSpacingName(name: string): string {
+  return name.replace("-", "minus");
+}
+
+function buildLetterSpacing(
+  config: IBondConfigurationOptions
+): CSSRuleObject | undefined {
+  const letterSpacingsValues = new Set<number>();
+  const letterSpacingNames = new Set<string>();
   forEachObject(config.fontTable, ({ value: { letterSpacing } }) => {
     if (letterSpacing) {
-      letterSpacings.add(letterSpacing);
+      if (typeof letterSpacing === "string") {
+        letterSpacingNames.add(letterSpacing);
+      } else if (typeof letterSpacing === "number") {
+        letterSpacingsValues.add(letterSpacing);
+      }
     }
   });
-  const results: CSSRuleObject = {};
-  if (letterSpacings.size > 0) {
-    letterSpacings.forEach(value => {
-      results[`${value}`] = calculateRemSize(value);
+  if (letterSpacingsValues.size + letterSpacingNames.size > 0) {
+    const results: CSSRuleObject = {};
+    letterSpacingsValues.forEach(value => {
+      results[buildLetterSpacingName(`${value}`)] = calculateRemSize(value);
     });
+    letterSpacingNames.forEach(
+      value => (results[buildLetterSpacingName(value)] = value)
+    );
+    return results;
   }
-  return results;
+  return undefined;
 }
 
 export function configureTheme(
@@ -52,7 +67,7 @@ export function configureTheme(
       .filter(v => v)
   );
 
-  const theme = {
+  const theme: Partial<ThemeConfig> = {
     theme: {
       screens: {
         ...mapObject(
@@ -115,7 +130,6 @@ export function configureTheme(
         ...calculateNumbers(1, maximumColumns, defaultKeyFn, defaultKeyFn),
         auto: "auto",
       },
-      letterSpacing: { ...buildLetterSpacing(config) },
       extend: {
         maxWidth: {
           maxWidth: calculateRemSize(maximumWidth),
@@ -134,5 +148,10 @@ export function configureTheme(
       },
     },
   };
+
+  const letterSpacing = buildLetterSpacing(config);
+  if (letterSpacing) {
+    theme.theme.letterSpacing = letterSpacing;
+  }
   return theme;
 }

@@ -5,7 +5,6 @@ import {
 import classNames from "classnames";
 import React from "react";
 import { RTF } from "@/components/RTF";
-import { SectionBodyClassName } from "@/styles";
 
 export const SectionBody: React.FC<{
   content: IRichTextInformation;
@@ -24,11 +23,7 @@ export const SectionBody: React.FC<{
     <RTF
       content={content}
       projectClassNameOverrides={projectClassNameOverrides}
-      className={classNames(
-        className || SectionBodyClassName,
-        contentClassName,
-        fontClassName,
-      )}
+      className={classNames(className, contentClassName, fontClassName)}
     />
   );
 };

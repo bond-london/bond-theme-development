@@ -10,9 +10,9 @@ function parseInformation(information: string): IActionInformation | undefined {
   const regex = /^(?<name>[^:]+)(|:(?<arg>[^,]+),?(?<opts>.*))$/gm;
   const match = regex.exec(information);
   if (match) {
-    const name = match.groups?.["name"];
-    const arg = match.groups?.["arg"];
-    const opts = match.groups?.["opts"];
+    const name = match.groups?.name;
+    const arg = match.groups?.arg;
+    const opts = match.groups?.opts;
     if (name) {
       return { name, arg, opts: opts ? JSON.parse(opts) : undefined };
     }

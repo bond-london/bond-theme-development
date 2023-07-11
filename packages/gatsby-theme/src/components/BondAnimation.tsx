@@ -44,8 +44,8 @@ export function convertCmsAnimationToBondAnimation(
   if (!animation) return undefined;
   return {
     animation,
-    loop: cms.loop || undefined,
-    loopDelay: cms.loopDelay || undefined,
+    loop: cms.loop ?? undefined,
+    loopDelay: cms.loopDelay ?? undefined,
     dontCrop: cms.dontCrop,
     verticalCropPosition: cms.verticalCropPosition,
     horizontalCropPosition: cms.horizontalCropPosition,
@@ -104,8 +104,8 @@ export const BondAnimation: React.FC<{
   return (
     <GatsbyAnimation
       animation={animation}
-      loop={loop || animationLoop || undefined}
-      loopDelay={loopDelay || animationLoopDelay || undefined}
+      loop={loop ?? animationLoop ?? undefined}
+      loopDelay={loopDelay ?? animationLoopDelay ?? undefined}
       className={className}
       objectFit={objectFit}
       objectPosition={objectPosition}

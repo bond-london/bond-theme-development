@@ -125,7 +125,7 @@ async function processDownloadableAssets(
   await distributeWorkload(
     nodesToDownload.map(nodeId => async () => {
       try {
-        const node = await getNode(nodeId);
+        const node = getNode(nodeId);
         if (!node) {
           reporter.warn(`Failed to find node for "${nodeId}"`);
           return;
@@ -164,7 +164,7 @@ async function processNodesOfType(
   let newNodes = 0;
   let touchedCount = 0;
   for await (const remoteNode of remoteNodes) {
-    const { id: newId, touched } = createOrTouchNode(
+    const { id: newId, touched } = await createOrTouchNode(
       pluginOptions,
       context,
       remoteTypeName,
@@ -221,7 +221,6 @@ function keepExistingNodeAlive(
   const { buildMarkdownNodes } = pluginOptions;
   const { gatsbyApi } = context;
   const { actions, getNode, reporter } = gatsbyApi;
-  const { touchNode } = actions;
 
   specialFields?.forEach(entry => {
     const name = entry.fieldName;
@@ -231,25 +230,26 @@ function keepExistingNodeAlive(
 
     if (isSpecialField(entry)) {
       const field = entry.field;
+      const fieldName = field.name;
       switch (entry.type) {
         case "Asset":
           break;
 
         case "Markdown":
           {
-            const markdownNodeFieldName = `${field}MarkdownNode`;
+            const markdownNodeFieldName = `${fieldName}MarkdownNode`;
             const markdownNodeId = existingNode[
               markdownNodeFieldName
             ] as string;
             if (markdownNodeId) {
               const markdownNode = getNode(markdownNodeId);
               if (markdownNode) {
-                touchNode(markdownNode);
+                actions.touchNode(markdownNode);
               } else {
                 reporter.warn(`Failed to find markdown node ${markdownNodeId}`);
               }
             } else {
-              reporter.warn(`No markdown node for ${field}`);
+              reporter.warn(`No markdown node for ${fieldName}`);
             }
           }
           break;
@@ -262,7 +262,7 @@ function keepExistingNodeAlive(
                 if (markdownNodeId) {
                   const markdownNode = getNode(markdownNodeId);
                   if (markdownNode) {
-                    touchNode(markdownNode);
+                    actions.touchNode(markdownNode);
                   }
                 }
               }
@@ -313,15 +313,15 @@ function keepExistingNodeAlive(
   });
 }
 
-function processRichTextField(
+async function processRichTextField(
   field: IRichTextField,
   fieldName: string,
   parentId: string,
   { cleanupRtf, buildMarkdownNodes, typePrefix }: IPluginOptions,
   { actions: { createNode }, createContentDigest }: NodePluginArgs,
-): void {
+): Promise<void> {
   if (cleanupRtf) {
-    const raw = field.raw || field.json;
+    const raw = field.raw ?? field.json;
     if (raw) {
       field.cleaned = cleanupRTFContent(raw);
     }
@@ -339,13 +339,13 @@ function processRichTextField(
           contentDigest: createContentDigest(content),
         },
       };
-      createNode(markdownNode);
+      await createNode(markdownNode);
       field.markdownNode = markdownNode.id;
     }
   }
 }
 
-function createSpecialNodes(
+async function createSpecialNodes(
   pluginOptions: IPluginOptions,
   context: ISourcingContext,
   remoteTypeName: string,
@@ -353,106 +353,113 @@ function createSpecialNodes(
   id: string,
   node: IBasicFieldType,
   namePrefix: string,
-): void {
+): Promise<void> {
   const { typePrefix } = pluginOptions;
   const { gatsbyApi } = context;
   const { actions, createContentDigest } = gatsbyApi;
   const { createNode } = actions;
 
-  specialFields?.forEach(entry => {
-    const name = entry.fieldName;
-    const fullName = namePrefix + name;
-    const value = node[name];
-    if (!value) return;
+  if (specialFields) {
+    for (const entry of specialFields) {
+      const name = entry.fieldName;
+      const fullName = namePrefix + name;
+      const value = node[name];
+      if (!value) return;
 
-    if (isSpecialField(entry)) {
-      switch (entry.type) {
-        case "Asset":
-          break;
+      if (isSpecialField(entry)) {
+        switch (entry.type) {
+          case "Asset":
+            break;
 
-        case "Markdown": {
-          const content = value as string;
-          if (content) {
-            const markdownNode = {
-              id: `${fullName}MarkdownNode:${id}`,
-              parent: id,
-              internal: {
-                type: `${typePrefix}MarkdownNode`,
-                mediaType: "text/markdown",
-                content,
-                contentDigest: createContentDigest(content),
-              },
-            };
-            createNode(markdownNode);
-            node[`${name}MarkdownNode`] = markdownNode.id;
+          case "Markdown": {
+            const content = value as string;
+            if (content) {
+              const markdownNode = {
+                id: `${fullName}MarkdownNode:${id}`,
+                parent: id,
+                internal: {
+                  type: `${typePrefix}MarkdownNode`,
+                  mediaType: "text/markdown",
+                  content,
+                  contentDigest: createContentDigest(content),
+                },
+              };
+              await createNode(markdownNode);
+              node[`${name}MarkdownNode`] = markdownNode.id;
+            }
+            break;
           }
-          break;
-        }
-        case "RichText": {
-          if (value) {
-            if (Array.isArray(value)) {
-              value.forEach(field =>
-                processRichTextField(
-                  field as IRichTextField,
+          case "RichText": {
+            if (value) {
+              if (Array.isArray(value)) {
+                for (const field of value) {
+                  await processRichTextField(
+                    field as IRichTextField,
+                    fullName,
+                    id,
+                    pluginOptions,
+                    gatsbyApi,
+                  );
+                }
+              } else {
+                await processRichTextField(
+                  value as IRichTextField,
                   fullName,
                   id,
                   pluginOptions,
                   gatsbyApi,
-                ),
-              );
-            } else {
-              processRichTextField(
-                value as IRichTextField,
-                fullName,
-                id,
-                pluginOptions,
-                gatsbyApi,
-              );
+                );
+              }
             }
           }
         }
-      }
-    } else if (isSpecialUnion(entry)) {
-      const process = (value: unknown): void => {
-        entry.value.forEach(fields => {
-          createSpecialNodes(
+      } else if (isSpecialUnion(entry)) {
+        throw new Error("Not sure how to do special unions at the moment ...");
+        // const process = async (value: unknown): Promise<void> => {
+        //   for (const fields of entry.value) {
+        //     await createSpecialNodes(
+        //       pluginOptions,
+        //       context,
+        //       remoteTypeName,
+        //       fields,
+        //       id,
+        //       value as IBasicFieldType,
+        //       fullName,
+        //     );
+        //   }
+        // };
+        // if (Array.isArray(value)) {
+        //   for (const v of value) {
+        //     await process(v);
+        //   }
+        // } else {
+        //   await process(value);
+        // }
+      } else if (isSpecialObject(entry)) {
+        const process = async (value: unknown): Promise<void> => {
+          await createSpecialNodes(
             pluginOptions,
             context,
             remoteTypeName,
-            fields,
+            entry.value,
             id,
             value as IBasicFieldType,
             fullName,
           );
-        });
-      };
-      if (Array.isArray(value)) {
-        value.forEach(process);
-      } else {
-        process(value);
-      }
-    } else if (isSpecialObject(entry)) {
-      const process = (value: unknown): void => {
-        createSpecialNodes(
-          pluginOptions,
-          context,
-          remoteTypeName,
-          entry.value,
-          id,
-          value as IBasicFieldType,
-          fullName,
-        );
-      };
-      if (Array.isArray(value)) {
-        value.forEach(process);
-      } else {
-        process(value);
+        };
+        if (Array.isArray(value)) {
+          for (const v of value) {
+            await process(v);
+          }
+        } else {
+          await process(value);
+        }
       }
     }
-  });
+  }
 }
 
-function createOrTouchNode(
+async function createOrTouchNode(
   pluginOptions: IPluginOptions,
   context: ISourcingContext,
   remoteTypeName: string,
@@ -461,11 +468,10 @@ function createOrTouchNode(
   isStateful: boolean,
   isAsset: boolean,
   isImage: boolean,
-): { id: string; touched: boolean } {
+): Promise<{ id: string; touched: boolean }> {
   const { enableImageCDN } = pluginOptions;
   const { gatsbyApi } = context;
   const { actions, createContentDigest, getNode } = gatsbyApi;
-  const { touchNode, createNode } = actions;
 
   const def = context.gatsbyNodeDefs.get(remoteTypeName);
   if (!def) {
@@ -477,13 +483,13 @@ function createOrTouchNode(
   if (existingNode) {
     if (contentDigest === existingNode.internal.contentDigest) {
       if (!isStateful) {
-        touchNode(existingNode);
+        actions.touchNode(existingNode);
         const localFileNodeId = (existingNode.fields as { localFile?: string })
-          ?.localFile as string;
+          ?.localFile;
         if (localFileNodeId) {
           const localFileNode = getNode(localFileNodeId);
           if (localFileNode) {
-            touchNode(localFileNode, undefined);
+            actions.touchNode(localFileNode, undefined);
           }
         }
         keepExistingNodeAlive(
@@ -517,7 +523,7 @@ function createOrTouchNode(
     }
   }
 
-  createSpecialNodes(
+  await createSpecialNodes(
     pluginOptions,
     context,
     remoteTypeName,
@@ -527,7 +533,7 @@ function createOrTouchNode(
     "",
   );
 
-  createNode(node);
+  await actions.createNode(node);
 
   return { id, touched: false };
 }

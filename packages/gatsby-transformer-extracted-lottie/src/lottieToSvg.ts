@@ -17,6 +17,7 @@ export function renderLottieToSvg(
 
     // Lottie_Svg is copied from lottie-web/build/player/cjs/lottie_light.min.js
     // Then need to comment out the 3 lines in ImagePreloader where they use the canvas context
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-call */
     const Lottie = require("./lottie_svg").default;
 
     const container = document.createElement("div");
@@ -30,6 +31,9 @@ export function renderLottieToSvg(
       animationData,
     });
     instance.goToAndStop(0, true);
+
+    /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-call */
+
     const svg = container.innerHTML;
     return svg;
   } catch (ex) {

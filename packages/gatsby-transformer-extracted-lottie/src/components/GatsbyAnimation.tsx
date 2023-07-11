@@ -170,7 +170,7 @@ export const GatsbyAnimation: React.FC<{
             containerRef={containerRef}
             objectFit={objectFit}
             objectPosition={objectPosition}
-            loop={loop || false}
+            loop={loop ?? false}
             loopDelay={loopDelay}
             animationUrl={animation.animationUrl as string}
             play={containerVisible}

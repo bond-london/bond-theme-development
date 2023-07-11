@@ -18,8 +18,8 @@ function useWindowSize(component?: RefObject<HTMLElement>) {
   useEffect(() => {
     const handleResize = () => {
       const componentToUse = component?.current;
-      const width = componentToUse?.clientWidth || window.innerWidth;
-      const height = componentToUse?.clientHeight || window.innerHeight;
+      const width = componentToUse?.clientWidth ?? window.innerWidth;
+      const height = componentToUse?.clientHeight ?? window.innerHeight;
       setSize((oldSize) => {
         if (width === oldSize.width && height === oldSize.height) {
           return oldSize;
@@ -56,8 +56,8 @@ const PageContainer: React.FC<{
     <div
       ref={divRef}
       className={classNames(
-        "relative overflow-hidden border-2 border-copper",
-        className
+        "relative overflow-hidden border-2 border-Red",
+        className,
       )}
     >
       <h2 className="h2">{width}</h2>
@@ -74,7 +74,7 @@ const PageContainer: React.FC<{
 };
 
 const Responsive: React.FC<PageProps> = ({ params }) => {
-  const responsive = params["responsive"] || "";
+  const responsive = params.responsive || "";
   const path = `/${responsive}`;
 
   return (

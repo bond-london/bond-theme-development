@@ -10,11 +10,13 @@ import {
 } from "gatsby-plugin-image";
 import type { GraphQLResolveInfo } from "gatsby/graphql";
 import { IGatsbyImageFieldArgs } from "gatsby-plugin-image/graphql-utils";
+// eslint-disable-next-line camelcase
 import { GraphCMS_Asset, IImageOptions } from "./types";
 import { fetchRemoteFile } from "gatsby-core-utils/fetch-remote-file";
 import { readFile } from "fs/promises";
 import { extname } from "path";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore No plugin sharp
 import { getDominantColor } from "gatsby-plugin-sharp";
 
@@ -94,6 +96,7 @@ function isImage(mimeType: string): boolean {
 }
 
 export async function resolveGatsbyImageData<TContext, TArgs>(
+  // eslint-disable-next-line camelcase
   image: GraphCMS_Asset,
   options: TArgs & IGatsbyImageFieldArgs,
   _context: TContext,
@@ -108,14 +111,16 @@ export async function resolveGatsbyImageData<TContext, TArgs>(
   }
 
   const sourceMetadata = {
-    width: image.width as number,
-    height: image.height as number,
+    width: image.width!,
+    height: image.height!,
     format: format as ImageFormat,
   };
 
   const filename = image.handle;
 
+  /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
   const { getPluginOptions, doMergeDefaults } = await import(
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore Ignore plugin sharp
     `gatsby-plugin-sharp/plugin-options`
   );
@@ -138,6 +143,7 @@ export async function resolveGatsbyImageData<TContext, TArgs>(
   };
 
   options = doMergeDefaults(options, defaults);
+  /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call */
 
   if (options.placeholder && options.placeholder === "tracedSVG") {
     if (!haveWarnedAboutPlaceholder) {
@@ -179,6 +185,7 @@ export async function resolveGatsbyImageData<TContext, TArgs>(
         fallback: getBase64DataURI(base64),
       };
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
       imageData.backgroundColor = await getDominantColor(filePath);
     }
   }

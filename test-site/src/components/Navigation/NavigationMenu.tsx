@@ -11,8 +11,10 @@ export interface INavigationItem {
   external?: string;
   text?: string;
   name: string;
-  colour?: ColourName;
+  textColour?: ColourName;
+  backgroundColour?: ColourName;
   isButton?: boolean;
+  isOutlined?: boolean;
   icon?: IBondVisual;
   entries?: ReadonlyArray<INavigationItem>;
 }

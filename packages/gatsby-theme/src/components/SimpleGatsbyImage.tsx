@@ -5,14 +5,14 @@ function getPictureStyle({
   backgroundColor,
   image: { placeholder, backgroundColor: imageBackgroundColor },
 }: GatsbyImageProps): CSSProperties | undefined {
-  if (placeholder && placeholder.fallback) {
+  if (placeholder?.fallback) {
     return {
       backgroundImage: `url(${placeholder.fallback})`,
       backgroundSize: "cover",
       backgroundRepeat: "no-repeat",
     };
-  } else if (backgroundColor || imageBackgroundColor) {
-    return { backgroundColor: backgroundColor || imageBackgroundColor };
+  } else if (backgroundColor ?? imageBackgroundColor) {
+    return { backgroundColor: backgroundColor ?? imageBackgroundColor };
   }
 
   return undefined;
@@ -31,7 +31,7 @@ function getImgStyle({
     style.width = width;
     style.height = height;
     style.position = "relative";
-  } else if (layout === "constrained" || layout === "fullWidth") {
+  } else if (layout === "constrained" ?? layout === "fullWidth") {
     style.position = "relative";
     style.top = 0;
     style.left = 0;
@@ -83,7 +83,7 @@ export const SimpleGatsbyImage: React.FC<GatsbyImageProps> = allProps => {
           type={type}
           media={media}
           srcSet={srcSet}
-          sizes={propsSizes || imageSizes}
+          sizes={propsSizes ?? imageSizes}
         />
       ))}
       <img
@@ -94,7 +94,7 @@ export const SimpleGatsbyImage: React.FC<GatsbyImageProps> = allProps => {
         alt={alt}
         src={images.fallback?.src}
         srcSet={images.fallback?.srcSet}
-        sizes={propsSizes || images.fallback?.sizes}
+        sizes={propsSizes ?? images.fallback?.sizes}
         decoding="async"
         style={{
           ...getImgStyle(allProps),

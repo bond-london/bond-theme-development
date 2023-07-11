@@ -16,9 +16,9 @@ const ArticleListEntry: React.FC<{
       className="flex flex-col gap-y-xs my-xxs"
     >
       {visual && <BondVisual visual={visual} simple={true} />}
-      {(heading || title) && (
+      {(heading ?? title) && (
         <h3 className="p2">
-          {heading || title}
+          {heading ?? title}
           {postHeading && <span className="lighter">&nbsp;{postHeading}</span>}
         </h3>
       )}

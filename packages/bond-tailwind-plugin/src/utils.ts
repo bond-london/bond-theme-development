@@ -1,4 +1,4 @@
-import { CSSRuleObject } from "tailwindcss/types/config";
+import { CSSRuleObject, KeyValuePair } from "tailwindcss/types/config";
 
 export const remSize = 16;
 
@@ -52,12 +52,12 @@ export function mapNumbers(
 }
 
 export function mapObject<V>(
-  obj: { [key: string]: V },
+  obj: Record<string, V>,
   keyFn: KeyFunction<string>,
   valueFn: ValueFunction<V>,
   filterFn?: FilterFunction<V>,
-): CSSRuleObject {
-  const results: CSSRuleObject = {};
+): KeyValuePair<string, string> {
+  const results: KeyValuePair<string, string> = {};
   forEachObject(
     obj,
     ({ key, value }) => {
@@ -69,7 +69,7 @@ export function mapObject<V>(
 }
 
 export function forEachObject<V, R>(
-  obj: { [key: string]: V },
+  obj: Record<string, V>,
   entryFn: EntryFunction<V, R>,
   filterFn?: FilterFunction<V>,
 ): void {

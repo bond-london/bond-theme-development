@@ -1,15 +1,20 @@
 import React from "react";
 
-const lookupTable: {
-  [key: string]: React.FC<ActionProps>;
-} = {
-/* Nothing */
+interface IActionProps {
+  arg?: string;
+  opts?: unknown;
+  isInline?: boolean;
+}
+
+const lookupTable: Record<string, React.FC<IActionProps>> = {
+  /* Nothing */
 };
 
-const lazyTable: {
-  [key: string]: React.LazyExoticComponent<React.FC<ActionProps>>;
-} = {
-/* Nothing */
+const lazyTable: Record<
+  string,
+  React.LazyExoticComponent<React.FC<IActionProps>>
+> = {
+  /* Nothing */
 };
 
 export const Actions: React.FC<{

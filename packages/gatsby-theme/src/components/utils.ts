@@ -30,18 +30,18 @@ export function convertCmsVideoToBondExternalVideo(
   cms: ICmsVideo,
 ): IBondExternalVideo {
   const preview = cms.preview?.localFile?.childGatsbyVideo?.transformed;
-  const external = cms.external || undefined;
+  const external = cms.external ?? undefined;
 
   if (!external) {
     throw new Error("No external video found");
   }
 
-  const posterSrc = cms.poster?.localFile?.publicURL || getPosterSrc(preview);
+  const posterSrc = cms.poster?.localFile?.publicURL ?? getPosterSrc(preview);
 
   return {
     videoData: preview,
     posterSrc,
-    loop: cms.loop || undefined,
+    loop: cms.loop ?? undefined,
     external,
     dontCrop: cms.dontCrop,
     verticalCropPosition: cms.verticalCropPosition,
@@ -59,11 +59,11 @@ export function convertCmsVideoToBondFullVideo(cms: ICmsVideo): IBondFullVideo {
   }
 
   const posterSrc =
-    cms.poster?.localFile?.publicURL ||
-    getPosterSrc(preview) ||
+    cms.poster?.localFile?.publicURL ??
+    getPosterSrc(preview) ??
     getPosterSrc(full);
 
-  const subtitles = cms.subtitles?.localFile?.publicURL || undefined;
+  const subtitles = cms.subtitles?.localFile?.publicURL ?? undefined;
 
   return {
     videoData: preview,
@@ -79,7 +79,7 @@ export function convertCmsVideoToBondFullVideo(cms: ICmsVideo): IBondFullVideo {
         ]
       : undefined,
     full,
-    loop: cms.loop || undefined,
+    loop: cms.loop ?? undefined,
     dontCrop: cms.dontCrop,
     verticalCropPosition: cms.verticalCropPosition,
     horizontalCropPosition: cms.horizontalCropPosition,
@@ -89,7 +89,7 @@ export function convertCmsVideoToBondFullVideo(cms: ICmsVideo): IBondFullVideo {
 export type IBondVisual = IBondVideo | IBondAnimation | IBondImage;
 
 export function isBondVisual(obj: unknown): obj is IBondVisual {
-  return isBondImage(obj) || isBondAnimation(obj) || isBondVideo(obj);
+  return isBondImage(obj) ?? isBondAnimation(obj) ?? isBondVideo(obj);
 }
 
 export function convertSingleSubtitle(
@@ -102,7 +102,7 @@ export function convertSingleSubtitle(
   isDefault = true,
   srcLang = "en,",
 ): ReadonlyArray<IBondSubtitle> | undefined {
-  const url = asset?.localFile?.publicURL || undefined;
+  const url = asset?.localFile?.publicURL ?? undefined;
   if (url) {
     return [
       {
@@ -181,8 +181,8 @@ export function convertCmsVisualToBondVisual(
   if (!cms) return undefined;
 
   const image =
-    cms.mainAsset?.gatsbyImage ||
-    cms.mainAsset?.gatsbyImageData ||
+    cms.mainAsset?.gatsbyImage ??
+    cms.mainAsset?.gatsbyImageData ??
     cms.mainAsset?.localFile?.childImageSharp?.gatsbyImageData;
   const svg = cms.mainAsset?.localFile?.childGatsbySvg?.extracted;
   const animation = cms.mainAsset?.localFile?.childGatsbyAnimation?.extracted;
@@ -190,17 +190,17 @@ export function convertCmsVisualToBondVisual(
   const full = cms.fullLengthVideo?.localFile?.childGatsbyVideo?.transformed;
 
   const posterSrc =
-    cms.posterImage?.localFile?.publicURL ||
-    getPosterSrc(preview) ||
+    cms.posterImage?.localFile?.publicURL ??
+    getPosterSrc(preview) ??
     getPosterSrc(full);
 
   const posterData =
-    cms.posterImage?.gatsbyImage ||
-    cms.posterImage?.gatsbyImageData ||
+    cms.posterImage?.gatsbyImage ??
+    cms.posterImage?.gatsbyImageData ??
     cms.posterImage?.localFile?.childImageSharp?.gatsbyImageData;
 
   const videoData = preview;
-  const external = cms.externalVideo || undefined;
+  const external = cms.externalVideo ?? undefined;
   const {
     loop,
     loopDelay,
@@ -277,7 +277,7 @@ export function convertCmsVisualToBondVisual(
     } as IBondAnimation;
   }
 
-  if (image || svg) {
+  if (image ?? svg) {
     return {
       image,
       svg,
@@ -317,7 +317,7 @@ export function convertCmsAssetToBondVisual(
   );
   const video = convertCmsAssetToBondVideo(asset as ICmsVideoAsset, options);
   if (!image && !animation && !video) return undefined;
-  return animation || image || video;
+  return animation ?? image ?? video;
 }
 
 export function getVisualSize(

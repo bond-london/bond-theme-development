@@ -13,6 +13,7 @@ import TagLinksComponent from "@/components/TagLinks";
 import ArticleInfoComponent from "@/components/ArticleInfo";
 import LogoParadeComponent from "@/components/LogoParade";
 import SplitComponent from "@/components/Split";
+import SpacerComponent from "@/components/Spacer";
 
 export function tryHandleCustomComponent(
   converted: IComponentInformation,
@@ -24,6 +25,13 @@ export function tryHandleCustomComponent(
   isLast: boolean,
 ) {
   switch (componentType) {
+    case "SpacerS":
+    case "SpacerM":
+    case "SpacerL":
+      return (
+        <SpacerComponent information={converted} spacing={componentType} />
+      );
+
     case "Gridx3":
       return (
         <GridComponent information={converted} index={index} columns={3} />

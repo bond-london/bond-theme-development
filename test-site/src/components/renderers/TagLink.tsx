@@ -1,17 +1,12 @@
 import { Link } from "gatsby";
 import React from "react";
-import { LinkClassName } from "@/styles";
 import { EmbedLink } from "./EmbedLink";
 import { getTagPath } from "@/cms/CmsTag";
 
 export const TagLink: React.FC<{ fragment: Queries.CmsTagLinkFragment }> = ({
   fragment,
 }) => {
-  return (
-    <Link className={LinkClassName} to={getTagPath(fragment)?.to}>
-      {fragment.title}
-    </Link>
-  );
+  return <Link to={getTagPath(fragment)?.to}>{fragment.title}</Link>;
 };
 
 export const TagEmbedLink: React.FC<{

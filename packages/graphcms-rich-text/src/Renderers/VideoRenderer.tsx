@@ -15,7 +15,7 @@ export const VideoRenderer: React.FC<IVideoNodeRendererProps> = ({
   style,
   isInline,
 }) => {
-  const realSrc = src || url;
+  const realSrc = src ?? url;
   if (!realSrc) {
     return (
       <Unsupported
@@ -36,8 +36,8 @@ export const VideoRenderer: React.FC<IVideoNodeRendererProps> = ({
       )}
       style={style}
       src={encodeURI(realSrc)}
-      width={width || "100%"}
-      height={height || "100%"}
+      width={width ?? "100%"}
+      height={height ?? "100%"}
       controls={true}
       title={title}
     >

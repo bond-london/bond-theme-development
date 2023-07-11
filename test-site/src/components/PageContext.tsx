@@ -32,7 +32,7 @@ export function usePageContext() {
         .replaceAll("{description}", context.description);
       return converted;
     },
-    [context]
+    [context],
   );
 
   return { convertText, featuredImage: context.featuredImage };

@@ -29,7 +29,7 @@ function validateOptions(
     externals: false,
   });
 
-  const errors = validated.error || validated.warning;
+  const errors = validated.error ?? validated.warning;
   if (errors) {
     return reporter.panic(
       `Configuration errors: ${errors.details
@@ -38,7 +38,7 @@ function validateOptions(
     );
   }
 
-  return validated.value;
+  return validated.value as IBondThemeOptions;
 }
 
 function buildConfig(
@@ -100,7 +100,7 @@ function buildConfig(
       "gatsby-plugin-sitemap",
       {
         resolve: "gatsby-plugin-manifest",
-        options: options.manifestOptions || {
+        options: options.manifestOptions ?? {
           icon: options.icon,
         },
       },
@@ -159,7 +159,7 @@ function buildConfig(
   };
 
   if (options.showDevPages) {
-    (cloudPlugin.options.headers as { [key: string]: Array<string> })["/*"] = [
+    (cloudPlugin.options.headers as Record<string, Array<string>>)["/*"] = [
       "X-Frame-Options: SAMEORIGIN",
     ];
   }

@@ -38,7 +38,7 @@ export interface IHubspotFormOptions {
 
 export type EventReporter = (
   eventName: string,
-  eventData: { [key: string]: unknown },
+  eventData: Record<string, unknown>,
 ) => void;
 
 export interface IHubspotFormDefinition {

@@ -18,7 +18,6 @@ import {
   isObjectType,
 } from "graphql";
 import { IGatsbyNodeConfig } from "gatsby-graphql-source-toolkit/dist/types";
-import { isGatsbyNodeLifecycleSupported } from "gatsby-plugin-utils";
 
 const specialNames = new Set(["stage", "locale", "localizations"]);
 
@@ -86,18 +85,6 @@ async function retrieveSchema(
   return { schema, gatsbyNodeTypes };
 }
 
-function calculatePluginInit(): "stable" | "unstable" | "unsupported" {
-  try {
-    if (isGatsbyNodeLifecycleSupported("onPluginInit")) {
-      return "stable";
-    }
-    return "unstable";
-  } catch (e) {
-    console.error("Failed to check onPluginInit lifecycle", e);
-  }
-  return "unsupported";
-}
-
 function isRichTextField(type: GraphQLType): boolean {
   const name = type?.toString();
   return name?.endsWith("RichText");
@@ -120,7 +107,7 @@ function isMarkdownField(
 
 function walkType(
   type: GraphQLObjectType,
-  markdownFieldsMap: { [key: string]: Array<string> },
+  markdownFieldsMap: Record<string, Array<string>>,
   knownTypes: Set<string>,
   reporter: Reporter,
   topLevelTypeName: string,
@@ -186,7 +173,7 @@ function walkType(
       }
     } else if (!isKnown && !isScalar && !isEnum) {
       reporter.warn(
-        `What to do with field ${fieldName}: (${fieldType}) ${fieldName} (known ${isKnown}, isScalar ${isScalar}, isEnum ${isEnum}, isObject ${isObjectType(
+        `What to do with field ${fieldName}: (${fieldType.toString()}) ${fieldName} (known ${isKnown}, isScalar ${isScalar}, isEnum ${isEnum}, isObject ${isObjectType(
           fieldType,
         )})`,
       );
@@ -201,7 +188,7 @@ function walkType(
 
 function walkNodesToFindImportantFields(
   { schema }: ISchemaInformation,
-  markdownFieldsMap: { [key: string]: Array<string> },
+  markdownFieldsMap: Record<string, Array<string>>,
   reporter: Reporter,
 ): Map<string, Array<SpecialFieldEntry>> {
   const nodeInterface = schema.getType("Node") as GraphQLAbstractType;
@@ -242,15 +229,4 @@ async function initializeGlobalState(
   );
 }
 
-const pluginInitSupport = calculatePluginInit();
-switch (pluginInitSupport) {
-  case "stable":
-    exports.onPluginInit = initializeGlobalState;
-    break;
-  case "unstable":
-    exports.unstable_onPluginInit = initializeGlobalState;
-    break;
-  case "unsupported":
-    exports.onPreBootstrap = initializeGlobalState;
-    break;
-}
+export const onPluginInit = initializeGlobalState;

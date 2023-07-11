@@ -226,11 +226,11 @@ export const BondFullVideo: React.FC<
   });
 
   const autoLoadFull = props.autoLoad && previewHasStarted;
-  const loadFull = autoLoadFull || fullRequested;
+  const loadFull = autoLoadFull ?? fullRequested;
   const showFullRequest = !loadFull && previewHasStarted && !props.autoLoad;
   const realPosterSrc = noPoster
     ? undefined
-    : posterSrc || video.posterSrc || undefined;
+    : posterSrc ?? video.posterSrc ?? undefined;
 
   if (preview) {
     return (
@@ -258,7 +258,7 @@ export const BondFullVideo: React.FC<
           fullHasLoaded={fullHasLoaded}
           onFullStarted={onFullStarted}
           fullHasStarted={fullHasStarted}
-          loop={loop || videoLoop}
+          loop={loop ?? videoLoop}
           muted={muted}
           autoPlay={true}
           loadFull={loadFull}
@@ -299,7 +299,7 @@ export const BondFullVideo: React.FC<
         fullHasLoaded={fullHasLoaded}
         onFullStarted={onFullStarted}
         fullHasStarted={fullHasStarted}
-        loop={loop || videoLoop}
+        loop={loop ?? videoLoop}
         muted={muted}
         autoPlay={true}
         loadFull={loadFull}

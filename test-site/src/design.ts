@@ -17,7 +17,7 @@ interface FontTableEntry extends SizeMap {
   weight: string;
 }
 
-function mapObject<T, K = string>(o: { [s: string]: T }) {
+function mapObject<T, K = string>(o: Record<string, T>) {
   return Object.entries(o).map(([key, value]) => ({
     key: key as unknown as K,
     value,

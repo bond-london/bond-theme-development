@@ -85,15 +85,13 @@ export const CmsTagLayout: React.FC<
   };
 
   const noDefaultHero =
-    props.noHero ||
-    (topContent && topContent.length) ||
-    (template?.preContent && template.preContent.length);
+    (props.noHero ?? topContent?.length) || template?.preContent?.length;
 
   return (
     <div
       className={lookupColourClassNames(
-        backgroundColour || template?.backgroundColour,
-        textColour || template?.textColour,
+        backgroundColour ?? template?.backgroundColour,
+        textColour ?? template?.textColour,
       )}
     >
       <PageContext.Provider
@@ -103,7 +101,7 @@ export const CmsTagLayout: React.FC<
           featuredImage: convertCmsAssetToBondImage(featuredImage),
         }}
       >
-        <CmsNavigationMenu page={menu || template?.menu} />
+        <CmsNavigationMenu page={menu ?? template?.menu} />
         <Slice alias="analytics" />
         {noDefaultHero ? (
           <>
@@ -120,7 +118,7 @@ export const CmsTagLayout: React.FC<
             textColour={textColour}
           />
         )}
-        {props.children || (
+        {props.children ?? (
           <Unsupported
             message="Need to pass in children - maybe ArticleList"
             component="Article type layout"
@@ -134,7 +132,7 @@ export const CmsTagLayout: React.FC<
         />
         <CmsContent fragment={template?.postContent} offset={1} />
 
-        <CmsFooter page={footer || template?.footer} />
+        <CmsFooter page={footer ?? template?.footer} />
       </PageContext.Provider>
     </div>
   );

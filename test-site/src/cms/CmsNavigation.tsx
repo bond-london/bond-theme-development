@@ -30,15 +30,15 @@ function convertCmsNavigationItem({
     id,
     name: title,
     text: useTitle ? title : undefined,
-    external: link || undefined,
+    external: link ?? undefined,
     internal: remoteInternal
       ? convertCMSInternalLink(remoteInternal)?.to
       : undefined,
     icon: convertCmsAssetToBondVisual(icon, { loop: true, loopDelay: 5000 }),
-    textColour: textColour || undefined,
-    backgroundColour: backgroundColour || undefined,
-    isButton: isButton || undefined,
-    isOutlined: isOutlined || undefined,
+    textColour: textColour ?? undefined,
+    backgroundColour: backgroundColour ?? undefined,
+    isButton: isButton ?? undefined,
+    isOutlined: isOutlined ?? undefined,
     entries: arrayOrUndefined(
       navigationItems?.map((i) =>
         convertCmsNavigationItem(i as NavigationItemFragment),
@@ -57,7 +57,7 @@ export function convertCmsNavigation({
   return {
     id,
     name,
-    entries: arrayOrUndefined(entries?.map(convertCmsNavigationItem)) || [],
+    entries: arrayOrUndefined(entries?.map(convertCmsNavigationItem)) ?? [],
     textColour,
     backgroundColour,
   };

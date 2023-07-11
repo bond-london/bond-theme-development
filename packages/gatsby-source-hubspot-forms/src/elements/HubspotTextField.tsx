@@ -53,11 +53,11 @@ const HubspotTextField: React.FC<IFieldProps> = ({
     <input
       value={currentValue}
       id={makeInputId(formName, field.name)}
-      name={field.name || undefined}
-      placeholder={field.placeholder || undefined}
-      type={calculateInputType(field) || undefined}
-      hidden={field.hidden || undefined}
-      required={field.required || undefined}
+      name={field.name ?? undefined}
+      placeholder={field.placeholder ?? undefined}
+      type={calculateInputType(field) ?? undefined}
+      hidden={field.hidden ?? undefined}
+      required={field.required ?? undefined}
       className={options.fieldClassName}
       onInput={onInteracted}
       onChange={handleChange}

@@ -23,7 +23,7 @@ import { CodeOrActionRenderer } from "./renderers/CodeOrActionRenderer";
 import { RenderVisual } from "./renderers/RenderVisual";
 
 export const defaultProjectClassNameOverrides: ClassNameOverrides = {
-  a: "text-blue underline decoration-blue",
+  a: "text-Blue underline decoration-Blue",
   h1: "h1",
   h2: "h2",
   h3: "h3",
@@ -45,9 +45,9 @@ const projectRenderers: Partial<INodeRenderer> = {
     <DefaultRenderer {...props} element="blockquote" className="h2" />
   ),
   class: {
-    red: { description: "Red coloured text", className: "text-red" },
-    green: { description: "Green coloured text", className: "text-green" },
-    blue: { description: "Blue coloured text", className: "text-blue" },
+    red: { description: "Red coloured text", className: "text-Red" },
+    green: { description: "Green coloured text", className: "text-Green" },
+    blue: { description: "Blue coloured text", className: "text-Blue" },
     lined: { description: "Lined table", className: "lined" },
     special: {
       description: "Special table",

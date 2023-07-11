@@ -83,7 +83,7 @@ export const GatsbyVideo: React.FC<
     }
   }, [pause]);
 
-  const poster = noPoster ? undefined : posterSrc || gatsbyVideo.poster;
+  const poster = noPoster ? undefined : posterSrc ?? gatsbyVideo.poster;
 
   return (
     <div

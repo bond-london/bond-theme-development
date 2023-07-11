@@ -35,7 +35,7 @@ export const VisualHero: React.FC<{
       style={{
         paddingBottom: `${Math.floor(100 * (size.height / size.width))}%`,
       }}
-      id={anchor || undefined}
+      id={anchor ?? undefined}
       data-component="Visual Hero"
     >
       <div className="absolute top-0 left-0 bottom-0 right-0 grid container-cols-grid">

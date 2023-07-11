@@ -1,6 +1,5 @@
 import classNames from "classnames";
 import React, { Fragment } from "react";
-import { SectionBodyClassName } from "@/styles";
 import { ILinkInformation, LinkOrButton } from "./LinkOrButton";
 
 export const SectionLinks: React.FC<{
@@ -9,13 +8,7 @@ export const SectionLinks: React.FC<{
   separator?: boolean;
   iconHeightClassName?: string;
   className?: string;
-}> = ({
-  links,
-  vertical,
-  separator,
-  iconHeightClassName,
-  className = SectionBodyClassName,
-}) => {
+}> = ({ links, vertical, separator, iconHeightClassName, className }) => {
   if (links.length === 0) return null;
 
   return (

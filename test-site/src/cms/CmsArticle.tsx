@@ -2,22 +2,22 @@ import { convertCmsAssetToBondVisual } from "@bond-london/gatsby-theme";
 import { graphql } from "gatsby";
 
 export function findArticleInformationContent(
-  topContent: ReadonlyArray<Queries.CmsComponentCoreFragment>
+  topContent: ReadonlyArray<Queries.CmsComponentCoreFragment>,
 ) {
   const articleInfo = topContent?.find(
-    (c) => c.componentType === "ArticleInfo"
+    (c) => c.componentType === "ArticleInfo",
   );
   const firstContent = topContent?.[0];
 
   if (articleInfo && firstContent) {
     const nonNullArticle = Object.fromEntries(
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      Object.entries(articleInfo).filter(([_, v]) => v !== null)
+      Object.entries(articleInfo).filter(([_, v]) => v !== null),
     );
     const result = { ...firstContent, ...nonNullArticle };
     return result;
   }
-  return articleInfo || firstContent;
+  return articleInfo ?? firstContent;
 }
 
 export function calculateArticleLinkPath({

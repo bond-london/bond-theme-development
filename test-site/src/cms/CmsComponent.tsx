@@ -33,7 +33,7 @@ export function convertCmsCoreComponent(
   }: Omit<Queries.CmsComponentCoreFragment, "__typename" | "componentType">,
   convertText?: TextConverter,
 ): ICoreComponent {
-  const textConverter = convertText || defaultTextConverter;
+  const textConverter = convertText ?? defaultTextConverter;
   return {
     id,
     name: heading,
@@ -57,7 +57,7 @@ function convertCmsContentComponent(
     icon: convertCmsAssetToBondVisual(icon, {
       dontCrop: true,
     }),
-    links: links && links.length ? links.map(convertCmsLink) : undefined,
+    links: links?.length ? links.map(convertCmsLink) : undefined,
   };
 }
 
@@ -68,14 +68,12 @@ function convertCmsComponentInformation(
   const { contents, internalReferences } = fragment;
   return {
     ...convertCmsContentComponent(fragment, convertText),
-    internalReferences:
-      internalReferences && internalReferences.length
-        ? internalReferences.map(convertCmsReference)
-        : undefined,
-    contents:
-      contents && contents.length
-        ? contents.map((f) => convertCmsContentComponent(f, convertText))
-        : undefined,
+    internalReferences: internalReferences?.length
+      ? internalReferences.map(convertCmsReference)
+      : undefined,
+    contents: contents?.length
+      ? contents.map((f) => convertCmsContentComponent(f, convertText))
+      : undefined,
   };
 }
 

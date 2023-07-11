@@ -11,7 +11,9 @@ export function createIntersectionObserver(
   if (!(`IntersectionObserver` in window)) {
     return function observe(): Unobserver {
       callback();
-      return function unobserve(): void {};
+      return function unobserve(): void {
+        /* noop */
+      };
     };
   }
 

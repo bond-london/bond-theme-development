@@ -119,7 +119,7 @@ export const BondVideoPoster: React.FC<
 }) => {
   const forGatsbyVideo = forVideo as unknown as IGatsbyVideo;
 
-  if (posterSrc || posterData) {
+  if (posterSrc ?? posterData) {
     return (
       <BondVideoPosterWithPoster
         posterSrc={posterSrc}

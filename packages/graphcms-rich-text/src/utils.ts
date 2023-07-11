@@ -27,7 +27,7 @@ export function rtfFromText(text: string): IRichTextInformation {
 export function getRTFInformation(
   node: IGenericRichTextNode | undefined | null,
 ): IRichTextInformation | undefined {
-  if (node && node.cleaned) {
+  if (node?.cleaned) {
     const information: IRichTextInformation = {
       cleaned: node.cleaned as ReadonlyArray<ElementNode>,
       references: node.references,

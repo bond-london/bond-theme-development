@@ -1,22 +1,17 @@
 {
   "colorOptions": {
-    "black": "#0f0f0f",
-    "grey": "#e0e0e0",
-    "gray": "#f0f0f0",
-    "white": "#ffffff",
-    "green": "#0ff00f",
-    "green-hover": "#0fe00f",
-    "blue": "#0f0ff0",
-    "blue-hover": "#0f0fe0",
-    "red": "#f00f0f",
-    "yellow": "#fff34b",
-    "error": "#f0f00f"
+    "Black": "#0f0f0f",
+    "Blue": "#0f0ff0",
+    "Green": "#0ff00f",
+    "Red": "#f00f0f",
+    "White": "#f0f0f0",
+    "Grey": "#e0e0e0"
   },
   "colorFile": "./colors.ts",
   "colorOpposites": {
-    "black": "white",
-    "green": "blue",
-    "red": "yellow"
+    "Black": "White",
+    "Grey": "Blue",
+    "Red": "Green"
   },
   "spacing": {
     "section": 32,

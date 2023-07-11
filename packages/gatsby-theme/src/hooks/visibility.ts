@@ -6,8 +6,8 @@ export function onVisibleToUser(
   threshold?: number,
   delay?: number,
 ): () => void {
-  const realThreshold = undefined === threshold ? 0.2 : threshold;
-  const realDelay = undefined === delay ? 10 : delay;
+  const realThreshold = threshold ?? 0.2;
+  const realDelay = delay ?? 10;
 
   let timeoutHandle: number | undefined;
   let isVisible: boolean | undefined;
@@ -18,7 +18,7 @@ export function onVisibleToUser(
     const isFullyVisible = isVisible && isPageVisible;
     if (isFullyVisible !== lastNotified) {
       lastNotified = isFullyVisible;
-      callback(lastNotified || false);
+      callback(lastNotified ?? false);
     }
   };
 

@@ -33,14 +33,14 @@ export function makeValidTextString(
   if (!text) return undefined;
 
   const despaced = shrinkSpaces(text);
-  if (despaced.length === 1 && despaced[0] === " ") return undefined;
+  if (despaced.length === 1 && despaced.startsWith(" ")) return undefined;
   if (despaced.length > 0) {
     return despaced.replace(/&nbsp;/g, "\u00a0").replace(/-/g, "\u2011");
   }
   return undefined;
 }
 
-const keepEmpty: { [name: string]: boolean } = {
+const keepEmpty: Record<string, boolean> = {
   table_header_cell: true,
   table_cell: true,
   iframe: true,

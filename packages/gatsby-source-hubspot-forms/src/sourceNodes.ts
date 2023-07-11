@@ -51,7 +51,7 @@ export async function sourceNodes(
       },
     };
     formNode.internal.contentDigest = createContentDigest(formNode);
-    createNode(formNode);
+    void createNode(formNode);
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     reporter.verbose(`Creating hubspot form ${item.name} (${item.guid})`);
   });

@@ -59,21 +59,24 @@ export interface INodeRenderer {
   table_cell: DefaultNodeRenderer;
   blockquote: DefaultNodeRenderer;
   code_block: DefaultNodeRenderer;
-  class: {
-    [key: string]: {
+  class: Record<
+    string,
+    {
       description: string;
       renderer?: ClassNodeRenderer;
       element?: keyof JSX.IntrinsicElements;
       className?: string;
-    };
-  };
-  link_to: {
-    [key: string]: (props: ILinkToRendererProps) => JSX.Element | undefined;
-  };
-  embed_asset: { [key: string]: EmbedNodeRenderer | undefined };
-  embed_node: {
-    [key: string]: (props: IEmbedNodeRendererProps) => JSX.Element | undefined;
-  };
+    }
+  >;
+  link_to: Record<
+    string,
+    (props: ILinkToRendererProps) => JSX.Element | undefined
+  >;
+  embed_asset: Record<string, EmbedNodeRenderer | undefined>;
+  embed_node: Record<
+    string,
+    (props: IEmbedNodeRendererProps) => JSX.Element | undefined
+  >;
 }
 
 export interface IFullNodeRenderer extends INodeRenderer {

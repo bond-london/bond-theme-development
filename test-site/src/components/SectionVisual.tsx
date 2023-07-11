@@ -1,6 +1,5 @@
 import { BondVisual, IBondVisual } from "@bond-london/gatsby-theme";
 import React from "react";
-import { SectionBodyClassName } from "@/styles";
 import {
   PlayButton,
   PauseButton,
@@ -20,7 +19,7 @@ export const SectionVisual: React.FC<{
       visual={visual}
       autoPlay={autoPlay}
       muted={!autoPlay}
-      className={className || SectionBodyClassName}
+      className={className}
       showControls={true}
       playButton={PlayButton}
       pauseButton={PauseButton}

@@ -36,7 +36,7 @@ export const HeadingAndIcon: React.FC<{
   headingElement,
   postHeadingElement,
 }) => {
-  if (heading || icon) {
+  if (heading ?? icon) {
     return (
       <>
         {icon && (
@@ -45,7 +45,7 @@ export const HeadingAndIcon: React.FC<{
               className,
               "col-start-1 row-start-1 self-end laptop:justify-self-end",
               dynamic &&
-                "mx-mobile-margin tablet:mx-tablet-margin laptop:mx-laptop-margin"
+                "mx-mobile-margin tablet:mx-tablet-margin laptop:mx-laptop-margin",
             )}
             icon={icon}
           />
@@ -58,7 +58,7 @@ export const HeadingAndIcon: React.FC<{
               className,
               "col-start-1 flex flex-col justify-end no-underline",
               dynamic &&
-                "mx-mobile-margin tablet:mx-tablet-margin laptop:mx-laptop-margin"
+                "mx-mobile-margin tablet:mx-tablet-margin laptop:mx-laptop-margin",
             )}
           >
             <SectionHeading

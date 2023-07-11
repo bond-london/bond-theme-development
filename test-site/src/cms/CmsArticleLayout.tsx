@@ -39,19 +39,19 @@ export const CmsArticleLayout: React.FC<
   }
 
   const template =
-    article.template || articleType.articleTemplate || articleType.template;
+    article.template ?? articleType.articleTemplate ?? articleType.template;
   return (
     <ArticleContext.Provider value={{ article }}>
       <div
         className={lookupColourClassNames(
-          article.backgroundColour ||
-            articleType.backgroundColour ||
+          article.backgroundColour ??
+            articleType.backgroundColour ??
             template?.backgroundColour,
-          article.textColour || articleType.textColour || template?.textColour,
+          article.textColour ?? articleType.textColour ?? template?.textColour,
         )}
       >
         <CmsNavigationMenu
-          page={article.menu || articleType.menu || template?.menu}
+          page={article.menu ?? articleType.menu ?? template?.menu}
         />
         <Slice alias="analytics" />
         <CmsContent
@@ -64,7 +64,7 @@ export const CmsArticleLayout: React.FC<
         />
 
         <CmsFooter
-          page={article.footer || articleType.footer || template?.footer}
+          page={article.footer ?? articleType.footer ?? template?.footer}
         />
       </div>
     </ArticleContext.Provider>

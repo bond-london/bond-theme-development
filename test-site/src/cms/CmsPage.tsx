@@ -8,7 +8,7 @@ export function calculatePageLinkPath({
   backgroundColour,
 }: Queries.CmsPageLinkFragment) {
   const visual = convertCmsAssetToBondVisual(featuredImage);
-  const to = gatsbyPath as string;
+  const to = gatsbyPath!;
   return { visual, to, textColour, backgroundColour };
 }
 // eslint-disable-next-line import/no-unused-modules

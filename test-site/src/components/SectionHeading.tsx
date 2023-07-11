@@ -25,7 +25,7 @@ export const SectionHeading: React.FC<{
   preHeadingElement: PreHeadingElement = "h3",
   postHeadingElement: PostHeadingElement = "h3",
 }) => {
-  if (!(heading || preHeading || postHeading)) return null;
+  if (!(heading ?? preHeading ?? postHeading)) return null;
   return (
     <>
       {preHeading && (

@@ -18,8 +18,8 @@ const Analytics: React.FC = () => {
       <GoogleTagManager cookieName={cookieName} gtm={googleTag} />
       <ReactCookieConsent
         cookieName={cookieName}
-        declineCookieValue={declinedCookieName || undefined}
-        containerClasses="bg-Purple h4 text-DarkGray container-cols-grid fixed left-0 right-0 w-full z-[100] items-center py-xs gap-y-xs"
+        declineCookieValue={declinedCookieName ?? undefined}
+        containerClasses="bg-Blue h4 text-White container-cols-grid fixed left-0 right-0 w-full z-[100] items-center py-xs gap-y-xs"
         disableStyles={true}
         disableButtonStyles={true}
         location="bottom"

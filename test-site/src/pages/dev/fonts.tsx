@@ -32,7 +32,7 @@ const Fonts: React.FC = () => {
             </div>
           );
         })}
-        <div className="col-span-full border-b border-midnight-blue" />
+        <div className="col-span-full border-b border-Blue" />
         {fontTable.map(({ key: name, value }) => {
           {
             return styles.map((style) => {
@@ -50,7 +50,7 @@ const Fonts: React.FC = () => {
                     </p>
                   </div>
                   {sizes.map(({ key }) => {
-                    const newSize = others[key] || currentSize;
+                    const newSize = others[key] ?? currentSize;
                     currentSize = newSize;
 
                     return (
@@ -69,7 +69,7 @@ const Fonts: React.FC = () => {
                       </div>
                     );
                   })}
-                  <div className="col-span-full border-b border-midnight-blue" />
+                  <div className="col-span-full border-b border-Blue" />
                 </Fragment>
               );
             });

@@ -62,7 +62,7 @@ export function buildTypography(
         }
       });
       if (noMax) {
-        const last = classes.pop() as string;
+        const last = classes.pop()!;
         const max = last.replace(":text-", ":text-max-");
         classes.push(max);
       }

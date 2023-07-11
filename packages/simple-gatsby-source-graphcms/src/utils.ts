@@ -25,16 +25,16 @@ import pThrottle from "p-throttle";
 
 export const stateCache: IPluginState = {};
 
-function postprocessValue(
+function postprocessValue<T = unknown>(
   locale: string,
   stage: string,
-  value: { locale?: string; stage: string } & unknown,
+  value: { locale?: string; stage: string } & T,
 ): {
   locale?: string;
   stage: string;
   actualLocale?: string;
   actualStage: string;
-} & unknown {
+} & T {
   const { locale: actualLocale, stage: actualStage, ...rest } = value;
   const newValue = {
     ...rest,
@@ -43,7 +43,12 @@ function postprocessValue(
     actualStage,
     actualLocale,
   };
-  return newValue;
+  return newValue as {
+    locale?: string;
+    stage: string;
+    actualLocale?: string;
+    actualStage: string;
+  } & T;
 }
 
 function postprocessData(
@@ -74,12 +79,13 @@ function postprocessData(
     return result;
   }
 
-  const updatedData: { [key: string]: unknown } = {};
+  const updatedData: Record<string, unknown> = {};
   // eslint-disable-next-line guard-for-in
   for (const key in data) {
     const values = data[key];
     if (Array.isArray(values)) {
       const newValues = values.map(value =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         postprocessValue(locale, stage, value),
       );
       updatedData[key] = newValues;
@@ -97,7 +103,7 @@ interface IGraphCMSResponse {
 const throttler = pThrottle({ limit: 2, interval: 1000 });
 
 type Fetcher = Promise<
-  ExecutionResult<{ [key: string]: unknown }, { [key: string]: unknown }>
+  ExecutionResult<Record<string, unknown>, Record<string, unknown>>
 >;
 
 export function createExecutor(
@@ -153,7 +159,7 @@ export function createExecutor(
       .catch(error =>
         reporter.panic(
           `gatsby-source-graphcms: Error postprocessing GraphCMS nodes: "${query}"`,
-          new Error(error),
+          new Error(error as string),
         ),
       );
   };
@@ -179,11 +185,7 @@ export async function createSourcingConfig(
 
   const addSystemFieldArguments = (
     field: GraphQLField<unknown, unknown>,
-  ):
-    | {
-        [argName: string]: unknown;
-      }
-    | undefined => {
+  ): Record<string, unknown> | undefined => {
     if (["createdAt", "publishedAt", "updatedAt"].includes(field.name)) {
       return { variation: `COMBINED` };
     }
@@ -242,6 +244,7 @@ export async function retry<A>(
         if (typeof error === "string" || error instanceof Error) {
           options.onRetry(error);
         } else {
+          // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
           options.onRetry("" + error);
         }
       }
@@ -275,10 +278,10 @@ export function getRealType(
   level?: number,
 ): GraphQLType {
   if (isListType(valueType)) {
-    return getRealType(valueType.ofType, (level || 0) + 1);
+    return getRealType(valueType.ofType, (level ?? 0) + 1);
   }
   if (isNonNullType(valueType)) {
-    return getRealType(valueType.ofType, (level || 0) + 1);
+    return getRealType(valueType.ofType, (level ?? 0) + 1);
   }
   return valueType;
 }

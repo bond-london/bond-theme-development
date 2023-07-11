@@ -27,7 +27,7 @@ export const SectionIcon: React.FC<{
           className={classNames(
             className,
             iconHeightClassName,
-            "icon-container relative flex"
+            "icon-container relative flex",
           )}
           dangerouslySetInnerHTML={{ __html: raw }}
         />

@@ -30,12 +30,10 @@ export interface IFontTableEntry {
 
 export interface IBondConfigurationOptions {
   colorFile?: string;
-  colorOptions: { [color: string]: string };
-  colorOpposites?: { [color: string]: string };
-  sizes: { [size: string]: ISizeInformation };
-  fontTable: {
-    [font: string]: IFontTableEntry & { [key: string]: string | number };
-  };
+  colorOptions: Record<string, string>;
+  colorOpposites?: Record<string, string>;
+  sizes: Record<string, ISizeInformation>;
+  fontTable: Record<string, IFontTableEntry & Record<string, string | number>>;
   spacing: { section: number; [spacing: string]: number };
   lineHeight?: number;
 }
@@ -45,9 +43,8 @@ const plugin = require("tailwindcss/plugin");
 module.exports = plugin.withOptions(
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   (config: IBondConfigurationOptions) => (helpers: PluginAPI) => {
-    const { addBase } = helpers;
     /* eslint-disable @typescript-eslint/naming-convention */
-    addBase({
+    helpers.addBase({
       ".icon-container > :first-child": { width: "auto", height: "100%" },
     });
     /* eslint-enable @typescript-eslint/naming-convention */

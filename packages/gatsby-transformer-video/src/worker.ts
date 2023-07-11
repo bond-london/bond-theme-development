@@ -192,7 +192,7 @@ async function runVideoTransform(
     }
   } catch (err) {
     reporter.verbose(
-      `${label}: Failed to get ${outputName} from cache (${err})`,
+      `${label}: Failed to get ${outputName} from cache (${err as string})`,
     );
   }
 

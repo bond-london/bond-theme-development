@@ -18,14 +18,14 @@ export const CmsFooter: React.FC<{
     }
   `);
 
-  const footer = page || data.graphCmsNavigation;
+  const footer = page ?? data.graphCmsNavigation;
   if (!footer) {
     return <Unsupported component="Footer" message="No footer" />;
   }
   return (
     <Footer
       menu={convertCmsNavigation(footer)}
-      buildYear={data.site?.buildYear || null}
+      buildYear={data.site?.buildYear ?? null}
     />
   );
 };

@@ -54,7 +54,7 @@ export async function createTransformedVideo(
 
   reporter.verbose(
     `About to start job for ${details.absolutePath} for width ${
-      transformArgs.width || "??"
+      transformArgs.width ?? "??"
     }`,
   );
   const { dominantColour, mp4Hvc1Name, mp4Avc1Name, webmName, posterName } =
@@ -70,7 +70,7 @@ export async function createTransformedVideo(
     height,
     hasAudio: source.hasAudio,
     dominantColour,
-    layout: transformArgs.layout || "constrained",
+    layout: transformArgs.layout ?? "constrained",
     mp4Hvc1: `${publicBaseUrl}/${mp4Hvc1Name}`,
     mp4Avc1: `${publicBaseUrl}/${mp4Avc1Name}`,
     webm: `${publicBaseUrl}/${webmName}`,

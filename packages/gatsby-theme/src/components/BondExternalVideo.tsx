@@ -171,11 +171,11 @@ export const BondExternalVideo: React.FC<
     verticalCropPosition,
   });
 
-  const loadFull = (props.autoLoad && previewHasStarted) || fullRequested;
+  const loadFull = (props.autoLoad && previewHasStarted) ?? fullRequested;
   const showFullRequest = !loadFull && !props.autoLoad && !fullRequested;
   const realPosterSrc = noPoster
     ? undefined
-    : posterSrc || video.posterSrc || undefined;
+    : posterSrc ?? video.posterSrc ?? undefined;
 
   if (videoData) {
     return (
@@ -200,7 +200,7 @@ export const BondExternalVideo: React.FC<
           fullRequested={fullRequested}
           onFullLoaded={onFullLoaded}
           fullHasLoaded={fullHasLoaded}
-          loop={loop || videoLoop}
+          loop={loop ?? videoLoop}
           loadFull={loadFull}
           objectFit={objectFit}
           objectPosition={objectPosition}
@@ -235,7 +235,7 @@ export const BondExternalVideo: React.FC<
         fullRequested={fullRequested}
         onFullLoaded={onFullLoaded}
         fullHasLoaded={fullHasLoaded}
-        loop={loop || videoLoop}
+        loop={loop ?? videoLoop}
         loadFull={loadFull}
         objectFit={objectFit}
         objectPosition={objectPosition}

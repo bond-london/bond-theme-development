@@ -81,7 +81,7 @@ export function convertCmsVideoToBondVideo(
   const preview = cms.preview?.localFile?.childGatsbyVideo?.transformed;
 
   const full = cms.full?.localFile?.childGatsbyVideo?.transformed;
-  const external = cms.external || undefined;
+  const external = cms.external ?? undefined;
   if (external && full) {
     throw new Error("Can only have external or full, not both");
   }
@@ -90,13 +90,13 @@ export function convertCmsVideoToBondVideo(
   }
 
   const posterSrc =
-    cms.poster?.localFile?.publicURL ||
-    getPosterSrc(preview) ||
+    cms.poster?.localFile?.publicURL ??
+    getPosterSrc(preview) ??
     getPosterSrc(full);
 
   const posterData =
-    cms.poster?.gatsbyImage ||
-    cms.poster?.gatsbyImageData ||
+    cms.poster?.gatsbyImage ??
+    cms.poster?.gatsbyImageData ??
     cms.poster?.localFile?.childImageSharp?.gatsbyImageData;
 
   const videoData = preview;
@@ -171,7 +171,7 @@ export function convertCmsAssetToBondVideo(
     horizontalCropPosition?: Horizontal | null;
     preview?: ICmsVideoAsset | null;
   },
-): IBondSimpleVideo | IBondSimpleVideo | undefined {
+): IBondSimpleVideo | undefined {
   if (!asset) return undefined;
   const {
     preview,
@@ -180,7 +180,7 @@ export function convertCmsAssetToBondVideo(
     dontCrop,
     verticalCropPosition,
     horizontalCropPosition,
-  } = options || {};
+  } = options ?? {};
   const videoData = asset.localFile?.childGatsbyVideo?.transformed;
   const previewData = preview?.localFile?.childGatsbyVideo?.transformed;
 

@@ -19,8 +19,8 @@ import {
 import {
   CustomEmbedRendererProps,
   DefaultRenderer,
+  IRichTextInformation,
   RichText,
-  RTFContent,
 } from "../src";
 
 describe("@bond-london/graphcms-rich-text", () => {
@@ -238,22 +238,24 @@ describe("@bond-london/graphcms-rich-text", () => {
   });
 
   it("renders link", () => {
-    const linkContent: RTFContent = [
-      {
-        type: "link",
-        id: "test",
-        rel: "noreferrer",
-        href: "https://graphcms.com",
-        title: "GraphCMS website",
-        className: "text-white",
-        openInNewTab: true,
-        children: [
-          {
-            text: "GraphCMS",
-          },
-        ],
-      },
-    ];
+    const linkContent: IRichTextInformation = {
+      cleaned: [
+        {
+          type: "link",
+          id: "test",
+          rel: "noreferrer",
+          href: "https://graphcms.com",
+          title: "GraphCMS website",
+          className: "text-white",
+          openInNewTab: true,
+          children: [
+            {
+              text: "GraphCMS",
+            },
+          ],
+        },
+      ],
+    };
 
     const { container } = render(<RichText content={linkContent} />);
 
@@ -274,17 +276,19 @@ describe("@bond-london/graphcms-rich-text", () => {
   });
 
   it("renders iframe", () => {
-    const iframeContent: RTFContent = [
-      {
-        url: "https://www.youtube.com/watch?v=Ylmd737tw5w",
-        type: "iframe",
-        children: [
-          {
-            text: "",
-          },
-        ],
-      },
-    ];
+    const iframeContent: IRichTextInformation = {
+      cleaned: [
+        {
+          url: "https://www.youtube.com/watch?v=Ylmd737tw5w",
+          type: "iframe",
+          children: [
+            {
+              text: "",
+            },
+          ],
+        },
+      ],
+    };
 
     const { container } = render(<RichText content={iframeContent} />);
 
@@ -312,13 +316,18 @@ describe("@bond-london/graphcms-rich-text", () => {
       <RichText
         content={iframeContent}
         renderers={{
-          class: (props): JSX.Element => (
-            <DefaultRenderer
-              {...props}
-              additionalClassName="bg-white"
-              element="section"
-            />
-          ),
+          class: {
+            test: {
+              description: "Test class",
+              renderer: (props): JSX.Element => (
+                <DefaultRenderer
+                  {...props}
+                  additionalClassName="bg-white"
+                  element="section"
+                />
+              ),
+            },
+          },
         }}
       />,
     );
@@ -359,7 +368,7 @@ describe("@bond-london/graphcms-rich-text", () => {
         content={imageContent}
         renderers={{
           img: ({ src, altText }): JSX.Element => (
-            <img src={src || "/"} alt={altText || ""} />
+            <img src={src ?? "/"} alt={altText ?? ""} />
           ),
         }}
       />,
@@ -405,9 +414,11 @@ describe("@bond-london/graphcms-rich-text", () => {
   });
 
   it("should render HTML and JSX tags correctly", () => {
-    const content: RTFContent = [
-      { type: "paragraph", children: [{ text: "<Test />", code: true }] },
-    ];
+    const content: IRichTextInformation = {
+      cleaned: [
+        { type: "paragraph", children: [{ text: "<Test />", code: true }] },
+      ],
+    };
 
     const { container } = render(<RichText content={content} />);
 
@@ -435,9 +446,9 @@ describe("custom embeds and assets", () => {
       },
     ];
 
-    const { container } = render(
-      <RichText content={embedAssetContent} references={references} />,
-    );
+    const content = { ...embedAssetContent, references };
+
+    const { container } = render(<RichText content={content} />);
 
     expect(container).toMatchSnapshot();
   });
@@ -455,11 +466,11 @@ describe("custom embeds and assets", () => {
         mimeType: "video/quicktime",
       },
     ];
+    const content = { ...embedAssetContent, references };
 
     const { container } = render(
       <RichText
-        content={embedAssetContent}
-        references={references}
+        content={content}
         renderers={{
           embed_asset: {
             video: (): JSX.Element => <div>custom video</div>,
@@ -538,9 +549,9 @@ describe("custom embeds and assets", () => {
       },
     ];
 
-    const { container } = render(
-      <RichText content={embedAssetContent} references={references} />,
-    );
+    const content = { ...embedAssetContent, references };
+
+    const { container } = render(<RichText content={content} />);
 
     expect(console.warn).toHaveBeenCalledTimes(0);
     expect(container).toMatchSnapshot();
@@ -549,59 +560,58 @@ describe("custom embeds and assets", () => {
   it(`shouldn't render embeds or assets if id is missing in references`, () => {
     console.error = jest.fn();
 
-    const content: RTFContent = [
-      {
-        type: "embed",
-        nodeId: "cknjbzowggjo90b91kjisy03a",
-        children: [
-          {
-            text: "",
-          },
-        ],
-        nodeType: "Asset",
-      },
-      {
-        type: "embed",
-        nodeId: "ckrus0f14ao760b32mz2dwvgx",
-        children: [
-          {
-            text: "",
-          },
-        ],
-        nodeType: "Asset",
-      },
-      {
-        type: "embed",
-        nodeId: "custom_post_id",
-        children: [
-          {
-            text: "",
-          },
-        ],
-        nodeType: "Post",
-      },
-    ];
+    const content: IRichTextInformation = {
+      cleaned: [
+        {
+          type: "embed",
+          nodeId: "cknjbzowggjo90b91kjisy03a",
+          children: [
+            {
+              text: "",
+            },
+          ],
+          nodeType: "Asset",
+        },
+        {
+          type: "embed",
+          nodeId: "ckrus0f14ao760b32mz2dwvgx",
+          children: [
+            {
+              text: "",
+            },
+          ],
+          nodeType: "Asset",
+        },
+        {
+          type: "embed",
+          nodeId: "custom_post_id",
+          children: [
+            {
+              text: "",
+            },
+          ],
+          nodeType: "Post",
+        },
+      ],
+      references: [
+        {
+          id: "",
+          url: "https://media.graphcms.com/dsQtt0ARqO28baaXbVy9",
+          mimeType: "image/png",
+        },
+        {
+          id: "",
+          url: "https://media.graphcms.com/7M0lXLdCQfeIDXnT2SVS",
+          mimeType: "video/mp4",
+        },
+        {
+          id: "",
+          title: "GraphCMS is awesome :rocket:",
+        },
+      ],
+    };
 
-    const references = [
-      {
-        id: "",
-        url: "https://media.graphcms.com/dsQtt0ARqO28baaXbVy9",
-        mimeType: "image/png",
-      },
-      {
-        id: "",
-        url: "https://media.graphcms.com/7M0lXLdCQfeIDXnT2SVS",
-        mimeType: "video/mp4",
-      },
-      {
-        id: "",
-        title: "GraphCMS is awesome :rocket:",
-      },
-    ];
-
-    const { container } = render(
-      <RichText content={content} references={references} />,
-    );
+    const { container } = render(<RichText content={content} />);
 
     expect(console.error).toHaveBeenCalledTimes(0);
     expect(container).toMatchSnapshot();
@@ -621,10 +631,10 @@ describe("custom embeds and assets", () => {
       },
     ];
 
+    const content = { ...embedAssetContent, references };
     const { container } = render(
       <RichText
-        content={embedAssetContent}
-        references={references}
+        content={content}
         renderers={{
           embed_asset: {
             video: (): JSX.Element => <div>custom VIDEO</div>,
@@ -679,71 +689,70 @@ describe("custom embeds and assets", () => {
   it(`shouldn't render embed assets due to missing mimeType or url`, () => {
     console.error = jest.fn();
 
-    const content: RTFContent = [
-      {
-        type: "embed",
-        nodeId: "cknjbzowggjo90b91kjisy03a",
-        children: [
-          {
-            text: "",
-          },
-        ],
-        nodeType: "Asset",
-      },
-      {
-        type: "embed",
-        nodeId: "ckrus0f14ao760b32mz2dwvgx",
-        children: [
-          {
-            text: "",
-          },
-        ],
-        nodeType: "Asset",
-      },
-    ];
+    const content: IRichTextInformation = {
+      cleaned: [
+        {
+          type: "embed",
+          nodeId: "cknjbzowggjo90b91kjisy03a",
+          children: [
+            {
+              text: "",
+            },
+          ],
+          nodeType: "Asset",
+        },
+        {
+          type: "embed",
+          nodeId: "ckrus0f14ao760b32mz2dwvgx",
+          children: [
+            {
+              text: "",
+            },
+          ],
+          nodeType: "Asset",
+        },
+      ],
+      references: [
+        {
+          id: "cknjbzowggjo90b91kjisy03a",
+        },
+        {
+          id: "ckrus0f14ao760b32mz2dwvgx",
+        },
+      ],
+    };
 
-    const references = [
-      {
-        id: "cknjbzowggjo90b91kjisy03a",
-      },
-      {
-        id: "ckrus0f14ao760b32mz2dwvgx",
-      },
-    ];
-
-    const { container } = render(
-      <RichText content={content} references={references} />,
-    );
+    const { container } = render(<RichText content={content} />);
 
     expect(console.error).toHaveBeenCalledTimes(0);
     expect(container).toMatchSnapshot();
   });
 
   it("should render custom embed models", () => {
-    const content: RTFContent = [
-      {
-        type: "embed",
-        nodeId: "custom_post_id",
-        children: [
-          {
-            text: "",
-          },
-        ],
-        nodeType: "Post",
-      },
-    ];
-
-    const references = [
-      {
-        id: "custom_post_id",
-        title: "GraphCMS is awesome :rocket:",
-      },
-    ];
+    const content: IRichTextInformation = {
+      cleaned: [
+        {
+          type: "embed",
+          nodeId: "custom_post_id",
+          children: [
+            {
+              text: "",
+            },
+          ],
+          nodeType: "Post",
+        },
+      ],
+      references: [
+        {
+          id: "custom_post_id",
+          title: "GraphCMS is awesome :rocket:",
+        },
+      ],
+    };
 
     const { container } = render(
       <RichText
         content={content}
-        references={references}
         renderers={{
           embed_node: {
             Post: (props): JSX.Element => {
@@ -782,29 +791,28 @@ describe("custom embeds and assets", () => {
   it(`should show a warning if embeds are found but there aren't any renderer for it`, () => {
     console.warn = jest.fn();
 
-    const content: RTFContent = [
-      {
-        type: "embed",
-        nodeId: "custom_post_id",
-        children: [
-          {
-            text: "",
-          },
-        ],
-        nodeType: "Post",
-      },
-    ];
+    const content: IRichTextInformation = {
+      cleaned: [
+        {
+          type: "embed",
+          nodeId: "custom_post_id",
+          children: [
+            {
+              text: "",
+            },
+          ],
+          nodeType: "Post",
+        },
+      ],
+      references: [
+        {
+          id: "custom_post_id",
+          title: "GraphCMS is awesome :rocket:",
+        },
+      ],
+    };
 
-    const references = [
-      {
-        id: "custom_post_id",
-        title: "GraphCMS is awesome :rocket:",
-      },
-    ];
-
-    const { container } = render(
-      <RichText content={content} references={references} />,
-    );
+    const { container } = render(<RichText content={content} />);
 
     expect(console.warn).toHaveBeenCalledTimes(0);
     expect(container).toMatchSnapshot();

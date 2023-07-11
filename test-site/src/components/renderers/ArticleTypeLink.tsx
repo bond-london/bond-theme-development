@@ -1,17 +1,12 @@
 import { Link } from "gatsby";
 import React from "react";
-import { LinkClassName } from "@/styles";
 import { EmbedLink } from "./EmbedLink";
 import { getArticleTypePath } from "@/cms/CmsArticleType";
 
 export const ArticleTypeLink: React.FC<{
   fragment: Queries.CmsArticleTypeLinkFragment;
 }> = ({ fragment }) => {
-  return (
-    <Link className={LinkClassName} to={getArticleTypePath(fragment)?.to}>
-      {fragment.title}
-    </Link>
-  );
+  return <Link to={getArticleTypePath(fragment)?.to}>{fragment.title}</Link>;
 };
 
 export const ArticleTypeEmbedLink: React.FC<{

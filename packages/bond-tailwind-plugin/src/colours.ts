@@ -2,13 +2,15 @@ import { IBondConfigurationOptions } from ".";
 import { forEachObject } from "./utils";
 import { pascalCase } from "pascal-case";
 import { writeFileSync, readFileSync } from "fs-extra";
-import { CSSRuleObject } from "tailwindcss/types/config";
+import { KeyValuePair } from "tailwindcss/types/config";
 import { createHash } from "crypto";
 
 let cachedContents = "";
 
-export function buildColours(config: IBondConfigurationOptions): CSSRuleObject {
-  const colors: CSSRuleObject = {
+export function buildColours(
+  config: IBondConfigurationOptions,
+): KeyValuePair<string, string> {
+  const colors: KeyValuePair<string, string> = {
     transparent: "transparent",
     current: "currentColor",
   };

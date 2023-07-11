@@ -24,7 +24,7 @@ function calculateClassNameOverrides(
     ...classNameOverrides,
   };
   const defaultHeadingClassName =
-    fixedHeadingClassName || fixedParagraphClassName;
+    fixedHeadingClassName ?? fixedParagraphClassName;
   if (defaultHeadingClassName) {
     headingClasses.forEach(h => (result[h] = defaultHeadingClassName));
   }

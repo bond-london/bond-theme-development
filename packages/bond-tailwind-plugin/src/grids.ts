@@ -19,11 +19,10 @@ function addContainerGrid(
       .map(v => v.breakpoint)
       .filter(v => v) as ReadonlyArray<number>),
   );
-  const { addUtilities, addComponents } = helpers;
   if (typeof config.spacing.section === "undefined") {
     throw new Error("Need a config spacing section defined");
   }
-  addUtilities({
+  helpers.addUtilities({
     ".container-rows-grid": {
       "--bond-container-row-1": calculateRemSize(config.spacing.section),
       "--bond-container-row-2": "1fr",
@@ -58,7 +57,7 @@ function addContainerGrid(
     ({ key, value: { breakpoint, cols, gap, max }, index }) => {
       const isLargest = breakpoint === largest;
       const prefix = index === 0 ? "" : `${key}:`;
-      if (cols || max || isLargest) {
+      if ((cols || max) ?? isLargest) {
         containerGrid.push(`${prefix}grid-cols-${key}-container`);
       }
 
@@ -76,8 +75,8 @@ function addContainerGrid(
   components[".content-cols-grid"] = createApplyEntry(contentGrid);
   components[".grid-gap"] = createApplyEntry(gridGap);
 
-  addUtilities(utilities);
-  addComponents(components);
+  helpers.addUtilities(utilities);
+  helpers.addComponents(components);
 }
 
 export function buildGrid(
@@ -93,7 +92,7 @@ function calculateSize(
   useVw: boolean,
 ): string {
   if (useVw) {
-    return calculateVwSize(breakpoint || 375, pixels);
+    return calculateVwSize(breakpoint ?? 375, pixels);
   }
   return calculateRemSize(pixels);
 }
@@ -198,7 +197,7 @@ export function createGridCols(
       key: name,
       value: { breakpoint, margin: possibleMargin, cols, max: maxWidth },
     }) => {
-      const margin = possibleMargin || lastMargin || 0;
+      const margin = possibleMargin ?? lastMargin ?? 0;
       const isLargest = breakpoint === largest;
       const useVw = noMax && isLargest;
       const marginSize = calculateSize(breakpoint, margin, useVw);

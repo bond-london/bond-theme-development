@@ -34,9 +34,10 @@ const FooterContainer: React.FC<{
   );
 };
 
-export const Footer: React.FC<{ menu: INavigation }> = ({
-  menu: { entries, textColour, backgroundColour },
-}) => {
+export const Footer: React.FC<{
+  menu: INavigation;
+  buildYear: string | null;
+}> = ({ menu: { entries, textColour, backgroundColour } }) => {
   const isMultiple = entries[0]?.entries;
 
   return (

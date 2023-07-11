@@ -5,7 +5,6 @@ import classNames from "classnames";
 import { Link } from "gatsby";
 import React, { ButtonHTMLAttributes, PropsWithChildren } from "react";
 import { ColourName, lookupColourClassNames } from "@colors";
-import { LinkClassName } from "@/styles";
 import { SectionIcon } from "./SectionIcon";
 import { ICoreComponent } from "./GenericComponent";
 
@@ -106,15 +105,15 @@ export const LinkOrButton: React.FC<{
   allowEmpty,
   isButton: setIsButton,
   isOutlined: setIsOutlined,
-  linkClassName = LinkClassName,
+  linkClassName,
   iconFirst,
   type,
   sameTab,
 }) => {
-  const isButton = setIsButton || informationIsButton;
-  const isOutlined = setIsOutlined || informationIsOutlined;
-  const label = text || name;
-  const realText = icon ? text : text || name;
+  const isButton = setIsButton ?? informationIsButton;
+  const isOutlined = setIsOutlined ?? informationIsOutlined;
+  const label = text ?? name;
+  const realText = icon ? text : text ?? name;
   const outerClassName = classNames(
     className,
     textColour && `text-colour-${textColour}`,

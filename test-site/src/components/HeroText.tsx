@@ -11,7 +11,7 @@ export const HeroText: React.FC<{
   body?: IRichTextInformation;
   links?: ReadonlyArray<ILinkInformation>;
 }> = ({ preHeading, heading, postHeading, body, links }) => {
-  if (!(preHeading || heading || postHeading || links || body)) {
+  if (!(preHeading ?? heading ?? postHeading ?? links ?? body)) {
     return null;
   }
 

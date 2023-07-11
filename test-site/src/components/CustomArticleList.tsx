@@ -1,10 +1,8 @@
 import { Section } from "@bond-london/gatsby-theme";
-import classNames from "classnames";
 import { Link } from "gatsby";
 import React from "react";
 import { calculateArticleLinkPath } from "@/cms/CmsArticle";
 import { ColourName, lookupColourClassNames } from "@colors";
-import { SectionSpacingClassName } from "@/styles";
 import { DateElement } from "./Date";
 
 const CustomArticleListEntry: React.FC<{
@@ -45,10 +43,7 @@ export const CustomArticleList: React.FC<{
   }
   return (
     <Section
-      sectionClassName={classNames(
-        SectionSpacingClassName,
-        lookupColourClassNames(backgroundColour, textColour),
-      )}
+      sectionClassName={lookupColourClassNames(backgroundColour, textColour)}
       componentName={`Custom ${customName} Articles`}
       contentClassName="grid grid-cols-1 tablet:grid-cols-2 laptop:mx-laptop-1-gap-cols laptop:gap-x-laptop-2-gap-cols gap-y-s laptop:gap-y-l"
     >

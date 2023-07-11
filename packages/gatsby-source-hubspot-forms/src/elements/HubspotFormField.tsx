@@ -26,7 +26,7 @@ export const HubspotFormField: React.FC<{
       </label>
     )}
     <FieldFactory
-      type={field.fieldType as string}
+      type={field.fieldType!}
       field={{ formName, field, value, onInteracted, onChange, options }}
     />
   </div>

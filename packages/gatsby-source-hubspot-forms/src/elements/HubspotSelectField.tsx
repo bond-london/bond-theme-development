@@ -28,10 +28,10 @@ const HubspotSelectField: React.FC<IFieldProps> = ({
     <>
       <select
         id={makeInputId(formName, field.name)}
-        name={field.name || undefined}
+        name={field.name ?? undefined}
         placeholder={field.placeholder ? field.placeholder : undefined}
-        hidden={field.hidden || undefined}
-        required={field.required || undefined}
+        hidden={field.hidden ?? undefined}
+        required={field.required ?? undefined}
         className={options.fieldClassName}
         onChange={handleChange}
         value={currentValue}
@@ -48,8 +48,8 @@ const HubspotSelectField: React.FC<IFieldProps> = ({
         ).map(o => (
           <option
             key={o.label}
-            label={o.label || undefined}
-            value={o.value || undefined}
+            label={o.label ?? undefined}
+            value={o.value ?? undefined}
           >
             {o.label}
           </option>

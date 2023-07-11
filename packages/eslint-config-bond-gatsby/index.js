@@ -11,8 +11,8 @@ module.exports = {
         "google",
         "eslint:recommended",
         "plugin:react/recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:@typescript-eslint/recommended-type-checked",
+        "plugin:@typescript-eslint/stylistic-type-checked",
         "plugin:prettier/recommended",
         "plugin:react-hooks/recommended",
         "plugin:jsx-a11y/recommended",
@@ -33,7 +33,7 @@ module.exports = {
         },
       },
       parserOptions: {
-        project: "./tsconfig.json",
+        project: true,
       },
       plugins: [
         "@typescript-eslint",
@@ -41,7 +41,6 @@ module.exports = {
         "prettier",
         "jsx-a11y",
         "import",
-        "implicit-dependencies",
       ],
       rules: {
         // "no-anonymous-exports-page-templates": "warn",
@@ -58,6 +57,7 @@ module.exports = {
           },
         ],
         "require-jsdoc": "off",
+        "@typescript-eslint/array-type": ["error", { default: "generic" }],
       },
     },
     {

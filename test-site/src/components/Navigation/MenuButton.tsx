@@ -14,7 +14,7 @@ export const MenuButton: React.FC<
       aria-label="Toggle menu"
       className={classNames(
         "relative row-start-1 col-span-1 col-start-4 justify-self-end tablet:col-span-1 tablet:col-start-8 laptop:hidden w-full",
-        className
+        className,
       )}
       onClick={toggleMenu}
     >

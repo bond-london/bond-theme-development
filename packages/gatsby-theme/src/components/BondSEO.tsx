@@ -2,7 +2,7 @@ import { getSrc, IGatsbyImageData } from "gatsby-plugin-image";
 import React from "react";
 
 export interface ISite {
-  readonly buildTime?: unknown | string | null;
+  readonly buildTime?: string | null;
   readonly buildYear: string | null;
   siteMetadata: {
     readonly siteName: string | null;
@@ -46,8 +46,8 @@ export function buildOrganizationSchema(
     "@type": "Organization",
     name,
     url,
-    logo: logo || undefined,
-    sameAs: sameAs || undefined,
+    logo: logo ?? undefined,
+    sameAs: sameAs ?? undefined,
   };
 }
 
@@ -68,7 +68,7 @@ function buildSchemas(
   sameAs: ReadonlyArray<string | null> | null | undefined,
   additionalSchemas: Array<unknown> | undefined,
 ): unknown {
-  const schemas = schemaOrgs || [
+  const schemas = schemaOrgs ?? [
     buildOrganizationSchema(siteName, siteUrl, logo, sameAs),
     buildWebsiteSchema(siteName, siteUrl),
   ];
@@ -96,8 +96,8 @@ export const BondSEO: React.FC<IProps> = ({
   schemaOrgs,
   additionalSchemas,
 }) => {
-  const siteName = possibleSiteName || "??";
-  const siteUrl = possibleSiteUrl || "??";
+  const siteName = possibleSiteName ?? "??";
+  const siteUrl = possibleSiteUrl ?? "??";
 
   const description = pageMetadata?.description;
   const image = pageMetadata.image;
@@ -146,9 +146,7 @@ export const BondSEO: React.FC<IProps> = ({
       {imageUrl && <meta name="image" content={imageUrl} />}
       {keywords && <meta name="keywords" content={keywords} />}
       <meta name="designer" content="Bond London" />
-      {buildTime ? (
-        <meta name="revised" content={buildTime as string} />
-      ) : undefined}
+      {buildTime ? <meta name="revised" content={buildTime} /> : undefined}
 
       {/* Open graph tags */}
       <meta property="og:url" content={pageUrl} />

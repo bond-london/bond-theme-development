@@ -15,7 +15,7 @@ export const CmsNavigationMenu: React.FC<{
     }
   `);
 
-  const menu = page || data.graphCmsNavigation;
+  const menu = page ?? data.graphCmsNavigation;
   if (!menu) {
     return <Unsupported component="Navigation menu" message="No menu" />;
   }

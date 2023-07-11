@@ -37,7 +37,7 @@ interface IHubspotFormResponse {
 
 function getCookieValue(name: string): string | undefined {
   return (
-    document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() ||
+    document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() ??
     undefined
   );
 }
@@ -119,7 +119,7 @@ export function useFormHandler(
           const field = fieldMapping[k];
           if (field) {
             fields.push({
-              objectTypeId: field.objectTypeId || undefined,
+              objectTypeId: field.objectTypeId ?? undefined,
               name: k,
               value: Array.isArray(v) ? v.join(";") : v.toString(),
             });
@@ -230,9 +230,9 @@ export function buildHubspotFormInformation(
   formDefinition?: IHubspotFormDefinition,
 ): {
   allGroups: ReadonlyArray<IHubspotFormFieldGroup>;
-  fieldMapping: { [name: string]: IHubspotFormFieldDefinition };
+  fieldMapping: Record<string, IHubspotFormFieldDefinition>;
 } {
-  const fieldMapping: { [name: string]: IHubspotFormFieldDefinition } = {};
+  const fieldMapping: Record<string, IHubspotFormFieldDefinition> = {};
   const allGroups: Array<IHubspotFormFieldGroup> = [];
   if (formDefinition) {
     (
@@ -271,7 +271,7 @@ export interface IDynamicFormState {
 export const HubspotForm: React.FC<{
   form: IHubspotFormDefinition;
   options?: IHubspotFormOptions;
-  values?: { [name: string]: string | number | undefined };
+  values?: Record<string, string | number | undefined>;
   handleFormData?: (formData: FormData) => void;
   reportEvent?: EventReporter;
   pageName?: string;
@@ -302,7 +302,7 @@ export const HubspotForm: React.FC<{
     ipAddress,
   );
 
-  const showError = options.showError || defaultShowError;
+  const showError = options.showError ?? defaultShowError;
 
   const onSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -314,7 +314,7 @@ export const HubspotForm: React.FC<{
   if (!formDefinition) {
     return showError("Form does not exist");
   }
-  if (!formDefinition.portalId || !formDefinition.guid) {
+  if (!formDefinition.portalId ?? !formDefinition.guid) {
     return showError("Invalid form configuration");
   }
 
@@ -335,7 +335,7 @@ export const HubspotForm: React.FC<{
             dangerouslySetInnerHTML={{ __html: formDefinition.inlineMessage }}
           />
         ) : (
-          <p>{options.defaultSuccessMessage || ""}</p>
+          <p>{options.defaultSuccessMessage ?? ""}</p>
         )}
       </div>
     );
@@ -345,17 +345,17 @@ export const HubspotForm: React.FC<{
     if (!formResponse) {
       return (
         <div className={options.failureClassName}>
-          <p>{options.defaultFailureMessage || ""}</p>
+          <p>{options.defaultFailureMessage ?? ""}</p>
         </div>
       );
     }
   }
 
   const name =
-    formAnchor ||
-    (formDefinition.name || formDefinition.id).replace(/\s+/g, "");
+    formAnchor ??
+    (formDefinition.name ?? formDefinition.id).replace(/\s+/g, "");
   const submitText =
-    formDefinition.submitText || options.defaultSubmitText || "Submit";
+    formDefinition.submitText ?? options.defaultSubmitText ?? "Submit";
 
   return (
     <>

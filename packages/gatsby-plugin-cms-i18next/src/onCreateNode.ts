@@ -1,7 +1,7 @@
 import { CreateNodeArgs, Node } from "gatsby";
 import { IFileSystemNode, IPluginOptions, ILocaleNodeInput } from "./types";
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
+// eslint-disable-next-line camelcase
 export function unstable_shouldOnCreateNode({ node }: { node: Node }): boolean {
   // We only care about JSON content.
   return node.internal.mediaType === `application/json`;

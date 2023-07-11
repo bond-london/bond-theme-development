@@ -6,7 +6,7 @@ export const HubspotFormGroup: React.FC<{
   formName: string;
   group: IHubspotFormFieldGroup;
   options: IHubspotFormOptions;
-  values?: { [name: string]: string | number | undefined };
+  values?: Record<string, string | number | undefined>;
   onInteracted: () => void;
   onChange?: (ev: React.ChangeEvent<HTMLElement>) => void;
 }> = ({ formName, group, options, values, onInteracted, onChange }) => {

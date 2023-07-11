@@ -1,12 +1,12 @@
 import type { RenderBodyArgs } from "gatsby";
 import React from "react";
 
-const fontsToPreload: { [path: string]: string } = {
+const fontsToPreload: Record<string, string> = {
   "/fonts/merriweather-latin-400-normal.woff2": "woff2",
   "/fonts/merriweather-latin-400-italic.woff2": "woff2",
 };
 
-const domainsToConnect: string[] = ["media.graphassets.com"];
+const domainsToConnect: Array<string> = ["media.graphassets.com"];
 
 // eslint-disable-next-line import/no-unused-modules
 export function onRenderBody({ setHeadComponents }: RenderBodyArgs) {

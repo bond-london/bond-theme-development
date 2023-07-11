@@ -16,7 +16,7 @@ export const ImageRenderer: React.FC<IImageNodeRendererProps> = ({
   style,
   isInline,
 }) => {
-  const realSrc = src || url;
+  const realSrc = src ?? url;
   if (!realSrc) {
     return (
       <Unsupported

@@ -63,7 +63,7 @@ function walkSpecialFieldsEntries(
           {
             const valueType = entry.field.type as GraphQLObjectType;
             const fieldType = getRealType(valueType);
-            createTypes(`type ${typePrefix}${fieldType} {
+            createTypes(`type ${typePrefix}${fieldType.toString()} {
             cleaned: JSON
           }`);
           }
@@ -85,7 +85,7 @@ function walkSpecialFieldsEntries(
     createTypes(`type ${typePrefix}${typeName} ${
       isTopLevel ? "implements Node" : ""
     } {
-      ${additions}
+      ${additions.join(",")}
     }`);
   }
 }
@@ -137,6 +137,7 @@ export async function createSchemaCustomization(
     fields: {
       gatsbyImageData: {
         ...getGatsbyImageFieldConfig(async (...args) =>
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           resolveGatsbyImageData(...args, gatsbyApi),
         ),
         type: hasFeature("graphql-typegen") ? "GatsbyImageData" : "JSON",

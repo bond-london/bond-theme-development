@@ -26,7 +26,7 @@ const SpacerComponent: React.FC<{
     className={classNames(
       "w-full",
       lookupColourClassNames(backgroundColour, textColour),
-      lookupSpacingClassNames(spacing)
+      lookupSpacingClassNames(spacing),
     )}
   />
 );

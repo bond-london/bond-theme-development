@@ -1,6 +1,5 @@
 import { Link } from "gatsby";
 import React from "react";
-import { LinkClassName } from "@/styles";
 import { EmbedLink } from "./EmbedLink";
 
 export const PageLink: React.FC<{ fragment: Queries.CmsPageLinkFragment }> = ({
@@ -8,9 +7,7 @@ export const PageLink: React.FC<{ fragment: Queries.CmsPageLinkFragment }> = ({
 }) => {
   return (
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    <Link className={LinkClassName} to={fragment.gatsbyPath!}>
-      {fragment.title}
-    </Link>
+    <Link to={fragment.gatsbyPath!}>{fragment.title}</Link>
   );
 };
 

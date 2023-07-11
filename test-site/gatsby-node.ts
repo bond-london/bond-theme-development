@@ -33,12 +33,12 @@ function buildListPages<T = unknown>(
   slug: string,
   name: string,
   context: T,
-  force: boolean
+  force: boolean,
 ) {
   if (pageCount || force) {
     const mainTemplate = resolve(defaultTemplateName);
     const customTemplate = tryLoadTemplate(customTemplateName);
-    const component = customTemplate || mainTemplate;
+    const component = customTemplate ?? mainTemplate;
     reporter.info(`Using template ${customTemplate ? "name" : "custom"}`);
 
     for (let page = 0; (force && page === 0) || page < pageCount; page++) {
@@ -62,7 +62,7 @@ async function buildTagIndexPages(
   args: CreatePagesArgs,
   id: string,
   slug: string,
-  name: string
+  name: string,
 ) {
   // eslint-disable-next-line @typescript-eslint/unbound-method
   const { graphql, reporter } = args;
@@ -87,13 +87,13 @@ async function buildTagIndexPages(
         }
       }
     `,
-    { id, articlesPerPage, allowHidden }
+    { id, articlesPerPage, allowHidden },
   );
 
   reporter.info(
     `buildTagIndexPages(${id}, ${slug}, ${name}) for ${
-      data?.allGraphCmsArticle?.pageInfo?.pageCount || 0
-    } pages`
+      data?.allGraphCmsArticle?.pageInfo?.pageCount ?? 0
+    } pages`,
   );
   if (data?.allGraphCmsArticle?.pageInfo) {
     const { pageCount } = data.allGraphCmsArticle.pageInfo;
@@ -105,7 +105,7 @@ async function buildTagIndexPages(
       slug,
       name,
       { id },
-      true
+      true,
     );
   }
 }
@@ -114,7 +114,7 @@ async function buildArticleTypeIndexPages(
   args: CreatePagesArgs,
   id: string,
   slug: string,
-  name: string
+  name: string,
 ) {
   // eslint-disable-next-line @typescript-eslint/unbound-method
   const { graphql, reporter } = args;
@@ -138,13 +138,13 @@ async function buildArticleTypeIndexPages(
         }
       }
     `,
-    { id, articlesPerPage, allowHidden }
+    { id, articlesPerPage, allowHidden },
   );
 
   reporter.info(
     `buildArticleTypeIndexPages(${id}, ${slug}, ${name}) for ${
-      data?.allGraphCmsArticle?.pageInfo?.pageCount || 0
-    } pages`
+      data?.allGraphCmsArticle?.pageInfo?.pageCount ?? 0
+    } pages`,
   );
   if (data?.allGraphCmsArticle?.pageInfo) {
     buildListPages(
@@ -155,7 +155,7 @@ async function buildArticleTypeIndexPages(
       slug,
       name,
       { id },
-      false
+      false,
     );
   }
 }
@@ -166,7 +166,7 @@ async function buildArticleTypeTagIndexPages(
   tagId: string,
   slug: string,
   articleTypeName: string,
-  tagName: string
+  tagName: string,
 ) {
   // eslint-disable-next-line @typescript-eslint/unbound-method
   const { graphql, reporter } = args;
@@ -192,13 +192,13 @@ async function buildArticleTypeTagIndexPages(
         }
       }
     `,
-    { articleTypeId, tagId, articlesPerPage, allowHidden }
+    { articleTypeId, tagId, articlesPerPage, allowHidden },
   );
 
   reporter.info(
     `buildArticleTypeTagIndexPages(${articleTypeId}, ${tagId}, ${slug}, ${articleTypeName}, ${tagName}) for ${
-      data?.allGraphCmsArticle?.pageInfo?.pageCount || 0
-    } pages`
+      data?.allGraphCmsArticle?.pageInfo?.pageCount ?? 0
+    } pages`,
   );
   if (data?.allGraphCmsArticle?.pageInfo) {
     buildListPages(
@@ -209,7 +209,7 @@ async function buildArticleTypeTagIndexPages(
       slug,
       articleTypeName,
       { articleTypeId, tagId },
-      false
+      false,
     );
   }
 }
@@ -227,7 +227,7 @@ function updateSpecialPageMap(
   }: {
     hidden?: boolean;
     redirectTo?: string;
-  }
+  },
 ) {
   const existing = specialPageMap.get(id);
   if (existing) {
@@ -244,18 +244,18 @@ function updateSpecialPageMap(
 
 function buildHiddenMaps(data: Queries.AllContentQuery) {
   data.hiddenArticles.nodes.forEach(({ id }) =>
-    updateSpecialPageMap(id, { hidden: true })
+    updateSpecialPageMap(id, { hidden: true }),
   );
   data.hiddenPages.nodes.forEach(({ id }) =>
-    updateSpecialPageMap(id, { hidden: true })
+    updateSpecialPageMap(id, { hidden: true }),
   );
   data.redirectArticles.nodes.forEach(({ id, redirectTo }) =>
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    updateSpecialPageMap(id, { redirectTo: redirectTo! })
+    updateSpecialPageMap(id, { redirectTo: redirectTo! }),
   );
   data.redirectPages.nodes.forEach(({ id, redirectTo }) =>
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    updateSpecialPageMap(id, { redirectTo: redirectTo! })
+    updateSpecialPageMap(id, { redirectTo: redirectTo! }),
   );
 }
 
@@ -266,53 +266,51 @@ export async function createPages(args: CreatePagesArgs) {
     graphql,
     actions: { createRedirect },
   } = args;
-  const results = await graphql<Queries.AllContentQuery>(
-    `
-      query AllContent {
-        allGraphCmsTag {
-          nodes {
-            id
-            slug
-            name
-          }
-        }
-        allGraphCmsArticleType {
-          nodes {
-            id
-            indexPageSlug
-            name
-          }
-        }
-
-        hiddenArticles: allGraphCmsArticle(filter: { hidden: { eq: true } }) {
-          nodes {
-            id
-          }
-        }
-        hiddenPages: allGraphCmsPage(filter: { hidden: { eq: true } }) {
-          nodes {
-            id
-          }
-        }
-        redirectArticles: allGraphCmsArticle(
-          filter: { redirectTo: { ne: null, regex: "/^.+$/" } }
-        ) {
-          nodes {
-            id
-            redirectTo
-          }
-        }
-        redirectPages: allGraphCmsPage(
-          filter: { redirectTo: { ne: null, regex: "/^.+$/" } }
-        ) {
-          nodes {
-            id
-            redirectTo
-          }
+  const results = await graphql<Queries.AllContentQuery>(`
+    query AllContent {
+      allGraphCmsTag {
+        nodes {
+          id
+          slug
+          name
         }
       }
-    `
-  );
+      allGraphCmsArticleType {
+        nodes {
+          id
+          indexPageSlug
+          name
+        }
+      }
+
+      hiddenArticles: allGraphCmsArticle(filter: { hidden: { eq: true } }) {
+        nodes {
+          id
+        }
+      }
+      hiddenPages: allGraphCmsPage(filter: { hidden: { eq: true } }) {
+        nodes {
+          id
+        }
+      }
+      redirectArticles: allGraphCmsArticle(
+        filter: { redirectTo: { ne: null, regex: "/^.+$/" } }
+      ) {
+        nodes {
+          id
+          redirectTo
+        }
+      }
+      redirectPages: allGraphCmsPage(
+        filter: { redirectTo: { ne: null, regex: "/^.+$/" } }
+      ) {
+        nodes {
+          id
+          redirectTo
+        }
+      }
+    }
+  `);
 
   const { data } = results;
 
@@ -337,7 +335,7 @@ export async function createPages(args: CreatePagesArgs) {
         tagId,
         `${slug}/${tagSlug}`,
         name,
-        tagName
+        tagName,
       );
     }
   }

@@ -2,7 +2,7 @@ import { config } from "dotenv";
 import { reporter } from "gatsby-cli/lib/reporter/reporter";
 
 config({
-  path: `.env.${process.env.NODE_ENV || "development"}`,
+  path: `.env.${process.env.NODE_ENV ?? "development"}`,
 });
 
 function parseEnvBoolean(varName: string) {
@@ -14,7 +14,7 @@ function parseEnvBoolean(varName: string) {
 }
 
 export const BUILD_DESIGN = parseEnvBoolean("BUILD_DESIGN");
-export const COOKIE_NAME = process.env.COOKIE_NAME || "no-cookie-name";
+export const COOKIE_NAME = process.env.COOKIE_NAME ?? "no-cookie-name";
 export const allowIndex = parseEnvBoolean("ALLOW_INDEX");
 const possibleSiteUrl = process.env.GATSBY_SITE_URL;
 export const showDevPages = parseEnvBoolean("SHOW_DEV_PAGES");

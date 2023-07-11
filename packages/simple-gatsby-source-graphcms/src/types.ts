@@ -13,7 +13,7 @@ export interface IPluginOptions {
   typePrefix: string;
   locales: Array<string>;
   concurrentDownloads: number;
-  markdownFields: { [key: string]: Array<string> };
+  markdownFields: Record<string, Array<string>>;
   cleanupRtf: boolean;
   dontDownload: boolean;
   localCache: boolean;
@@ -70,9 +70,7 @@ export interface IGraphCmsAsset extends Node {
   size: number;
 }
 
-export interface IBasicFieldType {
-  [key: string]: unknown;
-}
+export type IBasicFieldType = Record<string, unknown>;
 
 export interface ISpecialFieldType {
   type: "Asset" | "RichText" | "Markdown";

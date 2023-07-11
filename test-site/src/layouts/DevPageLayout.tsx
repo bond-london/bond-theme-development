@@ -4,9 +4,8 @@ import React, { PropsWithChildren } from "react";
 import { CmsFooter } from "@/cms/CmsFooter";
 import { CmsNavigationMenu } from "@/cms/CmsNavigationMenu";
 import { SectionHeading } from "@/components/SectionHeading";
-import { SectionSpacingClassName } from "@/styles";
 
-const pages: { title: string; path: string }[] = [
+const pages: Array<{ title: string; path: string }> = [
   { title: "Development", path: "/dev" },
   { title: "Colours", path: "/dev/colours" },
   { title: "Fonts", path: "/dev/fonts" },
@@ -23,11 +22,7 @@ export const DevPageLayout: React.FC<PropsWithChildren<{ name?: string }>> = ({
       <CmsNavigationMenu />
       <Slice alias="analytics" />
 
-      <Section
-        componentName="Dev Page Header"
-        contentClassName="gap-s"
-        sectionClassName={SectionSpacingClassName}
-      >
+      <Section componentName="Dev Page Header" contentClassName="gap-s">
         <SectionHeading heading={name} />
         <ul className="col-span-full my-m flex gap-x-l gap-y-m">
           {pages.map(({ title, path }) => (

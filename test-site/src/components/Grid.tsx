@@ -46,7 +46,7 @@ const Grid: React.FC<{
 
   return (
     <Section
-      id={anchor || undefined}
+      id={anchor ?? undefined}
       componentName={`Grid ${columns} columns`}
       sectionClassName={lookupColourClassNames(backgroundColour, textColour)}
       sectionColumnsClassName="col-start-2 col-span-1 grid grid-cols-1"
@@ -83,7 +83,7 @@ const Grid: React.FC<{
           autoPlay={true}
         />
       )}
-      {contents && contents.length && (
+      {contents?.length && (
         <div
           className={classNames(
             "col-span-full grid grid-cols-1 gap-s",

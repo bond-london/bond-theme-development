@@ -18,7 +18,7 @@ const Colours: React.FC = () => {
             key={key}
             className={classNames(
               "aspect-w-1 aspect-h-1 col-span-2",
-              key === "grey-900" && "text-gray-100"
+              key === "grey-900" && "text-Black",
             )}
             style={{ backgroundColor: value }}
           >

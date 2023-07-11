@@ -26,7 +26,7 @@ const BasicLinkRenderer: React.FC<
     role,
   };
 
-  const realClassName = className || classNameOverrides?.["a"];
+  const realClassName = className ?? classNameOverrides?.a;
 
   if (realClassName) aProps.className = realClassName;
   if (openInNewTab) {

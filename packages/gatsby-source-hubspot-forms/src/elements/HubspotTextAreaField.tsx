@@ -27,12 +27,12 @@ const HubspotTextareaField: React.FC<IFieldProps> = ({
     <textarea
       value={currentValue}
       id={makeInputId(formName, field.name)}
-      name={field.name || undefined}
-      placeholder={field.placeholder || undefined}
-      hidden={field.hidden || undefined}
-      required={field.required || undefined}
+      name={field.name ?? undefined}
+      placeholder={field.placeholder ?? undefined}
+      hidden={field.hidden ?? undefined}
+      required={field.required ?? undefined}
       className={options.fieldClassName}
-      rows={options.textAreaRows || 3}
+      rows={options.textAreaRows ?? 3}
       onInput={onInteracted}
       onChange={handleChange}
     />

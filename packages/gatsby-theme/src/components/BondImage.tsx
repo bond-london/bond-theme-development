@@ -10,7 +10,7 @@ import { SimpleGatsbyImage } from "./SimpleGatsbyImage";
 
 export function isBondImage(obj: unknown): obj is IBondImage {
   const image = obj as IBondImage;
-  return !!(image.image || image.svg);
+  return !!(image.image ?? image.svg);
 }
 export type IBondImage = IVisualCommon & {
   image?: IGatsbyImageData;
@@ -47,15 +47,15 @@ export function convertCmsImageToBondImage(
 ): IBondImage | undefined {
   if (!cms?.image) return undefined;
   const image =
-    cms.image?.gatsbyImage ||
-    cms.image?.gatsbyImageData ||
+    cms.image?.gatsbyImage ??
+    cms.image?.gatsbyImageData ??
     cms.image?.localFile?.childImageSharp?.gatsbyImageData;
   const svg = cms.image?.localFile?.childGatsbySvg?.extracted;
   if (!image && !svg) return undefined;
   return {
     image,
     svg,
-    name: name || cms.name || "",
+    name: name ?? cms.name ?? "",
     dontCrop: cms.dontCrop,
     verticalCropPosition: cms.verticalCropPosition,
     horizontalCropPosition: cms.horizontalCropPosition,
@@ -74,11 +74,11 @@ export function convertCmsAssetToBondImage(
 ): IBondImage | undefined {
   if (!asset) return undefined;
   const dontCrop =
-    options?.dontCrop ||
+    options?.dontCrop ??
     (options?.dontCropPng ? asset.mimeType?.endsWith("/png") : undefined);
   const image =
-    asset.gatsbyImage ||
-    asset.gatsbyImageData ||
+    asset.gatsbyImage ??
+    asset.gatsbyImageData ??
     asset.localFile?.childImageSharp?.gatsbyImageData;
   const svg = asset.localFile?.childGatsbySvg?.extracted;
   if (!image && !svg) return undefined;
@@ -138,7 +138,7 @@ export const BondImage: React.FC<
     return (
       <Image
         {...imageProps}
-        alt={name || alt || ""}
+        alt={name ?? alt ?? ""}
         onLoad={onLoad}
         onStartLoad={onStartLoad}
         image={image}
@@ -153,7 +153,7 @@ export const BondImage: React.FC<
     return (
       <GatsbySvg
         {...imageProps}
-        alt={name || alt || ""}
+        alt={name ?? alt ?? ""}
         onLoad={onLoad ? (): void => onLoad({ wasCached: true }) : undefined}
         svg={svg}
         objectFit={objectFit}

@@ -72,15 +72,15 @@ const HubspotCheckboxField: React.FC<IFieldProps> = ({
         <input
           type="hidden"
           id={makeInputId(formName, field.name)}
-          name={field.name || undefined}
+          name={field.name ?? undefined}
           value={currentStringValue}
         />
         {(
           fieldOptions.filter(
-            o => o && o.value,
+            o => o?.value,
           ) as ReadonlyArray<IHubspotFormFormFieldOptionsDefinition>
         ).map(option => {
-          const value = option.value as string;
+          const value = option.value!;
           const checked = currentValue.includes(value);
           return (
             <label key={value} className={options.checkboxLabelClassName}>
@@ -88,12 +88,11 @@ const HubspotCheckboxField: React.FC<IFieldProps> = ({
                 className={options.checkboxFieldClassName}
                 type="checkbox"
                 checked={checked}
-                value={option.value || undefined}
+                value={option.value ?? undefined}
                 onInput={onInteracted}
                 onChange={handleChange}
               />
-              {options.renderCheckbox &&
-                options.renderCheckbox(value, option.label)}
+              {options.renderCheckbox?.(value, option.label)}
               <span>{option.label}</span>
             </label>
           );

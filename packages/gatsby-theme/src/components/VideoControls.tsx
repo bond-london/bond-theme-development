@@ -45,12 +45,12 @@ export const VideoControls: React.FC<{
         insideClassName,
         className,
         "transition-opacity duration-[0.5s]",
-        isActive || !isPlaying ? "opacity-100" : "opacity-0 delay-[2s]",
+        isActive ?? !isPlaying ? "opacity-100" : "opacity-0 delay-[2s]",
       )}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseExit}
     >
-      {(PauseButton || PlayButton) && (
+      {(PauseButton ?? PlayButton) && (
         <div className={playPauseClassName}>
           {isPlaying
             ? PauseButton && <PauseButton pauseVideo={pauseVideo} />
@@ -58,7 +58,7 @@ export const VideoControls: React.FC<{
         </div>
       )}
 
-      {showAudioControls && isPlaying && (MuteButton || UnmuteButton) && (
+      {showAudioControls && isPlaying && (MuteButton ?? UnmuteButton) && (
         <div className={muteUnmuteClassName}>
           {isMuted
             ? UnmuteButton && <UnmuteButton unmuteVideo={unmuteVideo} />

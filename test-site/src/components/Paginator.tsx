@@ -27,7 +27,7 @@ export const Paginator: React.FC<{
                   entry === currentPage
                     ? "paginator-current"
                     : "paginator-other",
-                  "flex h-s w-s items-center justify-center tabular-nums"
+                  "flex h-s w-s items-center justify-center tabular-nums",
                 )}
               >
                 {entry}

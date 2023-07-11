@@ -17,7 +17,7 @@ export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
 
   return (
     <>
-      <CmsNavigationMenu page={menu || template?.menu} />
+      <CmsNavigationMenu page={menu ?? template?.menu} />
       <Slice alias="analytics" />
 
       <CmsContent
@@ -29,7 +29,7 @@ export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
         )}
       />
 
-      <CmsFooter page={footer || template?.footer} />
+      <CmsFooter page={footer ?? template?.footer} />
     </>
   );
 };

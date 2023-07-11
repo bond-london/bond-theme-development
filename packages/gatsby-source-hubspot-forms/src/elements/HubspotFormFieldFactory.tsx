@@ -14,7 +14,7 @@ export interface IFieldProps {
   options: IHubspotFormOptions;
 }
 
-const handlers: { [type: string]: React.FC<IFieldProps> } = {};
+const handlers: Record<string, React.FC<IFieldProps>> = {};
 
 export function registerFieldTypeHandler(
   type: string,
@@ -32,6 +32,6 @@ export const FieldFactory: React.FC<{ type: string; field: IFieldProps }> = ({
   }
 
   const { options } = field;
-  const showError = options.showError || defaultShowError;
+  const showError = options.showError ?? defaultShowError;
   return showError(`No field of type ${type}`);
 };

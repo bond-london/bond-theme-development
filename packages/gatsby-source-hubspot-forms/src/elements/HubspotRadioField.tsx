@@ -44,9 +44,9 @@ const HubspotRadioField: React.FC<IFieldProps> = ({
                 className={options.radioFieldClassName}
                 type="radio"
                 id={makeInputId(formName, field.name)}
-                name={field.name || undefined}
+                name={field.name ?? undefined}
                 checked={checked}
-                value={option.value || undefined}
+                value={option.value ?? undefined}
                 onInput={onInteracted}
                 onChange={handleChange}
               />

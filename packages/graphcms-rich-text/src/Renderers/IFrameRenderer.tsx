@@ -46,7 +46,7 @@ export const IFrameRenderer: React.FC<IIframeNodeRendererProps> = ({
     : {
         position: "relative",
         overflow: "hidden",
-        width: width || "100%",
+        width: width ?? "100%",
         height,
         paddingTop: height ? undefined : "56.25%",
       };

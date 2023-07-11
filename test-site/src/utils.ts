@@ -3,7 +3,7 @@ import { FormEvent, useCallback, useState } from "react";
 
 /* eslint-disable import/no-unused-modules */
 export function notEmpty<TValue>(
-  value: TValue | null | undefined
+  value: TValue | null | undefined,
 ): value is TValue {
   if (value === null || value === undefined) return false;
   return true;
@@ -65,7 +65,7 @@ export function useFormSubmit<T = unknown>(endpoint: string) {
       ev.preventDefault();
       const form = ev.target as HTMLFormElement;
       const formData = new FormData(form);
-      const body: { [k: string]: unknown } = {};
+      const body: Record<string, unknown> = {};
       formData.forEach((v, k) => (body[k] = v));
 
       setState({ submitting: true });
@@ -88,7 +88,7 @@ export function useFormSubmit<T = unknown>(endpoint: string) {
         })
         .catch((error: unknown) => setState({ failure: true, error }));
     },
-    [endpoint]
+    [endpoint],
   );
 
   return { state, handleSubmit };

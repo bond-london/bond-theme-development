@@ -10,8 +10,8 @@ function generatePage(
     context: {
       ...page.context!,
       i18n: {
-        currentLanguage: page.context?.language || defaultLanguage,
-        defaultLanguage: page.context?.defaultLanguage || defaultLanguage,
+        currentLanguage: page.context?.language ?? defaultLanguage,
+        defaultLanguage: page.context?.defaultLanguage ?? defaultLanguage,
         languages,
         siteUrl,
       },

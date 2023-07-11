@@ -3,7 +3,6 @@ import { IRichTextInformation } from "@bond-london/graphcms-rich-text";
 import classNames from "classnames";
 import React from "react";
 import { ColourName, lookupColourClassNames } from "@colors";
-import { SectionBodyClassName } from "@/styles";
 import { ILinkInformation } from "./LinkOrButton";
 import { SectionBody } from "./SectionBody";
 import { SectionHeading } from "./SectionHeading";
@@ -55,7 +54,7 @@ export const GenericComponentInside: React.FC<{
         postHeading={postHeading}
       />
       {body && <SectionBody content={body} />}
-      {icon && <SectionIcon icon={icon} className={SectionBodyClassName} />}
+      {icon && <SectionIcon icon={icon} />}
       {visual && <SectionVisual visual={visual} />}
       {links && <SectionLinks links={links} vertical={false} />}
       {contents && (
@@ -82,7 +81,7 @@ export const GenericComponent: React.FC<{
   const { anchor, backgroundColour, textColour } = information;
   return (
     <Section
-      id={anchor || undefined}
+      id={anchor ?? undefined}
       componentName={`${componentType} component`}
       sectionClassName={classNames(
         "overflow-hidden",

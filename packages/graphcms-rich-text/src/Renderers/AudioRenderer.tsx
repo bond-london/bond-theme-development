@@ -21,7 +21,7 @@ export const AudioRenderer: React.FC<IAudioNodeRendererProps> = ({
     );
   }
 
-  const realStyle = style || {
+  const realStyle = style ?? {
     display: "block",
     maxWidth: "100%",
     height: "auto",

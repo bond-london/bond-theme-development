@@ -84,7 +84,7 @@ const Split: React.FC<{
   } = information;
   return (
     <Section
-      id={anchor || undefined}
+      id={anchor ?? undefined}
       componentName="Split"
       sectionClassName={lookupColourClassNames(backgroundColour, textColour)}
       contentClassName="my-s laptop:my-xxxl"

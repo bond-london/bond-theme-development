@@ -2,7 +2,6 @@ import { BondVisual, Section } from "@bond-london/gatsby-theme";
 import { IComponentInformation } from "./GenericComponent";
 import { lookupColourClassNames } from "@colors";
 import React from "react";
-import { SectionBodyClassName } from "@/styles";
 import { SectionBody } from "./SectionBody";
 import { SectionHeading } from "./SectionHeading";
 import { SectionIcon } from "./SectionIcon";
@@ -22,7 +21,7 @@ const LinkSummary: React.FC<{ link: ILinkInformation }> = ({ link }) => {
         />
       )}
       <h3 className="p2">
-        {topContent?.heading || name}&nbsp;
+        {topContent?.heading ?? name}&nbsp;
         {topContent?.postHeading && (
           <span className="lighter">{topContent.postHeading}</span>
         )}
@@ -59,7 +58,7 @@ const ArticleGrid: React.FC<{ information: IComponentInformation }> = ({
         postHeading={postHeading}
       />
       {body && <SectionBody content={body} className="col-span-full" />}
-      {icon && <SectionIcon icon={icon} className={SectionBodyClassName} />}
+      {icon && <SectionIcon icon={icon} />}
       {visual && <SectionVisual visual={visual} className="col-span-full" />}
       <div className="grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-4 gap-x-xs gap-y-xs laptop:gap-y-s laptop:gap-x-s">
         {links?.map((link) => <LinkSummary key={link.id} link={link} />)}

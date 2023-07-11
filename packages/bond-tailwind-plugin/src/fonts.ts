@@ -64,7 +64,7 @@ export function addFontSizes(
     );
   });
 
-  const lineHeight = config.lineHeight || 1;
+  const lineHeight = config.lineHeight ?? 1;
   fontSizes.forEach(({ size, value: fontSize }) => {
     addFontEntry(
       results,

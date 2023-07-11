@@ -26,7 +26,7 @@ export function useMenuInformation(closeMenu?: () => void) {
         return to ? { timeStamp, link: to } : undefined;
       });
     },
-    []
+    [],
   );
   const handleClose = useCallback(() => {
     setActiveItem(undefined);
@@ -53,26 +53,26 @@ export function useNestedMenu(
   activateMenu?: (
     timeStamp: number,
     item?: INavigationItem,
-    from?: INavigationItem
-  ) => void
+    from?: INavigationItem,
+  ) => void,
 ) {
   const handleButtonClick = useCallback(
     (ev: React.MouseEvent<HTMLButtonElement>) => {
       activateMenu?.(ev.timeStamp, item);
     },
-    [activateMenu, item]
+    [activateMenu, item],
   );
 
   const handleMouseEnter = useCallback(
     (ev: React.MouseEvent<HTMLDivElement>) => {
       activateMenu?.(ev.timeStamp, item);
     },
-    [activateMenu, item]
+    [activateMenu, item],
   );
   const handleMouseLeave = useCallback(
     (ev: React.MouseEvent<HTMLDivElement>) =>
       activateMenu?.(ev.timeStamp, undefined, item),
-    [activateMenu, item]
+    [activateMenu, item],
   );
 
   return { handleButtonClick, handleMouseEnter, handleMouseLeave };

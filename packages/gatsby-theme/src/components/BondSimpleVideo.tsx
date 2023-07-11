@@ -35,7 +35,7 @@ export function convertCmsVideoToBondSimpleVideo(
 ): IBondSimpleVideo {
   const preview = cms.preview?.localFile?.childGatsbyVideo?.transformed;
 
-  const posterSrc = cms.poster?.localFile?.publicURL || getPosterSrc(preview);
+  const posterSrc = cms.poster?.localFile?.publicURL ?? getPosterSrc(preview);
   if (!preview && !posterSrc) {
     throw new Error("No video data");
   }
@@ -90,7 +90,7 @@ export const BondSimpleVideo: React.FC<
 
   const realPosterSrc = noPoster
     ? undefined
-    : posterSrc || video.posterSrc || undefined;
+    : posterSrc ?? video.posterSrc ?? undefined;
 
   if (videoData) {
     return (
@@ -100,8 +100,8 @@ export const BondSimpleVideo: React.FC<
         posterSrc={realPosterSrc}
         noPoster={noPoster}
         data-component="Bond Simple Video"
-        loop={loop || videoLoop || undefined}
-        loopDelay={loopDelay || videoLoopDelay || undefined}
+        loop={loop ?? videoLoop ?? undefined}
+        loopDelay={loopDelay ?? videoLoopDelay ?? undefined}
         video={videoData}
         objectFit={objectFit}
         objectPosition={objectPosition}

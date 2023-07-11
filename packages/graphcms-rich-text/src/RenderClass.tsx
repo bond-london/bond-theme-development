@@ -1,7 +1,7 @@
 import React from "react";
 import { DefaultRenderer } from "./Renderers";
 import { RenderElements } from "./RenderNode";
-import { ClassNodeRenderer, IClassNodeRendererProps } from "./types";
+import { IClassNodeRendererProps } from "./types";
 import { Unsupported } from "./Unsupported";
 
 const componentName = "RenderClass";
@@ -53,7 +53,7 @@ export const RenderClass: React.FC<IClassNodeRendererProps> = props => {
       return (
         <DefaultRenderer
           {...rest}
-          className={information.className || className}
+          className={information.className ?? className}
           element={information.element}
         >
           <RenderElements {...rest} />
@@ -63,12 +63,12 @@ export const RenderClass: React.FC<IClassNodeRendererProps> = props => {
 
     return (
       <RenderElements
-        className={information.className || className}
+        className={information.className ?? className}
         {...rest}
       />
     );
   }
 
-  const NodeRenderer = renderer as ClassNodeRenderer;
+  const NodeRenderer = renderer;
   return <NodeRenderer {...rest} className={className} />;
 };

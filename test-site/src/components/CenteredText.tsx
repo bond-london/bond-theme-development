@@ -1,10 +1,8 @@
 import { BondVisual, Section } from "@bond-london/gatsby-theme";
 import { ClassNameOverrides } from "@bond-london/graphcms-rich-text";
-import classNames from "classnames";
 import React, { useContext } from "react";
 import { ArticleContext } from "@/cms/CmsArticleLayout";
 import { lookupColourClassNames } from "@colors";
-import { SectionBodyClassName, SectionSpacingClassName } from "@/styles";
 import { DateElement } from "./Date";
 import { IComponentInformation } from "./GenericComponent";
 import { defaultProjectClassNameOverrides } from "./RTF";
@@ -38,10 +36,7 @@ const CenteredText: React.FC<{
   return (
     <Section
       componentName={`Centered Text`}
-      sectionClassName={classNames(
-        lookupColourClassNames(backgroundColour, textColour),
-        SectionSpacingClassName,
-      )}
+      sectionClassName={lookupColourClassNames(backgroundColour, textColour)}
       sectionGridClassName="relative w-full container-cols-grid auto-rows-auto"
       sectionRowsClassName="laptop:row-start-1 laptop:row-span-1"
       contentClassName="mt-xxl mb-m"
@@ -79,7 +74,7 @@ const CenteredText: React.FC<{
         />
       )}
 
-      {icon && <SectionIcon icon={icon} className={SectionBodyClassName} />}
+      {icon && <SectionIcon icon={icon} />}
       {links && <SectionLinks links={links} />}
     </Section>
   );

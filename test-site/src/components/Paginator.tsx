@@ -10,6 +10,10 @@ export const Paginator: React.FC<{
 }> = ({ totalPages, currentPage, buildLink }) => {
   const entries = usePaginatorEntries(totalPages, currentPage);
 
+  if (totalPages < 2) {
+    return null;
+  }
+
   return (
     <Section componentName="Paginator">
       <div className="col-span-full flex justify-center gap-x-xs">
@@ -30,11 +34,7 @@ export const Paginator: React.FC<{
               </Link>
             );
           }
-          return (
-            <span key={index} className="text-black">
-              ...
-            </span>
-          );
+          return <span key={index}>...</span>;
         })}
       </div>
     </Section>

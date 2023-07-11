@@ -9,7 +9,7 @@ export * from "./sourceNodes";
 
 export function onCreateDevServer(
   { app, store }: CreateDevServerArgs,
-  pluginOptions: IPluginOptions
+  pluginOptions: IPluginOptions,
 ): void {
   const { enableImageCDN } = pluginOptions;
   if (enableImageCDN) {

@@ -61,7 +61,7 @@ export const wrapPageElement = (
     element,
     props,
   }: WrapPageElementBrowserArgs<ILocalesInformation, PageContext>,
-  { i18nextOptions }: IPluginOptions
+  { i18nextOptions }: IPluginOptions,
 ): JSX.Element | null | undefined => {
   const { pageContext } = props;
   const i18nextContext = pageContext.i18n;

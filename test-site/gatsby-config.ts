@@ -3,7 +3,6 @@ import type { IBondThemeOptions } from "@bond-london/gatsby-theme";
 import {
   COOKIE_NAME,
   siteUrl,
-  GOOGLE_TAG,
   allowIndex,
   isProduction,
   showDevPages,
@@ -24,7 +23,6 @@ const themeOptions: Partial<IBondThemeOptions> = {
   projectName: name,
   useVideoCache: true,
   videoCacheConnectionString: readEnvVar("VIDEO_CACHE_CONNECTION_STRING"),
-  productionImageFormats: ["auto", "webp", "avif"],
   videoWidth: 1920,
   graphCMSToken: readEnvVar("GRAPHCMS_TOKEN"),
   graphCMSEndpoint: readEnvVar("GRAPHCMS_ENDPOINT"),
@@ -52,7 +50,6 @@ const config: GatsbyConfig = {
     siteUrl,
     logo: `${siteUrl}/icons/icon-512x512.png`,
     cookieName: COOKIE_NAME,
-    googleTag: GOOGLE_TAG,
     declinedCookieName: "cookies-declined",
   },
   trailingSlash: "always",
@@ -61,7 +58,7 @@ const config: GatsbyConfig = {
   },
   flags: {
     FAST_DEV: true,
-    DEV_SSR: false,
+    DEV_SSR: true,
     PARTIAL_HYDRATION: false,
     PRESERVE_FILE_DOWNLOAD_CACHE: true,
   },

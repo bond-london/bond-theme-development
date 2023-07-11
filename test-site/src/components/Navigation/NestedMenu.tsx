@@ -1,8 +1,8 @@
 import classNames from "classnames";
 import React from "react";
-import { ColourName, lookupColourClassNames } from "../../colors";
-import { LinkOrButton } from "../LinkOrButton";
-import { SectionIcon } from "../SectionIcon";
+import { ColourName, lookupColourClassNames } from "@colors";
+import { LinkOrButton } from "@/components/LinkOrButton";
+import { SectionIcon } from "@/components/SectionIcon";
 import { useNestedMenu } from "./MenuUtils";
 import { INavigationItem } from "./NavigationMenu";
 
@@ -16,7 +16,7 @@ export const NestedMenu: React.FC<{
   activateMenu?: (
     timeStamp: number,
     item?: INavigationItem,
-    from?: INavigationItem
+    from?: INavigationItem,
   ) => void;
 }> = ({
   item,
@@ -46,7 +46,7 @@ export const NestedMenu: React.FC<{
           className={classNames(
             "absolute laptop:fixed -left-l z-[1000] flex transition-all laptop:top-laptop-nav laptop:left-0 laptop:right-0 laptop:h-laptop-nav laptop:justify-center overflow-hidden w-menu laptop:w-auto ",
             lookupColourClassNames(backgroundColour, textColour),
-            active ? "max-h-screen" : "max-h-0"
+            active ? "max-h-screen" : "max-h-0",
           )}
         >
           <ul className="pt-xxs laptop:pt-0 flex flex-col laptop:flex-row">

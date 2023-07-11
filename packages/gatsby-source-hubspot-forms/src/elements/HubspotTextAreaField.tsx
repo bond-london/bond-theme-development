@@ -20,7 +20,7 @@ const HubspotTextareaField: React.FC<IFieldProps> = ({
       setCurrentValue(ev.currentTarget.value);
       onChange?.(ev);
     },
-    [onChange]
+    [onChange],
   );
 
   return (

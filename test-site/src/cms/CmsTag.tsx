@@ -1,7 +1,15 @@
+import { convertCmsAssetToBondVisual } from "@bond-london/gatsby-theme";
 import { graphql } from "gatsby";
 
-export function getTagPath({ slug }: Queries.CmsTagLinkFragment) {
-  return `/${slug}/`;
+export function getTagPath({
+  slug,
+  embedImage,
+  textColour,
+  backgroundColour,
+}: Queries.CmsTagLinkFragment) {
+  const visual = convertCmsAssetToBondVisual(embedImage);
+  const to = `/${slug}/`;
+  return { visual, to, textColour, backgroundColour };
 }
 
 // eslint-disable-next-line import/no-unused-modules
@@ -13,6 +21,8 @@ export const CmsTagLinkFragment = graphql`
     name
     title
     slug
+    backgroundColour
+    textColour
     embedImage: featuredImage {
       ...EmbedFeaturedImageAsset
     }
@@ -23,8 +33,6 @@ export const CmsTagLinkFragment = graphql`
 export const CmsTagFragment = graphql`
   fragment CmsTag on GraphCMS_Tag {
     ...CmsTagLink
-    backgroundColour
-    textColour
     description
     seoImage: featuredImage {
       ...SeoImageAsset
@@ -36,9 +44,7 @@ export const CmsTagFragment = graphql`
       ...Template
     }
     topContent {
-      __typename
       ...CmsComponent
-      ...CmsCollection
     }
     menu {
       ...CmsNavigation

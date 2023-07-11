@@ -3,7 +3,7 @@ import React, { PropsWithChildren } from "react";
 
 function calculateSectionGridClassName(
   sectionGridClassName: string | undefined,
-  collapse: boolean
+  collapse: boolean,
 ): string {
   if (sectionGridClassName) return sectionGridClassName;
   if (collapse)
@@ -25,7 +25,7 @@ export function calculateSectionContainerClassNames(
 ): string {
   const realSectionGridClassName = calculateSectionGridClassName(
     sectionGridClassName,
-    collapse
+    collapse,
   );
 
   return classNames(realSectionGridClassName, sectionClassName, ...other);
@@ -34,7 +34,7 @@ export function calculateSectionContainerClassNames(
 function calculateSectionRowsClassName(
   sectionRowsClassName: string | undefined,
   topSpacing: boolean | undefined,
-  bottomSpacing: boolean | undefined
+  bottomSpacing: boolean | undefined,
 ): string {
   if (sectionRowsClassName) return sectionRowsClassName;
   if (topSpacing && bottomSpacing) return "row-start-2 row-span-4";
@@ -46,7 +46,7 @@ function calculateSectionRowsClassName(
 
 function calculateSectionColumnsClassName(
   sectionColumnsClassName: string | undefined,
-  fullWidth: boolean | undefined
+  fullWidth: boolean | undefined,
 ): string {
   if (sectionColumnsClassName) return sectionColumnsClassName;
   if (fullWidth) return "relative col-start-1 col-span-3 content-cols-grid";
@@ -71,19 +71,19 @@ export function calculateSectionContentClassNames({
   const realRowsClassName = calculateSectionRowsClassName(
     sectionRowsClassName,
     topSpacing,
-    bottomSpacing
+    bottomSpacing,
   );
 
   const realColumnsClassName = calculateSectionColumnsClassName(
     sectionColumnsClassName,
-    fullWidth
+    fullWidth,
   );
 
   return classNames(
     "z-sectionContent",
     realRowsClassName,
     realColumnsClassName,
-    contentClassName
+    contentClassName,
   );
 }
 export const Section: React.FC<

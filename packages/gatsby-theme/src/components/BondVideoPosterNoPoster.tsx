@@ -27,7 +27,7 @@ export const BondVideoPosterNoPoster: React.FC<
       className={classNames(
         !forVideo && " aspect-w-4 aspect-h-3",
         videoWrapperProps?.className,
-        className
+        className,
       )}
     >
       {forVideo && <VideoSizer video={forVideo} />}

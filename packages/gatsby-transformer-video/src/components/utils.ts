@@ -23,7 +23,7 @@ export function getVideoWrapperProps({
 }
 
 export function getPosterSrc(
-  video: IGatsbyTransformedVideo | undefined | null
+  video: IGatsbyTransformedVideo | undefined | null,
 ): string | undefined {
   const gatsbyVideo = video as unknown as IGatsbyVideo;
   return gatsbyVideo?.poster || undefined;

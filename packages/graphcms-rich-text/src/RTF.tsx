@@ -17,7 +17,7 @@ function calculateClassNameOverrides(
   projectClassNameOverrides: ClassNameOverrides | undefined,
   classNameOverrides: ClassNameOverrides | undefined,
   fixedHeadingClassName: string | undefined,
-  fixedParagraphClassName: string | undefined
+  fixedParagraphClassName: string | undefined,
 ): ClassNameOverrides {
   const result: ClassNameOverrides = {
     ...projectClassNameOverrides,
@@ -49,7 +49,7 @@ export const RealRTF: React.FC<RealRTFProps> = ({
     projectClassNameOverrides,
     classNameOverrides,
     fixedHeadingClassName,
-    fixedParagraphClassName
+    fixedParagraphClassName,
   );
   const realRenderers = {
     ...defaultRenderers,

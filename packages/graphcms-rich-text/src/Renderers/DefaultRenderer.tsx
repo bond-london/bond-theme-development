@@ -23,7 +23,7 @@ export const DefaultRenderer: React.FC<
     Element,
     classNameOverrides,
     additionalClassName,
-    className
+    className,
   );
 
   return (

@@ -5,7 +5,7 @@ import { Reporter } from "gatsby";
 export class RemoteCache {
   public static async create(
     connectionString: string,
-    containerName: string
+    containerName: string,
   ): Promise<RemoteCache> {
     const blobServiceClient =
       BlobServiceClient.fromConnectionString(connectionString);
@@ -18,7 +18,7 @@ export class RemoteCache {
   public async getFromCache(
     name: string,
     targetFileName: string,
-    reporter: Reporter
+    reporter: Reporter,
   ): Promise<boolean> {
     const blob = this.containerClient.getBlockBlobClient(name);
     const exists = await blob.exists();

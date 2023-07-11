@@ -5,7 +5,7 @@ import { Reporter } from "gatsby";
 
 export async function atomicCopyFile(
   sourcePath: string,
-  targetPath: string
+  targetPath: string,
 ): Promise<void> {
   const tempFile = targetPath + `.tmp-${performance.now()}`;
   await rm(targetPath, { force: true });
@@ -24,7 +24,7 @@ export async function atomicCopyFile(
 export class Cache {
   constructor(
     private readonly cacheDir: string,
-    private readonly remoteCache?: RemoteCache
+    private readonly remoteCache?: RemoteCache,
   ) {
     mkdirSync(cacheDir, { recursive: true });
   }
@@ -32,7 +32,7 @@ export class Cache {
   public async getFromCache(
     name: string,
     targetFileName: string,
-    reporter: Reporter
+    reporter: Reporter,
   ): Promise<boolean> {
     const localFileName = join(this.cacheDir, name);
 
@@ -45,11 +45,11 @@ export class Cache {
         const exists = await this.remoteCache.getFromCache(
           name,
           targetFileName,
-          reporter
+          reporter,
         );
         if (exists) {
           reporter.verbose(
-            `Got ${name} from remote cache, copying to local ${localFileName}`
+            `Got ${name} from remote cache, copying to local ${localFileName}`,
           );
           await atomicCopyFile(targetFileName, localFileName);
           reporter.verbose(`Got ${name} from remote cache`);

@@ -28,7 +28,7 @@ export const stateCache: IPluginState = {};
 function postprocessValue(
   locale: string,
   stage: string,
-  value: { locale?: string; stage: string } & unknown
+  value: { locale?: string; stage: string } & unknown,
 ): {
   locale?: string;
   stage: string;
@@ -49,7 +49,7 @@ function postprocessValue(
 function postprocessData(
   gatsbyApi: NodePluginArgs,
   args: IQueryExecutionArgs,
-  result: ExecutionResult
+  result: ExecutionResult,
 ): ExecutionResult {
   const { reporter } = gatsbyApi;
   const { operationName } = args;
@@ -59,7 +59,7 @@ function postprocessData(
   const split = operationName.split("_");
   if (split.length !== 4) {
     return reporter.panic(
-      `Operation name (${operationName}) should contain 4 entries`
+      `Operation name (${operationName}) should contain 4 entries`,
     );
   }
 
@@ -80,7 +80,7 @@ function postprocessData(
     const values = data[key];
     if (Array.isArray(values)) {
       const newValues = values.map(value =>
-        postprocessValue(locale, stage, value)
+        postprocessValue(locale, stage, value),
       );
       updatedData[key] = newValues;
     } else {
@@ -102,7 +102,7 @@ type Fetcher = Promise<
 
 export function createExecutor(
   gatsbyApi: NodePluginArgs,
-  pluginOptions: IPluginOptions
+  pluginOptions: IPluginOptions,
 ): IQueryExecutor {
   const { endpoint, stages, token } = pluginOptions;
   const { reporter } = gatsbyApi;
@@ -127,8 +127,8 @@ export function createExecutor(
             .then(text =>
               reporter.panic(
                 `gatsby-source-graphcms: Response not ok building GraphCMS nodes: "${query}"`,
-                new Error(text)
-              )
+                new Error(text),
+              ),
             );
         }
 
@@ -138,9 +138,9 @@ export function createExecutor(
         if (response.errors) {
           return reporter.panic(
             `gatsby-source-graphcms: Response errors building GraphCMS nodes: "${query}" (${JSON.stringify(
-              response.errors
+              response.errors,
             )})`,
-            response.errors as unknown as Array<Error>
+            response.errors as unknown as Array<Error>,
           );
         }
 
@@ -153,8 +153,8 @@ export function createExecutor(
       .catch(error =>
         reporter.panic(
           `gatsby-source-graphcms: Error postprocessing GraphCMS nodes: "${query}"`,
-          new Error(error)
-        )
+          new Error(error),
+        ),
       );
   };
   return throttler(execute);
@@ -163,7 +163,7 @@ export function createExecutor(
 export async function createSourcingConfig(
   schemaConfig: ISchemaInformation,
   gatsbyApi: ParentSpanPluginArgs,
-  pluginOptions: IPluginOptions
+  pluginOptions: IPluginOptions,
 ): Promise<ISourcingConfig> {
   const { fragmentsPath, typePrefix } = pluginOptions;
 
@@ -178,7 +178,7 @@ export async function createSourcingConfig(
   }
 
   const addSystemFieldArguments = (
-    field: GraphQLField<unknown, unknown>
+    field: GraphQLField<unknown, unknown>,
   ):
     | {
         [argName: string]: unknown;
@@ -230,7 +230,7 @@ export async function retry<A>(
     factor: number;
     minTimeout: number;
     onRetry: (error: Error | string) => void;
-  }
+  },
 ): Promise<A | undefined> {
   let ms = options.minTimeout;
   for (let i = 0; i < options.retries; i++) {
@@ -254,7 +254,7 @@ export async function retry<A>(
 
 export async function atomicCopyFile(
   sourcePath: string,
-  targetPath: string
+  targetPath: string,
 ): Promise<void> {
   const tempFile = targetPath + `.tmp-${performance.now()}`;
   await rm(targetPath, { force: true });
@@ -272,7 +272,7 @@ export async function atomicCopyFile(
 
 export function getRealType(
   valueType: GraphQLType,
-  level?: number
+  level?: number,
 ): GraphQLType {
   if (isListType(valueType)) {
     return getRealType(valueType.ofType, (level || 0) + 1);

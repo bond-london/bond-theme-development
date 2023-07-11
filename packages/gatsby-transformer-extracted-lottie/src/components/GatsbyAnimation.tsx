@@ -112,10 +112,10 @@ export const GatsbyAnimation: React.FC<{
     loopDelay,
   } = allProps;
   const { width, height } = calculateSizes(
-    animation as unknown as IGatsbyAnimation
+    animation as unknown as IGatsbyAnimation,
   );
   const { style: wrapperStyle, className: wrapperClassName } = getWrapperProps(
-    animation as unknown as IGatsbyAnimation
+    animation as unknown as IGatsbyAnimation,
   );
   const [loadAnimation, setLoadAnimation] = useState(false);
   const [containerVisible, setContainerVisible] = useState(false);

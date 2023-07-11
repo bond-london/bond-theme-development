@@ -31,7 +31,7 @@ function calculateFontAndLineSizePixels(info: string): {
 
 export function addFontSizes(
   { addUtilities }: PluginAPI,
-  config: IBondConfigurationOptions
+  config: IBondConfigurationOptions,
 ): void {
   const results: CSSRuleObject = {};
   const fontRatios = new Set<{ size: string; value: string }>();
@@ -60,7 +60,7 @@ export function addFontSizes(
       name,
       pixels,
       lineHeightPixels,
-      noMax ? config.sizes[size]?.breakpoint : undefined
+      noMax ? config.sizes[size]?.breakpoint : undefined,
     );
   });
 
@@ -71,7 +71,7 @@ export function addFontSizes(
       `${fontSize}`,
       fontSize,
       fontSize * lineHeight,
-      noMax ? config.sizes[size]?.breakpoint : undefined
+      noMax ? config.sizes[size]?.breakpoint : undefined,
     );
   });
   addUtilities(results);
@@ -82,12 +82,12 @@ function addFontEntry(
   name: string,
   fontSizePixels: number,
   lineHeightPixels: number,
-  screenWidthPixels?: number
+  screenWidthPixels?: number,
 ): void {
   const sizeRem = calculateRemSize(fontSizePixels);
   const lineHeightRem = calculateRemSize(lineHeightPixels);
   const bottomFontOffsetRem = calculateRemSize(
-    (lineHeightPixels - fontSizePixels) / 2
+    (lineHeightPixels - fontSizePixels) / 2,
   );
   results[`.text-${name}`] = {
     "font-size": sizeRem,

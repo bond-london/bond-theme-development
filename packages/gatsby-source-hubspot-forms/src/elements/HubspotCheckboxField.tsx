@@ -14,7 +14,7 @@ function buildSet(value?: string): ReadonlyArray<string> {
 
 function addValue(
   current: ReadonlyArray<string>,
-  value: string
+  value: string,
 ): ReadonlyArray<string> {
   if (current.includes(value)) return current;
   return [...current, value];
@@ -22,7 +22,7 @@ function addValue(
 
 function removeValue(
   current: ReadonlyArray<string>,
-  value: string
+  value: string,
 ): ReadonlyArray<string> {
   const index = current.indexOf(value);
   if (index < 0) return current;
@@ -38,7 +38,7 @@ const HubspotCheckboxField: React.FC<IFieldProps> = ({
   options,
 }) => {
   const [currentValue, setCurrentValue] = useState(() =>
-    buildSet(value as string)
+    buildSet(value as string),
   );
   useEffect(() => setCurrentValue(buildSet(value as string)), [value]);
   const handleChange = useCallback(
@@ -53,12 +53,12 @@ const HubspotCheckboxField: React.FC<IFieldProps> = ({
       });
       onChange?.(ev);
     },
-    [onChange]
+    [onChange],
   );
 
   const currentStringValue = useMemo(
     () => currentValue.join(";"),
-    [currentValue]
+    [currentValue],
   );
 
   const { options: fieldOptions } = field;
@@ -77,7 +77,7 @@ const HubspotCheckboxField: React.FC<IFieldProps> = ({
         />
         {(
           fieldOptions.filter(
-            o => o && o.value
+            o => o && o.value,
           ) as ReadonlyArray<IHubspotFormFormFieldOptionsDefinition>
         ).map(option => {
           const value = option.value as string;

@@ -1,29 +1,22 @@
 import React from "react";
-import { CmsCollection } from "./CmsCollection";
 import { CmsComponent } from "./CmsComponent";
 
-type ContentFragment =
-  | Queries.CmsComponentFragment
-  | Queries.CmsCollectionFragment;
-
-const SingleCmsContent: React.FC<{ fragment: ContentFragment }> = ({
-  fragment,
-}) => {
-  switch (fragment.__typename) {
-    case "GraphCMS_Collection":
-      return <CmsCollection fragment={fragment} />;
-    case "GraphCMS_Component":
-      return <CmsComponent fragment={fragment} />;
-  }
-};
-
 export const CmsContent: React.FC<{
-  fragment: ReadonlyArray<ContentFragment>;
-}> = ({ fragment }) => {
+  fragment?: ReadonlyArray<Queries.CmsComponentFragment>;
+  offset?: number;
+  isLast?: boolean;
+}> = ({ fragment, offset = 0, isLast = true }) => {
+  if (!fragment) return null;
   return (
     <>
-      {fragment.map((f) => (
-        <SingleCmsContent key={f.id} fragment={f} />
+      {fragment.map((f, index, array) => (
+        <CmsComponent
+          key={f.id}
+          fragment={f}
+          index={offset + index}
+          isFirst={offset + index === 0}
+          isLast={isLast && index === array.length - 1}
+        />
       ))}
     </>
   );

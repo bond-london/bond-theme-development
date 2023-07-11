@@ -17,7 +17,7 @@ export function buildColours(config: IBondConfigurationOptions): CSSRuleObject {
     config.colorOptions,
     ({ key: colorName, value: colorValue }) => {
       colors[colorName] = colorValue;
-    }
+    },
   );
   return colors;
 }

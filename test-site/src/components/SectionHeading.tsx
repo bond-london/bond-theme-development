@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import React from "react";
+import { convertText } from "@/utils";
 
 export const SectionHeading: React.FC<{
   className?: string;
@@ -9,32 +10,42 @@ export const SectionHeading: React.FC<{
   preHeadingFontClassName?: string;
   headingFontClassName?: string;
   postHeadingFontClassName?: string;
+  preHeadingElement?: keyof JSX.IntrinsicElements;
+  headingElement?: keyof JSX.IntrinsicElements;
+  postHeadingElement?: keyof JSX.IntrinsicElements;
 }> = ({
   heading,
   preHeading,
   postHeading,
-  className = "text-center col-span-full",
-  preHeadingFontClassName = "h3",
-  headingFontClassName = "h3",
-  postHeadingFontClassName = "h3",
+  className,
+  preHeadingFontClassName = "h2",
+  headingFontClassName = "h1",
+  postHeadingFontClassName = "h2",
+  headingElement: HeadingElement = "h2",
+  preHeadingElement: PreHeadingElement = "h3",
+  postHeadingElement: PostHeadingElement = "h3",
 }) => {
   if (!(heading || preHeading || postHeading)) return null;
   return (
     <>
       {preHeading && (
-        <h3 className={classNames(preHeadingFontClassName, className)}>
-          {preHeading}
-        </h3>
+        <PreHeadingElement
+          className={classNames(preHeadingFontClassName, className)}
+        >
+          {convertText(preHeading)}
+        </PreHeadingElement>
       )}
       {heading && (
-        <h2 className={classNames(headingFontClassName, className)}>
-          {heading}
-        </h2>
+        <HeadingElement className={classNames(headingFontClassName, className)}>
+          {convertText(heading)}
+        </HeadingElement>
       )}
       {postHeading && (
-        <h3 className={classNames(postHeadingFontClassName, className)}>
-          {postHeading}
-        </h3>
+        <PostHeadingElement
+          className={classNames(postHeadingFontClassName, className)}
+        >
+          {convertText(postHeading)}
+        </PostHeadingElement>
       )}
     </>
   );

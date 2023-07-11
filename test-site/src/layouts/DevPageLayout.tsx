@@ -1,17 +1,16 @@
 import { Section } from "@bond-london/gatsby-theme";
 import { Link, Slice } from "gatsby";
 import React, { PropsWithChildren } from "react";
-import { CmsFooter } from "../cms/CmsFooter";
-import { CmsNavigationMenu } from "../cms/CmsNavigationMenu";
-import { SectionHeading } from "../components/SectionHeading";
-import { SectionSpacingClassName } from "../styles";
+import { CmsFooter } from "@/cms/CmsFooter";
+import { CmsNavigationMenu } from "@/cms/CmsNavigationMenu";
+import { SectionHeading } from "@/components/SectionHeading";
+import { SectionSpacingClassName } from "@/styles";
 
 const pages: { title: string; path: string }[] = [
   { title: "Development", path: "/dev" },
   { title: "Colours", path: "/dev/colours" },
   { title: "Fonts", path: "/dev/fonts" },
   { title: "Components", path: "/dev/components" },
-  { title: "Collections", path: "/dev/collections" },
 ];
 
 // eslint-disable-next-line import/no-unused-modules

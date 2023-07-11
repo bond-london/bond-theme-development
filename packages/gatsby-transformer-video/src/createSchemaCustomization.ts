@@ -25,7 +25,7 @@ const VideoLayoutType = new GraphQLEnumType({
 
 export function createSchemaCustomization(
   args: CreateSchemaCustomizationArgs,
-  options: IPluginOptions
+  options: IPluginOptions,
 ): void {
   const {
     actions: { createTypes },
@@ -53,7 +53,7 @@ export function createSchemaCustomization(
         resolve: (
           source: Node & IGatsbyVideoInformation,
           transformArgs: ITransformArgs,
-          context: IGatsbyResolverContext<Node, ITransformArgs>
+          context: IGatsbyResolverContext<Node, ITransformArgs>,
         ) => createTransformedVideo(source, transformArgs, context, args),
       },
     },

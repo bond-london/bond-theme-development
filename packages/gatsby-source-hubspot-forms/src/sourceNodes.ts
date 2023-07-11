@@ -4,7 +4,7 @@ import { IPluginOptions } from "./internal";
 
 export async function sourceNodes(
   { actions: { createNode }, reporter, createContentDigest }: SourceNodesArgs,
-  { type, hubspotApiKey }: IPluginOptions
+  { type, hubspotApiKey }: IPluginOptions,
 ): Promise<void> {
   reporter.info("fetching Hubspot Forms");
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,7 +17,7 @@ export async function sourceNodes(
         // eslint-disable-next-line @typescript-eslint/naming-convention
         "Content-Type": "application/json",
       },
-    }
+    },
   );
   const response = fetchAllFormNodes.data;
 

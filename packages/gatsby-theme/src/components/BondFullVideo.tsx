@@ -105,7 +105,7 @@ const BondFullVideoInside: React.FC<
         onFullStarted();
       }
     },
-    [onFullStarted]
+    [onFullStarted],
   );
 
   const showOurControls = subtitles ? false : showControls;

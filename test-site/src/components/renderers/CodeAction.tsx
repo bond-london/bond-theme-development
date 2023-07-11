@@ -7,7 +7,7 @@ interface IActionInformation {
   opts?: unknown;
 }
 function parseInformation(information: string): IActionInformation | undefined {
-  const regex = /^(?<name>[^:]+):(?<arg>[^,]+),?(?<opts>.*)$/gm;
+  const regex = /^(?<name>[^:]+)(|:(?<arg>[^,]+),?(?<opts>.*))$/gm;
   const match = regex.exec(information);
   if (match) {
     const name = match.groups?.["name"];

@@ -32,7 +32,7 @@ export function buildOrganizationSchema(
   name: string,
   url: string,
   logo?: string | null,
-  sameAs?: ReadonlyArray<string | null> | null
+  sameAs?: ReadonlyArray<string | null> | null,
 ): {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   "@type": string;
@@ -53,7 +53,7 @@ export function buildOrganizationSchema(
 
 export function buildWebsiteSchema(
   name: string,
-  url: string
+  url: string,
   // eslint-disable-next-line @typescript-eslint/naming-convention
 ): { "@type": string; name: string; url: string } {
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -66,7 +66,7 @@ function buildSchemas(
   siteUrl: string,
   logo: string | null | undefined,
   sameAs: ReadonlyArray<string | null> | null | undefined,
-  additionalSchemas: Array<unknown> | undefined
+  additionalSchemas: Array<unknown> | undefined,
 ): unknown {
   const schemas = schemaOrgs || [
     buildOrganizationSchema(siteName, siteUrl, logo, sameAs),
@@ -118,7 +118,7 @@ export const BondSEO: React.FC<IProps> = ({
     siteUrl,
     logo,
     sameAs,
-    additionalSchemas
+    additionalSchemas,
   );
 
   if (!possibleSiteName) {

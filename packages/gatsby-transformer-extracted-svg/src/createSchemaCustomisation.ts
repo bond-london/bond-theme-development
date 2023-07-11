@@ -15,7 +15,7 @@ const SvgLayoutType = new GraphQLEnumType({
 });
 
 export function createSchemaCustomization(
-  args: CreateSchemaCustomizationArgs
+  args: CreateSchemaCustomizationArgs,
 ): void {
   const {
     actions: { createTypes },
@@ -39,7 +39,7 @@ export function createSchemaCustomization(
         resolve: (
           source: Node,
           transformArgs: ITransformArgs,
-          context: IGatsbyResolverContext<Node, ITransformArgs>
+          context: IGatsbyResolverContext<Node, ITransformArgs>,
         ) => createExtractedSvg(source, transformArgs, context, args),
       },
     },

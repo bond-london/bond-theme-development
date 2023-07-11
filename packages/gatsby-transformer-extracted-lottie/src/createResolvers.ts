@@ -13,7 +13,7 @@ export function createResolvers(args: CreateResolversArgs): void {
           source: FileSystemNode,
           resolverArgs: never,
           context: IGatsbyResolverContext<Node, never>,
-          info: unknown
+          info: unknown,
         ) {
           if (source.internal.mediaType !== "application/json") {
             return null;
@@ -23,7 +23,7 @@ export function createResolvers(args: CreateResolversArgs): void {
             source,
             resolverArgs,
             context,
-            info
+            info,
           )) as IGatsbyAnimation;
 
           return main;

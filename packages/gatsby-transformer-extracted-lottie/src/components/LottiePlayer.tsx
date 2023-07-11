@@ -15,7 +15,7 @@ async function loadAnimation(url: string): Promise<unknown> {
 }
 
 function convertObjectPosition(
-  objectPosition?: CSSProperties["objectPosition"]
+  objectPosition?: CSSProperties["objectPosition"],
 ): string {
   if (typeof objectPosition === "string") {
     const split = objectPosition.split(" ");
@@ -79,7 +79,7 @@ function convertObjectPosition(
 
 function convertObjectFitAndPositionToPreserveAspectRatio(
   objectFit?: CSSProperties["objectFit"],
-  objectPosition?: CSSProperties["objectPosition"]
+  objectPosition?: CSSProperties["objectPosition"],
 ): string {
   const sliceOrMeet = objectFit === "cover" ? "slice" : "meet";
   const position = convertObjectPosition(objectPosition);
@@ -119,7 +119,7 @@ const LottiePlayer: React.FC<{
           const preserveAspectRatio =
             convertObjectFitAndPositionToPreserveAspectRatio(
               objectFit,
-              objectPosition
+              objectPosition,
             );
           animation = lottie.loadAnimation({
             container,

@@ -24,7 +24,7 @@ function generateImageSource(
   height: number,
   format: ImageFormat,
   fit?: Fit,
-  options?: IImageOptions
+  options?: IImageOptions,
 ): IImage {
   if (!Number.isFinite(height)) height = width;
   const args = ["https://media.graphassets.com"];
@@ -48,7 +48,7 @@ function generateImageSource(
         Number.isFinite(height) && height > 0 ? `h:${height},` : ""
       }${options?.align ? `a:${options.align},` : ""}${
         options?.filter ? `ft:${options.filter},` : ""
-      }f:${filestackFit}`
+      }f:${filestackFit}`,
     );
   }
   if (options?.crop) {
@@ -98,7 +98,7 @@ export async function resolveGatsbyImageData<TContext, TArgs>(
   options: TArgs & IGatsbyImageFieldArgs,
   _context: TContext,
   _info: GraphQLResolveInfo,
-  { reporter, cache }: CreateSchemaCustomizationArgs
+  { reporter, cache }: CreateSchemaCustomizationArgs,
 ): Promise<IGatsbyImageData | null> {
   if (!isImage(image.mimeType)) return null;
 

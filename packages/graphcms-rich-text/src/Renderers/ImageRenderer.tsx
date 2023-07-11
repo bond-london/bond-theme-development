@@ -39,7 +39,7 @@ export const ImageRenderer: React.FC<IImageNodeRendererProps> = ({
         "img",
         classNameOverrides,
         additionalClassName,
-        className
+        className,
       )}
       style={style}
     />

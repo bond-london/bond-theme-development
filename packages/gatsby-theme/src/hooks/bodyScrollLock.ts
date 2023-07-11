@@ -2,7 +2,7 @@ import { clearAllBodyScrollLocks, disableBodyScroll } from "body-scroll-lock";
 import { useEffect, useRef } from "react";
 
 export function useBodyScrollLock<T extends HTMLElement = HTMLElement>(
-  doLock: boolean
+  doLock: boolean,
 ): { ref: React.RefObject<T> } {
   const ref = useRef<T>(null);
 

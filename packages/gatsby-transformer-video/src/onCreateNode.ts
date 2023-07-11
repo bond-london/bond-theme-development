@@ -17,12 +17,12 @@ export async function onCreateNode(args: CreateNodeArgs): Promise<void> {
 
   const videoInformation = await getLocalVideoInformation(
     fsNode.absolutePath,
-    reporter
+    reporter,
   );
   reporter.verbose(
     `Got video information ${JSON.stringify(videoInformation)} for "${
       fsNode.absolutePath
-    }"`
+    }"`,
   );
 
   const videoNode: NodeInput = {

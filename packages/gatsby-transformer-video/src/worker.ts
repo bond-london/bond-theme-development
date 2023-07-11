@@ -31,7 +31,7 @@ async function runFfmpeg(
   input: string,
   output: string,
   options: Array<string>,
-  label: string
+  label: string,
 ): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     let lastPercent = 0;
@@ -68,10 +68,10 @@ export async function workerTransformVideo(
     output: string;
     options: Array<string>;
     label: string;
-  }>
+  }>,
 ): Promise<void> {
   reporter.verbose(
-    `Transforming video "${inputName}" (${instances.length} instances)`
+    `Transforming video "${inputName}" (${instances.length} instances)`,
   );
   for (const instance of instances) {
     reporter.verbose(`Running ffmpeg for "${inputName}" ${instance.label}`);
@@ -79,14 +79,14 @@ export async function workerTransformVideo(
       inputName,
       instance.output,
       instance.options,
-      instance.label
+      instance.label,
     );
     reporter.verbose(
-      `Finished running ffmpeg for "${inputName}" ${instance.label}`
+      `Finished running ffmpeg for "${inputName}" ${instance.label}`,
     );
   }
   reporter.verbose(
-    `Finished transforming video "${inputName}" (${instances.length} instances)`
+    `Finished transforming video "${inputName}" (${instances.length} instances)`,
   );
 }
 
@@ -111,7 +111,7 @@ export function createWebmVideoTransform(targetWidth?: number): Array<string> {
 }
 
 export function createMp4Hvc1VideoTransform(
-  targetWidth?: number
+  targetWidth?: number,
 ): Array<string> {
   return [
     "-c:v libx265",
@@ -127,7 +127,7 @@ export function createMp4Hvc1VideoTransform(
 }
 
 export function createMp4Avc1VideoTransform(
-  targetWidth?: number
+  targetWidth?: number,
 ): Array<string> {
   return [
     "-c:v libx264",
@@ -145,7 +145,7 @@ export function createMp4Avc1VideoTransform(
 function createLabel(
   name: string,
   targetWidth: number | undefined,
-  stage: string
+  stage: string,
 ): string {
   const widthInfo = targetWidth ? ` (width ${targetWidth})` : "";
   return `${stage}: ${name}${widthInfo}`;
@@ -165,7 +165,7 @@ async function runVideoTransform(
   inputDigest: string,
   key: string,
   ext: string,
-  options: Array<string>
+  options: Array<string>,
 ): Promise<string> {
   const label = createLabel(name, targetWidth, key);
   const digestObject = {
@@ -184,7 +184,7 @@ async function runVideoTransform(
     const exists = await videoCache.getFromCache(
       outputName,
       publicFile,
-      reporter
+      reporter,
     );
     if (exists) {
       reporter.verbose(`${label}: Used already cached file (${outputName})`);
@@ -192,7 +192,7 @@ async function runVideoTransform(
     }
   } catch (err) {
     reporter.verbose(
-      `${label}: Failed to get ${outputName} from cache (${err})`
+      `${label}: Failed to get ${outputName} from cache (${err})`,
     );
   }
 
@@ -212,7 +212,7 @@ export async function transformVideo(
   name: string,
   publicDir: string,
   inputDigest: string,
-  targetWidth?: number
+  targetWidth?: number,
 ): Promise<ITransformedVideoInformation> {
   const mp4Hvc1Name = await runVideoTransform(
     inputName,
@@ -222,7 +222,7 @@ export async function transformVideo(
     inputDigest,
     "mp4",
     ".mp4",
-    createMp4Hvc1VideoTransform(targetWidth)
+    createMp4Hvc1VideoTransform(targetWidth),
   );
   const mp4Avc1Name = await runVideoTransform(
     inputName,
@@ -232,7 +232,7 @@ export async function transformVideo(
     inputDigest,
     "mp4 (AVC1)",
     ".mp4",
-    createMp4Avc1VideoTransform(targetWidth)
+    createMp4Avc1VideoTransform(targetWidth),
   );
   const webmName = await runVideoTransform(
     inputName,
@@ -242,7 +242,7 @@ export async function transformVideo(
     inputDigest,
     "webm",
     ".webm",
-    createWebmVideoTransform(targetWidth)
+    createWebmVideoTransform(targetWidth),
   );
 
   const webmFile = join(publicDir, webmName);
@@ -254,7 +254,7 @@ export async function transformVideo(
     inputDigest,
     "poster",
     ".jpg",
-    createScreenshotOptions()
+    createScreenshotOptions(),
   );
 
   const posterFile = join(publicDir, posterName);

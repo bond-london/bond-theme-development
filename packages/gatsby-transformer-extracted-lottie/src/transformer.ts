@@ -12,7 +12,7 @@ import { renderLottieToSvg } from "./lottieToSvg";
 
 async function parseLottie(
   fsNode: FileSystemNode,
-  args: NodePluginArgs
+  args: NodePluginArgs,
 ): Promise<{
   animationJson: string;
   data: string;
@@ -57,7 +57,7 @@ async function internalCreateExtractedAnimation(
   source: Node,
   transformArgs: ITransformArgs,
   context: IGatsbyResolverContext<Node, ITransformArgs>,
-  args: NodePluginArgs
+  args: NodePluginArgs,
 ): Promise<IGatsbyAnimation | undefined> {
   const { reporter, getNodeAndSavePathDependency, pathPrefix } = args;
   if (!source.parent) {
@@ -67,7 +67,7 @@ async function internalCreateExtractedAnimation(
   const details = getNodeAndSavePathDependency(
     source.parent,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    context.path
+    context.path,
   ) as FileSystemNode;
 
   try {
@@ -79,7 +79,7 @@ async function internalCreateExtractedAnimation(
         process.cwd(),
         "public",
         "static",
-        details.internal.contentDigest
+        details.internal.contentDigest,
       );
       await ensureDir(publicDir);
       const fileName = `${details.name}-preview.svg`;
@@ -108,7 +108,7 @@ async function internalCreateExtractedAnimation(
           } catch (error) {
             reporter.panic(
               `Failed to create animation preview`,
-              error as Error
+              error as Error,
             );
           }
         }
@@ -128,7 +128,7 @@ export function createExtractedAnimation(
   source: Node,
   transformArgs: ITransformArgs,
   context: IGatsbyResolverContext<Node, ITransformArgs>,
-  args: NodePluginArgs
+  args: NodePluginArgs,
 ): Promise<IGatsbyAnimation | undefined> {
   const keyObj = {
     digest: source.internal.contentDigest,
@@ -144,7 +144,7 @@ export function createExtractedAnimation(
       internalCreateExtractedAnimation(source, transformArgs, context, args)
         .then(resolve)
         .catch(reject);
-    }
+    },
   );
   transformMap.set(key, promise);
   return promise;

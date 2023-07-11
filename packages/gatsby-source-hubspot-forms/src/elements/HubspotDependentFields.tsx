@@ -15,7 +15,7 @@ export const HubspotDependentFields: React.FC<{
   <>
     {(
       fields.filter(
-        field => field?.dependentFormField?.enabled
+        field => field?.dependentFormField?.enabled,
       ) as ReadonlyArray<IHubspotFormFormDependentFieldDefinition>
     ).map(field => (
       <HubspotDependentField

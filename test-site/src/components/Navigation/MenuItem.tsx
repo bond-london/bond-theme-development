@@ -1,6 +1,6 @@
 import React from "react";
-import { ColourName } from "../../colors";
-import { LinkOrButton } from "../LinkOrButton";
+import { ColourName } from "@colors";
+import { LinkOrButton } from "@/components/LinkOrButton";
 import { INavigationItem } from "./NavigationMenu";
 import { NestedMenu } from "./NestedMenu";
 
@@ -9,12 +9,14 @@ export const MenuItem: React.FC<{
   backgroundColour?: ColourName | null;
   textColour?: ColourName | null;
   className?: string;
+  iconFirst?: boolean;
+  contentClassName?: string;
   closeMenu?: () => void;
   active?: boolean;
   activateMenu?: (
     timeStamp: number,
     item?: INavigationItem,
-    from?: INavigationItem
+    from?: INavigationItem,
   ) => void;
 }> = ({
   item,
@@ -24,6 +26,8 @@ export const MenuItem: React.FC<{
   active,
   closeMenu,
   activateMenu,
+  iconFirst,
+  contentClassName,
 }) => {
   if (item.entries && item.entries.length > 0) {
     return (
@@ -43,17 +47,10 @@ export const MenuItem: React.FC<{
       information={item}
       onClick={closeMenu}
       className={className}
-      iconHeightClassName="h-mobile-menu-logo laptop:h-laptop-menu-logo menu-item"
-      buttonClassName={
-        item.icon
-          ? "menu-icon"
-          : item.isButton
-          ? "filled-menu-button"
-          : "menu-button"
-      }
+      iconHeightClassName="h-mobile-nav-logo laptop:h-laptop-nav-logo"
       allowEmpty={true}
-      colourIsBackground={item.isButton}
-      isButton={true}
+      iconFirst={iconFirst}
+      contentClassName={contentClassName}
     />
   );
 };

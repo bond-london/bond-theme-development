@@ -1,8 +1,20 @@
-import { graphql } from "gatsby";
-import { CmsTagHead, CmsTagLayout } from "../../cms/CmsTagLayout";
+import { graphql, PageProps } from "gatsby";
+import React from "react";
+import { CmsTagHead, CmsTagLayout } from "@/cms/CmsTagLayout";
+import { ArticleList } from "@/components/ArticleList";
 
+const TagListLayout: React.FC<PageProps<Queries.TagListQuery>> = (props) => (
+  <CmsTagLayout {...props} noHero={true}>
+    <ArticleList
+      articles={props.data.allGraphCmsArticle.edges.map((e) => e.node)}
+      textColour={props.data.graphCmsTag?.textColour}
+      backgroundColour={props.data.graphCmsTag?.backgroundColour}
+      showNoArticles={false}
+    />
+  </CmsTagLayout>
+);
 // eslint-disable-next-line import/no-unused-modules
-export default CmsTagLayout;
+export default TagListLayout;
 
 // eslint-disable-next-line import/no-unused-modules
 export const TagListQuery = graphql`

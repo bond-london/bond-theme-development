@@ -1,41 +1,35 @@
-import classNames from "classnames";
+import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
 import { PageProps, Slice } from "gatsby";
 import React from "react";
-import { lookupColourClassNames } from "../colors";
+import { combineComponents } from "@/utils";
 import { CmsContent } from "./CmsContent";
 import { CmsFooter } from "./CmsFooter";
 import { CmsNavigationMenu } from "./CmsNavigationMenu";
 
 export const CmsPageLayout: React.FC<PageProps<Queries.SinglePageQuery>> = (
-  props
+  props,
 ) => {
   const page = props.data.graphCmsPage;
   if (!page) {
-    throw new Error("Page does not exist");
+    return <Unsupported component="Cms page layout" message="No page" />;
   }
-
-  const template = page.template;
+  const { template, menu, footer, topContent, content } = page;
 
   return (
-    <div
-      className={classNames(
-        "overflow-hidden",
-        lookupColourClassNames(
-          page.backgroundColour || template?.backgroundColour,
-          page.textColour || template?.textColour
-        )
-      )}
-    >
-      <CmsNavigationMenu page={page.menu} template={template?.menu} />
+    <>
+      <CmsNavigationMenu page={menu || template?.menu} />
       <Slice alias="analytics" />
 
-      <CmsContent fragment={page.topContent} />
-      {template?.preContent && <CmsContent fragment={template.preContent} />}
-      <CmsContent fragment={page.content} />
-      {template?.postContent && <CmsContent fragment={template.postContent} />}
-      <CmsContent fragment={page.bottomContent} />
+      <CmsContent
+        fragment={combineComponents(
+          topContent,
+          template?.preContent,
+          content,
+          template?.postContent,
+        )}
+      />
 
-      <CmsFooter page={page.footer} template={template?.footer} />
-    </div>
+      <CmsFooter page={footer || template?.footer} />
+    </>
   );
 };

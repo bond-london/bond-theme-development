@@ -19,7 +19,7 @@ function getFontName(size: string | number): string | undefined {
 
 export function buildTypography(
   { addComponents }: PluginAPI,
-  config: IBondConfigurationOptions
+  config: IBondConfigurationOptions,
 ): void {
   const components: CSSRuleObject = {};
   const noMax = !Object.values(config.sizes).find(v => v.max);
@@ -67,7 +67,7 @@ export function buildTypography(
         classes.push(max);
       }
       components[`.${name}`] = createApplyEntry(classes);
-    }
+    },
   );
   addComponents(components);
 }

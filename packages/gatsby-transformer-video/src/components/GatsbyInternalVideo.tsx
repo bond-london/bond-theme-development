@@ -68,7 +68,7 @@ export const GatsbyInternalVideo: React.FC<
   >
 > = ({ children, video, videoRef, loading, poster, ...otherProps }) => {
   const { width, height } = calculateVideoSizes(
-    video as unknown as IGatsbyVideo
+    video as unknown as IGatsbyVideo,
   );
 
   const lazy = loading === "lazy";

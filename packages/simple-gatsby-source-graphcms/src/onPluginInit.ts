@@ -24,7 +24,7 @@ const specialNames = new Set(["stage", "locale", "localizations"]);
 
 async function retrieveSchema(
   gatsbyApi: NodePluginArgs,
-  pluginOptions: IPluginOptions
+  pluginOptions: IPluginOptions,
 ): Promise<ISchemaInformation> {
   const { locales, stages } = pluginOptions;
   const execute = createExecutor(gatsbyApi, pluginOptions);
@@ -37,7 +37,7 @@ async function retrieveSchema(
 
   const pluralRootFieldName = (type: GraphQLObjectType): string | undefined =>
     Object.keys(queryFields).find(
-      fieldName => String(queryFields[fieldName].type) === `[${type.name}!]!`
+      fieldName => String(queryFields[fieldName].type) === `[${type.name}!]!`,
     );
 
   const hasLocaleField = (type: GraphQLObjectType): boolean =>
@@ -58,7 +58,7 @@ async function retrieveSchema(
             }, skip: $offset, stage: ${stage}) {
                 ..._${type.name}Id_
               }
-            }`
+            }`,
           );
         }),
         `fragment _${type.name}Id_ on ${type.name} {
@@ -110,7 +110,7 @@ function isAssetField(type: GraphQLType): boolean {
 
 function isMarkdownField(
   fieldName: string | undefined,
-  markdownFields: Array<string> | undefined
+  markdownFields: Array<string> | undefined,
 ): boolean {
   if (markdownFields && fieldName) {
     return markdownFields.includes(fieldName);
@@ -123,7 +123,7 @@ function walkType(
   markdownFieldsMap: { [key: string]: Array<string> },
   knownTypes: Set<string>,
   reporter: Reporter,
-  topLevelTypeName: string
+  topLevelTypeName: string,
 ): Array<SpecialFieldEntry> | undefined {
   const specialFields: Array<SpecialFieldEntry> = [];
 
@@ -162,7 +162,7 @@ function walkType(
               markdownFieldsMap,
               knownTypes,
               reporter,
-              topLevelTypeName
+              topLevelTypeName,
             );
             if (entries) {
               map.set(containedType.name, entries);
@@ -179,7 +179,7 @@ function walkType(
         markdownFieldsMap,
         knownTypes,
         reporter,
-        topLevelTypeName
+        topLevelTypeName,
       );
       if (entries) {
         specialFields.push({ fieldName, type: "Object", value: entries });
@@ -187,8 +187,8 @@ function walkType(
     } else if (!isKnown && !isScalar && !isEnum) {
       reporter.warn(
         `What to do with field ${fieldName}: (${fieldType}) ${fieldName} (known ${isKnown}, isScalar ${isScalar}, isEnum ${isEnum}, isObject ${isObjectType(
-          fieldType
-        )})`
+          fieldType,
+        )})`,
       );
     }
   });
@@ -202,7 +202,7 @@ function walkType(
 function walkNodesToFindImportantFields(
   { schema }: ISchemaInformation,
   markdownFieldsMap: { [key: string]: Array<string> },
-  reporter: Reporter
+  reporter: Reporter,
 ): Map<string, Array<SpecialFieldEntry>> {
   const nodeInterface = schema.getType("Node") as GraphQLAbstractType;
   const possibleTypes = schema.getPossibleTypes(nodeInterface);
@@ -216,7 +216,7 @@ function walkNodesToFindImportantFields(
       markdownFieldsMap,
       knownTypes,
       reporter,
-      type.name
+      type.name,
     );
     if (entries) {
       specialFieldsMap.set(type.name, entries);
@@ -228,7 +228,7 @@ function walkNodesToFindImportantFields(
 
 async function initializeGlobalState(
   args: ParentSpanPluginArgs,
-  options: IPluginOptions
+  options: IPluginOptions,
 ): Promise<void> {
   const { reporter } = args;
 
@@ -238,7 +238,7 @@ async function initializeGlobalState(
   stateCache.specialFields = walkNodesToFindImportantFields(
     schemaInformation,
     options.markdownFields,
-    reporter
+    reporter,
   );
 }
 

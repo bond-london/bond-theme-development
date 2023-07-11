@@ -2,25 +2,27 @@ import {
   convertCmsAssetToBondVisual,
   IPageMetadata,
 } from "@bond-london/gatsby-theme";
-import classNames from "classnames";
-import { HeadFC, PageProps, Slice } from "gatsby";
-import React, { useCallback } from "react";
-import { ColourName, lookupColourClassNames } from "../colors";
-import { ArticleList } from "../components/ArticleList";
-import { PageHead } from "../components/PageHead";
-import { Paginator } from "../components/Paginator";
-import { Hero } from "../components/SectionHero";
+import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
+import { HeadFC, Slice } from "gatsby";
+import React, { PropsWithChildren } from "react";
+import { lookupColourClassNames } from "@colors";
+import { PageHead } from "@/components/PageHead";
+import { Paginator } from "@/components/Paginator";
+import { SimpleHero } from "@/components/SimpleHero";
+import { combineComponents } from "@/utils";
 import { CmsContent } from "./CmsContent";
 import { CmsFooter } from "./CmsFooter";
 import { CmsNavigationMenu } from "./CmsNavigationMenu";
 
 export const CmsArticleTypeHead: HeadFC<Queries.ArticleTypeListQuery> = (
-  props
+  props,
 ) => {
   const {
     data: { graphCmsArticleType },
   } = props;
-  if (!graphCmsArticleType) throw new Error("No page");
+  if (!graphCmsArticleType) {
+    return <Unsupported component="Cms article type head" message="No data" />;
+  }
 
   const pageMetadata: IPageMetadata = {
     title: graphCmsArticleType.title,
@@ -32,23 +34,24 @@ export const CmsArticleTypeHead: HeadFC<Queries.ArticleTypeListQuery> = (
 };
 
 export const CmsArticleTypeLayout: React.FC<
-  PageProps<Queries.ArticleTypeListQuery> & {
-    articleListElement?: React.FC<{
-      textColour?: ColourName | null;
-      backgroundColour?: ColourName | null;
-      articles: ReadonlyArray<Queries.CmsArticleLinkFragment>;
-    }>;
-  }
+  PropsWithChildren<{
+    data: Queries.ArticleTypeListQuery;
+    noHero?: boolean;
+  }>
 > = (props) => {
   const {
     graphCmsArticleType,
     allGraphCmsArticle: {
-      edges,
       pageInfo: { currentPage, pageCount },
     },
   } = props.data;
   if (!graphCmsArticleType) {
-    throw new Error("Article Type does not exist");
+    return (
+      <Unsupported
+        component="Cms article type layout"
+        message="Article type does not exist"
+      />
+    );
   }
 
   const {
@@ -62,53 +65,55 @@ export const CmsArticleTypeLayout: React.FC<
     footer,
   } = graphCmsArticleType;
 
-  const buildLink = useCallback(
-    (page: number) => {
-      const pagePart = page === 1 ? "" : `${page}/`;
-      return `/${graphCmsArticleType.slug}/${pagePart}`;
-    },
-    [graphCmsArticleType.slug]
-  );
-
-  const ArticleListElement = props.articleListElement || ArticleList;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const buildLink = (page: number) => {
+    const pagePart = page === 1 ? "" : `${page}/`;
+    return `/${graphCmsArticleType.indexPageSlug}/${pagePart}`;
+  };
+  const noDefaultHero =
+    props.noHero ||
+    (topContent && topContent.length) ||
+    (template?.preContent && template.preContent.length);
 
   return (
     <div
-      className={classNames(
-        "overflow-hidden",
-        lookupColourClassNames(
-          backgroundColour || template?.backgroundColour,
-          textColour || template?.textColour
-        )
+      className={lookupColourClassNames(
+        backgroundColour || template?.backgroundColour,
+        textColour || template?.textColour,
       )}
     >
-      <CmsNavigationMenu page={menu} template={template?.menu} />
+      <CmsNavigationMenu page={menu || template?.menu} />
       <Slice alias="analytics" />
-      {topContent && topContent.length > 0 ? (
-        <CmsContent fragment={topContent} />
+      {noDefaultHero ? (
+        <>
+          <CmsContent
+            fragment={combineComponents(topContent, template?.preContent)}
+            isLast={false}
+          />
+        </>
       ) : (
-        <Hero
+        <SimpleHero
           heading={title}
           visual={convertCmsAssetToBondVisual(featuredImage)}
           backgroundColour={backgroundColour}
           textColour={textColour}
         />
       )}
-      {template?.preContent && <CmsContent fragment={template.preContent} />}
 
-      <ArticleListElement
-        articles={edges.map((e) => e.node)}
-        backgroundColour={backgroundColour}
-        textColour={textColour}
-      />
+      {props.children || (
+        <Unsupported
+          message="Need to pass in children - maybe ArticleList"
+          component="Article type layout"
+        />
+      )}
       <Paginator
         totalPages={pageCount}
         currentPage={currentPage}
         buildLink={buildLink}
       />
-      {template?.postContent && <CmsContent fragment={template.postContent} />}
+      <CmsContent fragment={template?.postContent} offset={1} />
 
-      <CmsFooter page={footer} template={template?.footer} />
+      <CmsFooter page={footer || template?.footer} />
     </div>
   );
 };

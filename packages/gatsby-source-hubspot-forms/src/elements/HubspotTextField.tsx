@@ -11,7 +11,7 @@ import {
 import { IHubspotFormFieldDefinition, makeInputId } from "./shared";
 
 function calculateInputType(
-  field: IHubspotFormFieldDefinition
+  field: IHubspotFormFieldDefinition,
 ): HTMLInputTypeAttribute | undefined | null {
   const { name, type } = field;
   switch (type) {
@@ -46,7 +46,7 @@ const HubspotTextField: React.FC<IFieldProps> = ({
       setCurrentValue(ev.currentTarget.value);
       onChange?.(ev);
     },
-    [onChange]
+    [onChange],
   );
 
   return (

@@ -2,8 +2,8 @@ import { BondVisual, Section } from "@bond-london/gatsby-theme";
 import { ClassNameOverrides } from "@bond-london/graphcms-rich-text";
 import classNames from "classnames";
 import React from "react";
-import { lookupColourClassNames } from "../colors";
-import { SectionSpacingClassName } from "../styles";
+import { lookupColourClassNames } from "@colors";
+import { SectionSpacingClassName } from "@/styles";
 import { IComponentInformation } from "./GenericComponent";
 import { defaultProjectClassNameOverrides } from "./RTF";
 import { SectionBody } from "./SectionBody";
@@ -37,7 +37,7 @@ export const Banner: React.FC<{
       componentName="Banner"
       sectionClassName={classNames(
         SectionSpacingClassName,
-        lookupColourClassNames(backgroundColour, textColour)
+        lookupColourClassNames(backgroundColour, textColour),
       )}
       sectionColumnsClassName="relative col-start-2 col-span-1"
       contentClassName="flex flex-col gap-xs laptop:mx-laptop-2-gap-cols justify-center"

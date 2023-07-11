@@ -22,7 +22,7 @@ const HubspotSelectField: React.FC<IFieldProps> = ({
       onInteracted();
       onChange?.(ev);
     },
-    [onInteracted, onChange]
+    [onInteracted, onChange],
   );
   return (
     <>
@@ -43,7 +43,7 @@ const HubspotSelectField: React.FC<IFieldProps> = ({
         )}
         {(
           field.options?.filter(
-            o => o
+            o => o,
           ) as ReadonlyArray<IHubspotFormFormFieldOptionsDefinition>
         ).map(o => (
           <option

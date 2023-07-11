@@ -58,10 +58,6 @@ module.exports = {
           },
         ],
         "require-jsdoc": "off",
-        "implicit-dependencies/no-implicit": [
-          "error",
-          { peer: true, dev: true },
-        ],
       },
     },
     {

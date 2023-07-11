@@ -1,13 +1,14 @@
-import classNames from "classnames";
+import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
 import { PageProps, Slice } from "gatsby";
 import React, { createContext } from "react";
-import { lookupColourClassNames } from "../colors";
 import { CmsContent } from "./CmsContent";
 import { CmsFooter } from "./CmsFooter";
 import { CmsNavigationMenu } from "./CmsNavigationMenu";
+import { lookupColourClassNames } from "@colors";
+import { combineComponents } from "@/utils";
 
 interface IArticleContext {
-  article?: Queries.SingleArticleQuery["graphCmsArticle"];
+  article?: Queries.CmsArticleFragment;
 }
 
 export const ArticleContext = createContext<IArticleContext>({
@@ -19,41 +20,51 @@ export const CmsArticleLayout: React.FC<
 > = (props) => {
   const article = props.data.graphCmsArticle;
   if (!article) {
-    throw new Error("Article does not exist");
+    return (
+      <Unsupported
+        component="Cms article layout"
+        message="Article does not exist"
+      />
+    );
   }
 
   const articleType = article.articleType;
   if (!articleType) {
-    throw new Error(`Article ${article.slug} has no article type`);
+    return (
+      <Unsupported
+        component="Cms article layout"
+        message={`Article ${article.slug} has no article type`}
+      />
+    );
   }
 
-  const template = article.template || articleType.template;
+  const template =
+    article.template || articleType.articleTemplate || articleType.template;
   return (
     <ArticleContext.Provider value={{ article }}>
       <div
-        className={classNames(
-          "overflow-hidden",
-          lookupColourClassNames(
-            article.backgroundColour || template?.backgroundColour,
-            article.textColour || template?.textColour
-          )
+        className={lookupColourClassNames(
+          article.backgroundColour ||
+            articleType.backgroundColour ||
+            template?.backgroundColour,
+          article.textColour || articleType.textColour || template?.textColour,
         )}
       >
         <CmsNavigationMenu
-          page={article.menu || articleType.menu}
-          template={template?.menu}
+          page={article.menu || articleType.menu || template?.menu}
         />
         <Slice alias="analytics" />
-
-        {template?.preContent && <CmsContent fragment={template.preContent} />}
-        <CmsContent fragment={article.content} />
-        {template?.postContent && (
-          <CmsContent fragment={template.postContent} />
-        )}
+        <CmsContent
+          fragment={combineComponents(
+            article.topContent || articleType.articleTopContent,
+            template?.preContent,
+            article.content,
+            template?.postContent,
+          )}
+        />
 
         <CmsFooter
-          page={article.footer || articleType.footer}
-          template={template?.footer}
+          page={article.footer || articleType.footer || template?.footer}
         />
       </div>
     </ArticleContext.Provider>

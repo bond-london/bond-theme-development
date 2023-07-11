@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 export function useComponentSize<T extends HTMLElement>(): [
   React.RefObject<T>,
-  Array<number>
+  Array<number>,
 ] {
   const componentRef = useRef<T>(null);
   const [size, setSize] = useState([375, 667]);

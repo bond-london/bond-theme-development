@@ -2,14 +2,14 @@ import { IPageMetadata, Section } from "@bond-london/gatsby-theme";
 import classNames from "classnames";
 import { HeadFC } from "gatsby";
 import React, { Fragment } from "react";
-import { PageHead } from "../../components/PageHead";
-import { fontTable, sizes } from "../../design";
-import { DevPageLayout } from "../../layouts/DevPageLayout";
+import { PageHead } from "@/components/PageHead";
+import { fontTable, sizes } from "@/design";
+import { DevPageLayout } from "@/layouts/DevPageLayout";
 
 const head = classNames("font-bold text-34-44");
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const retain = "h1 h2 h3 h4 h5 h6 p1 p2 p3";
+const retain = "h1 h2 h3 h4 h5 h6 p1 p2 p3 p4 mono";
 
 const styles = ["", "italic"];
 

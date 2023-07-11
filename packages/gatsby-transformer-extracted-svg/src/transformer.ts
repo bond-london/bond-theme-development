@@ -17,7 +17,7 @@ interface IParsedSvg {
 
 async function parseSvg(
   fsNode: FileSystemNode,
-  args: NodePluginArgs
+  args: NodePluginArgs,
 ): Promise<IParsedSvg> {
   const { reporter } = args;
   try {
@@ -64,7 +64,7 @@ async function internalCreateExtractedSvg(
   source: Node,
   transformArgs: ITransformArgs,
   context: IGatsbyResolverContext<Node, ITransformArgs>,
-  args: NodePluginArgs
+  args: NodePluginArgs,
 ): Promise<IGatsbySvg | undefined> {
   const { reporter, getNodeAndSavePathDependency, pathPrefix } = args;
   if (!source.parent) {
@@ -74,7 +74,7 @@ async function internalCreateExtractedSvg(
   const details = getNodeAndSavePathDependency(
     source.parent,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    context.path
+    context.path,
   ) as FileSystemNode;
 
   try {
@@ -86,7 +86,7 @@ async function internalCreateExtractedSvg(
         process.cwd(),
         "public",
         "static",
-        details.internal.contentDigest
+        details.internal.contentDigest,
       );
       await ensureDir(publicDir);
       const fileName = `${details.name}-preview.svg`;
@@ -108,7 +108,7 @@ async function internalCreateExtractedSvg(
           } catch (error) {
             reporter.panic(
               `Failed to create animation preview`,
-              error as Error
+              error as Error,
             );
           }
         }
@@ -128,7 +128,7 @@ export function createExtractedSvg(
   source: Node,
   transformArgs: ITransformArgs,
   context: IGatsbyResolverContext<Node, ITransformArgs>,
-  args: NodePluginArgs
+  args: NodePluginArgs,
 ): Promise<IGatsbySvg | undefined> {
   const keyObj = {
     digest: source.internal.contentDigest,

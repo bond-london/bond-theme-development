@@ -1,32 +1,28 @@
-import {
-  BondImage,
-  convertCmsAssetToBondImage,
-  Section,
-} from "@bond-london/gatsby-theme";
-import { Link } from "gatsby";
+import { BondVisual, Section } from "@bond-london/gatsby-theme";
 import React from "react";
-import { calculateArticleLinkPath } from "../cms/CmsArticle";
-import { ColourName, lookupColourClassNames } from "../colors";
+import { calculateArticleLinkPath } from "@/cms/CmsArticle";
+import { ColourName, lookupColourClassNames } from "@colors";
+import { SimpleLink } from "./LinkOrButton";
 
 const ArticleListEntry: React.FC<{
   article: Queries.CmsArticleLinkFragment;
 }> = ({ article }) => {
-  const { title, embedImage } = article;
-  const bondImage = convertCmsAssetToBondImage(embedImage, {
-    dontCropPng: true,
-  });
-  const path = calculateArticleLinkPath(article);
+  const { id, title } = article;
+  const { to, visual, heading, postHeading } =
+    calculateArticleLinkPath(article);
   return (
-    <div className="flex flex-col gap-y-xs">
-      {path ? (
-        <Link to={path}>
-          <h3 className="h3 text-center">{title}</h3>
-        </Link>
-      ) : (
-        <h3 className="h3 text-center">{title}</h3>
+    <SimpleLink
+      link={{ id, name: title, internal: to }}
+      className="flex flex-col gap-y-xs my-xxs"
+    >
+      {visual && <BondVisual visual={visual} simple={true} />}
+      {(heading || title) && (
+        <h3 className="p2">
+          {heading || title}
+          {postHeading && <span className="lighter">&nbsp;{postHeading}</span>}
+        </h3>
       )}
-      {bondImage && <BondImage image={bondImage} />}
-    </div>
+    </SimpleLink>
   );
 };
 
@@ -34,21 +30,23 @@ export const ArticleList: React.FC<{
   textColour?: ColourName | null;
   backgroundColour?: ColourName | null;
   articles: ReadonlyArray<Queries.CmsArticleLinkFragment>;
-}> = ({ backgroundColour, textColour, articles }) => {
+  showNoArticles?: boolean;
+}> = ({ backgroundColour, textColour, articles, showNoArticles = true }) => {
   if (articles.length === 0) {
+    if (!showNoArticles) return null;
     return (
       <Section
-        componentName="No articles"
+        componentName="Article List (Empty)"
         sectionClassName={lookupColourClassNames(backgroundColour, textColour)}
       >
-        <h2>No articles found</h2>
+        <h2 className="h2 col-span-full">No articles found</h2>
       </Section>
     );
   }
   return (
     <Section
-      componentName="Articles"
-      contentClassName="grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 gap-x-mobile-gap"
+      componentName="Article List"
+      contentClassName="grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 gap-x-mobile-gap gap-y-xs my-xs"
       sectionClassName={lookupColourClassNames(backgroundColour, textColour)}
     >
       {articles.map((a) => (

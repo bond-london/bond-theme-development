@@ -42,7 +42,7 @@ export type EntryFunction<V, R> = (entry: {
 export function mapNumbers(
   numbers: Array<number>,
   keyFn: KeyFunction<number>,
-  valueFn: ValueFunction<number>
+  valueFn: ValueFunction<number>,
 ): CSSRuleObject {
   const result: CSSRuleObject = {};
   numbers.forEach(i => {
@@ -55,7 +55,7 @@ export function mapObject<V>(
   obj: { [key: string]: V },
   keyFn: KeyFunction<string>,
   valueFn: ValueFunction<V>,
-  filterFn?: FilterFunction<V>
+  filterFn?: FilterFunction<V>,
 ): CSSRuleObject {
   const results: CSSRuleObject = {};
   forEachObject(
@@ -63,7 +63,7 @@ export function mapObject<V>(
     ({ key, value }) => {
       results[keyFn(key)] = valueFn(value);
     },
-    filterFn
+    filterFn,
   );
   return results;
 }
@@ -71,7 +71,7 @@ export function mapObject<V>(
 export function forEachObject<V, R>(
   obj: { [key: string]: V },
   entryFn: EntryFunction<V, R>,
-  filterFn?: FilterFunction<V>
+  filterFn?: FilterFunction<V>,
 ): void {
   Object.entries(obj).forEach(([key, value], index) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -93,7 +93,7 @@ export function calculateNumbers(
   max: number,
   keyFn: KeyFunction<number>,
   valueFn: ValueFunction<number>,
-  by = 1
+  by = 1,
 ): CSSRuleObject {
   const result: CSSRuleObject = {};
   for (let i = min; i <= max; i += by) {
@@ -107,7 +107,7 @@ export function calculateNumbersMap(
   max: number,
   keyFn: KeyFunction<number>,
   valueFn: ValueFunction<number, CSSRuleObject>,
-  by = 1
+  by = 1,
 ): CSSRuleObject {
   const result: CSSRuleObject = {};
   for (let i = min; i <= max; i += by) {

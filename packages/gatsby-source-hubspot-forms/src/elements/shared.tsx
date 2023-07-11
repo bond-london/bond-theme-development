@@ -38,7 +38,7 @@ export interface IHubspotFormOptions {
 
 export type EventReporter = (
   eventName: string,
-  eventData: { [key: string]: unknown }
+  eventData: { [key: string]: unknown },
 ) => void;
 
 export interface IHubspotFormDefinition {
@@ -149,7 +149,7 @@ export type IHubspotFormFieldGroup = ReadonlyArray<IHubspotFormFieldDefinition>;
 
 export function makeInputId(
   formName: string,
-  fieldName?: string | null
+  fieldName?: string | null,
 ): string | undefined {
   if (fieldName) return `${formName}#${fieldName}`;
   return undefined;

@@ -1,8 +1,8 @@
 import { Section } from "@bond-london/gatsby-theme";
 import classNames from "classnames";
 import React from "react";
-import { lookupColourClassNames } from "../../colors";
-import { LinkOrButton } from "../LinkOrButton";
+import { lookupColourClassNames } from "@colors";
+import { LinkOrButton } from "@/components/LinkOrButton";
 import { INavigation } from "./NavigationBar";
 import { INavigationItem } from "./NavigationMenu";
 
@@ -28,7 +28,7 @@ const FooterContainer: React.FC<{
           <FooterContainer key={entry.id} entries={entry.entries} />
         ) : (
           <FooterItem key={entry.id} item={entry} />
-        )
+        ),
       )}
     </div>
   );
@@ -44,7 +44,7 @@ export const Footer: React.FC<{ menu: INavigation }> = ({
       element="footer"
       componentName="Footer"
       sectionClassName={classNames(
-        lookupColourClassNames(backgroundColour, textColour)
+        lookupColourClassNames(backgroundColour, textColour),
       )}
       contentClassName="footer-spacing p3"
     >
@@ -54,7 +54,7 @@ export const Footer: React.FC<{ menu: INavigation }> = ({
             <FooterContainer key={entry.id} entries={entry.entries} />
           ) : (
             <FooterItem key={entry.id} item={entry} />
-          )
+          ),
         )
       ) : (
         <FooterContainer entries={entries} />

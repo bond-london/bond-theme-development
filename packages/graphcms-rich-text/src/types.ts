@@ -94,7 +94,7 @@ export interface IBaseRendererProps {
   classNameOverrides?: ClassNameOverrides;
   renderDisabledElement?: (
     elementName: string,
-    htmlElementName: keyof IFullNodeRenderer
+    htmlElementName: keyof IFullNodeRenderer,
   ) => JSX.Element;
   contents?: ReadonlyArray<Node>;
   additionalClassName?: string;
@@ -187,7 +187,7 @@ export type ICustomEmbedRenderedProps<T = unknown> = BaseCustomRendererProps &
 export type EmbedNodeRenderer = (props: RenderEmbedProps) => JSX.Element;
 
 export type DefaultNodeRenderer = (
-  props: PropsWithChildren<IDefaultNodeRendererProps>
+  props: PropsWithChildren<IDefaultNodeRendererProps>,
 ) => JSX.Element;
 
 export interface ILinkNodeRendererProps
@@ -204,14 +204,14 @@ export interface IIframeNodeRendererProps
   title?: string;
 }
 export type IframeNodeRenderer = (
-  props: IIframeNodeRendererProps
+  props: IIframeNodeRendererProps,
 ) => JSX.Element;
 
 export interface IClassNodeRendererProps
   extends IDefaultNodeRendererProps,
     Partial<ClassProps> {}
 export type ClassNodeRenderer = (
-  props: PropsWithChildren<IClassNodeRendererProps>
+  props: PropsWithChildren<IClassNodeRendererProps>,
 ) => JSX.Element | null;
 
 export interface IImageProps {

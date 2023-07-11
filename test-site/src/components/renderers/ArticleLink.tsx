@@ -1,13 +1,13 @@
 import { Link } from "gatsby";
 import React from "react";
-import { LinkClassName } from "../../styles";
+import { LinkClassName } from "@/styles";
 import { EmbedLink } from "./EmbedLink";
-import { calculateArticleLinkPath } from "../../cms/CmsArticle";
+import { calculateArticleLinkPath } from "@/cms/CmsArticle";
 
 export const ArticleLink: React.FC<{
   fragment: Queries.CmsArticleLinkFragment;
 }> = ({ fragment }) => {
-  const path = calculateArticleLinkPath(fragment);
+  const path = calculateArticleLinkPath(fragment)?.to;
   return (
     <Link className={LinkClassName} to={path}>
       {fragment.title}
@@ -20,9 +20,8 @@ export const ArticleEmbedLink: React.FC<{
   isInline?: boolean;
   fragment: Queries.CmsArticleLinkFragment;
 }> = ({ className, fragment, isInline }) => {
-  const image =
-    fragment.embedImage?.localFile?.childImageSharp?.gatsbyImageData;
-  const path = calculateArticleLinkPath(fragment);
+  const image = fragment.embedImage?.gatsbyImage;
+  const path = calculateArticleLinkPath(fragment)?.to;
   if (!isInline && image) {
     return (
       <EmbedLink

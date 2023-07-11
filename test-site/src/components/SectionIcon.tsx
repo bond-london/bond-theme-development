@@ -10,10 +10,14 @@ export const SectionIcon: React.FC<{
   icon: IBondVisual;
   className?: string;
   iconHeightClassName?: string;
+  imgClassName?: string;
+  alt?: string;
 }> = ({
   icon,
   className,
   iconHeightClassName = "h-mobile-icon laptop:h-laptop-icon",
+  imgClassName,
+  alt,
 }) => {
   if (isBondImage(icon)) {
     const raw = icon.svg?.raw as string;
@@ -23,7 +27,7 @@ export const SectionIcon: React.FC<{
           className={classNames(
             className,
             iconHeightClassName,
-            "relative flex icon-container"
+            "icon-container relative flex"
           )}
           dangerouslySetInnerHTML={{ __html: raw }}
         />
@@ -35,6 +39,9 @@ export const SectionIcon: React.FC<{
       visual={{ ...icon, dontCrop: true }}
       className={classNames(className, iconHeightClassName, "relative flex")}
       imgStyle={{ height: "100%" }}
+      imgClassName={imgClassName}
+      alt={alt}
+      simple={true}
     />
   );
 };

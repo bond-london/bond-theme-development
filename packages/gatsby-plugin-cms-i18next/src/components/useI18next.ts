@@ -8,10 +8,10 @@ type DefaultNamespace = TypeOptions["defaultNS"];
 
 export function useI18next<
   N extends Namespace = DefaultNamespace,
-  TKPrefix extends KeyPrefix<N> = undefined
+  TKPrefix extends KeyPrefix<N> = undefined,
 >(
   ns?: Namespace,
-  options?: UseTranslationOptions<TKPrefix>
+  options?: UseTranslationOptions<TKPrefix>,
 ): I18NextContext & {
   i18n: i18n;
   t: TFunction<N>;

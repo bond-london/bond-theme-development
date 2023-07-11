@@ -1,29 +1,33 @@
 import {
+  convertCmsAssetToBondImage,
   convertCmsAssetToBondVisual,
   IPageMetadata,
 } from "@bond-london/gatsby-theme";
-import classNames from "classnames";
-import { graphql, HeadFC, PageProps, Slice } from "gatsby";
-import React, { useCallback } from "react";
-import { ColourName, lookupColourClassNames } from "../colors";
-import { ArticleList } from "../components/ArticleList";
-import { PageHead } from "../components/PageHead";
-import { Paginator } from "../components/Paginator";
-import { Hero } from "../components/SectionHero";
+import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
+import { graphql, HeadFC, Slice } from "gatsby";
+import React, { PropsWithChildren } from "react";
+import { lookupColourClassNames } from "@colors";
+import { PageHead } from "@/components/PageHead";
+import { Paginator } from "@/components/Paginator";
+import { SimpleHero } from "@/components/SimpleHero";
+import { combineComponents } from "@/utils";
 import { CmsContent } from "./CmsContent";
 import { CmsFooter } from "./CmsFooter";
 import { CmsNavigationMenu } from "./CmsNavigationMenu";
+import { PageContext } from "@/components/PageContext";
 
 export const CmsTagHead: HeadFC<Queries.TagListQuery> = (props) => {
   const {
     data: { graphCmsTag },
   } = props;
-  if (!graphCmsTag) throw new Error("No page");
+  if (!graphCmsTag) {
+    return <Unsupported component="Cms tag head" message="No tag" />;
+  }
 
   const pageMetadata: IPageMetadata = {
     title: graphCmsTag.title,
     description: graphCmsTag.description,
-    image: graphCmsTag.seoImage?.localFile?.childImageSharp?.gatsbyImageData,
+    image: graphCmsTag.seoImage?.gatsbyImageData,
   };
 
   return <PageHead headProps={props} page={pageMetadata} />;
@@ -50,27 +54,21 @@ export const PagedArticleListFragment = graphql`
 `;
 
 export const CmsTagLayout: React.FC<
-  PageProps<Queries.TagListQuery> & {
-    articleListElement?: React.FC<{
-      textColour?: ColourName | null;
-      backgroundColour?: ColourName | null;
-      articles: ReadonlyArray<Queries.CmsArticleLinkFragment>;
-    }>;
-  }
+  PropsWithChildren<{ data: Queries.TagListQuery; noHero?: boolean }>
 > = (props) => {
   const {
     graphCmsTag,
     allGraphCmsArticle: {
-      edges,
       pageInfo: { currentPage, pageCount },
     },
   } = props.data;
   if (!graphCmsTag) {
-    throw new Error("Tag does not exist");
+    return <Unsupported component="Cms tag layout" message="No tag" />;
   }
 
   const {
     title,
+    description,
     featuredImage,
     backgroundColour,
     textColour,
@@ -79,52 +77,65 @@ export const CmsTagLayout: React.FC<
     menu,
     footer,
   } = graphCmsTag;
-  const buildLink = useCallback(
-    (page: number) => {
-      const pagePart = page === 1 ? "" : `${page}/`;
-      return `/${graphCmsTag.slug}/${pagePart}`;
-    },
-    [graphCmsTag.slug]
-  );
 
-  const ArticleListElement = props.articleListElement || ArticleList;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const buildLink = (page: number) => {
+    const pagePart = page === 1 ? "" : `${page}/`;
+    return `/${graphCmsTag.slug}/${pagePart}`;
+  };
+
+  const noDefaultHero =
+    props.noHero ||
+    (topContent && topContent.length) ||
+    (template?.preContent && template.preContent.length);
 
   return (
     <div
-      className={classNames(
-        "overflow-hidden",
-        lookupColourClassNames(
-          backgroundColour || template?.backgroundColour,
-          textColour || template?.textColour
-        )
+      className={lookupColourClassNames(
+        backgroundColour || template?.backgroundColour,
+        textColour || template?.textColour,
       )}
     >
-      <CmsNavigationMenu page={menu} template={template?.menu} />
-      <Slice alias="analytics" />
-      {topContent && topContent.length > 0 ? (
-        <CmsContent fragment={topContent} />
-      ) : (
-        <Hero
-          heading={title}
-          visual={convertCmsAssetToBondVisual(featuredImage)}
-          backgroundColour={backgroundColour}
-          textColour={textColour}
-        />
-      )}
-      {template?.preContent && <CmsContent fragment={template.preContent} />}
-      <ArticleListElement
-        articles={edges.map((e) => e.node)}
-        backgroundColour={backgroundColour}
-        textColour={textColour}
-      />
-      <Paginator
-        totalPages={pageCount}
-        currentPage={currentPage}
-        buildLink={buildLink}
-      />
-      {template?.postContent && <CmsContent fragment={template.postContent} />}
+      <PageContext.Provider
+        value={{
+          title,
+          description,
+          featuredImage: convertCmsAssetToBondImage(featuredImage),
+        }}
+      >
+        <CmsNavigationMenu page={menu || template?.menu} />
+        <Slice alias="analytics" />
+        {noDefaultHero ? (
+          <>
+            <CmsContent
+              fragment={combineComponents(topContent, template?.preContent)}
+              isLast={false}
+            />
+          </>
+        ) : (
+          <SimpleHero
+            heading={title}
+            visual={convertCmsAssetToBondVisual(featuredImage)}
+            backgroundColour={backgroundColour}
+            textColour={textColour}
+          />
+        )}
+        {props.children || (
+          <Unsupported
+            message="Need to pass in children - maybe ArticleList"
+            component="Article type layout"
+          />
+        )}
 
-      <CmsFooter page={footer} template={template?.footer} />
+        <Paginator
+          totalPages={pageCount}
+          currentPage={currentPage}
+          buildLink={buildLink}
+        />
+        <CmsContent fragment={template?.postContent} offset={1} />
+
+        <CmsFooter page={footer || template?.footer} />
+      </PageContext.Provider>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import {
   ClassNameOverrides,
+  ClassNodeRenderer,
   DefaultRenderer,
   defaultRenderers,
   INodeRenderer,
@@ -29,12 +30,10 @@ export const defaultProjectClassNameOverrides: ClassNameOverrides = {
   h4: "h4",
   h5: "h5",
   h6: "h6",
-  p: "p2",
-  div: "p3",
   code: "p3 font-regular font-mono",
   pre: "p3 font-regular font-mono",
-  ul: "list-disc list-inside",
-  ol: "list-decimal list-inside",
+  ul: "list-disc list-outside pl-[2ch]",
+  ol: "list-decimal list-outside pl-[2ch]",
 };
 
 const projectRenderers: Partial<INodeRenderer> = {
@@ -43,18 +42,17 @@ const projectRenderers: Partial<INodeRenderer> = {
   p: (props) => <DefaultRenderer {...props} element="div" />,
   a: (props) => <LinkRenderer {...props} />,
   blockquote: (props) => (
-    <DefaultRenderer
-      {...props}
-      element="blockquote"
-      className="bg-green bg-opacity-20 p-xs inline-block"
-    />
+    <DefaultRenderer {...props} element="blockquote" className="h2" />
   ),
   class: {
     red: { description: "Red coloured text", className: "text-red" },
     green: { description: "Green coloured text", className: "text-green" },
     blue: { description: "Blue coloured text", className: "text-blue" },
     lined: { description: "Lined table", className: "lined" },
-    special: { description: "Special table", renderer: RenderSpecial },
+    special: {
+      description: "Special table",
+      renderer: RenderSpecial as ClassNodeRenderer,
+    },
   },
   embed_node: {
     Article: (props) => (

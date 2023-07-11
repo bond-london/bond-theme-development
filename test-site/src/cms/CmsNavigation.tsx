@@ -1,7 +1,7 @@
 import { convertCmsAssetToBondVisual } from "@bond-london/gatsby-theme";
 import { graphql } from "gatsby";
-import { INavigation } from "../components/Navigation/NavigationBar";
-import { INavigationItem } from "../components/Navigation/NavigationMenu";
+import { INavigation } from "@/components/Navigation/NavigationBar";
+import { INavigationItem } from "@/components/Navigation/NavigationMenu";
 import { convertCMSInternalLink } from "./CmsLink";
 
 type NavigationItemFragment = Queries.CmsNavigationItemCoreFragment & {
@@ -20,8 +20,10 @@ function convertCmsNavigationItem({
   link,
   remoteInternal,
   icon,
-  colour,
+  textColour,
+  backgroundColour,
   isButton,
+  isOutlined,
   navigationItems,
 }: NavigationItemFragment): INavigationItem {
   return {
@@ -30,15 +32,17 @@ function convertCmsNavigationItem({
     text: useTitle ? title : undefined,
     external: link || undefined,
     internal: remoteInternal
-      ? convertCMSInternalLink(remoteInternal)
+      ? convertCMSInternalLink(remoteInternal)?.to
       : undefined,
     icon: convertCmsAssetToBondVisual(icon, { loop: true, loopDelay: 5000 }),
-    colour: colour || undefined,
+    textColour: textColour || undefined,
+    backgroundColour: backgroundColour || undefined,
     isButton: isButton || undefined,
+    isOutlined: isOutlined || undefined,
     entries: arrayOrUndefined(
       navigationItems?.map((i) =>
-        convertCmsNavigationItem(i as NavigationItemFragment)
-      )
+        convertCmsNavigationItem(i as NavigationItemFragment),
+      ),
     ),
   };
 }
@@ -73,8 +77,10 @@ export const CmsNavigationItemCoreFragment = graphql`
       ...CmsTagLink
     }
     link
-    colour
+    textColour
+    backgroundColour
     isButton
+    isOutlined
     icon {
       ...ConstrainedImageAsset
       ...ConstrainedAnimationAsset

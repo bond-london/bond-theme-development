@@ -47,7 +47,7 @@ export function useFormHandler(
   handleFormData?: (formData: FormData) => void,
   reportEvent?: EventReporter,
   pageName?: string,
-  ipAddress?: string
+  ipAddress?: string,
 ): {
   submitForm: (form: HTMLFormElement, onSuccess?: () => void) => void;
   allGroups: ReadonlyArray<IHubspotFormFieldGroup>;
@@ -58,7 +58,7 @@ export function useFormHandler(
 } {
   const [formRef, formVisible] = useFirstVisibleToUser<HTMLFormElement>(
     0.1,
-    0.1
+    0.1,
   );
 
   const formState = useRef<IDynamicFormState>({ isDirty: false });
@@ -89,7 +89,7 @@ export function useFormHandler(
   }, [formVisible, formDefinition, formRef, reportEvent]);
   const { allGroups, fieldMapping } = useMemo(
     () => buildHubspotFormInformation(formDefinition),
-    [formDefinition]
+    [formDefinition],
   );
   const [formResponse, setFormResponse] = useState<IHubspotFormResponse>();
   const submitForm = useCallback(
@@ -194,7 +194,7 @@ export function useFormHandler(
       pageName,
       ipAddress,
       fieldMapping,
-    ]
+    ],
   );
 
   return {
@@ -210,7 +210,7 @@ export function useFormHandler(
 export function handleFormAbandoned(
   form: HTMLFormElement,
   formDefinition: IHubspotFormDefinition,
-  reportEvent?: EventReporter
+  reportEvent?: EventReporter,
 ): void {
   const data = new FormData(form);
   const nonEmptyFields: Array<string> = [];
@@ -227,7 +227,7 @@ export function handleFormAbandoned(
 }
 
 export function buildHubspotFormInformation(
-  formDefinition?: IHubspotFormDefinition
+  formDefinition?: IHubspotFormDefinition,
 ): {
   allGroups: ReadonlyArray<IHubspotFormFieldGroup>;
   fieldMapping: { [name: string]: IHubspotFormFieldDefinition };
@@ -237,7 +237,7 @@ export function buildHubspotFormInformation(
   if (formDefinition) {
     (
       formDefinition.formFieldGroups?.filter(
-        ffg => ffg && ffg.default
+        ffg => ffg && ffg.default,
       ) as ReadonlyArray<IHubspotFormFieldGroupsDefinition>
     ).forEach(ffg => {
       const groupFields: Array<IHubspotFormFieldDefinition> = [];
@@ -299,7 +299,7 @@ export const HubspotForm: React.FC<{
     handleFormData,
     reportEvent,
     pageName,
-    ipAddress
+    ipAddress,
   );
 
   const showError = options.showError || defaultShowError;
@@ -309,7 +309,7 @@ export const HubspotForm: React.FC<{
       e.preventDefault();
       submitForm(e.currentTarget);
     },
-    [submitForm]
+    [submitForm],
   );
   if (!formDefinition) {
     return showError("Form does not exist");

@@ -1,16 +1,14 @@
 "use client";
 import React from "react";
-import { graphql, SliceComponentProps } from "gatsby";
 import ReactCookieConsent from "react-cookie-consent";
 import { GoogleTagManager, useBondCookie } from "@bond-london/gatsby-theme";
 
-const Analytics: React.FC<SliceComponentProps<Queries.AnalyticsQuery>> = ({
-  data: { site },
-}) => {
-  if (!site?.siteMetadata) throw new Error("No site");
+const Analytics: React.FC = () => {
+  const cookieName = process.env.GATSBY_COOKIE_NAME;
+  const declinedCookieName = process.env.GATSBY_DECLINED_COOKIE_NAME;
+  const googleTag = process.env.GATSBY_GOOGLE_TAG;
 
-  const { cookieName, googleTag, declinedCookieName } = site.siteMetadata;
-
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const onAccept = useBondCookie(cookieName);
 
   if (!cookieName || !googleTag) return null;
@@ -21,7 +19,7 @@ const Analytics: React.FC<SliceComponentProps<Queries.AnalyticsQuery>> = ({
       <ReactCookieConsent
         cookieName={cookieName}
         declineCookieValue={declinedCookieName || undefined}
-        containerClasses="bg-blue h4 text-black container-cols-grid fixed left-0 right-0 w-full z-[100] items-center py-xs gap-y-xs"
+        containerClasses="bg-Purple h4 text-DarkGray container-cols-grid fixed left-0 right-0 w-full z-[100] items-center py-xs gap-y-xs"
         disableStyles={true}
         disableButtonStyles={true}
         location="bottom"
@@ -42,16 +40,3 @@ const Analytics: React.FC<SliceComponentProps<Queries.AnalyticsQuery>> = ({
 
 // eslint-disable-next-line import/no-unused-modules
 export default Analytics;
-
-// eslint-disable-next-line import/no-unused-modules
-export const query = graphql`
-  query Analytics {
-    site {
-      siteMetadata {
-        cookieName
-        googleTag
-        declinedCookieName
-      }
-    }
-  }
-`;

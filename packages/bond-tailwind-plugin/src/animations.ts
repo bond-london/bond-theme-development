@@ -11,8 +11,8 @@ export function addAnimationUtilities({ addUtilities }: PluginAPI): void {
       v => {
         return { "animation-delay": `${v}ms` };
       },
-      100
-    )
+      100,
+    ),
   );
 
   addUtilities({
@@ -29,8 +29,8 @@ export function addAnimationUtilities({ addUtilities }: PluginAPI): void {
       v => {
         return { "animation-duration": `${v}ms` };
       },
-      100
-    )
+      100,
+    ),
   );
   addUtilities(
     calculateNumbersMap(
@@ -40,7 +40,7 @@ export function addAnimationUtilities({ addUtilities }: PluginAPI): void {
       v => {
         return { "transition-duration": `${v}ms` };
       },
-      100
-    )
+      100,
+    ),
   );
 }

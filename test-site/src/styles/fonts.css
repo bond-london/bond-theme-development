@@ -1,0 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap");
+
+/* merriweather-latin-400-normal */
+@font-face {
+  font-family: "Merriweather";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src:
+    url(/fonts/merriweather-latin-400-normal.woff2) format("woff2"),
+    url(/fonts/merriweather-latin-400-normal.woff) format("woff");
+}
+
+/* merriweather-latin-400-italic */
+@font-face {
+  font-family: "Merriweather";
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src:
+    url(/fonts/merriweather-latin-400-italic.woff2) format("woff2"),
+    url(/fonts/merriweather-latin-400-italic.woff) format("woff");
+}

@@ -12,7 +12,7 @@ declare global {
 }
 
 export function useBondCookie(
-  cookieName: string | undefined | null
+  cookieName: string | undefined | null,
 ): () => void {
   const onAccept = useCallback(() => {
     if (!cookieName) return;

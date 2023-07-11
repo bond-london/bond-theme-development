@@ -25,7 +25,7 @@ export const RenderLinkTo: React.FC<RenderLinkToProps> = props => {
   }
 
   const referenceValue = references?.filter(
-    ref => ref.id === nodeId || ref.remoteId === nodeId
+    ref => ref.id === nodeId || ref.remoteId === nodeId,
   )[0];
   if (!referenceValue?.id) {
     return (

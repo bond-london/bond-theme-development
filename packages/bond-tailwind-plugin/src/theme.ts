@@ -25,7 +25,7 @@ export function buildLetterSpacingName(name: string): string {
 }
 
 function buildLetterSpacing(
-  config: IBondConfigurationOptions
+  config: IBondConfigurationOptions,
 ): CSSRuleObject | undefined {
   const letterSpacingsValues = new Set<number>();
   const letterSpacingNames = new Set<string>();
@@ -44,7 +44,7 @@ function buildLetterSpacing(
       results[buildLetterSpacingName(`${value}`)] = calculateRemSize(value);
     });
     letterSpacingNames.forEach(
-      value => (results[buildLetterSpacingName(value)] = value)
+      value => (results[buildLetterSpacingName(value)] = value),
     );
     return results;
   }
@@ -52,19 +52,19 @@ function buildLetterSpacing(
 }
 
 export function configureTheme(
-  config: IBondConfigurationOptions
+  config: IBondConfigurationOptions,
 ): Partial<ThemeConfig> {
   buildColorTable(config);
   const maximumWidth = Math.max(
     ...Object.values(config.sizes)
       .filter(v => v.max)
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      .map(v => v.max!)
+      .map(v => v.max!),
   );
   const maximumColumns = Math.max(
     ...Object.values(config.sizes)
       .map(v => v.cols)
-      .filter(v => v)
+      .filter(v => v),
   );
 
   const theme: Partial<ThemeConfig> = {
@@ -75,7 +75,7 @@ export function configureTheme(
           defaultKeyFn,
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           v => `${v.breakpoint!}px`,
-          ({ value }) => !!value.breakpoint
+          ({ value }) => !!value.breakpoint,
         ),
       },
       colors: buildColours(config),
@@ -103,7 +103,7 @@ export function configureTheme(
           1,
           maximumColumns,
           defaultKeyFn,
-          v => `repeat(${v}, minmax(0, 1fr))`
+          v => `repeat(${v}, minmax(0, 1fr))`,
         ),
         ...createGridCols(config),
       },
@@ -112,14 +112,14 @@ export function configureTheme(
           1,
           maximumColumns,
           v => `span-${v}`,
-          v => `span ${v} / span ${v}`
+          v => `span ${v} / span ${v}`,
         ),
         "span-full": "1/-1",
         auto: "auto",
         ...mapObject(
           config.sizes,
           name => `central-${name}`,
-          ({ cols }) => `2 / span ${cols}`
+          ({ cols }) => `2 / span ${cols}`,
         ),
       },
       gridColumnStart: {
@@ -141,7 +141,7 @@ export function configureTheme(
           ...mapNumbers(
             [100, 200, 300, 400, 500, 600, 700, 800, 900],
             defaultKeyFn,
-            defaultKeyFn
+            defaultKeyFn,
           ),
           regular: "400",
         },

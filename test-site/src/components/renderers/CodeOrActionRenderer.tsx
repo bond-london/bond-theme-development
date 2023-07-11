@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, ReactNode } from "react";
 import {
   DefaultRenderer,
   IElementsRendererProps,
@@ -6,18 +6,21 @@ import {
 import { isText } from "@graphcms/rich-text-types";
 import { CodeAction } from "./CodeAction";
 
-function tryGetContent(props: IElementsRendererProps) {
+function tryGetContent(props: IElementsRendererProps, children: ReactNode) {
   const { contents } = props;
   if (contents?.length === 1 && isText(contents[0])) {
     return contents[0].text;
+  }
+  if (typeof children === "string") {
+    return children;
   }
 }
 
 export const CodeOrActionRenderer: React.FC<
   PropsWithChildren<IElementsRendererProps & { isInline: boolean }>
 > = (props) => {
-  const { isInline, ...otherProps } = props;
-  const contentString = tryGetContent(props);
+  const { isInline, children, ...otherProps } = props;
+  const contentString = tryGetContent(props, children);
   if (contentString) {
     if (
       contentString.length > 4 &&
@@ -32,6 +35,10 @@ export const CodeOrActionRenderer: React.FC<
       );
     }
 
+    if (contentString.startsWith("<br")) {
+      return <br />;
+    }
+
     if (contentString.startsWith("&") && contentString.endsWith(";")) {
       if (isInline) {
         return <span dangerouslySetInnerHTML={{ __html: contentString }} />;
@@ -41,6 +48,8 @@ export const CodeOrActionRenderer: React.FC<
   }
 
   return (
-    <DefaultRenderer {...otherProps} element={isInline ? "code" : "pre"} />
+    <DefaultRenderer {...otherProps} element={isInline ? "code" : "pre"}>
+      {children}
+    </DefaultRenderer>
   );
 };

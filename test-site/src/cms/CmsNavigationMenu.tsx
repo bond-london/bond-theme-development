@@ -1,12 +1,12 @@
+import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
 import { graphql, useStaticQuery } from "gatsby";
 import React from "react";
-import { NavigationBar } from "../components/Navigation/NavigationBar";
+import { NavigationBar } from "@/components/Navigation/NavigationBar";
 import { convertCmsNavigation } from "./CmsNavigation";
 
 export const CmsNavigationMenu: React.FC<{
   page?: Queries.CmsNavigationFragment | null;
-  template?: Queries.CmsNavigationFragment | null;
-}> = ({ page, template }) => {
+}> = ({ page }) => {
   const data = useStaticQuery<Queries.NavigationMenuQuery>(graphql`
     query NavigationMenu {
       graphCmsNavigation(name: { eq: "Menu" }) {
@@ -15,10 +15,9 @@ export const CmsNavigationMenu: React.FC<{
     }
   `);
 
-  const menu = page || template || data.graphCmsNavigation;
+  const menu = page || data.graphCmsNavigation;
   if (!menu) {
-    throw new Error("No menu");
-    return null;
+    return <Unsupported component="Navigation menu" message="No menu" />;
   }
 
   return <NavigationBar menu={convertCmsNavigation(menu)} />;

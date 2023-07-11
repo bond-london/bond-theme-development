@@ -16,7 +16,7 @@ export const onCreateNode = async (
     createContentDigest,
     reporter,
   }: CreateNodeArgs<IFileSystemNode>,
-  { localeJsonSourceName }: IPluginOptions
+  { localeJsonSourceName }: IPluginOptions,
 ): Promise<void> => {
   if (!unstable_shouldOnCreateNode({ node })) {
     return;
@@ -46,7 +46,7 @@ export const onCreateNode = async (
   }
 
   const activity = reporter.activityTimer(
-    `@bond-london/gatsby-plugin-cms-i18next: create node: ${relativeDirectory}/${name}`
+    `@bond-london/gatsby-plugin-cms-i18next: create node: ${relativeDirectory}/${name}`,
   );
   activity.start();
 

@@ -21,7 +21,7 @@ const HubspotRadioField: React.FC<IFieldProps> = ({
       setCurrentValue(ev.currentTarget.value);
       onChange?.(ev);
     },
-    [onChange]
+    [onChange],
   );
 
   const { options: fieldOptions } = field;
@@ -34,7 +34,7 @@ const HubspotRadioField: React.FC<IFieldProps> = ({
       <div className={options.radioContainerClassName}>
         {(
           fieldOptions.filter(
-            o => o
+            o => o,
           ) as ReadonlyArray<IHubspotFormFormFieldOptionsDefinition>
         ).map(option => {
           const checked = option.value === currentValue;

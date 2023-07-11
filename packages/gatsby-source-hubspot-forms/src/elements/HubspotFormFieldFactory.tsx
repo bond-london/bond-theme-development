@@ -18,7 +18,7 @@ const handlers: { [type: string]: React.FC<IFieldProps> } = {};
 
 export function registerFieldTypeHandler(
   type: string,
-  component: React.FC<IFieldProps>
+  component: React.FC<IFieldProps>,
 ): void {
   handlers[type] = component;
 }

@@ -26,7 +26,7 @@ function parseFfmpegOutput(output: string): IGatsbyVideoInformation {
 
 export async function getLocalVideoInformation(
   videoPath: string,
-  reporter: Reporter
+  reporter: Reporter,
 ): Promise<IGatsbyVideoInformation> {
   return new Promise<IGatsbyVideoInformation>((resolve, reject) => {
     exec(`${pathToFfmpeg} -i "${videoPath}"`, (_error, _stdout, stderr) => {
@@ -35,7 +35,7 @@ export async function getLocalVideoInformation(
         reporter.verbose(
           `Got ${info.width}x${info.height} (${
             info.hasAudio ? "Audio" : "No Audio"
-          })from ${videoPath}`
+          })from ${videoPath}`,
         );
         resolve(info);
       } catch (ex) {

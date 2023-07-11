@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import React from "react";
-import Placeholder from "../images/placeholder.svg";
+import Placeholder from "@/images/placeholder.svg";
 
 interface Props {
   className?: string;
@@ -12,7 +12,7 @@ const AlertIcon: React.FC<Props> = ({ className }) => (
     viewBox="0 0 24 24"
     className={classNames(
       "icon inline-block fill-current stroke-current",
-      className
+      className,
     )}
   >
     <path d="M22.56 16.3L14.89 3.58a3.43 3.43 0 0 0-5.78 0L1.44 16.3a3 3 0 0 0-.05 3A3.37 3.37 0 0 0 4.33 21h15.34a3.37 3.37 0 0 0 2.94-1.66 3 3 0 0 0-.05-3.04zM12 17a1 1 0 1 1 1-1 1 1 0 0 1-1 1zm1-4a1 1 0 0 1-2 0V9a1 1 0 0 1 2 0z" />
@@ -24,7 +24,7 @@ const ArrowIcon: React.FC<Props> = ({ className }) => (
     viewBox="0 0 29 54"
     className={classNames(
       "icon inline-block fill-none stroke-current",
-      className
+      className,
     )}
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -39,7 +39,7 @@ const HollowDot: React.FC<Props> = ({ className }) => (
     xmlns="http://www.w3.org/2000/svg"
     className={classNames(
       "icon inline-block fill-none stroke-current",
-      className
+      className,
     )}
   >
     <circle cx="7" cy="7" r="6.5" stroke="#141414" />
@@ -53,7 +53,7 @@ const FilledDot: React.FC<Props> = ({ className }) => (
     xmlns="http://www.w3.org/2000/svg"
     className={classNames(
       "icon inline-block fill-none stroke-current",
-      className
+      className,
     )}
   >
     <circle cx="7" cy="7" r="6.5" fill="#01FFF0" stroke="#141414" />

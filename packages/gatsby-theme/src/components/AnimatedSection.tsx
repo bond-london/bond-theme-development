@@ -81,7 +81,7 @@ export const AnimatedSection: React.FC<
           collapse,
         },
         animationClassName && "animation-paused",
-        animationClassName
+        animationClassName,
       ),
     },
     preChildren,
@@ -99,6 +99,6 @@ export const AnimatedSection: React.FC<
         {children}
       </div>
     ),
-    postChildren
+    postChildren,
   );
 };

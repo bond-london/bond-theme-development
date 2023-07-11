@@ -5,11 +5,13 @@ export const ConstrainedImageAssetFragment = graphql`
   fragment ConstrainedImageAsset on GraphCMS_Asset {
     id
     mimeType
-    gatsbyImage(layout: CONSTRAINED, width: 3840)
+    gatsbyImage(
+      width: 3840
+      placeholder: BLURRED
+      cropFocus: FACES
+      layout: CONSTRAINED
+    )
     localFile {
-      internal {
-        mediaType
-      }
       ...ConstrainedSvgFile
     }
   }
@@ -19,12 +21,13 @@ export const FixedImageAssetFragment = graphql`
   fragment FixedImageAsset on GraphCMS_Asset {
     id
     mimeType
-    gatsbyImage(layout: FIXED, width: 3840)
+    gatsbyImage(
+      width: 3840
+      placeholder: BLURRED
+      cropFocus: FACES
+      layout: FIXED
+    )
     localFile {
-      internal {
-        mediaType
-      }
-      ...FixedImageFile
       ...FixedSvgFile
     }
   }
@@ -34,11 +37,13 @@ export const FullWidthImageAssetFragment = graphql`
   fragment FullWidthImageAsset on GraphCMS_Asset {
     id
     mimeType
-    gatsbyImage(layout: FULL_WIDTH, width: 3840)
+    gatsbyImage(
+      width: 3840
+      placeholder: BLURRED
+      cropFocus: FACES
+      layout: FULL_WIDTH
+    )
     localFile {
-      internal {
-        mediaType
-      }
       ...FullWidthSvgFile
     }
   }
@@ -48,10 +53,8 @@ export const ConstrainedVideoAssetFragment = graphql`
   fragment ConstrainedVideoAsset on GraphCMS_Asset {
     id
     mimeType
+    url
     localFile {
-      internal {
-        mediaType
-      }
       ...ConstrainedVideoFile
     }
   }
@@ -61,10 +64,8 @@ export const FixedVideoAssetFragment = graphql`
   fragment FixedVideoAsset on GraphCMS_Asset {
     id
     mimeType
+    url
     localFile {
-      internal {
-        mediaType
-      }
       ...FixedVideoFile
     }
   }
@@ -74,10 +75,8 @@ export const FullWidthVideoAssetFragment = graphql`
   fragment FullWidthVideoAsset on GraphCMS_Asset {
     id
     mimeType
+    url
     localFile {
-      internal {
-        mediaType
-      }
       ...FullWidthVideoFile
     }
   }
@@ -87,10 +86,8 @@ export const ConstrainedAnimationAssetFragment = graphql`
   fragment ConstrainedAnimationAsset on GraphCMS_Asset {
     id
     mimeType
+    url
     localFile {
-      internal {
-        mediaType
-      }
       ...ConstrainedAnimationFile
     }
   }
@@ -100,10 +97,8 @@ export const FixedAnimationAssetFragment = graphql`
   fragment FixedAnimationAsset on GraphCMS_Asset {
     id
     mimeType
+    url
     localFile {
-      internal {
-        mediaType
-      }
       ...FixedAnimationFile
     }
   }
@@ -113,10 +108,8 @@ export const FullWidthAnimationAssetFragment = graphql`
   fragment FullWidthAnimationAsset on GraphCMS_Asset {
     id
     mimeType
+    url
     localFile {
-      internal {
-        mediaType
-      }
       ...FullWidthAnimationFile
     }
   }
@@ -125,7 +118,6 @@ export const FullWidthAnimationAssetFragment = graphql`
 export const SeoImageAssetFragment = graphql`
   fragment SeoImageAsset on GraphCMS_Asset {
     id
-    mimeType
     gatsbyImageData(layout: FIXED, width: 1200, height: 630)
   }
 `;
@@ -133,7 +125,6 @@ export const SeoImageAssetFragment = graphql`
 export const EmbedFeaturedImageAssetFragment = graphql`
   fragment EmbedFeaturedImageAsset on GraphCMS_Asset {
     id
-    mimeType
     gatsbyImage(layout: FULL_WIDTH, width: 3840, placeholder: BLURRED)
   }
 `;
@@ -144,28 +135,10 @@ export const ConstrainedCmsVisualFragment = graphql`
   fragment ConstrainedCmsVisual on GraphCMS_Visual {
     __typename
     id
+    remoteId
     name
-    dontCrop
-    horizontalCropPosition
-    verticalCropPosition
-    mainAsset {
-      ...ConstrainedImageAsset
-      ...ConstrainedAnimationAsset
-      ...ConstrainedVideoAsset
-    }
-    posterImage {
-      ...ConstrainedImageAsset
-    }
-    fullLengthVideo {
-      ...ConstrainedVideoAsset
-    }
-    externalVideo
-    loop
-    loopDelay
-    subtitles {
-      localFile {
-        publicURL
-      }
+    visual {
+      ...ConstrainedCmsVisualComponent
     }
   }
 `;
@@ -174,28 +147,10 @@ export const FullWidthCmsVisualFragment = graphql`
   fragment FullWidthCmsVisual on GraphCMS_Visual {
     __typename
     id
+    remoteId
     name
-    dontCrop
-    horizontalCropPosition
-    verticalCropPosition
-    mainAsset {
-      ...FullWidthImageAsset
-      ...FullWidthAnimationAsset
-      ...FullWidthVideoAsset
-    }
-    posterImage {
-      ...FullWidthImageAsset
-    }
-    fullLengthVideo {
-      ...FullWidthVideoAsset
-    }
-    externalVideo
-    loop
-    loopDelay
-    subtitles {
-      localFile {
-        publicURL
-      }
+    visual {
+      ...FullWidthCmsVisualComponent
     }
   }
 `;

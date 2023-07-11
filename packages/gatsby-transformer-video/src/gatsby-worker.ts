@@ -14,7 +14,7 @@ interface IVideoProcessingJobArgs {
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export function VIDEO_PROCESSING(
-  jobArgs: IVideoProcessingJobArgs
+  jobArgs: IVideoProcessingJobArgs,
 ): Promise<ITransformedVideoInformation> {
   const { inputPaths, outputDir, args } = jobArgs;
   const { path, contentDigest } = inputPaths[0];

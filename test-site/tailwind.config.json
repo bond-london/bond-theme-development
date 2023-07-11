@@ -12,7 +12,7 @@
     "yellow": "#fff34b",
     "error": "#f0f00f"
   },
-  "colorFile": "src/colors.ts",
+  "colorFile": "./colors.ts",
   "colorOpposites": {
     "black": "white",
     "green": "blue",
@@ -67,8 +67,8 @@
       "desktop": "40/120/serif",
       "4k": "48/130/sans"
     },
-    "h3": { "font": "sans", "weight": "bold", "default": 18, "desktop": 36 },
-    "h4": { "font": "sans", "weight": "bold", "default": 16, "desktop": 20 },
+    "h3": { "font": "serif", "weight": "bold", "default": 18, "desktop": 36 },
+    "h4": { "font": "serif", "weight": "bold", "default": 16, "desktop": 20 },
     "p1": {
       "font": "sans",
       "weight": "bold",
@@ -89,6 +89,13 @@
       "default": 12,
       "tablet": 14,
       "desktop": 16
+    },
+    "mono": {
+      "font": "monospace",
+      "weight": "400",
+      "default": 16,
+      "tablet": 20,
+      "desktop": 24
     }
   }
 }

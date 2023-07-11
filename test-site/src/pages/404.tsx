@@ -1,13 +1,13 @@
 import { IPageMetadata, Section } from "@bond-london/gatsby-theme";
 import { HeadFC, Slice } from "gatsby";
 import React from "react";
-import { CmsFooter } from "../cms/CmsFooter";
-import { CmsNavigationMenu } from "../cms/CmsNavigationMenu";
-import { PageHead } from "../components/PageHead";
+import { CmsFooter } from "@/cms/CmsFooter";
+import { CmsNavigationMenu } from "@/cms/CmsNavigationMenu";
+import { PageHead } from "@/components/PageHead";
 
 const Page404: React.FC = () => {
   return (
-    <div className="overflow-hidden">
+    <div>
       <CmsNavigationMenu />
       <Slice alias="analytics" />
 

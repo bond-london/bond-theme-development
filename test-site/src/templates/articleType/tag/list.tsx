@@ -3,28 +3,21 @@ import React from "react";
 import {
   CmsArticleTypeHead,
   CmsArticleTypeLayout,
-} from "../../../cms/CmsArticleTypeLayout";
-import { ColourName } from "../../../colors";
-import { CustomArticleList } from "../../../components/CustomArticleList";
-
-const ArticleTypeTagList: React.FC<{
-  textColour?: ColourName | null;
-  backgroundColour?: ColourName | null;
-  articles: ReadonlyArray<Queries.CmsArticleLinkFragment>;
-}> = ({ textColour, backgroundColour, articles }) => (
-  <CustomArticleList
-    customName="Article Type / Tag"
-    textColour={textColour}
-    backgroundColour={backgroundColour}
-    articles={articles}
-  />
-);
+} from "@/cms/CmsArticleTypeLayout";
+import { CustomArticleList } from "@/components/CustomArticleList";
 
 const ArticleTypeTagLayout: React.FC<
   PageProps<Queries.ArticleTypeListQuery>
 > = (props) => {
   return (
-    <CmsArticleTypeLayout {...props} articleListElement={ArticleTypeTagList} />
+    <CmsArticleTypeLayout {...props}>
+      <CustomArticleList
+        customName="Article Type / Tag"
+        articles={props.data.allGraphCmsArticle.edges.map((e) => e.node)}
+        textColour={props.data.graphCmsArticleType?.textColour}
+        backgroundColour={props.data.graphCmsArticleType?.backgroundColour}
+      ></CustomArticleList>
+    </CmsArticleTypeLayout>
   );
 };
 

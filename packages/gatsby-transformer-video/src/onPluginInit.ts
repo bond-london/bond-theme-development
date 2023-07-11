@@ -13,20 +13,20 @@ export async function onPluginInit(
     remoteConnectionString,
     remoteContainer,
     videoCacheFolder,
-  }: IPluginOptions
+  }: IPluginOptions,
 ): Promise<void> {
   const cacheFolder = join(process.cwd(), videoCacheFolder);
 
   if (useRemoteCache) {
     if (!remoteConnectionString || !remoteContainer) {
       return reporter.panic(
-        "Need a remote connection string and remote container is using the remote cache"
+        "Need a remote connection string and remote container is using the remote cache",
       );
     }
     try {
       const remoteCache = await RemoteCache.create(
         remoteConnectionString,
-        remoteContainer
+        remoteContainer,
       );
       videoCache = new Cache(cacheFolder, remoteCache);
     } catch (error) {

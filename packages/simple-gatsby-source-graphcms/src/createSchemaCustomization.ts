@@ -19,13 +19,13 @@ import { hasFeature } from "gatsby-plugin-utils/has-feature";
 function customiseSchema(
   gatsbyApi: CreateSchemaCustomizationArgs,
   { typePrefix }: IPluginOptions,
-  information: ISchemaInformation
+  information: ISchemaInformation,
 ): void {
   const { actions } = gatsbyApi;
   const { createTypes } = actions;
   information.gatsbyNodeTypes.forEach(gatsbyNodeType => {
     const realType = information.schema.getType(
-      gatsbyNodeType.remoteTypeName
+      gatsbyNodeType.remoteTypeName,
     ) as GraphQLObjectType;
     const hasLocaleField = realType.getFields().locale;
     createTypes(`type ${typePrefix}${
@@ -45,7 +45,7 @@ function walkSpecialFieldsEntries(
   pluginOptions: IPluginOptions,
   isTopLevel: boolean,
   typeName: string,
-  specialsFieldsEntries: ReadonlyArray<SpecialFieldEntry>
+  specialsFieldsEntries: ReadonlyArray<SpecialFieldEntry>,
 ): void {
   const { typePrefix } = pluginOptions;
   const {
@@ -77,7 +77,7 @@ function walkSpecialFieldsEntries(
         pluginOptions,
         false,
         typeName,
-        entry.value
+        entry.value,
       );
     }
   });
@@ -93,7 +93,7 @@ function walkSpecialFieldsMap(
   gatsbyApi: CreateSchemaCustomizationArgs,
   pluginOptions: IPluginOptions,
   isTopLevel: boolean,
-  specialsFieldsMap: SpecialFieldMap
+  specialsFieldsMap: SpecialFieldMap,
 ): void {
   specialsFieldsMap.forEach((fields, typeName) => {
     walkSpecialFieldsEntries(
@@ -101,14 +101,14 @@ function walkSpecialFieldsMap(
       pluginOptions,
       isTopLevel,
       typeName,
-      fields
+      fields,
     );
   });
 }
 
 export async function createSchemaCustomization(
   gatsbyApi: CreateSchemaCustomizationArgs,
-  pluginOptions: IPluginOptions
+  pluginOptions: IPluginOptions,
 ): Promise<void> {
   const { buildMarkdownNodes, typePrefix, enableImageCDN } = pluginOptions;
   const { schema, actions, reporter, store } = gatsbyApi;
@@ -127,7 +127,7 @@ export async function createSchemaCustomization(
   const config = await createSourcingConfig(
     schemaConfig,
     gatsbyApi,
-    pluginOptions
+    pluginOptions,
   );
   customiseSchema(gatsbyApi, pluginOptions, schemaConfig);
   await createToolkitSchemaCustomization(config);
@@ -137,7 +137,7 @@ export async function createSchemaCustomization(
     fields: {
       gatsbyImageData: {
         ...getGatsbyImageFieldConfig(async (...args) =>
-          resolveGatsbyImageData(...args, gatsbyApi)
+          resolveGatsbyImageData(...args, gatsbyApi),
         ),
         type: hasFeature("graphql-typegen") ? "GatsbyImageData" : "JSON",
       },

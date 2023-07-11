@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@bond-london/graphcms-rich-text";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
+import { notEmpty } from "@/utils";
 
 interface Entry {
   title?: TableCell;
@@ -35,11 +36,9 @@ const SpecialTable: React.FC<IClassNodeRendererProps> = ({
     );
   }
   const information = buildTableInformationFromNodes(contents);
-  const allEntries = (
-    [information.header, ...information.body].filter(
-      (x) => x
-    ) as ReadonlyArray<TableRow>
-  ).map(buildEntry);
+  const allEntries = [information.header, ...information.body]
+    .filter(notEmpty)
+    .map(buildEntry);
 
   return (
     <div className="flex flex-col">

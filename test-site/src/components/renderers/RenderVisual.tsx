@@ -1,6 +1,7 @@
 import {
   BondVisual,
   convertCmsVisualToBondVisual,
+  isBondImage,
 } from "@bond-london/gatsby-theme";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
 import React from "react";
@@ -9,22 +10,25 @@ import {
   PauseButton,
   PlayButton,
   UnmuteButton,
-} from "../VideoControls";
+} from "@/components/VideoControls";
 
 export const RenderVisual: React.FC<{
   fragment: Queries.FullWidthCmsVisualFragment;
   isInline: boolean | undefined;
 }> = ({ fragment, isInline }) => {
-  if (isInline) {
-    return (
-      <Unsupported
-        component="RenderVisual"
-        message="Inline visuals are not supported"
-        inline={true}
-      />
-    );
-  }
   const visual = convertCmsVisualToBondVisual(fragment);
+  if (isBondImage(visual) && isInline) {
+    const raw = visual.svg?.raw as string;
+    if (raw) {
+      return (
+        <div
+          className="icon-container relative flex h-mobile-icon laptop:h-laptop-icon"
+          dangerouslySetInnerHTML={{ __html: raw }}
+        />
+      );
+    }
+  }
+
   if (visual) {
     return (
       <BondVisual
@@ -34,6 +38,7 @@ export const RenderVisual: React.FC<{
         pauseButton={PauseButton}
         muteButton={MuteButton}
         unmuteButton={UnmuteButton}
+        simple={true}
       />
     );
   }

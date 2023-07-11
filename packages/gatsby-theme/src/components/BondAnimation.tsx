@@ -37,7 +37,7 @@ export interface ICmsAnimation {
 }
 
 export function convertCmsAnimationToBondAnimation(
-  cms: ICmsAnimation | null
+  cms: ICmsAnimation | null,
 ): IBondAnimation | undefined {
   if (!cms) return undefined;
   const animation = cms.animation?.localFile?.childGatsbyAnimation?.extracted;
@@ -60,7 +60,7 @@ export function convertCmsAssetToBondAnimation(
     dontCrop?: boolean | null;
     verticalCropPosition?: Vertical | null;
     horizontalCropPosition?: Horizontal | null;
-  }
+  },
 ): IBondAnimation | undefined {
   if (!asset) return undefined;
 

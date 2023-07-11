@@ -49,7 +49,7 @@ const BondVideoPosterWithPoster: React.FC<
         onLoaded?.();
       }
     },
-    [onLoaded]
+    [onLoaded],
   );
   const Image = simple ? SimpleGatsbyImage : GatsbyImage;
   return (

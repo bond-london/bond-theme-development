@@ -2,7 +2,7 @@ import { PluginOptionsSchemaArgs } from "gatsby";
 import { ObjectSchema } from "gatsby-plugin-utils";
 
 export function pluginOptionsSchema(
-  args: PluginOptionsSchemaArgs
+  args: PluginOptionsSchemaArgs,
 ): ObjectSchema {
   const { Joi } = args;
   return Joi.object({
@@ -28,7 +28,7 @@ export function pluginOptionsSchema(
           }
         }
       }
-    }`
+    }`,
       ),
   });
 }

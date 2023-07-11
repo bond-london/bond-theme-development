@@ -32,7 +32,7 @@ export const VideoRenderer: React.FC<IVideoNodeRendererProps> = ({
         "video",
         classNameOverrides,
         additionalClassName,
-        className
+        className,
       )}
       style={style}
       src={encodeURI(realSrc)}

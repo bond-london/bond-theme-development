@@ -27,7 +27,7 @@ import { hasFeature } from "gatsby-plugin-utils/has-feature";
 
 async function downloadAsset(
   context: ISourcingContext,
-  remoteAsset: IGraphCmsAsset
+  remoteAsset: IGraphCmsAsset,
 ): Promise<string> {
   const { gatsbyApi } = context;
   const { actions, reporter, createNodeId, getCache } = gatsbyApi;
@@ -47,14 +47,14 @@ async function downloadAsset(
     ext,
   });
   reporter.verbose(
-    `Downloaded asset ${fileName} from ${url} with id ${fileNode.id}`
+    `Downloaded asset ${fileName} from ${url} with id ${fileNode.id}`,
   );
   return fileNode.id;
 }
 
 async function distributeWorkload(
   workers: Array<() => Promise<void>>,
-  count = 50
+  count = 50,
 ): Promise<void> {
   const methods = workers.slice();
 
@@ -75,7 +75,7 @@ async function processDownloadableAssets(
   context: ISourcingContext,
   remoteTypeName: string,
   remoteNodes: AsyncIterable<IRemoteNode>,
-  isStateful: boolean
+  isStateful: boolean,
 ): Promise<void> {
   const {
     concurrentDownloads,
@@ -110,7 +110,7 @@ async function processDownloadableAssets(
       undefined,
       isStateful,
       true,
-      isImage
+      isImage,
     );
     if (shouldDownload) {
       nodesToDownload.push(id);
@@ -119,7 +119,7 @@ async function processDownloadableAssets(
 
   const bar = reporter.createProgress(
     "Downloading hygraph assets",
-    nodesToDownload.length
+    nodesToDownload.length,
   );
   bar.start();
   await distributeWorkload(
@@ -136,7 +136,7 @@ async function processDownloadableAssets(
           ? createLocalFileNode(context, asset, pluginOptions)
           : downloadAsset(context, asset));
         reporter.verbose(
-          `Using localFileId of ${localFileId} for ${asset.fileName} (${asset.url})`
+          `Using localFileId of ${localFileId} for ${asset.fileName} (${asset.url})`,
         );
         createNodeField({ node, name: "localFile", value: localFileId });
       } catch (error) {
@@ -145,7 +145,7 @@ async function processDownloadableAssets(
         bar.tick();
       }
     }),
-    concurrentDownloads
+    concurrentDownloads,
   );
 }
 
@@ -155,7 +155,7 @@ async function processNodesOfType(
   remoteTypeName: string,
   remoteNodes: AsyncIterable<IRemoteNode>,
   specialFields: Array<SpecialFieldEntry> | undefined,
-  isStateful: boolean
+  isStateful: boolean,
 ): Promise<void> {
   const typeName = context.typeNameTransform.toGatsbyTypeName(remoteTypeName);
   const existing = context.gatsbyApi.getNodesByType(typeName);
@@ -172,7 +172,7 @@ async function processNodesOfType(
       specialFields,
       isStateful,
       false,
-      false
+      false,
     );
 
     if (touched) touchedCount++;
@@ -196,7 +196,7 @@ async function processNodesOfType(
     });
   }
   context.gatsbyApi.reporter.verbose(
-    `Processed ${newNodes} new, ${touchedCount} touched, ${existingNodes} existing and ${oldNodes} old nodes for ${remoteTypeName}. Deleted ${deletedNodes}.`
+    `Processed ${newNodes} new, ${touchedCount} touched, ${existingNodes} existing and ${oldNodes} old nodes for ${remoteTypeName}. Deleted ${deletedNodes}.`,
   );
 }
 
@@ -216,7 +216,7 @@ function keepExistingNodeAlive(
   remoteTypeName: string,
   specialFields: Array<SpecialFieldEntry> | undefined,
   existingNode: IBasicFieldType,
-  namePrefix: string
+  namePrefix: string,
 ): void {
   const { buildMarkdownNodes } = pluginOptions;
   const { gatsbyApi } = context;
@@ -284,7 +284,7 @@ function keepExistingNodeAlive(
             remoteTypeName,
             fields,
             value as IBasicFieldType,
-            fullName
+            fullName,
           );
         });
       };
@@ -301,7 +301,7 @@ function keepExistingNodeAlive(
           remoteTypeName,
           entry.value,
           value as IBasicFieldType,
-          fullName
+          fullName,
         );
       };
       if (Array.isArray(value)) {
@@ -318,7 +318,7 @@ function processRichTextField(
   fieldName: string,
   parentId: string,
   { cleanupRtf, buildMarkdownNodes, typePrefix }: IPluginOptions,
-  { actions: { createNode }, createContentDigest }: NodePluginArgs
+  { actions: { createNode }, createContentDigest }: NodePluginArgs,
 ): void {
   if (cleanupRtf) {
     const raw = field.raw || field.json;
@@ -352,7 +352,7 @@ function createSpecialNodes(
   specialFields: Array<SpecialFieldEntry> | undefined,
   id: string,
   node: IBasicFieldType,
-  namePrefix: string
+  namePrefix: string,
 ): void {
   const { typePrefix } = pluginOptions;
   const { gatsbyApi } = context;
@@ -397,8 +397,8 @@ function createSpecialNodes(
                   fullName,
                   id,
                   pluginOptions,
-                  gatsbyApi
-                )
+                  gatsbyApi,
+                ),
               );
             } else {
               processRichTextField(
@@ -406,7 +406,7 @@ function createSpecialNodes(
                 fullName,
                 id,
                 pluginOptions,
-                gatsbyApi
+                gatsbyApi,
               );
             }
           }
@@ -422,7 +422,7 @@ function createSpecialNodes(
             fields,
             id,
             value as IBasicFieldType,
-            fullName
+            fullName,
           );
         });
       };
@@ -440,7 +440,7 @@ function createSpecialNodes(
           entry.value,
           id,
           value as IBasicFieldType,
-          fullName
+          fullName,
         );
       };
       if (Array.isArray(value)) {
@@ -460,7 +460,7 @@ function createOrTouchNode(
   specialFields: Array<SpecialFieldEntry> | undefined,
   isStateful: boolean,
   isAsset: boolean,
-  isImage: boolean
+  isImage: boolean,
 ): { id: string; touched: boolean } {
   const { enableImageCDN } = pluginOptions;
   const { gatsbyApi } = context;
@@ -492,7 +492,7 @@ function createOrTouchNode(
           remoteTypeName,
           specialFields,
           existingNode,
-          ""
+          "",
         );
       }
       return { id, touched: true };
@@ -524,7 +524,7 @@ function createOrTouchNode(
     specialFields,
     id,
     node,
-    ""
+    "",
   );
 
   createNode(node);
@@ -534,7 +534,7 @@ function createOrTouchNode(
 
 export async function sourceNodes(
   gatsbyApi: SourceNodesArgs,
-  pluginOptions: IPluginOptions
+  pluginOptions: IPluginOptions,
 ): Promise<undefined> {
   const {
     reporter,
@@ -553,7 +553,7 @@ export async function sourceNodes(
   const config = await createSourcingConfig(
     schemaConfig,
     gatsbyApi,
-    pluginOptions
+    pluginOptions,
   );
   const context = createSourcingContext(config);
 
@@ -574,7 +574,7 @@ export async function sourceNodes(
         remoteTypeName,
         remoteNodes,
         specialFields.get(remoteTypeName),
-        isStateful
+        isStateful,
       );
       promises.push(promise);
     }
@@ -588,7 +588,7 @@ export async function sourceNodes(
     context,
     "Asset",
     remoteAssets,
-    isStateful
+    isStateful,
   );
 
   return undefined;

@@ -32,7 +32,7 @@ export const RenderEmbed: React.FC<RenderEmbedProps> = props => {
   }
 
   const referenceValue = references?.filter(
-    ref => ref.id === nodeId || ref.remoteId === nodeId
+    ref => ref.id === nodeId || ref.remoteId === nodeId,
   )[0];
   if (!referenceValue?.id) {
     return (

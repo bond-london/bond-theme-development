@@ -3,7 +3,7 @@ import { JSDOM } from "jsdom";
 
 export function renderLottieToSvg(
   animationData: unknown,
-  reporter: Reporter
+  reporter: Reporter,
 ): string {
   try {
     const { window } = new JSDOM("<!DOCTYPE html><body></body>", {

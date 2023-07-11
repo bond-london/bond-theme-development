@@ -2,8 +2,8 @@ import { Section } from "@bond-london/gatsby-theme";
 import { ClassNameOverrides } from "@bond-london/graphcms-rich-text";
 import classNames from "classnames";
 import React from "react";
-import { lookupColourClassNames } from "../colors";
-import { SectionBodyClassName, SectionSpacingClassName } from "../styles";
+import { lookupColourClassNames } from "@colors";
+import { SectionBodyClassName, SectionSpacingClassName } from "@/styles";
 import { IComponentInformation } from "./GenericComponent";
 import { defaultProjectClassNameOverrides } from "./RTF";
 import { SectionBody } from "./SectionBody";
@@ -25,14 +25,14 @@ const textFormatClassNameOverrides: TextFormatLookup = {
     h2: "h2 mb-xs",
     h3: "h3 mb-xs",
     h4: "h4 mb-xs",
-    div: "p2",
   },
 };
 
-export const TextComponent: React.FC<{
+const Text: React.FC<{
   information: IComponentInformation;
   format: TextFormatNames;
-}> = ({ information, format }) => {
+  index?: number;
+}> = ({ information, format, index }) => {
   const {
     anchor,
     backgroundColour,
@@ -52,24 +52,29 @@ export const TextComponent: React.FC<{
       componentName={`Text Component: ${format}`}
       sectionClassName={classNames(
         lookupColourClassNames(backgroundColour, textColour),
-        SectionSpacingClassName
+        SectionSpacingClassName,
       )}
-      contentClassName="grid grid-cols-1 laptop:mx-laptop-1-gap-cols gap-y-xs laptop:gap-y-s"
     >
-      <SectionHeading
-        preHeading={preHeading}
-        heading={heading}
-        postHeading={postHeading}
-      />
-      {visual && <SectionVisual visual={visual} />}
-      {body && (
-        <SectionBody
-          content={body}
-          projectClassNameOverrides={projectClassNameOverrides}
+      <div className="col-span-full grid grid-cols-1 gap-y-xs tablet:col-span-6 tablet:col-start-2 laptop:col-span-6 laptop:col-start-4 laptop:gap-y-s">
+        <SectionHeading
+          preHeading={preHeading}
+          heading={heading}
+          postHeading={postHeading}
+          className="col-span-full text-left"
+          headingElement={index === 0 ? "h1" : "h2"}
         />
-      )}
-      {icon && <SectionIcon icon={icon} className={SectionBodyClassName} />}
-      {links && <SectionLinks links={links} />}
+        {visual && <SectionVisual visual={visual} />}
+        {body && (
+          <SectionBody
+            content={body}
+            projectClassNameOverrides={projectClassNameOverrides}
+          />
+        )}
+        {icon && <SectionIcon icon={icon} className={SectionBodyClassName} />}
+        {links && <SectionLinks links={links} />}
+      </div>{" "}
     </Section>
   );
 };
+
+export default Text;

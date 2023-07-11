@@ -4,7 +4,7 @@ import { PageContext } from "../types";
 function createUrlWithLang(
   siteUrl: string,
   corePath: string,
-  otherLanguage: string
+  otherLanguage: string,
 ): string {
   const newPath = `/${otherLanguage}${corePath}`;
   const url = `${siteUrl}${newPath}`;

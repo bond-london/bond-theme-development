@@ -5,7 +5,7 @@ export type Unobserver = () => void;
 const ioEntryMap = new WeakMap<HTMLElement, () => void>();
 
 export function createIntersectionObserver(
-  callback: () => void
+  callback: () => void,
 ): (element: HTMLElement) => Unobserver {
   // if we don't support intersectionObserver we don't lazy load (Sorry IE 11).
   if (!(`IntersectionObserver` in window)) {

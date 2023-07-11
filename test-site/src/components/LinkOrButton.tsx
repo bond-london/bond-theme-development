@@ -1,15 +1,13 @@
+"use client";
 import { IBondImage, IBondVisual } from "@bond-london/gatsby-theme";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
 import classNames from "classnames";
 import { Link } from "gatsby";
-import React, { PropsWithChildren } from "react";
-import {
-  ColourName,
-  lookupColourClassNames,
-  lookupColourString,
-} from "../colors";
-import { LinkClassName } from "../styles";
+import React, { ButtonHTMLAttributes, PropsWithChildren } from "react";
+import { ColourName, lookupColourClassNames } from "@colors";
+import { LinkClassName } from "@/styles";
 import { SectionIcon } from "./SectionIcon";
+import { ICoreComponent } from "./GenericComponent";
 
 export interface ILinkInformation {
   id: string;
@@ -17,9 +15,15 @@ export interface ILinkInformation {
   external?: string;
   text?: string;
   name: string;
-  colour?: ColourName;
+  textColour?: ColourName | null;
+  backgroundColour?: ColourName | null;
   isButton?: boolean;
+  isOutlined?: boolean;
   icon?: IBondImage;
+  visual?: IBondVisual;
+  slugPrefix?: string;
+  slug?: string;
+  topContent?: ICoreComponent;
 }
 
 const LinkOrButtonInside: React.FC<
@@ -27,18 +31,40 @@ const LinkOrButtonInside: React.FC<
     text?: string;
     icon?: IBondVisual;
     iconHeightClassName?: string;
+    iconFirst?: boolean;
+    className?: string;
+    label: string;
   }>
-> = ({ children, text, icon, iconHeightClassName }) => {
+> = ({
+  children,
+  text,
+  icon,
+  iconHeightClassName,
+  iconFirst,
+  className = "items-center",
+  label,
+}) => {
   if (children) {
     return <>{children}</>;
   }
   return (
-    <>
-      {text && <>{text}</>}
-      {icon && (
-        <SectionIcon icon={icon} iconHeightClassName={iconHeightClassName} />
+    <div className={classNames("inline-grid grid-flow-col", className)}>
+      {icon && iconFirst && (
+        <SectionIcon
+          icon={icon}
+          iconHeightClassName={iconHeightClassName}
+          alt={label}
+        />
       )}
-    </>
+      {text && <>{text}</>}
+      {icon && !iconFirst && (
+        <SectionIcon
+          icon={icon}
+          iconHeightClassName={iconHeightClassName}
+          alt={label}
+        />
+      )}
+    </div>
   );
 };
 
@@ -47,56 +73,77 @@ export const LinkOrButton: React.FC<{
   onClick?: () => void;
   className?: string;
   iconHeightClassName?: string;
+  contentClassName?: string;
+  linkClassName?: string;
   buttonClassName?: string;
+  outlinedClassName?: string;
+  outlinedButtonClassName?: string;
   allowEmpty?: boolean;
-  colourIsBackground?: boolean;
   isButton?: boolean;
+  isOutlined?: boolean;
+  iconFirst?: boolean;
+  type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
+  sameTab?: boolean;
 }> = ({
   information: {
     internal,
     external,
     text,
     name,
-    colour,
+    textColour,
+    backgroundColour,
     isButton: informationIsButton,
+    isOutlined: informationIsOutlined,
     icon,
   },
   onClick,
   className,
   iconHeightClassName,
+  contentClassName,
   buttonClassName = "button",
+  outlinedClassName = "outlined",
+  outlinedButtonClassName = "outlined-button",
   allowEmpty,
-  colourIsBackground,
   isButton: setIsButton,
+  isOutlined: setIsOutlined,
+  linkClassName = LinkClassName,
+  iconFirst,
+  type,
+  sameTab,
 }) => {
   const isButton = setIsButton || informationIsButton;
+  const isOutlined = setIsOutlined || informationIsOutlined;
   const label = text || name;
-  const realText = icon ? text : name;
+  const realText = icon ? text : text || name;
   const outerClassName = classNames(
     className,
-    isButton
-      ? [
-          buttonClassName,
-          colour &&
-            (colourIsBackground
-              ? lookupColourClassNames(colour)
-              : lookupColourString(colour, "text")),
-        ]
-      : [LinkClassName, colour && lookupColourString(colour, "text")]
+    textColour && `text-colour-${textColour}`,
+    backgroundColour && `background-colour-${backgroundColour}`,
+    lookupColourClassNames(backgroundColour, textColour),
+    isButton && isOutlined
+      ? outlinedButtonClassName
+      : isButton
+      ? buttonClassName
+      : isOutlined
+      ? outlinedClassName
+      : linkClassName,
   );
   const realInternal = external?.startsWith("/") ? external : internal;
   if (realInternal) {
     return (
       <Link
-        className={classNames(outerClassName, "inline-flex items-center")}
+        className={outerClassName}
         onClick={onClick}
         to={realInternal}
-        aria-label={name}
+        aria-label={label}
       >
         <LinkOrButtonInside
+          label={label}
           text={realText}
           icon={icon}
           iconHeightClassName={iconHeightClassName}
+          iconFirst={iconFirst}
+          className={contentClassName}
         />
       </Link>
     );
@@ -109,12 +156,34 @@ export const LinkOrButton: React.FC<{
           aria-label={label}
           href={external}
           onClick={onClick}
-          className={classNames(outerClassName, "inline-flex items-center")}
+          className={outerClassName}
         >
           <LinkOrButtonInside
+            label={label}
             text={realText}
             icon={icon}
             iconHeightClassName={iconHeightClassName}
+            iconFirst={iconFirst}
+            className={contentClassName}
+          />
+        </a>
+      );
+    }
+    if (sameTab) {
+      return (
+        <a
+          aria-label={label}
+          onClick={onClick}
+          href={external}
+          className={outerClassName}
+        >
+          <LinkOrButtonInside
+            label={label}
+            text={realText}
+            icon={icon}
+            iconHeightClassName={iconHeightClassName}
+            iconFirst={iconFirst}
+            className={contentClassName}
           />
         </a>
       );
@@ -124,33 +193,37 @@ export const LinkOrButton: React.FC<{
         aria-label={label}
         onClick={onClick}
         href={external}
-        className={classNames(outerClassName, "inline-flex items-center")}
+        className={outerClassName}
         target="_blank"
         rel="noreferrer"
       >
         <LinkOrButtonInside
+          label={label}
           text={realText}
           icon={icon}
           iconHeightClassName={iconHeightClassName}
+          iconFirst={iconFirst}
+          className={contentClassName}
         />
       </a>
     );
   }
 
-  if (onClick) {
+  if (isButton) {
     return (
       <button
         aria-label={label}
         onClick={onClick}
-        className={classNames(
-          outerClassName,
-          "inline-flex items-center justify-center"
-        )}
+        className={outerClassName}
+        type={type}
       >
         <LinkOrButtonInside
+          label={label}
           text={realText}
           icon={icon}
           iconHeightClassName={iconHeightClassName}
+          iconFirst={iconFirst}
+          className={contentClassName}
         />
       </button>
     );
@@ -158,11 +231,14 @@ export const LinkOrButton: React.FC<{
 
   if (allowEmpty) {
     return (
-      <div className={classNames(outerClassName, "inline-flex items-center")}>
+      <div className={outerClassName}>
         <LinkOrButtonInside
+          label={label}
           text={realText}
           icon={icon}
           iconHeightClassName={iconHeightClassName}
+          iconFirst={iconFirst}
+          className={contentClassName}
         />
       </div>
     );
@@ -178,11 +254,20 @@ export const LinkOrButton: React.FC<{
 
 // eslint-disable-next-line import/no-unused-modules
 export const LinkOrButtonComponent: React.FC<
-  ILinkInformation & { onClick?: () => void; className?: string }
+  ILinkInformation & {
+    onClick?: () => void;
+    className?: string;
+    buttonClassName?: string;
+  }
 > = (information) => {
-  const { onClick, className, ...props } = information;
+  const { onClick, className, buttonClassName, ...props } = information;
   return (
-    <LinkOrButton information={props} onClick={onClick} className={className} />
+    <LinkOrButton
+      information={props}
+      onClick={onClick}
+      className={className}
+      buttonClassName={buttonClassName}
+    />
   );
 };
 

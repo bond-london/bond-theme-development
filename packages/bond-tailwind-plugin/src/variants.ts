@@ -5,7 +5,7 @@ type variantFunction = (
   definition: (a: {
     separator: string;
     modifySelectors: (a: (a: { className: string }) => string) => string;
-  }) => string
+  }) => string,
 ) => void;
 
 export function addExtraVariants({ addVariant, e }: PluginAPI): void {
@@ -14,15 +14,15 @@ export function addExtraVariants({ addVariant, e }: PluginAPI): void {
     ({ separator, modifySelectors }) =>
       modifySelectors(
         ({ className }) =>
-          `.${e(`not-first${separator}${className}`)}:not(:first-child)`
-      )
+          `.${e(`not-first${separator}${className}`)}:not(:first-child)`,
+      ),
   );
   (addVariant as variantFunction)(
     "not-last",
     ({ modifySelectors, separator }) =>
       modifySelectors(
         ({ className }) =>
-          `.${e(`not-last${separator}${className}`)}:not(:last-child)`
-      )
+          `.${e(`not-last${separator}${className}`)}:not(:last-child)`,
+      ),
   );
 }

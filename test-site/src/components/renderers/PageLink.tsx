@@ -1,6 +1,6 @@
 import { Link } from "gatsby";
 import React from "react";
-import { LinkClassName } from "../../styles";
+import { LinkClassName } from "@/styles";
 import { EmbedLink } from "./EmbedLink";
 
 export const PageLink: React.FC<{ fragment: Queries.CmsPageLinkFragment }> = ({
@@ -19,8 +19,7 @@ export const PageEmbedLink: React.FC<{
   isInline?: boolean;
   fragment: Queries.CmsPageLinkFragment;
 }> = ({ fragment, className, isInline }) => {
-  const image =
-    fragment.featuredImage?.localFile?.childImageSharp?.gatsbyImageData;
+  const image = fragment.featuredImage?.gatsbyImage;
   if (!isInline && image) {
     return (
       <EmbedLink

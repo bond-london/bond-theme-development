@@ -14,7 +14,7 @@ export function getLocalFileName(remoteAsset: IGraphCmsAsset): string {
 async function internalCreateLocalFileNode(
   context: ISourcingContext,
   remoteAsset: IGraphCmsAsset,
-  pluginOptions: IPluginOptions
+  pluginOptions: IPluginOptions,
 ): Promise<string> {
   const { gatsbyApi } = context;
   const { actions, reporter, createNodeId, getCache, store, cache } = gatsbyApi;
@@ -70,10 +70,10 @@ async function internalCreateLocalFileNode(
         reporter.warn(
           `Error downloading url ${url}: ${
             typeof error === "string" ? error : error.message
-          }`
+          }`,
         );
       },
-    }
+    },
   );
 
   if (!remoteFileNode) {
@@ -96,7 +96,7 @@ const promiseCache = new Map<string, Promise<string>>();
 export async function createLocalFileNode(
   context: ISourcingContext,
   remoteAsset: IGraphCmsAsset,
-  pluginOptions: IPluginOptions
+  pluginOptions: IPluginOptions,
 ): Promise<string> {
   const {
     gatsbyApi: { reporter },
@@ -111,7 +111,7 @@ export async function createLocalFileNode(
   const request = internalCreateLocalFileNode(
     context,
     remoteAsset,
-    pluginOptions
+    pluginOptions,
   );
   promiseCache.set(url, request);
   try {

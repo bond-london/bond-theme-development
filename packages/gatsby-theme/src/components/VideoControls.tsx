@@ -45,7 +45,7 @@ export const VideoControls: React.FC<{
         insideClassName,
         className,
         "transition-opacity duration-[0.5s]",
-        isActive || !isPlaying ? "opacity-100" : "opacity-0 delay-[2s]"
+        isActive || !isPlaying ? "opacity-100" : "opacity-0 delay-[2s]",
       )}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseExit}

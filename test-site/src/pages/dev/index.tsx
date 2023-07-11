@@ -1,8 +1,8 @@
 import { IPageMetadata } from "@bond-london/gatsby-theme";
 import { HeadFC } from "gatsby";
 import React from "react";
-import { PageHead } from "../../components/PageHead";
-import { DevPageLayout } from "../../layouts/DevPageLayout";
+import { PageHead } from "@/components/PageHead";
+import { DevPageLayout } from "@/layouts/DevPageLayout";
 
 const DevIndex: React.FC = () => {
   return (

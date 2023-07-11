@@ -3,20 +3,20 @@ import { ObjectSchema } from "gatsby-plugin-utils";
 import { IBondThemeOptions } from "./types";
 
 export function pluginOptionsSchema(
-  args: PluginOptionsSchemaArgs
+  args: PluginOptionsSchemaArgs,
 ): ObjectSchema<IBondThemeOptions> {
   const { Joi } = args;
   return Joi.object({
     videoWidth: Joi.number().description("Width to change videos to"),
     videoCacheConnectionString: Joi.string().description(
-      "Connection string for the remote cache"
+      "Connection string for the remote cache",
     ),
     useVideoCache: Joi.boolean()
       .description("Set to use the video cache")
       .default(true),
     enableEslint: Joi.boolean().description("Should eslint run").default(true),
     isProduction: Joi.boolean().description(
-      "Set true for production optimisations"
+      "Set true for production optimisations",
     ),
     projectName: Joi.string()
       .required()

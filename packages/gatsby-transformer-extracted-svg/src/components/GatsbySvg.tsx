@@ -55,7 +55,7 @@ export const GatsbySvg: React.FC<
   } = allProps;
   const { width, height } = calculateSizes(svg as unknown as IGatsbySvg);
   const { style: wrapperStyle, className: wrapperClassName } = getWrapperProps(
-    svg as unknown as IGatsbySvg
+    svg as unknown as IGatsbySvg,
   );
 
   const imgSrc = (svg.encoded || svg.encodedUrl) as string;

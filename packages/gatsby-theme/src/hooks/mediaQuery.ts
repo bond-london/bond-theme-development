@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 export function useMediaQuery(
   mediaQuery: string,
-  initialValue = true
+  initialValue = true,
 ): boolean {
   const [matches, setMatches] = useState(initialValue);
 

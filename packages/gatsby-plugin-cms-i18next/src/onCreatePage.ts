@@ -3,7 +3,7 @@ import { IInputPageContext, PageContext, IPluginOptions } from "./types";
 
 function generatePage(
   page: Page<IInputPageContext>,
-  { languages, siteUrl, defaultLanguage }: IPluginOptions
+  { languages, siteUrl, defaultLanguage }: IPluginOptions,
 ): Page<PageContext> {
   return {
     ...page,
@@ -20,7 +20,7 @@ function generatePage(
 }
 export function onCreatePage(
   { page, actions, reporter }: CreatePageArgs<IInputPageContext>,
-  pluginOptions: IPluginOptions
+  pluginOptions: IPluginOptions,
 ): void {
   // Exit if the page has already been processed.
   if (typeof (page.context as unknown as PageContext).i18n === "object") {

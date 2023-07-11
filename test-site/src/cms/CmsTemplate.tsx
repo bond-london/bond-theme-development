@@ -7,14 +7,10 @@ export const TemplateFragment = graphql`
     id
     name
     preContent {
-      __typename
       ...CmsComponent
-      ...CmsCollection
     }
     postContent {
-      __typename
       ...CmsComponent
-      ...CmsCollection
     }
     backgroundColour
     textColour

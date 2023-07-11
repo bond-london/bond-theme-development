@@ -56,7 +56,7 @@ export function isBondFullVideo(video: unknown): video is IBondFullVideo {
 }
 
 export function isBondExternalVideo(
-  video: unknown
+  video: unknown,
 ): video is IBondExternalVideo {
   return !!(video as IBondExternalVideo).external;
 }
@@ -75,7 +75,7 @@ export function convertCmsVideoToBondVideo(
   cms: ICmsVideo | null,
   label = "English",
   isDefault = true,
-  srcLang = "en,"
+  srcLang = "en,",
 ): IBondVideo | undefined {
   if (!cms) return undefined;
   const preview = cms.preview?.localFile?.childGatsbyVideo?.transformed;
@@ -113,7 +113,7 @@ export function convertCmsVideoToBondVideo(
     cms.subtitles,
     label,
     isDefault,
-    srcLang
+    srcLang,
   );
 
   if (external) {
@@ -170,7 +170,7 @@ export function convertCmsAssetToBondVideo(
     verticalCropPosition?: Vertical | null;
     horizontalCropPosition?: Horizontal | null;
     preview?: ICmsVideoAsset | null;
-  }
+  },
 ): IBondSimpleVideo | IBondSimpleVideo | undefined {
   if (!asset) return undefined;
   const {

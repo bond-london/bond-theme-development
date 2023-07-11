@@ -31,7 +31,7 @@ export const HubspotDependentField: React.FC<{
 
           default:
             throw new Error(
-              `Don't support filter operator ${filter?.operator || "??"}`
+              `Don't support filter operator ${filter?.operator || "??"}`,
             );
         }
         return false;

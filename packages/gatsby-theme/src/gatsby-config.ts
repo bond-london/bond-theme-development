@@ -16,11 +16,11 @@ const gatsbyRequiredRules = join(
   dirname(gatsbyPackage),
   "dist",
   "utils",
-  "eslint-rules"
+  "eslint-rules",
 );
 
 function validateOptions(
-  options: Partial<IBondThemeOptions>
+  options: Partial<IBondThemeOptions>,
 ): IBondThemeOptions {
   const schema = pluginOptionsSchema({ Joi });
   const warnSchema = schema.pattern(/.*/, Joi.any().warning("any.unknown"));
@@ -34,7 +34,7 @@ function validateOptions(
     return reporter.panic(
       `Configuration errors: ${errors.details
         .map(e => `${e.message} @ ${e.path.join(".")}`)
-        .join(", ")}`
+        .join(", ")}`,
     );
   }
 
@@ -42,12 +42,19 @@ function validateOptions(
 }
 
 function buildConfig(
-  specifiedOptions: Partial<IBondThemeOptions>
+  specifiedOptions: Partial<IBondThemeOptions>,
 ): GatsbyConfig {
   const options = validateOptions(specifiedOptions);
   const gatsbyConfig: GatsbyConfig = {
     plugins: [
       "gatsby-plugin-image",
+      {
+        resolve: "gatsby-plugin-tsconfig-paths",
+        options: {
+          logLevel: "info",
+        },
+      },
+
       {
         resolve: "gatsby-plugin-robots-txt",
         options: {

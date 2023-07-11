@@ -1,6 +1,7 @@
 import React from "react";
 import { graphql, PageProps } from "gatsby";
-import { CmsComponent } from "../../../cms/CmsComponent";
+import { CmsComponent } from "@/cms/CmsComponent";
+import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
 
 const SingleComponentPage: React.FC<
   PageProps<
@@ -12,8 +13,17 @@ const SingleComponentPage: React.FC<
   >
 > = (props) => {
   const component = props.data.graphCmsComponent;
-  if (!component) throw new Error("No component");
-  return <CmsComponent fragment={component} />;
+  if (!component) {
+    return (
+      <Unsupported
+        component="Single component"
+        message="Component does not exist"
+      />
+    );
+  }
+  return (
+    <CmsComponent fragment={component} index={0} isFirst={true} isLast={true} />
+  );
 };
 
 // eslint-disable-next-line import/no-unused-modules

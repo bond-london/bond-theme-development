@@ -27,7 +27,7 @@ import { IGatsbyVideo } from "@bond-london/gatsby-transformer-video/src/types";
 import { IGatsbySvg } from "@bond-london/gatsby-transformer-extracted-svg";
 
 export function convertCmsVideoToBondExternalVideo(
-  cms: ICmsVideo
+  cms: ICmsVideo,
 ): IBondExternalVideo {
   const preview = cms.preview?.localFile?.childGatsbyVideo?.transformed;
   const external = cms.external || undefined;
@@ -100,7 +100,7 @@ export function convertSingleSubtitle(
   } | null,
   label = "English",
   isDefault = true,
-  srcLang = "en,"
+  srcLang = "en,",
 ): ReadonlyArray<IBondSubtitle> | undefined {
   const url = asset?.localFile?.publicURL || undefined;
   if (url) {
@@ -176,7 +176,7 @@ export function convertCmsVisualToBondVisual(
   cms: ICmsVisual | null,
   label = "English",
   isDefault = true,
-  srcLang = "en,"
+  srcLang = "en,",
 ): IBondVisual | undefined {
   if (!cms) return undefined;
 
@@ -214,7 +214,7 @@ export function convertCmsVisualToBondVisual(
     cms.subtitles,
     label,
     isDefault,
-    srcLang
+    srcLang,
   );
 
   if (external && full)
@@ -307,13 +307,13 @@ export function convertCmsAssetToBondVisual(
     verticalCropPosition?: Vertical | null;
     horizontalCropPosition?: Horizontal | null;
     preview?: ICmsVideoAsset | null;
-  }
+  },
 ): IBondVisual | undefined {
   if (!asset) return undefined;
   const image = convertCmsAssetToBondImage(asset as ICmsImageAsset, options);
   const animation = convertCmsAssetToBondAnimation(
     asset as ICmsAnimationAsset,
-    options
+    options,
   );
   const video = convertCmsAssetToBondVideo(asset as ICmsVideoAsset, options);
   if (!image && !animation && !video) return undefined;
@@ -321,7 +321,7 @@ export function convertCmsAssetToBondVisual(
 }
 
 export function getVisualSize(
-  visual?: IBondVisual
+  visual?: IBondVisual,
 ): { width: number; height: number } | undefined {
   if (isBondAnimation(visual)) {
     const animation = visual.animation as unknown as IGatsbyAnimation;

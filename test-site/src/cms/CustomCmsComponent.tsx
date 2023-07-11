@@ -1,49 +1,94 @@
 import React from "react";
-import { ArticleText } from "../components/ArticleText";
-import { Banner } from "../components/Banner";
-import { IComponentInformation } from "../components/GenericComponent";
-import { ImageCard } from "../components/ImageCard";
-import { SectionHero } from "../components/SectionHero";
-import { Standard } from "../components/Standard";
-import { TextComponent } from "../components/TextComponent";
+
+import ArticleTextComponent from "@/components/ArticleText";
+import CenteredTextComponent from "@/components/CenteredText";
+import { IComponentInformation } from "@/components/GenericComponent";
+import TextAndImageComponent from "@/components/TextAndImage";
+import TextComponent from "@/components/Text";
+import HeroComponent from "@/components/Hero";
+import GridComponent from "@/components/Grid";
+import ArticleLinksComponent from "@/components/ArticleLinks";
+import ArticleGridComponent from "@/components/ArticleGrid";
+import TagLinksComponent from "@/components/TagLinks";
+import ArticleInfoComponent from "@/components/ArticleInfo";
+import LogoParadeComponent from "@/components/LogoParade";
+import SplitComponent from "@/components/Split";
 
 export function tryHandleCustomComponent(
   converted: IComponentInformation,
-  componentType: Queries.CmsComponentFragment["componentType"]
+  componentType: Queries.CmsComponentFragment["componentType"],
+  index: number,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  isFirst: boolean,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  isLast: boolean,
 ) {
   switch (componentType) {
+    case "Gridx3":
+      return (
+        <GridComponent information={converted} index={index} columns={3} />
+      );
+
+    case "Gridx2":
+      return (
+        <GridComponent information={converted} index={index} columns={2} />
+      );
+
+    case "Single":
+      return (
+        <GridComponent information={converted} index={index} columns={1} />
+      );
+
+    case "ArticleLinks":
+      return <ArticleLinksComponent information={converted} />;
+
+    case "ArticleGrid":
+      return <ArticleGridComponent information={converted} />;
+
+    case "OneThird":
+      return (
+        <SplitComponent information={converted} leftCols={1} rightCols={2} />
+      );
+    case "TwoThirds":
+      return (
+        <SplitComponent information={converted} leftCols={2} rightCols={1} />
+      );
+
     case "Hero":
     case "HeroGrey":
       return (
-        <SectionHero
+        <HeroComponent
           information={converted}
           isGrey={componentType === "HeroGrey"}
         />
       );
-    case "ImageLeft":
-    case "ImageRight":
+
+    case "TextAndImageLeft":
+    case "TextAndImageRight":
       return (
-        <ImageCard
+        <TextAndImageComponent
           information={converted}
-          assetLeft={componentType === "ImageLeft"}
-        />
-      );
-    case "Banner":
-    case "BannerGrey":
-      return (
-        <Banner
-          information={converted}
-          isGrey={componentType === "BannerGrey"}
+          isLeft={componentType === "TextAndImageLeft"}
+          index={index}
         />
       );
 
     case "FormattedText":
       return <TextComponent information={converted} format={componentType} />;
 
-    case "ArticleText":
-      return <ArticleText information={converted} />;
+    case "CenteredText":
+      return <CenteredTextComponent information={converted} />;
 
-    case "Standard":
-      return <Standard information={converted} />;
+    case "ArticleText":
+      return <ArticleTextComponent information={converted} />;
+
+    case "ArticleInfo":
+      return <ArticleInfoComponent information={converted} />;
+
+    case "TagLinks":
+      return <TagLinksComponent information={converted} />;
+
+    case "LogoParade":
+      return <LogoParadeComponent information={converted} />;
   }
 }

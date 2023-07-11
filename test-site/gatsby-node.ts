@@ -3,12 +3,6 @@ import { CreatePageArgs, CreatePagesArgs } from "gatsby";
 import { resolve } from "path";
 import { articlesPerPage, isProduction } from "./gatsby-env";
 
-// TODO: Better intro animation for sections
-// TODO: Reduce use of index.ts in css, but allow auto complete for classes?
-// TODO: Site search
-// TODO: Make sure it works as a template
-// TODO: Main design pages for fonts, colours, grids etc
-
 const allowHidden = !isProduction;
 
 function tryLoadTemplate(templateName: string) {
@@ -38,15 +32,16 @@ function buildListPages<T = unknown>(
   pageCount: number,
   slug: string,
   name: string,
-  context: T
+  context: T,
+  force: boolean
 ) {
-  if (pageCount) {
+  if (pageCount || force) {
     const mainTemplate = resolve(defaultTemplateName);
     const customTemplate = tryLoadTemplate(customTemplateName);
     const component = customTemplate || mainTemplate;
     reporter.info(`Using template ${customTemplate ? "name" : "custom"}`);
 
-    for (let page = 0; page < pageCount; page++) {
+    for (let page = 0; (force && page === 0) || page < pageCount; page++) {
       const path = page === 0 ? `/${slug}/` : `/${slug}/${page + 1}/`;
       reporter.info(`Creating ${name} page ${page}`);
       createPage({
@@ -109,7 +104,8 @@ async function buildTagIndexPages(
       pageCount,
       slug,
       name,
-      { id }
+      { id },
+      true
     );
   }
 }
@@ -158,7 +154,8 @@ async function buildArticleTypeIndexPages(
       data.allGraphCmsArticle.pageInfo.pageCount,
       slug,
       name,
-      { id }
+      { id },
+      false
     );
   }
 }
@@ -211,7 +208,8 @@ async function buildArticleTypeTagIndexPages(
       data.allGraphCmsArticle.pageInfo.pageCount,
       slug,
       articleTypeName,
-      { articleTypeId, tagId }
+      { articleTypeId, tagId },
+      false
     );
   }
 }
@@ -281,7 +279,7 @@ export async function createPages(args: CreatePagesArgs) {
         allGraphCmsArticleType {
           nodes {
             id
-            slug
+            indexPageSlug
             name
           }
         }
@@ -328,7 +326,8 @@ export async function createPages(args: CreatePagesArgs) {
     await buildTagIndexPages(args, id, slug, name);
   }
 
-  for (const { id, slug, name } of data.allGraphCmsArticleType.nodes) {
+  for (const { id, indexPageSlug: slug, name } of data.allGraphCmsArticleType
+    .nodes) {
     await buildArticleTypeIndexPages(args, id, slug, name);
     for (const { id: tagId, slug: tagSlug, name: tagName } of data
       .allGraphCmsTag.nodes) {

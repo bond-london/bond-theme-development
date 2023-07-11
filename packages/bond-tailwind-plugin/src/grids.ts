@@ -11,13 +11,13 @@ import {
 
 function addContainerGrid(
   helpers: PluginAPI,
-  config: IBondConfigurationOptions
+  config: IBondConfigurationOptions,
 ): void {
   const noMax = !Object.values(config.sizes).find(v => v.max);
   const largest = Math.max(
     ...(Object.values(config.sizes)
       .map(v => v.breakpoint)
-      .filter(v => v) as ReadonlyArray<number>)
+      .filter(v => v) as ReadonlyArray<number>),
   );
   const { addUtilities, addComponents } = helpers;
   if (typeof config.spacing.section === "undefined") {
@@ -70,7 +70,7 @@ function addContainerGrid(
         contentGrid.push(gapClassName);
         gridGap.push(gapClassName);
       }
-    }
+    },
   );
   components[`.container-cols-grid`] = createApplyEntry(containerGrid);
   components[".content-cols-grid"] = createApplyEntry(contentGrid);
@@ -82,7 +82,7 @@ function addContainerGrid(
 
 export function buildGrid(
   helpers: PluginAPI,
-  config: IBondConfigurationOptions
+  config: IBondConfigurationOptions,
 ): void {
   addContainerGrid(helpers, config);
 }
@@ -90,7 +90,7 @@ export function buildGrid(
 function calculateSize(
   breakpoint: number | undefined,
   pixels: number,
-  useVw: boolean
+  useVw: boolean,
 ): string {
   if (useVw) {
     return calculateVwSize(breakpoint || 375, pixels);
@@ -99,19 +99,19 @@ function calculateSize(
 }
 
 export function buildGridSpacing(
-  config: IBondConfigurationOptions
+  config: IBondConfigurationOptions,
 ): CSSRuleObject {
   const results: CSSRuleObject = {};
   const maximumWidth = Math.max(
     ...(Object.values(config.sizes)
       .map(v => v.max)
-      .filter(v => v) as Array<number>)
+      .filter(v => v) as Array<number>),
   );
   const noMax = !Object.values(config.sizes).find(v => v.max);
   const largest = Math.max(
     ...(Object.values(config.sizes)
       .map(v => v.breakpoint)
-      .filter(v => v) as ReadonlyArray<number>)
+      .filter(v => v) as ReadonlyArray<number>),
   );
 
   const maxWidthRem = calculateRemSize(maximumWidth);
@@ -176,20 +176,20 @@ export function buildGridSpacing(
           `${name}-${i}-gap-cols`
         ] = `calc((${calculateColSize} * ${i}) + (${gapSize} * ${i}))`;
       }
-    }
+    },
   );
   return results;
 }
 
 export function createGridCols(
-  config: IBondConfigurationOptions
+  config: IBondConfigurationOptions,
 ): CSSRuleObject {
   const grids: CSSRuleObject = {};
   const noMax = !Object.values(config.sizes).find(v => v.max);
   const largest = Math.max(
     ...(Object.values(config.sizes)
       .map(v => v.breakpoint)
-      .filter(v => v) as ReadonlyArray<number>)
+      .filter(v => v) as ReadonlyArray<number>),
   );
   let lastMargin: number | undefined;
   forEachObject(
@@ -221,8 +221,8 @@ export function createGridCols(
             1,
             cols,
             v => `${name}-left-${v}`,
-            v => `${marginSize} repeat(${v}, 1fr)`
-          )
+            v => `${marginSize} repeat(${v}, 1fr)`,
+          ),
         );
         Object.assign(
           grids,
@@ -230,8 +230,8 @@ export function createGridCols(
             1,
             cols,
             v => `${name}-right-${v}`,
-            v => `repeat(${v}, 1fr) ${marginSize}`
-          )
+            v => `repeat(${v}, 1fr) ${marginSize}`,
+          ),
         );
 
         grids[
@@ -243,12 +243,12 @@ export function createGridCols(
         grids[
           `${name}-container`
         ] = `minmax(${marginSize},1fr) minmax(auto, ${calculateRemSize(
-          maxWidth
+          maxWidth,
         )}) minmax(${marginSize},1fr)`;
       } else {
         grids[`${name}-container`] = `${marginSize} auto ${marginSize}`;
       }
-    }
+    },
   );
 
   return grids;

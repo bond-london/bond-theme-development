@@ -24,11 +24,11 @@ export function isImage(node: Node): node is ImageElement {
 function shrinkSpaces(text: string): string {
   return text.replace(
     /[\r\t\f\v \u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]+/g,
-    " "
+    " ",
   );
 }
 export function makeValidTextString(
-  text: string | null | undefined
+  text: string | null | undefined,
 ): string | undefined {
   if (!text) return undefined;
 
@@ -47,7 +47,7 @@ const keepEmpty: { [name: string]: boolean } = {
 };
 
 export function cleanupElementNode(
-  elementNode: ElementNode
+  elementNode: ElementNode,
 ): ElementNode | undefined {
   const { children, ...rest } = elementNode;
   const newChildren: Array<ElementNode | Text> = [];
@@ -93,7 +93,7 @@ export function cleanupElementNode(
 }
 
 export function cleanupRTFContent(
-  content: RichTextContent
+  content: RichTextContent,
 ): Array<ElementNode> | undefined {
   const elements = Array.isArray(content) ? content : content.children;
   const newElements: Array<ElementNode> = [];

@@ -1,11 +1,23 @@
-import { graphql } from "gatsby";
+import { graphql, PageProps } from "gatsby";
+import React from "react";
 import {
   CmsArticleTypeHead,
   CmsArticleTypeLayout,
-} from "../../cms/CmsArticleTypeLayout";
+} from "@/cms/CmsArticleTypeLayout";
+import { ArticleList } from "@/components/ArticleList";
+
+const Layout: React.FC<PageProps<Queries.ArticleTypeListQuery>> = (props) => (
+  <CmsArticleTypeLayout {...props} noHero={true}>
+    <ArticleList
+      articles={props.data.allGraphCmsArticle.edges.map((e) => e.node)}
+      textColour={props.data.graphCmsArticleType?.textColour}
+      backgroundColour={props.data.graphCmsArticleType?.backgroundColour}
+    />
+  </CmsArticleTypeLayout>
+);
 
 // eslint-disable-next-line import/no-unused-modules
-export default CmsArticleTypeLayout;
+export default Layout;
 
 // eslint-disable-next-line import/no-unused-modules
 export const ArticleTypeListQuery = graphql`

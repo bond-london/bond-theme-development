@@ -12,7 +12,7 @@ import { join } from "path";
 function calculateTransformedInformation(
   width: number,
   height: number,
-  targetWidth?: number
+  targetWidth?: number,
 ): { width: number; height: number } {
   if (!targetWidth) return { width, height };
 
@@ -25,7 +25,7 @@ export async function createTransformedVideo(
   source: Node & IGatsbyVideoInformation,
   transformArgs: ITransformArgs,
   context: IGatsbyResolverContext<Node, ITransformArgs>,
-  args: NodePluginArgs
+  args: NodePluginArgs,
 ): Promise<IGatsbyVideo> {
   const {
     reporter,
@@ -40,12 +40,12 @@ export async function createTransformedVideo(
   const { width, height } = calculateTransformedInformation(
     source.width,
     source.height,
-    transformArgs.width
+    transformArgs.width,
   );
   const details = getNodeAndSavePathDependency(
     source.parent,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    context.path
+    context.path,
   ) as FileSystemNode;
 
   const inputDigest = source.internal.contentDigest;
@@ -55,7 +55,7 @@ export async function createTransformedVideo(
   reporter.verbose(
     `About to start job for ${details.absolutePath} for width ${
       transformArgs.width || "??"
-    }`
+    }`,
   );
   const { dominantColour, mp4Hvc1Name, mp4Avc1Name, webmName, posterName } =
     (await createJobV2({

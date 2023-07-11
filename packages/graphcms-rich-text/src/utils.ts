@@ -25,7 +25,7 @@ export function rtfFromText(text: string): IRichTextInformation {
 }
 
 export function getRTFInformation(
-  node: IGenericRichTextNode | undefined | null
+  node: IGenericRichTextNode | undefined | null,
 ): IRichTextInformation | undefined {
   if (node && node.cleaned) {
     const information: IRichTextInformation = {
@@ -58,19 +58,19 @@ function getTableRow(node: ElementNode): TableRow | undefined {
 }
 
 export function buildTableInformation(
-  contents: IRichTextInformation
+  contents: IRichTextInformation,
 ): ITableInformation {
   return buildTableInformationFromContents(contents.cleaned);
 }
 
 export function buildTableInformationFromNodes(
-  nodes: ReadonlyArray<Node>
+  nodes: ReadonlyArray<Node>,
 ): ITableInformation {
   return buildTableInformationFromContents(nodes as ReadonlyArray<ElementNode>);
 }
 
 export function buildTableInformationFromContents(
-  contents: ReadonlyArray<ElementNode>
+  contents: ReadonlyArray<ElementNode>,
 ): ITableInformation {
   const rows = contents
     .filter(n => {
@@ -90,13 +90,13 @@ export function buildTableInformationFromContents(
 }
 
 export function buildTableInformationFromChildren(
-  children: React.ReactNode
+  children: React.ReactNode,
 ): ITableInformation {
   const element = children as React.ReactElement<IElementsRendererProps>;
   const { props } = element;
   const { contents } = props;
   const table = buildTableInformationFromContents(
-    contents as ReadonlyArray<ElementNode>
+    contents as ReadonlyArray<ElementNode>,
   );
   return table;
 }

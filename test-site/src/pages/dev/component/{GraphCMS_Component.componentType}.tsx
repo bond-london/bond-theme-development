@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
 import { graphql, Link, PageProps } from "gatsby";
-import { DevPageLayout } from "../../../layouts/DevPageLayout";
-import { CmsComponent } from "../../../cms/CmsComponent";
+import { DevPageLayout } from "@/layouts/DevPageLayout";
+import { CmsComponent } from "@/cms/CmsComponent";
 import { Section } from "@bond-london/gatsby-theme";
-import { SectionHeading } from "../../../components/SectionHeading";
+import { SectionHeading } from "@/components/SectionHeading";
 import slugify from "@sindresorhus/slugify";
 
 const ComponentTypePage: React.FC<
@@ -24,11 +24,16 @@ const ComponentTypePage: React.FC<
         <Fragment key={component.id}>
           <Link
             to={`/dev/component/${slugify(component.id)}`}
-            className="block mb-m mt-xl w-full h3h text-center"
+            className="h3 mb-m mt-xl block w-full text-center"
           >
             {component.heading} ({component.id})
           </Link>
-          <CmsComponent fragment={component} />
+          <CmsComponent
+            fragment={component}
+            index={0}
+            isFirst={true}
+            isLast={true}
+          />
         </Fragment>
       ))}
     </DevPageLayout>

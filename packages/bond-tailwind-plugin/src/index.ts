@@ -58,5 +58,5 @@ module.exports = plugin.withOptions(
     addExtraVariants(helpers);
     buildTypography(helpers, config);
   },
-  (config: IBondConfigurationOptions) => configureTheme(config)
+  (config: IBondConfigurationOptions) => configureTheme(config),
 );

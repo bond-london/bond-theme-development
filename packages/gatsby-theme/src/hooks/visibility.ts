@@ -4,7 +4,7 @@ export function onVisibleToUser(
   element: HTMLElement,
   callback: (isVisible: boolean) => void,
   threshold?: number,
-  delay?: number
+  delay?: number,
 ): () => void {
   const realThreshold = undefined === threshold ? 0.2 : threshold;
   const realDelay = undefined === delay ? 10 : delay;
@@ -59,7 +59,7 @@ export function onVisibleToUser(
 export function useFirstVisibleToUser<T extends HTMLElement>(
   threshold = 0.4,
   delay = 100,
-  callback?: () => void
+  callback?: () => void,
 ): [React.RefObject<T>, boolean] {
   const elementRef = useRef<T>(null);
   const [visible, setVisible] = useState(false);
@@ -78,7 +78,7 @@ export function useFirstVisibleToUser<T extends HTMLElement>(
         }
       },
       threshold,
-      delay
+      delay,
     );
 
     return removeVisibility;
@@ -89,12 +89,12 @@ export function useFirstVisibleToUser<T extends HTMLElement>(
 
 export function useFirstVisibleCallback(
   pausedClassName: string,
-  runningClassName: string
+  runningClassName: string,
 ): [() => void, string] {
   const [animationMode, setAnimationMode] = useState(pausedClassName);
   const onVisible = useCallback(
     () => setAnimationMode(runningClassName),
-    [runningClassName]
+    [runningClassName],
   );
 
   return [onVisible, animationMode];
@@ -103,7 +103,7 @@ export function useFirstVisibleCallback(
 export function useVisibleToUser<T extends HTMLElement = HTMLDivElement>(
   threshold = 0.4,
   delay = 100,
-  callback?: (isVisible: boolean) => void
+  callback?: (isVisible: boolean) => void,
 ): { elementRef: React.RefObject<T>; visible: boolean; firstVisible: boolean } {
   const elementRef = useRef<T>(null);
   const [visible, setVisible] = useState(false);
@@ -124,7 +124,7 @@ export function useVisibleToUser<T extends HTMLElement = HTMLDivElement>(
         callback?.(isVisible);
       },
       threshold,
-      delay
+      delay,
     );
 
     return removeVisibility;

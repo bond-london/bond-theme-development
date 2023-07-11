@@ -33,7 +33,7 @@ export const AudioRenderer: React.FC<IAudioNodeRendererProps> = ({
         "audio",
         classNameOverrides,
         additionalClassName,
-        className
+        className,
       )}
       style={realStyle}
       src={encodeURI(url)}

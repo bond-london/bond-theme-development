@@ -1,5 +1,16 @@
+import { convertCmsAssetToBondVisual } from "@bond-london/gatsby-theme";
 import { graphql } from "gatsby";
 
+export function calculatePageLinkPath({
+  featuredImage,
+  gatsbyPath,
+  textColour,
+  backgroundColour,
+}: Queries.CmsPageLinkFragment) {
+  const visual = convertCmsAssetToBondVisual(featuredImage);
+  const to = gatsbyPath as string;
+  return { visual, to, textColour, backgroundColour };
+}
 // eslint-disable-next-line import/no-unused-modules
 export const CmsPageLinkFragment = graphql`
   fragment CmsPageLink on GraphCMS_Page {
@@ -8,6 +19,8 @@ export const CmsPageLinkFragment = graphql`
     remoteId
     title
     gatsbyPath(filePath: "/{GraphCMS_Page.slug}")
+    backgroundColour
+    textColour
     featuredImage {
       ...EmbedFeaturedImageAsset
     }
@@ -21,8 +34,6 @@ export const CmsPageFragment = graphql`
     indexed
     hidden
     description
-    backgroundColour
-    textColour
     seoImage: featuredImage {
       ...SeoImageAsset
     }
@@ -30,19 +41,10 @@ export const CmsPageFragment = graphql`
       ...Template
     }
     topContent {
-      __typename
       ...CmsComponent
-      ...CmsCollection
     }
     content {
-      __typename
       ...CmsComponent
-      ...CmsCollection
-    }
-    bottomContent {
-      __typename
-      ...CmsComponent
-      ...CmsCollection
     }
     menu {
       ...CmsNavigation

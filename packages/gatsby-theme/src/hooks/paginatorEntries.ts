@@ -1,7 +1,7 @@
 export function usePaginatorEntries(
   totalPages: number,
   currentPage: number,
-  maxEntries = 6
+  maxEntries = 6,
 ): ReadonlyArray<number | undefined> {
   const entries: Array<number | undefined> = [];
   if (totalPages < maxEntries) {

@@ -99,19 +99,19 @@ export type SpecialFieldEntry =
 export type SpecialFieldMap = Map<string, Array<SpecialFieldEntry>>;
 
 export function isSpecialField(
-  type: SpecialFieldEntry
+  type: SpecialFieldEntry,
 ): type is ISpecialFieldType {
   return typeof (type as ISpecialFieldType).field !== "undefined";
 }
 
 export function isSpecialUnion(
-  type: SpecialFieldEntry
+  type: SpecialFieldEntry,
 ): type is ISpecialFieldUnion {
   return type.type === "Union";
 }
 
 export function isSpecialObject(
-  type: SpecialFieldEntry
+  type: SpecialFieldEntry,
 ): type is ISpecialFieldObject {
   return type.type === "Object";
 }

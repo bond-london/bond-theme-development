@@ -31,7 +31,7 @@ export type IBondSimpleVideo = IVisualCommon & {
 };
 
 export function convertCmsVideoToBondSimpleVideo(
-  cms: ICmsVideo
+  cms: ICmsVideo,
 ): IBondSimpleVideo {
   const preview = cms.preview?.localFile?.childGatsbyVideo?.transformed;
 

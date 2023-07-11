@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import React, { Fragment } from "react";
-import { SectionBodyClassName } from "../styles";
+import { SectionBodyClassName } from "@/styles";
 import { ILinkInformation, LinkOrButton } from "./LinkOrButton";
 
 export const SectionLinks: React.FC<{
@@ -8,15 +8,22 @@ export const SectionLinks: React.FC<{
   vertical?: boolean;
   separator?: boolean;
   iconHeightClassName?: string;
-}> = ({ links, vertical, separator, iconHeightClassName }) => {
+  className?: string;
+}> = ({
+  links,
+  vertical,
+  separator,
+  iconHeightClassName,
+  className = SectionBodyClassName,
+}) => {
   if (links.length === 0) return null;
 
   return (
     <div
       className={classNames(
-        SectionBodyClassName,
-        "flex pointer-events-auto",
-        vertical ? "flex-col items-start gap-y-x" : "items-center gap-x-xs"
+        className,
+        "pointer-events-auto flex",
+        vertical ? "gap-y-x flex-col items-start" : "items-center gap-x-xs",
       )}
     >
       {links.map((link, index) => (
@@ -30,6 +37,7 @@ export const SectionLinks: React.FC<{
           <LinkOrButton
             information={link}
             iconHeightClassName={iconHeightClassName}
+            buttonClassName="button buttonSmall no-underline flex items-center"
           />
         </Fragment>
       ))}

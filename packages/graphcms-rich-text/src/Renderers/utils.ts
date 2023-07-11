@@ -10,7 +10,7 @@ export function calculateClassName(
   key: keyof JSX.IntrinsicElements,
   classNameOverrides?: ClassNameOverrides,
   additionalClassName?: string,
-  className?: string
+  className?: string,
 ): string | undefined {
   const overridden = classNameOverrides?.[key];
   return simpleClassNames(overridden, additionalClassName, className);

@@ -37,7 +37,7 @@ export const IFrameRenderer: React.FC<IIframeNodeRendererProps> = ({
     "iframe",
     classNameOverrides,
     additionalClassName,
-    className
+    className,
   );
   const realStyle: CSSProperties | undefined = style
     ? style

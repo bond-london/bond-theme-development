@@ -43,7 +43,7 @@ export interface ICmsImage {
 
 export function convertCmsImageToBondImage(
   cms: ICmsImage | null,
-  name?: string
+  name?: string,
 ): IBondImage | undefined {
   if (!cms?.image) return undefined;
   const image =
@@ -70,7 +70,7 @@ export function convertCmsAssetToBondImage(
     verticalCropPosition?: Vertical | null;
     horizontalCropPosition?: Horizontal | null;
     dontCropPng?: boolean | null;
-  }
+  },
 ): IBondImage | undefined {
   if (!asset) return undefined;
   const dontCrop =

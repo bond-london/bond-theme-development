@@ -40,7 +40,7 @@ describe("@bond-london/graphcms-rich-text", () => {
 
   it("renders content with custom className", () => {
     const { container } = render(
-      <RichText content={content} classNameOverrides={{ p: "testing" }} />
+      <RichText content={content} classNameOverrides={{ p: "testing" }} />,
     );
 
     expect(container).toMatchInlineSnapshot(`
@@ -58,7 +58,7 @@ describe("@bond-london/graphcms-rich-text", () => {
 
   it("renders content with disabled element", () => {
     const { container } = render(
-      <RichText content={content} disabledElements={{ p: true }} />
+      <RichText content={content} disabledElements={{ p: true }} />,
     );
 
     expect(container).toMatchInlineSnapshot(`<div />`);
@@ -72,7 +72,7 @@ describe("@bond-london/graphcms-rich-text", () => {
         renderDisabledElement={(elementName, htmlElementName): JSX.Element => (
           <p>{`${elementName} (${htmlElementName}) is disabled`}</p>
         )}
-      />
+      />,
     );
 
     expect(container).toMatchInlineSnapshot(`
@@ -86,7 +86,7 @@ describe("@bond-london/graphcms-rich-text", () => {
 
   it("renders content with disabled text element", () => {
     const { container } = render(
-      <RichText content={content} disabledElements={{ bold: true }} />
+      <RichText content={content} disabledElements={{ bold: true }} />,
     );
 
     expect(container).toMatchInlineSnapshot(`
@@ -161,7 +161,7 @@ describe("@bond-london/graphcms-rich-text", () => {
             <strong className="text-black">{children}</strong>
           ),
         }}
-      />
+      />,
     );
 
     expect(container).toMatchInlineSnapshot(`
@@ -198,7 +198,7 @@ describe("@bond-london/graphcms-rich-text", () => {
             />
           ),
         }}
-      />
+      />,
     );
 
     expect(container).toMatchSnapshot();
@@ -231,7 +231,7 @@ describe("@bond-london/graphcms-rich-text", () => {
             />
           ),
         }}
-      />
+      />,
     );
 
     expect(container).toMatchSnapshot();
@@ -320,7 +320,7 @@ describe("@bond-london/graphcms-rich-text", () => {
             />
           ),
         }}
-      />
+      />,
     );
 
     expect(container).toMatchInlineSnapshot(`
@@ -362,7 +362,7 @@ describe("@bond-london/graphcms-rich-text", () => {
             <img src={src || "/"} alt={altText || ""} />
           ),
         }}
-      />
+      />,
     );
 
     expect(container).toMatchInlineSnapshot(`
@@ -436,7 +436,7 @@ describe("custom embeds and assets", () => {
     ];
 
     const { container } = render(
-      <RichText content={embedAssetContent} references={references} />
+      <RichText content={embedAssetContent} references={references} />,
     );
 
     expect(container).toMatchSnapshot();
@@ -467,7 +467,7 @@ describe("custom embeds and assets", () => {
             "video/mp4": (): JSX.Element => <div>custom video/mp4</div>,
           },
         }}
-      />
+      />,
     );
 
     expect(container).toMatchInlineSnapshot(`
@@ -539,7 +539,7 @@ describe("custom embeds and assets", () => {
     ];
 
     const { container } = render(
-      <RichText content={embedAssetContent} references={references} />
+      <RichText content={embedAssetContent} references={references} />,
     );
 
     expect(console.warn).toHaveBeenCalledTimes(0);
@@ -600,7 +600,7 @@ describe("custom embeds and assets", () => {
     ];
 
     const { container } = render(
-      <RichText content={content} references={references} />
+      <RichText content={content} references={references} />,
     );
 
     expect(console.error).toHaveBeenCalledTimes(0);
@@ -631,7 +631,7 @@ describe("custom embeds and assets", () => {
             image: (): JSX.Element => <div>custom IMAGE</div>,
           },
         }}
-      />
+      />,
     );
 
     expect(container).toMatchInlineSnapshot(`
@@ -712,7 +712,7 @@ describe("custom embeds and assets", () => {
     ];
 
     const { container } = render(
-      <RichText content={content} references={references} />
+      <RichText content={content} references={references} />,
     );
 
     expect(console.error).toHaveBeenCalledTimes(0);
@@ -760,7 +760,7 @@ describe("custom embeds and assets", () => {
             },
           },
         }}
-      />
+      />,
     );
 
     expect(container).toMatchInlineSnapshot(`
@@ -803,7 +803,7 @@ describe("custom embeds and assets", () => {
     ];
 
     const { container } = render(
-      <RichText content={content} references={references} />
+      <RichText content={content} references={references} />,
     );
 
     expect(console.warn).toHaveBeenCalledTimes(0);

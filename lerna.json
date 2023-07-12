@@ -1,17 +1,7 @@
 {
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
-  "useNx": false,
-  "npmClient": "yarn",
-  "registry": "https://registry.npmjs.org/",
-  "version": "independent",
-  "command": {
-    "publish": {
-      "allowBranch": "main",
-      "bump": "patch",
-      "conventionalCommits": true,
-      "changelog": false,
-      "message": "chore(release): Publish",
-      "private": false
-    }
-  }
+  "version": "0.0.0",
+  "packages": [
+    "packages/*"
+  ]
 }

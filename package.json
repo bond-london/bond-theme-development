@@ -16,19 +16,16 @@
     "unprerelease": "lerna version --conventional-graduate",
     "publish:packages": "lerna publish from-package"
   },
-  "workspaces": [
-    "packages/*",
-    "test-site"
-  ],
   "name": "bond-theme-development",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint-plugin-filenames": "^1.3.2",
     "eslint-plugin-node": "^11.1.0",
-    "lerna": "^7.0.2"
+    "lerna": "^7.1.1"
   },
   "engines": {
     "node": ">=18.0.0"
-  }
+  },
+  "dependencies": {}
 }

@@ -1,12 +1,6 @@
 import type { GatsbyConfig } from "gatsby";
 import type { IBondThemeOptions } from "@bond-london/gatsby-theme";
-import {
-  COOKIE_NAME,
-  siteUrl,
-  allowIndex,
-  isProduction,
-  showDevPages,
-} from "./gatsby-env";
+import { siteUrl, allowIndex, isProduction, showDevPages } from "./gatsby-env";
 
 function readEnvVar(envVarName: string): string {
   const value = process.env[envVarName];
@@ -49,8 +43,6 @@ const config: GatsbyConfig = {
     siteName: themeOptions.projectName,
     siteUrl,
     logo: `${siteUrl}/icons/icon-512x512.png`,
-    cookieName: COOKIE_NAME,
-    declinedCookieName: "cookies-declined",
   },
   trailingSlash: "always",
   graphqlTypegen: {

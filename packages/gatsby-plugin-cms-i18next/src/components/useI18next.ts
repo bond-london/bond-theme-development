@@ -14,7 +14,7 @@ export function useI18next<
   options?: UseTranslationOptions<TKPrefix>,
 ): I18NextContext & {
   i18n: i18n;
-  t: TFunction<N>;
+  t: TFunction<string | ReadonlyArray<string>, TKPrefix>;
   ready: boolean;
 } {
   const { i18n, t, ready } = useTranslation(ns, options);

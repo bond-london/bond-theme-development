@@ -9,13 +9,17 @@
     "lerna": "lerna",
     "build": "lerna run build  --stream --concurrency=0",
     "watch": "lerna run watch --no-sort --stream --concurrency=999",
-    "build:packages": "lerna run --scope \"@bond-london/*\" build --stream --concurrency=0",
+    "build:packages": "lerna run --scope \"@bond-london/*\" build",
     "watch:packages": "lerna run --scope \"@bond-london/*\" watch --stream --concurrency=999",
     "nx": "nx",
     "prerelease": "lerna version prerelease",
     "unprerelease": "lerna version --conventional-graduate",
     "publish:packages": "lerna publish from-package"
   },
+  "workspaces": [
+    "packages/*",
+    "test-site"
+  ],
   "name": "bond-theme-development",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.0.0",

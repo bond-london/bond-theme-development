@@ -1,7 +1,7 @@
 {
   "name": "@bond-london/gatsby-graphcms-components",
   "sideEffects": false,
-  "version": "6.1.0",
+  "version": "6.2.0",
   "description": "Components shared across various Bond London projects",
   "author": "Nick Randell <nick.randell@bond.fi>",
   "engines": {

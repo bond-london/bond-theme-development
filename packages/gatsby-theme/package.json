@@ -1,6 +1,6 @@
 {
   "name": "@bond-london/gatsby-theme",
-  "version": "2.32.2",
+  "version": "2.32.3",
   "description": "Transform video files",
   "author": "Nick Randell <nick.randell@bond.fi>",
   "license": "MIT",
@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@bond-london/bond-tailwind-plugin": "^3.8.0",
-    "@bond-london/eslint-config-bond-gatsby": "^2.3.0",
+    "@bond-london/eslint-config-bond-gatsby": "^2.3.1",
     "@bond-london/gatsby-transformer-extracted-lottie": "^5.9.0",
     "@bond-london/gatsby-transformer-extracted-svg": "^4.3.0",
     "@bond-london/gatsby-transformer-video": "^3.9.0",

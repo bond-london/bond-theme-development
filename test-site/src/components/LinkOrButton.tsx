@@ -8,6 +8,7 @@ import { ColourName, lookupColourClassNames } from "@colors";
 import { SectionIcon } from "./SectionIcon";
 import { ICoreComponent } from "./GenericComponent";
 
+// eslint-disable-next-line import/no-unused-modules
 export interface ILinkInformation {
   id: string;
   internal?: string;

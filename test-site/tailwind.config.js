@@ -40,6 +40,8 @@ module.exports = {
       height: {
         "mobile-icon": bondPlugin.calculateRemSize(32),
         "laptop-icon": bondPlugin.calculateRemSize(52),
+        "mobile-nav": bondPlugin.calculateRemSize(32),
+        "laptop-nav": bondPlugin.calculateRemSize(64),
       },
       animation: {
         "enter-from-bottom": `enter-from-bottom ${animationDuration} ${animationTiming} both`,

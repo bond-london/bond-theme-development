@@ -42,7 +42,7 @@ const CenteredText: React.FC<{
       contentClassName="mt-xxl mb-m"
     >
       <SectionHeading
-        className="text-right"
+        className="text-center"
         preHeading={preHeading}
         preHeadingFontClassName="p3"
         headingFontClassName="h2"

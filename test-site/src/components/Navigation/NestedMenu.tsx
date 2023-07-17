@@ -33,7 +33,10 @@ export const NestedMenu: React.FC<{
   return (
     <div
       data-component="Nested menu"
-      className={classNames("inline-flex", className)}
+      className={classNames(
+        "inline-flex flex-col laptop:flex-row items-start gap-y-xs",
+        className,
+      )}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -41,22 +44,20 @@ export const NestedMenu: React.FC<{
         {item.text && <>{item.text}</>}
         {item.icon && <SectionIcon icon={item.icon} />}
       </button>
-      <div className="relative">
-        <div
-          className={classNames(
-            "absolute laptop:fixed -left-l z-[1000] flex transition-all laptop:top-laptop-nav laptop:left-0 laptop:right-0 laptop:h-laptop-nav laptop:justify-center overflow-hidden w-menu laptop:w-auto ",
-            lookupColourClassNames(backgroundColour, textColour),
-            active ? "max-h-screen" : "max-h-0",
-          )}
-        >
-          <ul className="pt-xxs laptop:pt-0 flex flex-col laptop:flex-row">
-            {item.entries?.map((i) => (
-              <li key={i.name} className="px-s py-xs">
-                <LinkOrButton onClick={closeMenu} information={i} />
-              </li>
-            ))}
-          </ul>
-        </div>
+      <div
+        className={classNames(
+          "relative laptop:absolute flex items-start transition-all laptop:top-m laptop:right-0 laptop:justify-end overflow-hidden",
+          lookupColourClassNames(backgroundColour, textColour),
+          active ? "laptop:max-h-screen" : "laptop:max-h-0",
+        )}
+      >
+        <ul className="flex flex-col laptop:flex-row gap-y-xs ml-xs">
+          {item.entries?.map((i) => (
+            <li key={i.name} className="laptop:px-s laptop:py-xs">
+              <LinkOrButton onClick={closeMenu} information={i} />
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

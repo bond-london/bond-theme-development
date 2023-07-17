@@ -27,12 +27,11 @@ export const CodeOrActionRenderer: React.FC<
       contentString.startsWith("##") &&
       contentString.endsWith("##")
     ) {
-      return (
-        <CodeAction
-          isInline={isInline}
-          information={contentString.substring(2, contentString.length - 2)}
-        />
-      );
+      // Replace non breaking hyphens with normal ones!
+      const information = contentString
+        .substring(2, contentString.length - 2)
+        .replaceAll("\u2011", "-");
+      return <CodeAction isInline={isInline} information={information} />;
     }
 
     if (contentString.startsWith("<br")) {

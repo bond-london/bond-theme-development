@@ -15,7 +15,9 @@ const ArticleListEntry: React.FC<{
       link={{ id, name: title, internal: to }}
       className="flex flex-col gap-y-xs my-xxs"
     >
-      {visual && <BondVisual visual={visual} simple={true} />}
+      {visual && (
+        <BondVisual visual={visual} simple={true} imgClassName="w-full" />
+      )}
       {(heading ?? title) && (
         <h3 className="p2">
           {heading ?? title}

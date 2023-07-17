@@ -37,7 +37,7 @@ export const NavigationBar: React.FC<{
           "p3 fixed top-0 left-0 right-0 z-50 container-cols-grid laptop:h-laptop-nav transition-all transition-duration-300",
         )}
       >
-        <div className="col-start-2 col-span-1 relative grid grid-cols-3 grid-rows-mobile-nav laptop:grid-rows-laptop-nav">
+        <div className="col-start-2 col-span-1 relative grid grid-cols-2 content-start laptop:content-center justify-between">
           <MenuItem
             item={firstMenu}
             className="col-start-1 row-start-1 justify-start self-center"
@@ -45,7 +45,7 @@ export const NavigationBar: React.FC<{
           <div
             className={classNames(
               !isOpen && "hidden laptop:flex",
-              "row-start-2 col-start-1 col-span-full laptop:row-start-1 laptop:justify-end mt-s mb-l laptop:my-0",
+              "row-start-2 col-start-1 col-span-full laptop:col-start-2 laptop:col-span-1 laptop:row-start-1 laptop:justify-end mt-s mb-l laptop:my-0",
             )}
           >
             <NavigationMenu
@@ -58,7 +58,7 @@ export const NavigationBar: React.FC<{
           <HamburgerButton
             toggleMenu={toggleMenu}
             isOpen={isOpen}
-            className="laptop:hidden justify-self-end col-start-3 row-start-1 self-center"
+            className="laptop:hidden justify-self-end col-start-2 row-start-1 self-center"
           />
         </div>
       </nav>

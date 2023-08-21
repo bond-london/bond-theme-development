@@ -11,20 +11,21 @@ import { buildTypography } from "./typography";
 import { addExtraVariants } from "./variants";
 import { configureTheme } from "./theme";
 import { PluginAPI } from "tailwindcss/types/config";
+import { withOptions } from "tailwindcss/plugin";
 
 export interface ISizeInformation {
   breakpoint?: number;
-  margin: number;
-  gap: number;
-  cols: number;
+  margin?: number;
+  gap?: number;
+  cols?: number;
   max?: number;
 }
 
 export interface IFontTableEntry {
-  default: number;
+  default: string | number;
   weight: string;
   font?: string;
-  letterSpacing?: number;
+  letterSpacing?: string | number;
   additional?: string;
 }
 
@@ -38,9 +39,7 @@ export interface IBondConfigurationOptions {
   lineHeight?: number;
 }
 
-const plugin = require("tailwindcss/plugin");
-
-module.exports = plugin.withOptions(
+const configure = withOptions(
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   (config: IBondConfigurationOptions) => (helpers: PluginAPI) => {
     /* eslint-disable @typescript-eslint/naming-convention */
@@ -57,3 +56,5 @@ module.exports = plugin.withOptions(
   },
   (config: IBondConfigurationOptions) => configureTheme(config),
 );
+
+export default configure;

@@ -12,6 +12,7 @@ import {
   remValueFn,
   forEachObject,
   mapNumbers,
+  notEmpty,
 } from "./utils";
 
 export const defaultNumbers = {
@@ -64,7 +65,7 @@ export function configureTheme(
   const maximumColumns = Math.max(
     ...Object.values(config.sizes)
       .map(v => v.cols)
-      .filter(v => v),
+      .filter(notEmpty),
   );
 
   const theme: Partial<ThemeConfig> = {

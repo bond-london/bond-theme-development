@@ -121,3 +121,10 @@ export function unique<T>(values: Array<T>): Set<T> {
   values.forEach(v => result.add(v));
   return result;
 }
+
+export function notEmpty<TValue>(
+  value: TValue | null | undefined,
+): value is TValue {
+  if (value === null || value === undefined) return false;
+  return true;
+}

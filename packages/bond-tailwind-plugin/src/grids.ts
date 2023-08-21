@@ -57,14 +57,14 @@ function addContainerGrid(
     ({ key, value: { breakpoint, cols, gap, max }, index }) => {
       const isLargest = breakpoint === largest;
       const prefix = index === 0 ? "" : `${key}:`;
-      if ((cols || max) ?? isLargest) {
+      if (cols ?? max ?? isLargest) {
         containerGrid.push(`${prefix}grid-cols-${key}-container`);
       }
 
       if (cols) {
         contentGrid.push(`${prefix}grid-cols-${key}-content`);
       }
-      if (gap || noMax) {
+      if (gap ?? noMax) {
         const gapClassName = `${prefix}gap-x-${key}-gap`;
         contentGrid.push(gapClassName);
         gridGap.push(gapClassName);
@@ -130,11 +130,11 @@ export function buildGridSpacing(
         cols: possibleCols,
       },
     }) => {
-      const margin = possibleMargin || lastMargin;
+      const margin = possibleMargin ?? lastMargin;
       lastMargin = margin;
-      const cols = possibleCols || lastCols;
+      const cols = possibleCols ?? lastCols;
       lastCols = cols;
-      const gap = possibleGap || lastGap;
+      const gap = possibleGap ?? lastGap;
       lastGap = gap;
 
       const isLargest = breakpoint === largest;

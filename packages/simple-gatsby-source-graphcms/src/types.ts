@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { Node } from "gatsby";
 import { IGatsbyNodeConfig } from "gatsby-graphql-source-toolkit/dist/types";
 import { GraphQLSchema, GraphQLField } from "graphql";

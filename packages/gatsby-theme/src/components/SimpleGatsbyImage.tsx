@@ -31,7 +31,7 @@ function getImgStyle({
     style.width = width;
     style.height = height;
     style.position = "relative";
-  } else if (layout === "constrained" ?? layout === "fullWidth") {
+  } else if (layout === "constrained" || layout === "fullWidth") {
     style.position = "relative";
     style.top = 0;
     style.left = 0;

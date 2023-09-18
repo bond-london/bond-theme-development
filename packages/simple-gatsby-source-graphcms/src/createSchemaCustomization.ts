@@ -11,7 +11,6 @@ import {
 import { createSourcingConfig, getRealType, stateCache } from "./utils";
 import { createSchemaCustomization as createToolkitSchemaCustomization } from "gatsby-graphql-source-toolkit";
 import { GraphQLObjectType } from "graphql";
-import { addRemoteFilePolyfillInterface } from "gatsby-plugin-utils/polyfill-remote-file/index";
 import { getGatsbyImageFieldConfig } from "gatsby-plugin-image/graphql-utils";
 import { resolveGatsbyImageData } from "./imageHelpers";
 import { hasFeature } from "gatsby-plugin-utils/has-feature";
@@ -110,8 +109,8 @@ export async function createSchemaCustomization(
   gatsbyApi: CreateSchemaCustomizationArgs,
   pluginOptions: IPluginOptions,
 ): Promise<void> {
-  const { buildMarkdownNodes, typePrefix, enableImageCDN } = pluginOptions;
-  const { schema, actions, reporter, store } = gatsbyApi;
+  const { buildMarkdownNodes, typePrefix } = pluginOptions;
+  const { schema, actions, reporter } = gatsbyApi;
   const { createTypes } = actions;
 
   const schemaConfig = stateCache.schemaInformation;
@@ -154,12 +153,10 @@ export async function createSchemaCustomization(
         },
       },
     },
-    interfaces: enableImageCDN ? ["Node", "RemoteFile"] : ["Node"],
+    interfaces: ["Node"],
   });
 
-  const assetType = enableImageCDN
-    ? addRemoteFilePolyfillInterface(objectType, { schema, actions, store })
-    : objectType;
+  const assetType = objectType;
 
   createTypes(assetType);
 

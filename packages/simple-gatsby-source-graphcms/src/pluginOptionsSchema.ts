@@ -75,6 +75,7 @@ export function pluginOptionsSchema(
       .default(".bondgraphcmsassets")
       .description("Local cache folder to use"),
     enableImageCDN: Joi.boolean()
+      .forbidden()
       .default(false)
       .description("Enable imgage CDN"),
   });

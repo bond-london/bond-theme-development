@@ -19,7 +19,6 @@ export interface IPluginOptions {
   dontDownload: boolean;
   localCache: boolean;
   localCacheDir: string;
-  enableImageCDN?: boolean;
 }
 
 export interface ISchemaInformation {

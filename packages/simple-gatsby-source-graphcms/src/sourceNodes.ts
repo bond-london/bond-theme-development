@@ -110,7 +110,6 @@ async function processDownloadableAssets(
       undefined,
       isStateful,
       true,
-      isImage,
     );
     if (shouldDownload) {
       nodesToDownload.push(id);
@@ -171,7 +170,6 @@ async function processNodesOfType(
       remoteNode,
       specialFields,
       isStateful,
-      false,
       false,
     );
 
@@ -467,9 +465,7 @@ async function createOrTouchNode(
   specialFields: Array<SpecialFieldEntry> | undefined,
   isStateful: boolean,
   isAsset: boolean,
-  isImage: boolean,
 ): Promise<{ id: string; touched: boolean }> {
-  const { enableImageCDN } = pluginOptions;
   const { gatsbyApi } = context;
   const { actions, createContentDigest, getNode } = gatsbyApi;
 
@@ -517,10 +513,6 @@ async function createOrTouchNode(
   if (isAsset) {
     const asset = remoteNode as IGraphCmsAsset;
     node.filename = asset.fileName;
-    if (isImage && enableImageCDN) {
-      const realUrl = new URL(asset.url);
-      node.placeholderUrl = `${realUrl.origin}/resize=w:%width%${realUrl.pathname}`;
-    }
   }
 
   await createSpecialNodes(

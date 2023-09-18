@@ -100,7 +100,7 @@ interface IGraphCMSResponse {
   errors?: Array<string>;
 }
 
-const throttler = pThrottle({ limit: 2, interval: 1000 });
+const throttler = pThrottle({ limit: 1, interval: 1000 });
 
 type Fetcher = Promise<
   ExecutionResult<Record<string, unknown>, Record<string, unknown>>

@@ -414,27 +414,27 @@ async function createSpecialNodes(
           }
         }
       } else if (isSpecialUnion(entry)) {
-        throw new Error("Not sure how to do special unions at the moment ...");
-        // const process = async (value: unknown): Promise<void> => {
-        //   for (const fields of entry.value) {
-        //     await createSpecialNodes(
-        //       pluginOptions,
-        //       context,
-        //       remoteTypeName,
-        //       fields,
-        //       id,
-        //       value as IBasicFieldType,
-        //       fullName,
-        //     );
-        //   }
-        // };
-        // if (Array.isArray(value)) {
-        //   for (const v of value) {
-        //     await process(v);
-        //   }
-        // } else {
-        //   await process(value);
-        // }
+        // throw new Error("Not sure how to do special unions at the moment ...");
+        const process = async (value: unknown): Promise<void> => {
+          for (const [, fields] of entry.value) {
+            await createSpecialNodes(
+              pluginOptions,
+              context,
+              remoteTypeName,
+              fields,
+              id,
+              value as IBasicFieldType,
+              fullName,
+            );
+          }
+        };
+        if (Array.isArray(value)) {
+          for (const v of value) {
+            await process(v);
+          }
+        } else {
+          await process(value);
+        }
       } else if (isSpecialObject(entry)) {
         const process = async (value: unknown): Promise<void> => {
           await createSpecialNodes(

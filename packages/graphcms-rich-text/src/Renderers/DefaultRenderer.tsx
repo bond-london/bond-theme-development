@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from "react";
-import { calculateClassName } from "./utils";
 import { IDefaultNodeRendererProps } from "../types";
+import { calculateClassName } from "./utils";
 
 export const DefaultRenderer: React.FC<
   PropsWithChildren<

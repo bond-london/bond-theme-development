@@ -1,7 +1,7 @@
 import React from "react";
-import { calculateClassName } from "./utils";
-import { IAudioNodeRendererProps } from "../types";
 import { Unsupported } from "../Unsupported";
+import { IAudioNodeRendererProps } from "../types";
+import { calculateClassName } from "./utils";
 
 export const AudioRenderer: React.FC<IAudioNodeRendererProps> = ({
   url,

@@ -1,14 +1,14 @@
 import { ElementNode, isElement, isText } from "@graphcms/rich-text-types";
 import React, { Fragment } from "react";
-import { elementKeys } from "./constants";
 import { RenderClass } from "./RenderClass";
 import { RenderText } from "./RenderText";
+import { Unsupported } from "./Unsupported";
+import { elementKeys } from "./constants";
 import {
   IElementsRendererProps,
   IEmbedNodeRendererProps,
   INodeRendererProps,
 } from "./types";
-import { Unsupported } from "./Unsupported";
 
 export const RenderNode: React.FC<INodeRendererProps> = props => {
   const { node, ...rest } = props;
@@ -36,7 +36,7 @@ export const RenderElements: React.FC<IElementsRendererProps> = props => {
   const {
     contents,
     index: parentIndex,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
     parentIndex: _oldParentIndex,
     ...rest
   } = props;

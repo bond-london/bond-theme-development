@@ -1,7 +1,7 @@
 import { CSSRuleObject, PluginAPI } from "tailwindcss/types/config";
 import { IBondConfigurationOptions } from ".";
-import { createApplyEntry, forEachObject } from "./utils";
 import { buildLetterSpacingName } from "./theme";
+import { createApplyEntry, forEachObject } from "./utils";
 
 function getFontName(size: string | number): string | undefined {
   if (typeof size === "string") {

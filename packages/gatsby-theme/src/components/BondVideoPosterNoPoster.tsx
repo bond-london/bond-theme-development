@@ -5,7 +5,7 @@ import {
 } from "@bond-london/gatsby-transformer-video";
 import { IGatsbyVideo } from "@bond-london/gatsby-transformer-video/src/types";
 import classNames from "classnames";
-import React, { PropsWithChildren, CSSProperties, useEffect } from "react";
+import React, { CSSProperties, PropsWithChildren, useEffect } from "react";
 
 export const BondVideoPosterNoPoster: React.FC<
   PropsWithChildren<{

@@ -12,6 +12,7 @@ function arrayOrUndefined<T>(array?: ReadonlyArray<T>) {
   if (array && array.length > 0) {
     return array;
   }
+  return undefined;
 }
 function convertCmsNavigationItem({
   id,

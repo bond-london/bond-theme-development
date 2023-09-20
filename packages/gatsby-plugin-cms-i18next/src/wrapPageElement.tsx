@@ -1,14 +1,14 @@
-import React, { PropsWithChildren, useMemo } from "react";
 import { WrapPageElementBrowserArgs } from "gatsby";
-import {
-  I18NextContext,
-  PageContext,
-  IPluginOptions,
-  ILocaleNode,
-} from "./types";
 import i18next, { InitOptions, Resource } from "i18next";
+import React, { PropsWithChildren, useMemo } from "react";
 import { I18nextProvider } from "react-i18next";
 import { I18nextContext } from "./components/i18nextContext";
+import {
+  I18NextContext,
+  ILocaleNode,
+  IPluginOptions,
+  PageContext,
+} from "./types";
 
 interface ILocalesInformation {
   _locales: {

@@ -1,5 +1,5 @@
 import { CreateNodeArgs, Node } from "gatsby";
-import { IFileSystemNode, IPluginOptions, ILocaleNodeInput } from "./types";
+import { IFileSystemNode, ILocaleNodeInput, IPluginOptions } from "./types";
 
 // eslint-disable-next-line camelcase
 export function unstable_shouldOnCreateNode({ node }: { node: Node }): boolean {

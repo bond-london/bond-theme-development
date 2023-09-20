@@ -5,8 +5,8 @@ import {
 } from "@bond-london/gatsby-transformer-video";
 import { IGatsbyVideo } from "@bond-london/gatsby-transformer-video/src/types";
 import classNames from "classnames";
-import React, { PropsWithChildren, CSSProperties, useCallback } from "react";
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
+import React, { CSSProperties, PropsWithChildren, useCallback } from "react";
 import { BondVideoPosterNoPoster } from "./BondVideoPosterNoPoster";
 import { SimpleGatsbyImage } from "./SimpleGatsbyImage";
 

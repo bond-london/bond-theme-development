@@ -1,21 +1,21 @@
 "use client";
 import {
-  GatsbyVideo,
   GatsbyInternalVideo,
+  GatsbyVideo,
 } from "@bond-london/gatsby-transformer-video";
 import { IGatsbyVideo } from "@bond-london/gatsby-transformer-video/src/types";
 import React, {
   CSSProperties,
+  VideoHTMLAttributes,
   useCallback,
   useRef,
   useState,
-  VideoHTMLAttributes,
 } from "react";
 import { calculateCropDetails } from "../utils";
 import { IBondSubtitle } from "./BondSimpleVideo";
 import { BondVideoPoster } from "./BondVideoPoster";
-import { IBondFullVideo } from "./types";
 import { VideoControls } from "./VideoControls";
+import { IBondFullVideo } from "./types";
 
 const BondFullVideoInside: React.FC<
   {

@@ -8,13 +8,14 @@ import {
   generateImageData,
   getLowResolutionImageURL,
 } from "gatsby-plugin-image";
-import type { GraphQLResolveInfo } from "gatsby/graphql";
 import { IGatsbyImageFieldArgs } from "gatsby-plugin-image/graphql-utils";
+import type { GraphQLResolveInfo } from "gatsby/graphql";
+// eslint-disable-next-line camelcase
+import { readFile } from "fs/promises";
+import { fetchRemoteFile } from "gatsby-core-utils/fetch-remote-file";
+import { extname } from "path";
 // eslint-disable-next-line camelcase
 import { GraphCMS_Asset, IImageOptions } from "./types";
-import { fetchRemoteFile } from "gatsby-core-utils/fetch-remote-file";
-import { readFile } from "fs/promises";
-import { extname } from "path";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore No plugin sharp

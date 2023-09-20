@@ -1,6 +1,6 @@
 import React from "react";
-import { defaultRenderers } from "./Renderers";
 import { RenderElements } from "./RenderNode";
+import { defaultRenderers } from "./Renderers";
 import { IInternalRichTextProps, IRichTextProps } from "./types";
 
 export const InternalRichText: React.FC<IInternalRichTextProps> = ({

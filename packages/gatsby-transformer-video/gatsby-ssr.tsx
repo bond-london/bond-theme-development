@@ -1,5 +1,5 @@
-import React from "react";
 import { RenderBodyArgs } from "gatsby";
+import React from "react";
 
 export function onRenderBody({ setHeadComponents }: RenderBodyArgs): void {
   setHeadComponents([

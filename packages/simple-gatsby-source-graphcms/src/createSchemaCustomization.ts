@@ -1,19 +1,19 @@
 import { CreateSchemaCustomizationArgs } from "gatsby";
+import { createSchemaCustomization as createToolkitSchemaCustomization } from "gatsby-graphql-source-toolkit";
+import { getGatsbyImageFieldConfig } from "gatsby-plugin-image/graphql-utils";
+import { hasFeature } from "gatsby-plugin-utils/has-feature";
+import { GraphQLObjectType } from "graphql";
+import { resolveGatsbyImageData } from "./imageHelpers";
 import {
+  IPluginOptions,
   ISchemaInformation,
+  SpecialFieldEntry,
+  SpecialFieldMap,
   isSpecialField,
   isSpecialObject,
   isSpecialUnion,
-  IPluginOptions,
-  SpecialFieldEntry,
-  SpecialFieldMap,
 } from "./types";
 import { createSourcingConfig, getRealType, stateCache } from "./utils";
-import { createSchemaCustomization as createToolkitSchemaCustomization } from "gatsby-graphql-source-toolkit";
-import { GraphQLObjectType } from "graphql";
-import { getGatsbyImageFieldConfig } from "gatsby-plugin-image/graphql-utils";
-import { resolveGatsbyImageData } from "./imageHelpers";
-import { hasFeature } from "gatsby-plugin-utils/has-feature";
 
 function customiseSchema(
   gatsbyApi: CreateSchemaCustomizationArgs,

@@ -5,14 +5,14 @@ import { buildColorTable, buildColours } from "./colours";
 import { buildGridSpacing, createGridCols } from "./grids";
 import { buildSpacing } from "./spacing";
 import {
-  mapObject,
-  defaultKeyFn,
   calculateNumbers,
   calculateRemSize,
-  remValueFn,
+  defaultKeyFn,
   forEachObject,
   mapNumbers,
+  mapObject,
   notEmpty,
+  remValueFn,
 } from "./utils";
 
 export const defaultNumbers = {

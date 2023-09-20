@@ -1,3 +1,4 @@
+import { useFirstVisibleToUser } from "@bond-london/gatsby-theme";
 import React, {
   useCallback,
   useEffect,
@@ -5,6 +6,12 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { registerCheckboxField } from "./HubspotCheckboxField";
+import { HubspotFormGroup } from "./HubspotFormGroup";
+import { registerRadioField } from "./HubspotRadioField";
+import { registerSelectField } from "./HubspotSelectField";
+import { registerTextAreaField } from "./HubspotTextAreaField";
+import { registerHubspotTextField } from "./HubspotTextField";
 import type {
   EventReporter,
   IHubspotFormDefinition,
@@ -12,14 +19,7 @@ import type {
   IHubspotFormFieldGroup,
   IHubspotFormFieldGroupsDefinition,
 } from "./shared";
-import { defaultShowError, IHubspotFormOptions } from "./shared";
-import { registerHubspotTextField } from "./HubspotTextField";
-import { registerTextAreaField } from "./HubspotTextAreaField";
-import { registerSelectField } from "./HubspotSelectField";
-import { registerRadioField } from "./HubspotRadioField";
-import { registerCheckboxField } from "./HubspotCheckboxField";
-import { useFirstVisibleToUser } from "@bond-london/gatsby-theme";
-import { HubspotFormGroup } from "./HubspotFormGroup";
+import { IHubspotFormOptions, defaultShowError } from "./shared";
 
 function register(): void {
   registerHubspotTextField();

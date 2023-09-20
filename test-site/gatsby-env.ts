@@ -1,3 +1,4 @@
+/* eslint-disable node/no-process-env */
 import { config } from "dotenv";
 import { reporter } from "gatsby-cli/lib/reporter/reporter";
 

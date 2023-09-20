@@ -9,10 +9,10 @@ import React, {
   VideoHTMLAttributes,
 } from "react";
 import { calculateCropDetails } from "../utils";
-const ReactPlayer = lazy(() => import("react-player"));
-import { VideoControls } from "./VideoControls";
 import { BondVideoPoster } from "./BondVideoPoster";
 import { IBondExternalVideo } from "./types";
+import { VideoControls } from "./VideoControls";
+const ReactPlayer = lazy(() => import("react-player"));
 
 const BondExternalVideoInside: React.FC<
   {

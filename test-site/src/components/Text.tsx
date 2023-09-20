@@ -13,9 +13,7 @@ import { SectionVisual } from "./SectionVisual";
 // eslint-disable-next-line camelcase
 type TextFormatNames = Queries.GraphCMS_ComponentType;
 
-type TextFormatLookup = {
-  [Name in TextFormatNames]?: ClassNameOverrides;
-};
+type TextFormatLookup = Partial<Record<TextFormatNames, ClassNameOverrides>>;
 
 const textFormatClassNameOverrides: TextFormatLookup = {
   FormattedText: {

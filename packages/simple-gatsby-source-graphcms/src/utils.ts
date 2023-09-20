@@ -1,27 +1,27 @@
+import { copyFile, existsSync, rename, rm } from "fs-extra";
 import { mkdir } from "fs/promises";
-import fetch from "node-fetch";
 import { NodePluginArgs, ParentSpanPluginArgs } from "gatsby";
 import {
   buildNodeDefinitions,
   compileNodeQueries,
-  readOrGenerateDefaultFragments,
   generateDefaultFragments,
+  readOrGenerateDefaultFragments,
 } from "gatsby-graphql-source-toolkit";
 import {
   IQueryExecutionArgs,
   IQueryExecutor,
   ISourcingConfig,
 } from "gatsby-graphql-source-toolkit/dist/types";
-import { ISchemaInformation, IPluginOptions, IPluginState } from "./types";
-import { copyFile, existsSync, rename, rm } from "fs-extra";
 import {
-  GraphQLType,
-  GraphQLField,
   ExecutionResult,
-  isNonNullType,
+  GraphQLField,
+  GraphQLType,
   isListType,
+  isNonNullType,
 } from "graphql";
+import fetch from "node-fetch";
 import pThrottle from "p-throttle";
+import { IPluginOptions, IPluginState, ISchemaInformation } from "./types";
 
 export const stateCache: IPluginState = {};
 

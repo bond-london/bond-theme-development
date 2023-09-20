@@ -1,5 +1,5 @@
-import { extname, basename } from "path";
-import { NodeInput, SourceNodesArgs, NodePluginArgs } from "gatsby";
+import { ElementNode, RichTextContent } from "@graphcms/rich-text-types";
+import { NodeInput, NodePluginArgs, SourceNodesArgs } from "gatsby";
 import {
   createSourcingContext,
   fetchAllNodes,
@@ -9,21 +9,21 @@ import {
   IRemoteNode,
   ISourcingContext,
 } from "gatsby-graphql-source-toolkit/dist/types";
+import { hasFeature } from "gatsby-plugin-utils/has-feature";
+import { createRemoteFileNode } from "gatsby-source-filesystem";
+import { basename, extname } from "path";
+import { createLocalFileNode, getLocalFileName } from "./cacheGraphCmsAsset";
+import { cleanupRTFContent } from "./rtf";
 import {
   IBasicFieldType,
   IGraphCmsAsset,
+  IPluginOptions,
+  SpecialFieldEntry,
   isSpecialField,
   isSpecialObject,
   isSpecialUnion,
-  IPluginOptions,
-  SpecialFieldEntry,
 } from "./types";
 import { createSourcingConfig, stateCache } from "./utils";
-import { createRemoteFileNode } from "gatsby-source-filesystem";
-import { ElementNode, RichTextContent } from "@graphcms/rich-text-types";
-import { cleanupRTFContent } from "./rtf";
-import { createLocalFileNode, getLocalFileName } from "./cacheGraphCmsAsset";
-import { hasFeature } from "gatsby-plugin-utils/has-feature";
 
 async function downloadAsset(
   context: ISourcingContext,

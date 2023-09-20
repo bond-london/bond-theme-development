@@ -1,14 +1,14 @@
-import { readFile, writeFile } from "fs/promises";
-import { ensureDir, copySync } from "fs-extra";
 import { existsSync } from "fs";
-import { join } from "path";
+import { copySync, ensureDir } from "fs-extra";
+import { readFile, writeFile } from "fs/promises";
 import { Node, NodePluginArgs } from "gatsby";
 import { FileSystemNode } from "gatsby-source-filesystem";
 import { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
-import { IGatsbyAnimation, ITransformArgs } from "./types";
 import svgToTinyDataUri from "mini-svg-data-uri";
+import { join } from "path";
 import { CustomPlugin, optimize } from "svgo";
 import { renderLottieToSvg } from "./lottieToSvg";
+import { IGatsbyAnimation, ITransformArgs } from "./types";
 
 async function parseLottie(
   fsNode: FileSystemNode,

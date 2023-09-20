@@ -1,6 +1,6 @@
 import React, { CSSProperties, Fragment } from "react";
-import { calculateClassName } from "./utils";
 import { IIframeNodeRendererProps } from "../types";
+import { calculateClassName } from "./utils";
 
 export const IFrameRenderer: React.FC<IIframeNodeRendererProps> = ({
   url,

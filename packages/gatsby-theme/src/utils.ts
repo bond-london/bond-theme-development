@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import { Horizontal, Maybe, Vertical, IVisualCommon } from "./types";
+import { Horizontal, IVisualCommon, Maybe, Vertical } from "./types";
 
 function caclulateVertical(
   position?: Maybe<Vertical>,

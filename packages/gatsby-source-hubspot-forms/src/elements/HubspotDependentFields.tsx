@@ -1,8 +1,8 @@
 import React from "react";
 import { HubspotDependentField } from "./HubspotDependentField";
 import {
-  IHubspotFormOptions,
   IHubspotFormFormDependentFieldDefinition,
+  IHubspotFormOptions,
 } from "./shared";
 
 export const HubspotDependentFields: React.FC<{

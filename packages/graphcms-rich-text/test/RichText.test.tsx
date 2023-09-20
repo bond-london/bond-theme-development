@@ -2,9 +2,15 @@
  * @jest-environment jsdom
  */
 
-import React from "react";
 import { render } from "@testing-library/react";
+import React from "react";
 
+import {
+  CustomEmbedRendererProps,
+  DefaultRenderer,
+  IRichTextInformation,
+  RichText,
+} from "../src";
 import {
   defaultContent as content,
   embedAssetContent,
@@ -16,12 +22,6 @@ import {
   tableContent,
   videoContent,
 } from "./content";
-import {
-  CustomEmbedRendererProps,
-  DefaultRenderer,
-  IRichTextInformation,
-  RichText,
-} from "../src";
 
 describe("@bond-london/graphcms-rich-text", () => {
   it("renders content", () => {

@@ -14,6 +14,7 @@ export function convertText(text?: string) {
     const replaced = text.replace(/&nbsp;/g, "\u00a0");
     return replaced;
   }
+  return undefined;
 }
 
 export function bytesToHex(bytes: Uint8Array) {
@@ -33,6 +34,7 @@ export function removeImagePlacholder(image?: IBondImage) {
         : undefined,
     };
   }
+  return undefined;
 }
 
 export function combineComponents(

@@ -342,6 +342,8 @@ export async function createPages(args: CreatePagesArgs) {
 
   buildHiddenMaps(data);
   buildSlices(args);
+
+  return undefined;
 }
 
 export function onCreatePage(args: CreatePageArgs) {

@@ -1,8 +1,8 @@
 import { NodePluginArgs } from "gatsby";
+import { join } from "path";
+import { Cache } from "./cache";
 import { RemoteCache } from "./remoteCache";
 import { IPluginOptions } from "./types";
-import { Cache } from "./cache";
-import { join } from "path";
 
 export let videoCache: Cache;
 

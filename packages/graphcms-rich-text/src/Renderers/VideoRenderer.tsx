@@ -1,7 +1,7 @@
 import React from "react";
-import { calculateClassName } from "./utils";
-import { IVideoNodeRendererProps } from "../types";
 import { Unsupported } from "../Unsupported";
+import { IVideoNodeRendererProps } from "../types";
+import { calculateClassName } from "./utils";
 
 export const VideoRenderer: React.FC<IVideoNodeRendererProps> = ({
   src,

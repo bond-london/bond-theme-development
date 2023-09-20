@@ -99,4 +99,6 @@ export function tryHandleCustomComponent(
     case "LogoParade":
       return <LogoParadeComponent information={converted} />;
   }
+
+  return undefined;
 }

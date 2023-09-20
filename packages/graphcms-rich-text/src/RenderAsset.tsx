@@ -1,5 +1,5 @@
-import React from "react";
 import { AssetReference } from "@graphcms/rich-text-types";
+import React from "react";
 import { RenderEmbedProps } from "./RenderEmbed";
 import { Unsupported } from "./Unsupported";
 

@@ -1,11 +1,11 @@
 import type { GatsbyConfig } from "gatsby";
-import { noCase } from "no-case";
-import { Joi } from "gatsby-plugin-utils";
 import reporter from "gatsby-cli/lib/reporter";
+import { Joi } from "gatsby-plugin-utils";
+import { noCase } from "no-case";
 
-import { resolve, join, dirname } from "path";
-import { IBondThemeOptions } from "./types";
+import { dirname, join, resolve } from "path";
 import { pluginOptionsSchema } from "./pluginOptionsSchema";
+import { IBondThemeOptions } from "./types";
 
 const gatsbyPackage = require.resolve("gatsby/package.json");
 

@@ -1,5 +1,5 @@
-import pathToFfmpeg from "ffmpeg-static";
 import { exec } from "child_process";
+import pathToFfmpeg from "ffmpeg-static";
 
 import type { Reporter } from "gatsby";
 import { IGatsbyVideoInformation } from "./types";

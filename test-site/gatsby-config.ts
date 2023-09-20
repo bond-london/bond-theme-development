@@ -3,6 +3,7 @@ import type { IBondThemeOptions } from "@bond-london/gatsby-theme";
 import { siteUrl, allowIndex, isProduction, showDevPages } from "./gatsby-env";
 
 function readEnvVar(envVarName: string): string {
+  // eslint-disable-next-line node/no-process-env
   const value = process.env[envVarName];
   if (!value) throw new Error(`Failed to read env var "${envVarName}"`);
   return value;

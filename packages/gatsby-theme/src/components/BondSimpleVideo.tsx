@@ -1,6 +1,6 @@
 import {
-  IGatsbyTransformedVideo,
   GatsbyVideo,
+  IGatsbyTransformedVideo,
   getPosterSrc,
 } from "@bond-london/gatsby-transformer-video";
 import { IGatsbyImageData } from "gatsby-plugin-image";

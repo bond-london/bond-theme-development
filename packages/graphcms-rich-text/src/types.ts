@@ -84,12 +84,11 @@ export interface IFullNodeRenderer extends INodeRenderer {
   embed: EmbedNodeRenderer;
 }
 
-export type ClassNameOverrides = {
-  [key in keyof JSX.IntrinsicElements]?: string;
-};
-export type ElementTypeMap = {
-  [key in keyof IFullNodeRenderer]?: boolean;
-};
+export type ClassNameOverrides = Partial<
+  Record<keyof JSX.IntrinsicElements, string>
+>;
+
+export type ElementTypeMap = Partial<Record<keyof IFullNodeRenderer, boolean>>;
 
 export interface IBaseRendererProps {
   references?: RTFReferences;

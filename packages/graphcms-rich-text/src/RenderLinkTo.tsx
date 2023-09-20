@@ -1,10 +1,10 @@
 import React from "react";
+import { Unsupported } from "./Unsupported";
 import {
   IBaseRendererProps,
   IFullNodeRenderer,
   ILinkToRendererProps,
 } from "./types";
-import { Unsupported } from "./Unsupported";
 
 export type RenderLinkToProps = IBaseRendererProps & {
   renderers: IFullNodeRenderer;

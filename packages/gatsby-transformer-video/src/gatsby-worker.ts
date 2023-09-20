@@ -1,5 +1,5 @@
-import { transformVideo } from "./worker";
 import { ITransformedVideoInformation } from "./types";
+import { transformVideo } from "./worker";
 
 export interface IVideoProcessingArgs {
   name: string;

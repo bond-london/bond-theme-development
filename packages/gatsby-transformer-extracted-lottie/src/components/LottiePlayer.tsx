@@ -1,5 +1,6 @@
 "use client";
 import { AnimationItem } from "lottie-web";
+import lottie from "lottie-web/build/player/lottie_svg";
 import React, {
   CSSProperties,
   Fragment,
@@ -8,7 +9,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import lottie from "lottie-web/build/player/lottie_svg";
 
 async function loadAnimation(
   url: string | undefined,

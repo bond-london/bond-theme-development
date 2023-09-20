@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export function useDelayedTrigger(trigger: boolean, delay: number): boolean {
   const [delayed, setDelayed] = useState(false);

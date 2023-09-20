@@ -1,30 +1,30 @@
+import { IGatsbyAnimation } from "@bond-london/gatsby-transformer-extracted-lottie";
+import { IGatsbySvg } from "@bond-london/gatsby-transformer-extracted-svg";
 import { getPosterSrc } from "@bond-london/gatsby-transformer-video";
+import { IGatsbyVideo } from "@bond-london/gatsby-transformer-video/src/types";
 import { IGatsbyImageData } from "gatsby-plugin-image";
-import { Vertical, Horizontal } from "../types";
+import { Horizontal, Vertical } from "../types";
 import {
   IBondAnimation,
-  isBondAnimation,
   ICmsAnimationAsset,
   convertCmsAssetToBondAnimation,
+  isBondAnimation,
 } from "./BondAnimation";
 import {
   IBondImage,
-  isBondImage,
   ICmsImageAsset,
   convertCmsAssetToBondImage,
+  isBondImage,
 } from "./BondImage";
-import { IBondSubtitle, IBondSimpleVideo } from "./BondSimpleVideo";
+import { IBondSimpleVideo, IBondSubtitle } from "./BondSimpleVideo";
 import {
-  convertCmsAssetToBondVideo,
   IBondVideo,
   ICmsVideo,
   ICmsVideoAsset,
+  convertCmsAssetToBondVideo,
   isBondVideo,
 } from "./BondVideo";
 import { IBondExternalVideo, IBondFullVideo } from "./types";
-import { IGatsbyAnimation } from "@bond-london/gatsby-transformer-extracted-lottie";
-import { IGatsbyVideo } from "@bond-london/gatsby-transformer-video/src/types";
-import { IGatsbySvg } from "@bond-london/gatsby-transformer-extracted-svg";
 
 export function convertCmsVideoToBondExternalVideo(
   cms: ICmsVideo,

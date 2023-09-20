@@ -1,5 +1,5 @@
 import { CreatePageArgs, Page } from "gatsby";
-import { IInputPageContext, PageContext, IPluginOptions } from "./types";
+import { IInputPageContext, IPluginOptions, PageContext } from "./types";
 
 function generatePage(
   page: Page<IInputPageContext>,

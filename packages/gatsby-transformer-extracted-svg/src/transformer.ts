@@ -1,13 +1,13 @@
-import { readFile, writeFile } from "fs/promises";
-import { ensureDir } from "fs-extra";
 import { existsSync } from "fs";
-import { join } from "path";
+import { ensureDir } from "fs-extra";
+import { readFile, writeFile } from "fs/promises";
 import { Node, NodePluginArgs } from "gatsby";
 import { FileSystemNode } from "gatsby-source-filesystem";
 import { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
-import { IGatsbySvg, ITransformArgs } from "./types";
 import svgToTinyDataUri from "mini-svg-data-uri";
+import { join } from "path";
 import { CustomPlugin, optimize } from "svgo";
+import { IGatsbySvg, ITransformArgs } from "./types";
 
 interface IParsedSvg {
   width: string | null;

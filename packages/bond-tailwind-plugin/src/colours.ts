@@ -1,9 +1,9 @@
+import { createHash } from "crypto";
+import { readFileSync, writeFileSync } from "fs-extra";
+import { pascalCase } from "pascal-case";
+import { KeyValuePair } from "tailwindcss/types/config";
 import { IBondConfigurationOptions } from ".";
 import { forEachObject } from "./utils";
-import { pascalCase } from "pascal-case";
-import { writeFileSync, readFileSync } from "fs-extra";
-import { KeyValuePair } from "tailwindcss/types/config";
-import { createHash } from "crypto";
 
 let cachedContents = "";
 

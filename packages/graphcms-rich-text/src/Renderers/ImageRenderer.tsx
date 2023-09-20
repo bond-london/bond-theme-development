@@ -1,7 +1,7 @@
 import React from "react";
-import { calculateClassName } from "./utils";
-import { IImageNodeRendererProps } from "../types";
 import { Unsupported } from "../Unsupported";
+import { IImageNodeRendererProps } from "../types";
+import { calculateClassName } from "./utils";
 
 export const ImageRenderer: React.FC<IImageNodeRendererProps> = ({
   src,

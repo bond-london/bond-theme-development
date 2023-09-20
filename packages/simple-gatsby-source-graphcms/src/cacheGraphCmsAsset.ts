@@ -1,11 +1,11 @@
-import { IGraphCmsAsset, IPluginOptions } from "./types";
 import { ensureDir, readFile } from "fs-extra";
-import { join, extname, basename, dirname } from "path";
 import { ISourcingContext } from "gatsby-graphql-source-toolkit/dist/types";
 import {
   createFileNodeFromBuffer,
   createRemoteFileNode,
 } from "gatsby-source-filesystem";
+import { basename, dirname, extname, join } from "path";
+import { IGraphCmsAsset, IPluginOptions } from "./types";
 import { atomicCopyFile, retry } from "./utils";
 
 export function getLocalFileName(remoteAsset: IGraphCmsAsset): string {

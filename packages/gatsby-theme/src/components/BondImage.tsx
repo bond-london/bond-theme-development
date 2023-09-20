@@ -1,11 +1,11 @@
-import React, { CSSProperties, ImgHTMLAttributes } from "react";
-import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
-import { Horizontal, IVisualCommon, Vertical } from "../types";
-import { calculateCropDetails } from "../utils";
 import {
   GatsbySvg,
   IGatsbyExtractedSvg,
 } from "@bond-london/gatsby-transformer-extracted-svg";
+import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
+import React, { CSSProperties, ImgHTMLAttributes } from "react";
+import { Horizontal, IVisualCommon, Vertical } from "../types";
+import { calculateCropDetails } from "../utils";
 import { SimpleGatsbyImage } from "./SimpleGatsbyImage";
 
 export function isBondImage(obj: unknown): obj is IBondImage {

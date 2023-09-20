@@ -3,15 +3,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
+import { withOptions } from "tailwindcss/plugin";
+import { PluginAPI } from "tailwindcss/types/config";
 import { addAnimationUtilities } from "./animations";
 import { addBorderSpacing } from "./borders";
 import { addFontSizes } from "./fonts";
 import { buildGrid } from "./grids";
+import { configureTheme } from "./theme";
 import { buildTypography } from "./typography";
 import { addExtraVariants } from "./variants";
-import { configureTheme } from "./theme";
-import { PluginAPI } from "tailwindcss/types/config";
-import { withOptions } from "tailwindcss/plugin";
 
 export interface ISizeInformation {
   breakpoint?: number;

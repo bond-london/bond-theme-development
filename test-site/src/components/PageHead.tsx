@@ -39,6 +39,7 @@ export const PageHead: React.FC<{
       <html lang="en" />
       <body
         className={classNames(
+          // eslint-disable-next-line node/no-process-env
           process.env.GATSBY_DEBUG_TAILWIND && "debug-screens",
           lookupColourClassNames(backgroundColour, textColour),
         )}

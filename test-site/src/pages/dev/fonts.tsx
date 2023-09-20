@@ -8,7 +8,7 @@ import { DevPageLayout } from "@/layouts/DevPageLayout";
 
 const head = classNames("font-bold text-34-44");
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 const retain = "h1 h2 h3 h4 h5 h6 p1 p2 p3 p4 mono";
 
 const styles = ["", "italic"];

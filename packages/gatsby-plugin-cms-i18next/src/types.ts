@@ -1,5 +1,5 @@
-import { InitOptions } from "i18next";
 import { NodeInput } from "gatsby";
+import { InitOptions } from "i18next";
 
 export interface IPluginOptions {
   languages: Array<string>;

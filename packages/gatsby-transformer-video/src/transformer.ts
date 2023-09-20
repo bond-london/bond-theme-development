@@ -1,13 +1,13 @@
 import type { Node, NodePluginArgs } from "gatsby";
 import type { FileSystemNode } from "gatsby-source-filesystem";
 import type { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
+import { join } from "path";
 import type {
   IGatsbyVideo,
   IGatsbyVideoInformation,
   ITransformArgs,
   ITransformedVideoInformation,
 } from "./types";
-import { join } from "path";
 
 function calculateTransformedInformation(
   width: number,

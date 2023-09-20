@@ -1,8 +1,8 @@
 import React from "react";
-import { DefaultRenderer } from "./Renderers";
 import { RenderElements } from "./RenderNode";
-import { IClassNodeRendererProps } from "./types";
+import { DefaultRenderer } from "./Renderers";
 import { Unsupported } from "./Unsupported";
+import { IClassNodeRendererProps } from "./types";
 
 const componentName = "RenderClass";
 

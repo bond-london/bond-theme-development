@@ -4,7 +4,7 @@ import React, { useCallback, useEffect } from "react";
 import { getCookieConsentValue } from "react-cookie-consent";
 
 declare global {
-  // eslint-disable-next-line @typescript-eslint/naming-convention
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-unused-vars
   interface Window {
     bondHadCookie?: boolean;
     dataLayer: Array<unknown>;

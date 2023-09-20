@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { PropsWithChildren, CSSProperties } from "react";
+import React, { CSSProperties, PropsWithChildren } from "react";
 import { GatsbyVideoPosterNoPoster } from "./GatsbyVideoPosterNoPoster";
 
 const GatsbyVideoPosterWithPoster: React.FC<

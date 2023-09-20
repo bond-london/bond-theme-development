@@ -1,5 +1,5 @@
-import { ObjectSchema } from "gatsby-plugin-utils";
 import { PluginOptionsSchemaArgs } from "gatsby";
+import { ObjectSchema } from "gatsby-plugin-utils";
 
 export function pluginOptionsSchema(
   args: PluginOptionsSchemaArgs,

@@ -1,7 +1,7 @@
 import { copy, copyFile, existsSync, mkdirSync, rename, rm } from "fs-extra";
-import { RemoteCache } from "./remoteCache";
-import { join } from "path";
 import { Reporter } from "gatsby";
+import { join } from "path";
+import { RemoteCache } from "./remoteCache";
 
 export async function atomicCopyFile(
   sourcePath: string,

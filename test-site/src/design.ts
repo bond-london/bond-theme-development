@@ -1,7 +1,7 @@
 import tailwindConfig from "../tailwind.config.json";
 
 type SizeName = keyof typeof tailwindConfig.sizes;
-type SizeMap = Partial<{ [name in SizeName]: string | number }>;
+type SizeMap = Partial<Record<SizeName, string | number>>;
 
 interface SizeInformation {
   breakpoint?: number;

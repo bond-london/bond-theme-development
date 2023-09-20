@@ -1,23 +1,23 @@
 import { NodePluginArgs, ParentSpanPluginArgs, Reporter } from "gatsby";
 import { loadSchema } from "gatsby-graphql-source-toolkit";
+import { IGatsbyNodeConfig } from "gatsby-graphql-source-toolkit/dist/types";
 import {
-  ISchemaInformation,
+  GraphQLAbstractType,
+  GraphQLInterfaceType,
+  GraphQLObjectType,
+  GraphQLType,
+  isEnumType,
+  isObjectType,
+  isScalarType,
+  isUnionType,
+} from "graphql";
+import {
   IPluginOptions,
+  ISchemaInformation,
   SpecialFieldEntry,
   SpecialFieldMap,
 } from "./types";
 import { createExecutor, getRealType, stateCache } from "./utils";
-import {
-  GraphQLType,
-  GraphQLAbstractType,
-  GraphQLInterfaceType,
-  GraphQLObjectType,
-  isScalarType,
-  isEnumType,
-  isUnionType,
-  isObjectType,
-} from "graphql";
-import { IGatsbyNodeConfig } from "gatsby-graphql-source-toolkit/dist/types";
 
 const specialNames = new Set(["stage", "locale", "localizations"]);
 

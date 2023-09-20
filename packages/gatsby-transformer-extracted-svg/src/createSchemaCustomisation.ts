@@ -1,4 +1,4 @@
-import { Node, CreateSchemaCustomizationArgs } from "gatsby";
+import { CreateSchemaCustomizationArgs, Node } from "gatsby";
 import { IGatsbyResolverContext } from "gatsby/dist/schema/type-definitions";
 import { createExtractedSvg } from "./transformer";
 

@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import { IGatsbyVideo, IGatsbyTransformedVideo } from "../types";
+import { IGatsbyTransformedVideo, IGatsbyVideo } from "../types";
 
 export function getVideoWrapperProps({
   width,

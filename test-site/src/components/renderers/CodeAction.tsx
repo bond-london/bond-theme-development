@@ -17,6 +17,7 @@ function parseInformation(information: string): IActionInformation | undefined {
       return { name, arg, opts: opts ? JSON.parse(opts) : undefined };
     }
   }
+  return undefined;
 }
 
 export const CodeAction: React.FC<{

@@ -4,11 +4,12 @@ import ReactCookieConsent from "react-cookie-consent";
 import { GoogleTagManager, useBondCookie } from "@bond-london/gatsby-theme";
 
 const Analytics: React.FC = () => {
+  /* eslint-disable node/no-process-env */
   const cookieName = process.env.GATSBY_COOKIE_NAME;
   const declinedCookieName = process.env.GATSBY_DECLINED_COOKIE_NAME;
   const googleTag = process.env.GATSBY_GOOGLE_TAG;
+  /* eslint-enable node/no-process-env */
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const onAccept = useBondCookie(cookieName);
 
   if (!cookieName || !googleTag) return null;

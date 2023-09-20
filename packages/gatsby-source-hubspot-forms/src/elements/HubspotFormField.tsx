@@ -1,7 +1,10 @@
 import React from "react";
-import { IHubspotFormFieldDefinition, makeInputId } from "./shared";
-import { IHubspotFormOptions } from "./shared";
 import { FieldFactory } from "./HubspotFormFieldFactory";
+import {
+  IHubspotFormFieldDefinition,
+  IHubspotFormOptions,
+  makeInputId,
+} from "./shared";
 
 export const HubspotFormField: React.FC<{
   formName: string;

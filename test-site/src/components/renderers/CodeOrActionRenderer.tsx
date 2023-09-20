@@ -14,6 +14,7 @@ function tryGetContent(props: IElementsRendererProps, children: ReactNode) {
   if (typeof children === "string") {
     return children;
   }
+  return undefined;
 }
 
 export const CodeOrActionRenderer: React.FC<

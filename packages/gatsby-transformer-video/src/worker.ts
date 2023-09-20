@@ -1,10 +1,10 @@
 import pathToFfmpeg from "ffmpeg-static";
 
 import ffmpeg, { FfmpegCommand } from "fluent-ffmpeg";
+import { rename } from "fs-extra";
 import reporter from "gatsby-cli/lib/reporter";
 import { createContentDigest } from "gatsby-core-utils";
 import { join } from "path";
-import { rename } from "fs-extra";
 import sharp from "sharp";
 import { videoCache } from "./onPluginInit";
 import { ITransformedVideoInformation } from "./types";

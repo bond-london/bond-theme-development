@@ -1,8 +1,8 @@
 import {
   ElementNode,
-  isElement,
-  Node,
   EmbedElement,
+  Node,
+  isElement,
 } from "@graphcms/rich-text-types";
 import React from "react";
 import {

@@ -1,6 +1,6 @@
+import { Link as GatsbyLink, GatsbyLinkProps, withPrefix } from "gatsby";
 import React, { useContext } from "react";
 import { I18nextContext } from "./i18nextContext";
-import { Link as GatsbyLink, GatsbyLinkProps, withPrefix } from "gatsby";
 
 type Props<TState> = Omit<GatsbyLinkProps<TState>, "ref">;
 

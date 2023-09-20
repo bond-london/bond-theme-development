@@ -37,6 +37,7 @@ export function convertCMSInternalLink(
     case "GraphCMS_Tag":
       return getTagPath(internal);
   }
+  return undefined;
 }
 
 function convertCMSInternalTopContent(
@@ -49,6 +50,7 @@ function convertCMSInternalTopContent(
       return undefined;
     }
   }
+  return undefined;
 }
 export function convertCmsLink(
   fragment: Queries.CmsLinkFragment | Queries.CmsExternalLinkFragment,

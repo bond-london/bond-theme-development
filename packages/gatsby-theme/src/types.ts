@@ -29,5 +29,6 @@ export interface IBondThemeOptions extends IPluginRefOptions {
   icon: string;
   manifestOptions: IPluginRefOptions;
   sourceOptions: IPluginRefOptions;
+  sharpOptions?: IPluginRefOptions;
   additionalPlugins?: [PluginRef];
 }

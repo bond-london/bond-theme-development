@@ -10,7 +10,12 @@ import React, {
 } from "react";
 import lottie from "lottie-web/build/player/lottie_svg";
 
-async function loadAnimation(url: string): Promise<unknown> {
+async function loadAnimation(
+  url: string | undefined,
+  data: unknown,
+): Promise<unknown> {
+  if (data) return data;
+  if (!url) throw new Error("Need either data or url for lottie");
   return await fetch(url).then(response => response.json() as Promise<unknown>);
 }
 
@@ -89,7 +94,8 @@ function convertObjectFitAndPositionToPreserveAspectRatio(
 const LottiePlayer: React.FC<{
   containerRef: RefObject<HTMLDivElement>;
   play: boolean;
-  animationUrl: string;
+  animationUrl?: string;
+  animationData?: unknown;
   loop: boolean;
   loopDelay?: number | null;
   onPlay?: () => void;
@@ -100,6 +106,7 @@ const LottiePlayer: React.FC<{
   containerRef,
   play,
   animationUrl,
+  animationData,
   loop,
   loopDelay,
   onPlay,
@@ -114,7 +121,7 @@ const LottiePlayer: React.FC<{
     const container = containerRef.current;
     if (container) {
       let animation: AnimationItem | undefined;
-      loadAnimation(animationUrl)
+      loadAnimation(animationUrl, animationData)
         .then(animationData => {
           const preserveAspectRatio =
             convertObjectFitAndPositionToPreserveAspectRatio(
@@ -147,6 +154,7 @@ const LottiePlayer: React.FC<{
     return undefined;
   }, [
     animationUrl,
+    animationData,
     containerRef,
     loop,
     loopDelay,

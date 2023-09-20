@@ -27,15 +27,15 @@ export function pluginOptionsSchema(
     productionImageFormats: Joi.array()
       .items(Joi.string())
       .description("Image formats for production")
-      .default(["auto", "webp", "avif"]),
+      .default(["auto", "webp"]),
     productionImageBreakpoints: Joi.array()
       .items(Joi.number())
       .description("Image breakpoints for production")
-      .default([320, 400, 750, 1080, 1366, 1920]),
+      .default([400, 750, 1920]),
     developmentImageBreakpoints: Joi.array()
       .items(Joi.number())
       .description("Image breakpoints for development")
-      .default([320, 400, 750, 1080, 1366, 1920]),
+      .default([400, 750, 1920]),
     allowIndex: Joi.boolean()
       .description("Should the site be indexed")
       .default(false),

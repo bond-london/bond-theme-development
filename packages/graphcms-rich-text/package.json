@@ -1,7 +1,7 @@
 {
   "name": "@bond-london/graphcms-rich-text",
   "sideEffects": false,
-  "version": "3.4.1",
+  "version": "3.5.0",
   "description": "Rich text components",
   "author": "Nick Randell <nick.randell@bond.fi>",
   "engines": {

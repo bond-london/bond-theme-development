@@ -114,11 +114,12 @@ module.exports = {
       extends: [
         "google",
         "eslint:recommended",
-        //   "plugin:@typescript-eslint/recommended-type-checked",
+        "plugin:@typescript-eslint/recommended-type-checked",
         "plugin:@typescript-eslint/stylistic-type-checked",
         "plugin:prettier/recommended",
         `plugin:import/recommended`,
         `plugin:import/typescript`,
+        "plugin:jsx-a11y/recommended",
       ],
       rules: {
         "require-jsdoc": `off`,

@@ -23,6 +23,9 @@ import {
   videoContent,
 } from "./content";
 
+import { describe, expect, it, jest } from "@jest/globals";
+import "@testing-library/jest-dom/jest-globals";
+
 describe("@bond-london/graphcms-rich-text", () => {
   it("renders content", () => {
     const { container } = render(<RichText content={content} />);

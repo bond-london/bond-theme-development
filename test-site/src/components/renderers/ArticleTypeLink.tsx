@@ -1,7 +1,8 @@
+import { getArticleTypePath } from "@/cms/CmsArticleType";
+import { convertCmsImageToImageData } from "@bond-london/gatsby-theme";
 import { Link } from "gatsby";
 import React from "react";
 import { EmbedLink } from "./EmbedLink";
-import { getArticleTypePath } from "@/cms/CmsArticleType";
 
 export const ArticleTypeLink: React.FC<{
   fragment: Queries.CmsArticleTypeLinkFragment;
@@ -14,7 +15,7 @@ export const ArticleTypeEmbedLink: React.FC<{
   isInline?: boolean;
   fragment: Queries.CmsArticleTypeLinkFragment;
 }> = ({ fragment, className, isInline }) => {
-  const image = fragment.embedImage?.gatsbyImage;
+  const image = convertCmsImageToImageData(fragment.embedImage);
   if (!isInline && image) {
     return (
       <EmbedLink

@@ -1,3 +1,4 @@
+import { convertCmsImageToImageData } from "@bond-london/gatsby-theme";
 import { Link } from "gatsby";
 import React from "react";
 import { EmbedLink } from "./EmbedLink";
@@ -16,7 +17,7 @@ export const PageEmbedLink: React.FC<{
   isInline?: boolean;
   fragment: Queries.CmsPageLinkFragment;
 }> = ({ fragment, className, isInline }) => {
-  const image = fragment.featuredImage?.gatsbyImage;
+  const image = convertCmsImageToImageData(fragment.featuredImage);
   if (!isInline && image) {
     return (
       <EmbedLink

@@ -1,9 +1,12 @@
-import { IPageMetadata } from "@bond-london/gatsby-theme";
+import { CmsPageLayout } from "@/cms/CmsPageLayout";
+import { PageHead } from "@/components/PageHead";
+import {
+  convertCmsImageToImageData,
+  IPageMetadata,
+} from "@bond-london/gatsby-theme";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
 import { graphql, HeadFC } from "gatsby";
 import React from "react";
-import { CmsPageLayout } from "@/cms/CmsPageLayout";
-import { PageHead } from "@/components/PageHead";
 
 // eslint-disable-next-line import/no-unused-modules
 export default CmsPageLayout;
@@ -30,7 +33,7 @@ export const Head: HeadFC<Queries.SinglePageQuery> = (props) => {
     title: graphCmsPage.title,
     noIndex: !graphCmsPage.indexed,
     description: graphCmsPage.description,
-    image: graphCmsPage.seoImage?.gatsbyImageData,
+    image: convertCmsImageToImageData(graphCmsPage.seoImage),
   };
 
   return (

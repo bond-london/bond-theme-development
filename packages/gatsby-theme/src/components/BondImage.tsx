@@ -41,15 +41,20 @@ export interface ICmsImage {
   readonly image?: ICmsImageAsset | null;
 }
 
+export function convertCmsAssetToImageData(image?: ICmsImageAsset | null) {
+  return (
+    image?.gatsbyImage ??
+    image?.gatsbyImageData ??
+    image?.localFile?.childImageSharp?.gatsbyImageData
+  );
+}
+
 export function convertCmsImageToBondImage(
   cms: ICmsImage | null,
   name?: string,
 ): IBondImage | undefined {
   if (!cms?.image) return undefined;
-  const image =
-    cms.image?.gatsbyImage ??
-    cms.image?.gatsbyImageData ??
-    cms.image?.localFile?.childImageSharp?.gatsbyImageData;
+  const image = convertCmsAssetToImageData(cms.image);
   const svg = cms.image?.localFile?.childGatsbySvg?.extracted;
   if (!image && !svg) return undefined;
   return {
@@ -76,10 +81,7 @@ export function convertCmsAssetToBondImage(
   const dontCrop =
     options?.dontCrop ??
     (options?.dontCropPng ? asset.mimeType?.endsWith("/png") : undefined);
-  const image =
-    asset.gatsbyImage ??
-    asset.gatsbyImageData ??
-    asset.localFile?.childImageSharp?.gatsbyImageData;
+  const image = convertCmsAssetToImageData(asset);
   const svg = asset.localFile?.childGatsbySvg?.extracted;
   if (!image && !svg) return undefined;
   return {

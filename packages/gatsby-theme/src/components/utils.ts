@@ -14,6 +14,7 @@ import {
   IBondImage,
   ICmsImageAsset,
   convertCmsAssetToBondImage,
+  convertCmsAssetToImageData,
   isBondImage,
 } from "./BondImage";
 import { IBondSimpleVideo, IBondSubtitle } from "./BondSimpleVideo";
@@ -180,10 +181,7 @@ export function convertCmsVisualToBondVisual(
 ): IBondVisual | undefined {
   if (!cms) return undefined;
 
-  const image =
-    cms.mainAsset?.gatsbyImage ??
-    cms.mainAsset?.gatsbyImageData ??
-    cms.mainAsset?.localFile?.childImageSharp?.gatsbyImageData;
+  const image = convertCmsAssetToImageData(cms.mainAsset);
   const svg = cms.mainAsset?.localFile?.childGatsbySvg?.extracted;
   const animation = cms.mainAsset?.localFile?.childGatsbyAnimation?.extracted;
   const preview = cms.mainAsset?.localFile?.childGatsbyVideo?.transformed;
@@ -194,10 +192,7 @@ export function convertCmsVisualToBondVisual(
     getPosterSrc(preview) ??
     getPosterSrc(full);
 
-  const posterData =
-    cms.posterImage?.gatsbyImage ??
-    cms.posterImage?.gatsbyImageData ??
-    cms.posterImage?.localFile?.childImageSharp?.gatsbyImageData;
+  const posterData = convertCmsAssetToImageData(cms.posterImage);
 
   const videoData = preview;
   const external = cms.externalVideo ?? undefined;

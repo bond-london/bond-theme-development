@@ -1,7 +1,8 @@
+import { calculateArticleLinkPath } from "@/cms/CmsArticle";
+import { convertCmsImageToImageData } from "@bond-london/gatsby-theme";
 import { Link } from "gatsby";
 import React from "react";
 import { EmbedLink } from "./EmbedLink";
-import { calculateArticleLinkPath } from "@/cms/CmsArticle";
 
 export const ArticleLink: React.FC<{
   fragment: Queries.CmsArticleLinkFragment;
@@ -15,7 +16,7 @@ export const ArticleEmbedLink: React.FC<{
   isInline?: boolean;
   fragment: Queries.CmsArticleLinkFragment;
 }> = ({ className, fragment, isInline }) => {
-  const image = fragment.embedImage?.gatsbyImage;
+  const image = convertCmsImageToImageData(fragment.embedImage);
   const path = calculateArticleLinkPath(fragment)?.to;
   if (!isInline && image) {
     return (

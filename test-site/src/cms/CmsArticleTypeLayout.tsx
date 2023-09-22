@@ -1,15 +1,16 @@
-import {
-  convertCmsAssetToBondVisual,
-  IPageMetadata,
-} from "@bond-london/gatsby-theme";
-import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
-import { HeadFC, Slice } from "gatsby";
-import React, { PropsWithChildren } from "react";
-import { lookupColourClassNames } from "@colors";
 import { PageHead } from "@/components/PageHead";
 import { Paginator } from "@/components/Paginator";
 import { SimpleHero } from "@/components/SimpleHero";
 import { combineComponents } from "@/utils";
+import {
+  convertCmsAssetToBondVisual,
+  convertCmsImageToImageData,
+  IPageMetadata,
+} from "@bond-london/gatsby-theme";
+import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
+import { lookupColourClassNames } from "@colors";
+import { HeadFC, Slice } from "gatsby";
+import React, { PropsWithChildren } from "react";
 import { CmsContent } from "./CmsContent";
 import { CmsFooter } from "./CmsFooter";
 import { CmsNavigationMenu } from "./CmsNavigationMenu";
@@ -27,7 +28,7 @@ export const CmsArticleTypeHead: HeadFC<Queries.ArticleTypeListQuery> = (
   const pageMetadata: IPageMetadata = {
     title: graphCmsArticleType.title,
     description: graphCmsArticleType.description,
-    image: graphCmsArticleType.seoImage?.gatsbyImageData,
+    image: convertCmsImageToImageData(graphCmsArticleType.seoImage),
   };
 
   return <PageHead headProps={props} page={pageMetadata} />;

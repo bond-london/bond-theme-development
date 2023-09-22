@@ -1,7 +1,8 @@
+import { getTagPath } from "@/cms/CmsTag";
+import { convertCmsImageToImageData } from "@bond-london/gatsby-theme";
 import { Link } from "gatsby";
 import React from "react";
 import { EmbedLink } from "./EmbedLink";
-import { getTagPath } from "@/cms/CmsTag";
 
 export const TagLink: React.FC<{ fragment: Queries.CmsTagLinkFragment }> = ({
   fragment,
@@ -14,7 +15,7 @@ export const TagEmbedLink: React.FC<{
   isInline?: boolean;
   fragment: Queries.CmsTagLinkFragment;
 }> = ({ fragment, className, isInline }) => {
-  const image = fragment.embedImage?.gatsbyImage;
+  const image = convertCmsImageToImageData(fragment.embedImage);
   if (!isInline && image) {
     return (
       <EmbedLink

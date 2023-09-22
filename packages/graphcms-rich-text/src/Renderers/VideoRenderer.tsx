@@ -27,6 +27,7 @@ export const VideoRenderer: React.FC<IVideoNodeRendererProps> = ({
   }
 
   return (
+    // eslint-disable-next-line jsx-a11y/media-has-caption
     <video
       className={calculateClassName(
         "video",

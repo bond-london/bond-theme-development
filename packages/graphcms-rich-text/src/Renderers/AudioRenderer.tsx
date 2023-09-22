@@ -28,6 +28,7 @@ export const AudioRenderer: React.FC<IAudioNodeRendererProps> = ({
   };
 
   return (
+    // eslint-disable-next-line jsx-a11y/media-has-caption
     <audio
       className={calculateClassName(
         "audio",

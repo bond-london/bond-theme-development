@@ -90,6 +90,7 @@ export const GatsbyInternalVideo: React.FC<
   }, [lazy, videoRef]);
 
   return (
+    // eslint-disable-next-line jsx-a11y/media-has-caption
     <video
       {...otherProps}
       poster={poster}

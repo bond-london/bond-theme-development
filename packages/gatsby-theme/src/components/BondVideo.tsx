@@ -1,7 +1,7 @@
 import { getPosterSrc } from "@bond-london/gatsby-transformer-video";
 import { IGatsbyImageData } from "gatsby-plugin-image";
 import React, { CSSProperties, VideoHTMLAttributes } from "react";
-import { convertSingleSubtitle } from ".";
+import { convertCmsAssetToImageData, convertSingleSubtitle } from ".";
 import { Horizontal, Vertical } from "../types";
 import BondExternalVideo from "./BondExternalVideo";
 import BondFullVideo from "./BondFullVideo";
@@ -93,10 +93,7 @@ export function convertCmsVideoToBondVideo(
     getPosterSrc(preview) ??
     getPosterSrc(full);
 
-  const posterData =
-    cms.poster?.gatsbyImage ??
-    cms.poster?.gatsbyImageData ??
-    cms.poster?.localFile?.childImageSharp?.gatsbyImageData;
+  const posterData = convertCmsAssetToImageData(cms.poster);
 
   const videoData = preview;
   const {

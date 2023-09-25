@@ -362,7 +362,7 @@ async function createSpecialNodes(
       const name = entry.fieldName;
       const fullName = namePrefix + name;
       const value = node[name];
-      if (!value) return;
+      if (!value) continue;
 
       if (isSpecialField(entry)) {
         switch (entry.type) {

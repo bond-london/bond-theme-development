@@ -3,9 +3,10 @@ import { CmsComponent } from "./CmsComponent";
 
 export const CmsContent: React.FC<{
   fragment?: ReadonlyArray<Queries.CmsComponentFragment>;
-  offset?: number;
-  isLast?: boolean;
-}> = ({ fragment, offset = 0, isLast = true }) => {
+  offset: number;
+  isFirst: boolean;
+  isLast: boolean;
+}> = ({ fragment, offset, isFirst, isLast }) => {
   if (!fragment) return null;
   return (
     <>
@@ -14,7 +15,7 @@ export const CmsContent: React.FC<{
           key={f.id}
           fragment={f}
           index={offset + index}
-          isFirst={offset + index === 0}
+          isFirst={isFirst && offset + index === 0}
           isLast={isLast && index === array.length - 1}
         />
       ))}

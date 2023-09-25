@@ -1,6 +1,12 @@
 import classNames from "classnames";
-import React, { PropsWithChildren } from "react";
+import React, { CSSProperties, PropsWithChildren } from "react";
 
+export interface ISectionInformation {
+  anchor?: string | null;
+  index?: number | null;
+  isFirst?: boolean | null;
+  isLast?: boolean | null;
+}
 function calculateSectionGridClassName(
   sectionGridClassName: string | undefined,
   collapse: boolean,
@@ -86,9 +92,54 @@ export function calculateSectionContentClassNames({
     contentClassName,
   );
 }
+
+export function expandInformation(
+  componentName: string,
+  information?: ISectionInformation | null,
+) {
+  return {
+    id: information?.anchor ?? undefined,
+    "data-component": componentName,
+    "data-index":
+      typeof information?.index === "number" ? information.index : undefined,
+
+    "data-position": information
+      ? information.isFirst
+        ? "first"
+        : information.isLast
+        ? "last"
+        : undefined
+      : undefined,
+  };
+}
+
+export const SimpleSection: React.FC<
+  PropsWithChildren<{
+    componentName: string;
+    information?: ISectionInformation | null;
+    className?: string;
+    style?: CSSProperties;
+    element?: keyof JSX.IntrinsicElements;
+  }>
+> = ({
+  componentName,
+  information,
+  className,
+  style,
+  element: Element = "section",
+  children,
+}) => (
+  <Element
+    {...expandInformation(componentName, information)}
+    className={className}
+    style={style}
+  >
+    {children}
+  </Element>
+);
+
 export const Section: React.FC<
   PropsWithChildren<{
-    id?: string;
     componentName: string;
     sectionGridClassName?: string;
     sectionClassName?: string;
@@ -102,9 +153,9 @@ export const Section: React.FC<
     element?: keyof JSX.IntrinsicElements;
     preChildren?: React.ReactNode;
     postChildren?: React.ReactNode;
+    information?: ISectionInformation | null;
   }>
 > = ({
-  id,
   componentName,
   sectionGridClassName,
   sectionClassName,
@@ -119,10 +170,10 @@ export const Section: React.FC<
   element: Element = "section",
   preChildren,
   postChildren,
+  information,
 }) => (
   <Element
-    id={id}
-    data-component={componentName}
+    {...expandInformation(componentName, information)}
     className={calculateSectionContainerClassNames({
       sectionGridClassName,
       sectionClassName,

@@ -1,12 +1,12 @@
 import { BondVisual, Section } from "@bond-london/gatsby-theme";
-import { IComponentInformation } from "./GenericComponent";
 import { lookupColourClassNames } from "@colors";
 import React from "react";
+import { IComponentInformation } from "./GenericComponent";
+import { ILinkInformation, SimpleLink } from "./LinkOrButton";
 import { SectionBody } from "./SectionBody";
 import { SectionHeading } from "./SectionHeading";
 import { SectionIcon } from "./SectionIcon";
 import { SectionVisual } from "./SectionVisual";
-import { ILinkInformation, SimpleLink } from "./LinkOrButton";
 
 const LinkSummary: React.FC<{ link: ILinkInformation }> = ({ link }) => {
   const { topContent, name } = link;
@@ -32,7 +32,9 @@ const LinkSummary: React.FC<{ link: ILinkInformation }> = ({ link }) => {
 
 // eslint-disable-next-line import/no-unused-modules
 const ArticleLinks: React.FC<{ information: IComponentInformation }> = ({
-  information: {
+  information,
+}) => {
+  const {
     backgroundColour,
     textColour,
     links,
@@ -43,11 +45,11 @@ const ArticleLinks: React.FC<{ information: IComponentInformation }> = ({
     body,
     icon,
     visual,
-  },
-}) => {
+  } = information;
   return (
     <Section
       componentName="Article links"
+      information={information}
       contentClassName="grid grid-cols-1 mb-s"
       sectionClassName={lookupColourClassNames(backgroundColour, textColour)}
     >

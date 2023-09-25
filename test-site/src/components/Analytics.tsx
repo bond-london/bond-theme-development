@@ -1,7 +1,7 @@
 "use client";
+import { GoogleTagManager, useBondCookie } from "@bond-london/gatsby-theme";
 import React from "react";
 import ReactCookieConsent from "react-cookie-consent";
-import { GoogleTagManager, useBondCookie } from "@bond-london/gatsby-theme";
 
 const Analytics: React.FC = () => {
   /* eslint-disable node/no-process-env */

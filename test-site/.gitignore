@@ -8,3 +8,4 @@ gatsby-types.d.ts
 yarn-error.log
 storybook-static
 built.css
+.netlify

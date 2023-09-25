@@ -1,7 +1,7 @@
+import { NavigationBar } from "@/components/Navigation/NavigationBar";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
 import { graphql, useStaticQuery } from "gatsby";
 import React from "react";
-import { NavigationBar } from "@/components/Navigation/NavigationBar";
 import { convertCmsNavigation } from "./CmsNavigation";
 
 export const CmsNavigationMenu: React.FC<{

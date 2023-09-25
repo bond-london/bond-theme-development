@@ -1,7 +1,7 @@
-import { IBondImage } from "@bond-london/gatsby-theme";
-import { FormEvent, useCallback, useState } from "react";
-
 /* eslint-disable import/no-unused-modules */
+import { IBondImage } from "@bond-london/gatsby-theme";
+import React, { FormEvent, useCallback, useState } from "react";
+
 export function notEmpty<TValue>(
   value: TValue | null | undefined,
 ): value is TValue {
@@ -9,10 +9,26 @@ export function notEmpty<TValue>(
   return true;
 }
 
-export function convertText(text?: string) {
+export function arrayOrUndefined<T>(array?: ReadonlyArray<T>) {
+  if (array && array.length > 0) {
+    return array;
+  }
+  return undefined;
+}
+
+export function convertText(text: string) {
   if (text) {
     const replaced = text.replace(/&nbsp;/g, "\u00a0");
-    return replaced;
+    const split = replaced.split("<br>");
+    if (split.length === 1) return replaced;
+
+    const mapped = split.map((s, index) => (
+      <>
+        {index > 0 && <br />}
+        <span>{s}</span>
+      </>
+    ));
+    return mapped;
   }
   return undefined;
 }

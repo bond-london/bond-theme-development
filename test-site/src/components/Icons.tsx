@@ -1,6 +1,6 @@
+import Placeholder from "@/images/placeholder.svg";
 import classNames from "classnames";
 import React from "react";
-import Placeholder from "@/images/placeholder.svg";
 
 interface Props {
   className?: string;
@@ -120,6 +120,21 @@ const UnmuteButton: React.FC<Props> = ({ className }) => (
   </svg>
 );
 
+const SignupButton: React.FC<Props> = ({ className }) => (
+  <svg
+    width="48"
+    height="48"
+    viewBox="0 0 48 48"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={classNames("icon inline-block stroke-current", className)}
+  >
+    <rect x="0.5" y="0.5" width="47" height="47" rx="23.5" />
+    <path d="M24 12L36 24L24 36" />
+    <path d="M35.8793 24H12.1205" />
+  </svg>
+);
+
 const iconMap = {
   AlertIcon,
   ArrowIcon,
@@ -129,6 +144,7 @@ const iconMap = {
   PauseButton,
   MuteButton,
   UnmuteButton,
+  SignupButton,
 };
 
 const imgMap = {

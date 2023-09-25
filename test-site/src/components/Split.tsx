@@ -1,13 +1,13 @@
 import { Section } from "@bond-london/gatsby-theme";
-import { IComponentInformation, IContentComponent } from "./GenericComponent";
 import { lookupColourClassNames } from "@colors";
+import classNames from "classnames";
 import React from "react";
-import { SectionHeading } from "./SectionHeading";
+import { IComponentInformation, IContentComponent } from "./GenericComponent";
 import { SectionBody } from "./SectionBody";
+import { SectionHeading } from "./SectionHeading";
 import { SectionIcon } from "./SectionIcon";
 import { SectionLinks } from "./SectionLinks";
 import { SectionVisual } from "./SectionVisual";
-import classNames from "classnames";
 
 function calculateColumnClassName(cols: number) {
   switch (cols) {
@@ -69,7 +69,6 @@ const Split: React.FC<{
   rightCols: number;
 }> = ({ information, leftCols, rightCols }) => {
   const {
-    anchor,
     backgroundColour,
     textColour,
     body,
@@ -84,8 +83,8 @@ const Split: React.FC<{
   } = information;
   return (
     <Section
-      id={anchor ?? undefined}
       componentName="Split"
+      information={information}
       sectionClassName={lookupColourClassNames(backgroundColour, textColour)}
       contentClassName="my-s laptop:my-xxxl"
       sectionColumnsClassName={classNames(

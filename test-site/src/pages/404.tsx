@@ -1,9 +1,9 @@
-import { IPageMetadata, Section } from "@bond-london/gatsby-theme";
-import { HeadFC, Slice } from "gatsby";
-import React from "react";
 import { CmsFooter } from "@/cms/CmsFooter";
 import { CmsNavigationMenu } from "@/cms/CmsNavigationMenu";
 import { PageHead } from "@/components/PageHead";
+import { IPageMetadata, Section } from "@bond-london/gatsby-theme";
+import { HeadFC, Slice } from "gatsby";
+import React from "react";
 
 const Page404: React.FC = () => {
   return (

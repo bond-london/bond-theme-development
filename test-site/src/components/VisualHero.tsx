@@ -1,17 +1,16 @@
+import { SimpleSection, getVisualSize } from "@bond-london/gatsby-theme";
+import { lookupColourClassNames } from "@colors";
+import classNames from "classnames";
 import React from "react";
 import { IComponentInformation } from "./GenericComponent";
-import { getVisualSize } from "@bond-london/gatsby-theme";
-import classNames from "classnames";
-import { lookupColourClassNames } from "@colors";
 import { HeroBackground } from "./HeroBackground";
 import { HeroText } from "./HeroText";
 
 export const VisualHero: React.FC<{
   information: IComponentInformation;
   isGrey?: boolean | null;
-}> = ({
-  information: {
-    anchor,
+}> = ({ information, isGrey }) => {
+  const {
     visual,
     preHeading,
     heading,
@@ -20,14 +19,14 @@ export const VisualHero: React.FC<{
     links,
     backgroundColour,
     textColour,
-  },
-  isGrey,
-}) => {
+  } = information;
   if (!visual) return null;
   const size = getVisualSize(visual);
   if (!size) return null;
   return (
-    <section
+    <SimpleSection
+      componentName="Visual Hero"
+      information={information}
       className={classNames(
         lookupColourClassNames(backgroundColour, textColour),
         "h-0 relative w-full container-cols-grid",
@@ -35,8 +34,6 @@ export const VisualHero: React.FC<{
       style={{
         paddingBottom: `${Math.floor(100 * (size.height / size.width))}%`,
       }}
-      id={anchor ?? undefined}
-      data-component="Visual Hero"
     >
       <div className="absolute top-0 left-0 bottom-0 right-0 grid container-cols-grid">
         {visual && <HeroBackground visual={visual} isGrey={isGrey} />}
@@ -50,6 +47,6 @@ export const VisualHero: React.FC<{
           />
         </div>
       </div>
-    </section>
+    </SimpleSection>
   );
 };

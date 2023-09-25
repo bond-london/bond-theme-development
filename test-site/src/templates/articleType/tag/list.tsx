@@ -1,10 +1,10 @@
-import { graphql, PageProps } from "gatsby";
-import React from "react";
 import {
   CmsArticleTypeHead,
   CmsArticleTypeLayout,
 } from "@/cms/CmsArticleTypeLayout";
 import { CustomArticleList } from "@/components/CustomArticleList";
+import { PageProps, graphql } from "gatsby";
+import React from "react";
 
 const ArticleTypeTagLayout: React.FC<
   PageProps<Queries.ArticleTypeListQuery>

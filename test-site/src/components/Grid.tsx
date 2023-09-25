@@ -1,14 +1,14 @@
 import { Section } from "@bond-london/gatsby-theme";
-import { IComponentInformation } from "./GenericComponent";
 import { lookupColourClassNames } from "@colors";
 import classNames from "classnames";
 import React from "react";
+import { IComponentInformation } from "./GenericComponent";
 import { HeadingAndIcon } from "./HeadingAndIcon";
 import { SectionBody } from "./SectionBody";
-import { SectionVisual } from "./SectionVisual";
-import { SectionLinks } from "./SectionLinks";
 import { SectionHeading } from "./SectionHeading";
 import { SectionIcon } from "./SectionIcon";
+import { SectionLinks } from "./SectionLinks";
+import { SectionVisual } from "./SectionVisual";
 
 function calculateColumnClassName(columns: number) {
   switch (columns) {
@@ -27,11 +27,9 @@ function calculateColumnClassName(columns: number) {
 const Grid: React.FC<{
   information: IComponentInformation;
   columns: number;
-  index: number;
-}> = ({ information, columns, index }) => {
+}> = ({ information, columns }) => {
   const {
     id,
-    anchor,
     backgroundColour,
     textColour,
     preHeading,
@@ -42,11 +40,12 @@ const Grid: React.FC<{
     visual,
     links,
     contents,
+    index,
   } = information;
 
   return (
     <Section
-      id={anchor ?? undefined}
+      information={information}
       componentName={`Grid ${columns} columns`}
       sectionClassName={lookupColourClassNames(backgroundColour, textColour)}
       sectionColumnsClassName="col-start-2 col-span-1 grid grid-cols-1"

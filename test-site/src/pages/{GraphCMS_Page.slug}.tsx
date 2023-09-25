@@ -1,7 +1,7 @@
 import { CmsPageLayout } from "@/cms/CmsPageLayout";
 import { PageHead } from "@/components/PageHead";
 import {
-  convertCmsImageToImageData,
+  convertCmsAssetToImageData,
   IPageMetadata,
 } from "@bond-london/gatsby-theme";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
@@ -33,7 +33,7 @@ export const Head: HeadFC<Queries.SinglePageQuery> = (props) => {
     title: graphCmsPage.title,
     noIndex: !graphCmsPage.indexed,
     description: graphCmsPage.description,
-    image: convertCmsImageToImageData(graphCmsPage.seoImage),
+    image: convertCmsAssetToImageData(graphCmsPage.seoImage),
   };
 
   return (

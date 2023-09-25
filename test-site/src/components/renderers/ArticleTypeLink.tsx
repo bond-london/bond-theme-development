@@ -1,5 +1,5 @@
 import { getArticleTypePath } from "@/cms/CmsArticleType";
-import { convertCmsImageToImageData } from "@bond-london/gatsby-theme";
+import { convertCmsAssetToImageData } from "@bond-london/gatsby-theme";
 import { Link } from "gatsby";
 import React from "react";
 import { EmbedLink } from "./EmbedLink";
@@ -7,7 +7,11 @@ import { EmbedLink } from "./EmbedLink";
 export const ArticleTypeLink: React.FC<{
   fragment: Queries.CmsArticleTypeLinkFragment;
 }> = ({ fragment }) => {
-  return <Link to={getArticleTypePath(fragment)?.to}>{fragment.title}</Link>;
+  return (
+    <Link className="link" to={getArticleTypePath(fragment)?.to}>
+      {fragment.title}
+    </Link>
+  );
 };
 
 export const ArticleTypeEmbedLink: React.FC<{
@@ -15,7 +19,7 @@ export const ArticleTypeEmbedLink: React.FC<{
   isInline?: boolean;
   fragment: Queries.CmsArticleTypeLinkFragment;
 }> = ({ fragment, className, isInline }) => {
-  const image = convertCmsImageToImageData(fragment.embedImage);
+  const image = convertCmsAssetToImageData(fragment.embedImage);
   if (!isInline && image) {
     return (
       <EmbedLink

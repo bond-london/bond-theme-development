@@ -1,19 +1,19 @@
+import { ILinkInformation } from "@/components/LinkOrButton";
+import { removeImagePlacholder } from "@/utils";
 import {
   convertCmsAssetToBondImage,
   IBondVisual,
 } from "@bond-london/gatsby-theme";
-import { graphql } from "gatsby";
 import { ColourName } from "@colors";
-import { ILinkInformation } from "@/components/LinkOrButton";
-import { removeImagePlacholder } from "@/utils";
+import { graphql } from "gatsby";
 import {
   calculateArticleLinkPath,
   findArticleInformationContent,
 } from "./CmsArticle";
 import { getArticleTypePath } from "./CmsArticleType";
+import { convertCmsCoreComponent } from "./CmsComponent";
 import { calculatePageLinkPath } from "./CmsPage";
 import { getTagPath } from "./CmsTag";
-import { convertCmsCoreComponent } from "./CmsComponent";
 
 export function convertCMSInternalLink(
   internal: Queries.CmsLinkFragment["internal"],

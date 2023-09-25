@@ -1,7 +1,7 @@
 import { IBondVisual } from "@bond-london/gatsby-theme";
+import { ColourName } from "@colors";
 import classNames from "classnames";
 import React from "react";
-import { ColourName } from "@colors";
 import { MenuItem } from "./MenuItem";
 import { useMenuInformation } from "./MenuUtils";
 

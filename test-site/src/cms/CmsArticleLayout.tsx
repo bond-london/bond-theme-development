@@ -1,11 +1,11 @@
+import { combineComponents } from "@/utils";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
+import { lookupColourClassNames } from "@colors";
 import { PageProps, Slice } from "gatsby";
 import React, { createContext } from "react";
 import { CmsContent } from "./CmsContent";
 import { CmsFooter } from "./CmsFooter";
 import { CmsNavigationMenu } from "./CmsNavigationMenu";
-import { lookupColourClassNames } from "@colors";
-import { combineComponents } from "@/utils";
 
 interface IArticleContext {
   article?: Queries.CmsArticleFragment;
@@ -61,6 +61,9 @@ export const CmsArticleLayout: React.FC<
             article.content,
             template?.postContent,
           )}
+          offset={0}
+          isFirst={true}
+          isLast={true}
         />
 
         <CmsFooter

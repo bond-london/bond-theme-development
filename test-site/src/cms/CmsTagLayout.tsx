@@ -6,7 +6,7 @@ import { combineComponents } from "@/utils";
 import {
   convertCmsAssetToBondImage,
   convertCmsAssetToBondVisual,
-  convertCmsImageToImageData,
+  convertCmsAssetToImageData,
   IPageMetadata,
 } from "@bond-london/gatsby-theme";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
@@ -28,7 +28,7 @@ export const CmsTagHead: HeadFC<Queries.TagListQuery> = (props) => {
   const pageMetadata: IPageMetadata = {
     title: graphCmsTag.title,
     description: graphCmsTag.description,
-    image: convertCmsImageToImageData(graphCmsTag.seoImage),
+    image: convertCmsAssetToImageData(graphCmsTag.seoImage),
   };
 
   return <PageHead headProps={props} page={pageMetadata} />;
@@ -105,18 +105,21 @@ export const CmsTagLayout: React.FC<
         <CmsNavigationMenu page={menu ?? template?.menu} />
         <Slice alias="analytics" />
         {noDefaultHero ? (
-          <>
-            <CmsContent
-              fragment={combineComponents(topContent, template?.preContent)}
-              isLast={false}
-            />
-          </>
+          <CmsContent
+            fragment={combineComponents(topContent, template?.preContent)}
+            offset={0}
+            isFirst={true}
+            isLast={false}
+          />
         ) : (
           <SimpleHero
             heading={title}
             visual={convertCmsAssetToBondVisual(featuredImage)}
             backgroundColour={backgroundColour}
             textColour={textColour}
+            index={0}
+            isFirst={true}
+            isLast={false}
           />
         )}
         {props.children ?? (
@@ -131,7 +134,12 @@ export const CmsTagLayout: React.FC<
           currentPage={currentPage}
           buildLink={buildLink}
         />
-        <CmsContent fragment={template?.postContent} offset={1} />
+        <CmsContent
+          fragment={template?.postContent}
+          offset={1}
+          isFirst={false}
+          isLast={true}
+        />
 
         <CmsFooter page={footer ?? template?.footer} />
       </PageContext.Provider>

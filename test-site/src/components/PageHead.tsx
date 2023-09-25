@@ -1,9 +1,9 @@
-import React from "react";
-import { graphql, HeadProps, useStaticQuery } from "gatsby";
 import { BondSEO, IPageMetadata, ISite } from "@bond-london/gatsby-theme";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
-import classNames from "classnames";
 import { ColourName, lookupColourClassNames } from "@colors";
+import classNames from "classnames";
+import { HeadProps, graphql, useStaticQuery } from "gatsby";
+import React from "react";
 
 export const PageHead: React.FC<{
   headProps: HeadProps;

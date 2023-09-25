@@ -1,7 +1,7 @@
-import { graphql, PageProps } from "gatsby";
-import React from "react";
 import { CmsTagHead, CmsTagLayout } from "@/cms/CmsTagLayout";
 import { ArticleList } from "@/components/ArticleList";
+import { PageProps, graphql } from "gatsby";
+import React from "react";
 
 const TagListLayout: React.FC<PageProps<Queries.TagListQuery>> = (props) => (
   <CmsTagLayout {...props} noHero={true}>

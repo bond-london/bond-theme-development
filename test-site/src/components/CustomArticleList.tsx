@@ -1,8 +1,8 @@
+import { calculateArticleLinkPath } from "@/cms/CmsArticle";
 import { Section } from "@bond-london/gatsby-theme";
+import { ColourName, lookupColourClassNames } from "@colors";
 import { Link } from "gatsby";
 import React from "react";
-import { calculateArticleLinkPath } from "@/cms/CmsArticle";
-import { ColourName, lookupColourClassNames } from "@colors";
 import { DateElement } from "./Date";
 
 const CustomArticleListEntry: React.FC<{

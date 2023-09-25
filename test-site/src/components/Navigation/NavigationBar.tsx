@@ -1,8 +1,8 @@
 "use client";
 import { useBodyScrollLock } from "@bond-london/gatsby-theme";
+import { ColourName, lookupColourClassNames } from "@colors";
 import classNames from "classnames";
 import React, { useCallback, useState } from "react";
-import { ColourName, lookupColourClassNames } from "@colors";
 import { HamburgerButton } from "./HamburgerButton";
 import { MenuItem } from "./MenuItem";
 import { INavigationItem, NavigationMenu } from "./NavigationMenu";

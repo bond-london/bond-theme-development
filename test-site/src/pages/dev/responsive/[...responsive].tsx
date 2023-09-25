@@ -56,7 +56,7 @@ const PageContainer: React.FC<{
     <div
       ref={divRef}
       className={classNames(
-        "relative overflow-hidden border-2 border-Red",
+        "relative overflow-hidden border-2 border-[#f00]",
         className,
       )}
     >

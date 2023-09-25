@@ -1,10 +1,10 @@
+import { PageHead } from "@/components/PageHead";
+import { fontTable, sizes } from "@/design";
+import { DevPageLayout } from "@/layouts/DevPageLayout";
 import { IPageMetadata, Section } from "@bond-london/gatsby-theme";
 import classNames from "classnames";
 import { HeadFC } from "gatsby";
 import React, { Fragment } from "react";
-import { PageHead } from "@/components/PageHead";
-import { fontTable, sizes } from "@/design";
-import { DevPageLayout } from "@/layouts/DevPageLayout";
 
 const head = classNames("font-bold text-34-44");
 
@@ -32,7 +32,7 @@ const Fonts: React.FC = () => {
             </div>
           );
         })}
-        <div className="col-span-full border-b border-Blue" />
+        <div className="col-span-full border-b border-[#00f]" />
         {fontTable.map(({ key: name, value }) => {
           {
             return styles.map((style) => {
@@ -69,7 +69,7 @@ const Fonts: React.FC = () => {
                       </div>
                     );
                   })}
-                  <div className="col-span-full border-b border-Blue" />
+                  <div className="col-span-full border-b border-[#00f]" />
                 </Fragment>
               );
             });

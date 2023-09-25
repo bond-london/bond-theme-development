@@ -1,28 +1,23 @@
 import React from "react";
 
+import ArticleGridComponent from "@/components/ArticleGrid";
+import ArticleInfoComponent from "@/components/ArticleInfo";
+import ArticleLinksComponent from "@/components/ArticleLinks";
 import ArticleTextComponent from "@/components/ArticleText";
 import CenteredTextComponent from "@/components/CenteredText";
 import { IComponentInformation } from "@/components/GenericComponent";
-import TextAndImageComponent from "@/components/TextAndImage";
-import TextComponent from "@/components/Text";
-import HeroComponent from "@/components/Hero";
 import GridComponent from "@/components/Grid";
-import ArticleLinksComponent from "@/components/ArticleLinks";
-import ArticleGridComponent from "@/components/ArticleGrid";
-import TagLinksComponent from "@/components/TagLinks";
-import ArticleInfoComponent from "@/components/ArticleInfo";
+import HeroComponent from "@/components/Hero";
 import LogoParadeComponent from "@/components/LogoParade";
-import SplitComponent from "@/components/Split";
 import SpacerComponent from "@/components/Spacer";
+import SplitComponent from "@/components/Split";
+import TagLinksComponent from "@/components/TagLinks";
+import TextComponent from "@/components/Text";
+import TextAndImageComponent from "@/components/TextAndImage";
 
 export function tryHandleCustomComponent(
   converted: IComponentInformation,
   componentType: Queries.CmsComponentFragment["componentType"],
-  index: number,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  isFirst: boolean,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  isLast: boolean,
 ) {
   switch (componentType) {
     case "SpacerS":
@@ -33,19 +28,13 @@ export function tryHandleCustomComponent(
       );
 
     case "Gridx3":
-      return (
-        <GridComponent information={converted} index={index} columns={3} />
-      );
+      return <GridComponent information={converted} columns={3} />;
 
     case "Gridx2":
-      return (
-        <GridComponent information={converted} index={index} columns={2} />
-      );
+      return <GridComponent information={converted} columns={2} />;
 
     case "Single":
-      return (
-        <GridComponent information={converted} index={index} columns={1} />
-      );
+      return <GridComponent information={converted} columns={1} />;
 
     case "ArticleLinks":
       return <ArticleLinksComponent information={converted} />;
@@ -77,7 +66,6 @@ export function tryHandleCustomComponent(
         <TextAndImageComponent
           information={converted}
           isLeft={componentType === "TextAndImageLeft"}
-          index={index}
         />
       );
 
@@ -99,6 +87,5 @@ export function tryHandleCustomComponent(
     case "LogoParade":
       return <LogoParadeComponent information={converted} />;
   }
-
   return undefined;
 }

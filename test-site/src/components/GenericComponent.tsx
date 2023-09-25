@@ -1,8 +1,8 @@
 import { IBondVisual, Section } from "@bond-london/gatsby-theme";
 import { IRichTextInformation } from "@bond-london/graphcms-rich-text";
+import { ColourName, lookupColourClassNames } from "@colors";
 import classNames from "classnames";
 import React from "react";
-import { ColourName, lookupColourClassNames } from "@colors";
 import { ILinkInformation } from "./LinkOrButton";
 import { SectionBody } from "./SectionBody";
 import { SectionHeading } from "./SectionHeading";
@@ -26,6 +26,9 @@ export interface IContentComponent extends ICoreComponent {
   icon?: IBondVisual;
   links?: ReadonlyArray<ILinkInformation>;
   internalReferences?: ReadonlyArray<ILinkInformation>;
+  index: number;
+  isFirst: boolean;
+  isLast: boolean;
 }
 export interface IComponentInformation extends IContentComponent {
   contents?: ReadonlyArray<IContentComponent>;
@@ -78,10 +81,10 @@ export const GenericComponent: React.FC<{
   componentType: string;
   unknown?: boolean;
 }> = ({ componentType, unknown, information }) => {
-  const { anchor, backgroundColour, textColour } = information;
+  const { backgroundColour, textColour } = information;
   return (
     <Section
-      id={anchor ?? undefined}
+      information={information}
       componentName={`${componentType} component`}
       sectionClassName={classNames(
         "overflow-hidden",

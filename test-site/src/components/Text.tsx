@@ -1,7 +1,7 @@
 import { Section } from "@bond-london/gatsby-theme";
 import { ClassNameOverrides } from "@bond-london/graphcms-rich-text";
-import React from "react";
 import { lookupColourClassNames } from "@colors";
+import React from "react";
 import { IComponentInformation } from "./GenericComponent";
 import { defaultProjectClassNameOverrides } from "./RTF";
 import { SectionBody } from "./SectionBody";
@@ -30,7 +30,6 @@ const Text: React.FC<{
   index?: number;
 }> = ({ information, format, index }) => {
   const {
-    anchor,
     backgroundColour,
     textColour,
     preHeading,
@@ -44,8 +43,8 @@ const Text: React.FC<{
   const projectClassNameOverrides = textFormatClassNameOverrides[format];
   return (
     <Section
-      id={anchor ?? undefined}
       componentName={`Text Component: ${format}`}
+      information={information}
       sectionClassName={lookupColourClassNames(backgroundColour, textColour)}
     >
       <div className="col-span-full grid grid-cols-1 gap-y-xs tablet:col-span-6 tablet:col-start-2 laptop:col-span-6 laptop:col-start-4 laptop:gap-y-s">

@@ -1,7 +1,8 @@
+import { SimpleSection } from "@bond-london/gatsby-theme";
+import classNames from "classnames";
 import React from "react";
 import { lookupColourClassNames } from "../../colors";
 import { IComponentInformation } from "./GenericComponent";
-import classNames from "classnames";
 
 type Spacing = "SpacerS" | "SpacerM" | "SpacerL" | "SpacerXL";
 function lookupSpacingClassNames(spacing: Spacing) {
@@ -20,15 +21,18 @@ function lookupSpacingClassNames(spacing: Spacing) {
 const SpacerComponent: React.FC<{
   spacing: Spacing;
   information: IComponentInformation;
-}> = ({ spacing, information: { backgroundColour, textColour } }) => (
-  <section
-    data-component={`Spacer ${spacing}`}
-    className={classNames(
-      "w-full",
-      lookupColourClassNames(backgroundColour, textColour),
-      lookupSpacingClassNames(spacing),
-    )}
-  />
-);
-
+}> = ({ spacing, information }) => {
+  const { backgroundColour, textColour } = information;
+  return (
+    <SimpleSection
+      componentName={`Spacer ${spacing}`}
+      information={information}
+      className={classNames(
+        "w-full",
+        lookupColourClassNames(backgroundColour, textColour),
+        lookupSpacingClassNames(spacing),
+      )}
+    />
+  );
+};
 export default SpacerComponent;

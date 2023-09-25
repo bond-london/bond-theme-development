@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import { notEmpty } from "@/utils";
 import {
   buildTableInformationFromNodes,
   IClassNodeRendererProps,
@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@bond-london/graphcms-rich-text";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
-import { notEmpty } from "@/utils";
+import React, { Fragment } from "react";
 
 interface Entry {
   title?: TableCell;

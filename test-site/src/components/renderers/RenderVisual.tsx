@@ -1,16 +1,16 @@
 import {
+  MuteButton,
+  PauseButton,
+  PlayButton,
+  UnmuteButton,
+} from "@/components/VideoControls";
+import {
   BondVisual,
   convertCmsVisualToBondVisual,
   isBondImage,
 } from "@bond-london/gatsby-theme";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
 import React from "react";
-import {
-  MuteButton,
-  PauseButton,
-  PlayButton,
-  UnmuteButton,
-} from "@/components/VideoControls";
 
 export const RenderVisual: React.FC<{
   fragment: Queries.FullWidthCmsVisualFragment;

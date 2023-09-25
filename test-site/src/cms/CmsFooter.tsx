@@ -1,7 +1,7 @@
+import { Footer } from "@/components/Navigation/Footer";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
 import { graphql, useStaticQuery } from "gatsby";
 import React from "react";
-import { Footer } from "@/components/Navigation/Footer";
 import { convertCmsNavigation } from "./CmsNavigation";
 
 export const CmsFooter: React.FC<{

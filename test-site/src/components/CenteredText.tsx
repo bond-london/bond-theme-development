@@ -1,8 +1,8 @@
+import { ArticleContext } from "@/cms/CmsArticleLayout";
 import { BondVisual, Section } from "@bond-london/gatsby-theme";
 import { ClassNameOverrides } from "@bond-london/graphcms-rich-text";
-import React, { useContext } from "react";
-import { ArticleContext } from "@/cms/CmsArticleLayout";
 import { lookupColourClassNames } from "@colors";
+import React, { useContext } from "react";
 import { DateElement } from "./Date";
 import { IComponentInformation } from "./GenericComponent";
 import { defaultProjectClassNameOverrides } from "./RTF";
@@ -35,7 +35,8 @@ const CenteredText: React.FC<{
   const { article } = useContext(ArticleContext);
   return (
     <Section
-      componentName={`Centered Text`}
+      componentName="Centered Text"
+      information={information}
       sectionClassName={lookupColourClassNames(backgroundColour, textColour)}
       sectionGridClassName="relative w-full container-cols-grid auto-rows-auto"
       sectionRowsClassName="laptop:row-start-1 laptop:row-span-1"

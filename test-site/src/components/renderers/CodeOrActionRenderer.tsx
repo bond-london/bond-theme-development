@@ -1,9 +1,9 @@
-import React, { PropsWithChildren, ReactNode } from "react";
 import {
   DefaultRenderer,
   IElementsRendererProps,
 } from "@bond-london/graphcms-rich-text";
 import { isText } from "@graphcms/rich-text-types";
+import React, { PropsWithChildren, ReactNode } from "react";
 import { CodeAction } from "./CodeAction";
 
 function tryGetContent(props: IElementsRendererProps, children: ReactNode) {

@@ -1,19 +1,18 @@
+import { CmsComponentContextProvider } from "@/cms/CmsComponentProvider";
 import { BondVisual, Section } from "@bond-london/gatsby-theme";
+import { lookupColourClassNames } from "@colors";
 import classNames from "classnames";
 import React from "react";
-import { lookupColourClassNames } from "@colors";
 import { IComponentInformation } from "./GenericComponent";
 import { SectionBody } from "./SectionBody";
 import { SectionHeading } from "./SectionHeading";
 import { SectionIcon } from "./SectionIcon";
 import { SectionLinks } from "./SectionLinks";
-import { CmsComponentContextProvider } from "@/cms/CmsComponentProvider";
 
 const TextAndImage: React.FC<{
   information: IComponentInformation;
   isLeft: boolean;
-  index?: number;
-}> = ({ information, isLeft, index }) => {
+}> = ({ information, isLeft }) => {
   const {
     heading,
     preHeading,
@@ -24,6 +23,7 @@ const TextAndImage: React.FC<{
     visual,
     backgroundColour,
     textColour,
+    index,
   } = information;
   const positionClassName = classNames(
     "col-span-full laptop:col-span-6",
@@ -35,6 +35,7 @@ const TextAndImage: React.FC<{
   return (
     <Section
       componentName="Text and Image"
+      information={information}
       sectionClassName={classNames(
         lookupColourClassNames(backgroundColour, textColour),
       )}

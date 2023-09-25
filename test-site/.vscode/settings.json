@@ -1,13 +1,16 @@
 {
+  "editor.wordWrap": "on",
   "css.validate": false,
+  "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
   "editor.quickSuggestions": {
     "strings": true
   },
   "tailwindCSS.validate": true,
   "tailwindCSS.experimental.classRegex": [
-    "[cC]lasses\\s*=\\s*\"([^\"]*)\"",
-    ".+[cC]lassName\\s*[:=]\\s*\"([^\"]*)\"",
-    "const\\s+.*[cC]lassName\\s*=\\s*\"([^']*)\""
+    "[cC]lasses\\s*=\\s*['\"]([^'\"]*)['\"]",
+    ".+[cC]lassName\\s*[:=]\\s*['\"]([^'\"]*)['\"]",
+    ".+[cC]lass\\s*[:=]\\s*['\"]([^'\"]*)['\"]",
+    "const\\s+.*[cC]lassName\\s*=\\s*['\"]([^'\"]*)['\"]"
   ],
   "tailwindCSS.lint.cssConflict": "ignore",
   "files.associations": {

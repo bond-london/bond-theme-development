@@ -1,8 +1,8 @@
-import classNames from "classnames";
-import React from "react";
-import { ColourName, lookupColourClassNames } from "@colors";
 import { LinkOrButton } from "@/components/LinkOrButton";
 import { SectionIcon } from "@/components/SectionIcon";
+import { ColourName, lookupColourClassNames } from "@colors";
+import classNames from "classnames";
+import React from "react";
 import { useNestedMenu } from "./MenuUtils";
 import { INavigationItem } from "./NavigationMenu";
 

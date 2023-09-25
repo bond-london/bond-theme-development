@@ -21,7 +21,15 @@
   }
 
   .unknown-component {
-    @apply border-2 border-Red;
+    @apply border-2 border-[#f00];
+  }
+
+  .link {
+    @apply underline hover:text-Red;
+  }
+
+  .section-spacing {
+    @apply bond-row-1-s bond-row-6-s laptop:bond-row-1-m laptop:bond-row-6-m;
   }
 
   ::cue {
@@ -33,11 +41,11 @@
   }
 
   .footer-container {
-    @apply col-span-full justify-between flex flex-col laptop:flex-row;
+    @apply col-span-full flex flex-col justify-between laptop:flex-row;
   }
 
   .menu-button {
-    @apply inline-flex items-center justify-center hover:text-Blue border-b-2 border-transparent hover:border-Blue;
+    @apply inline-flex items-center justify-center border-b-2 border-transparent hover:border-Blue hover:text-Blue;
   }
 
   .menu-icon {
@@ -45,26 +53,26 @@
   }
 
   .filled-menu-button {
-    @apply inline-flex items-center justify-center py-xxs px-s hover:text-white;
+    @apply hover:text-white inline-flex items-center justify-center px-s py-xxs;
   }
 
   .button {
-    @apply h3 inline-flex justify-center rounded-[4px] py-xxs px-s border-2 border-current;
+    @apply h3 inline-flex justify-center rounded-[4px] border-2 border-current px-s py-xxs;
   }
 
   .outlined-button {
-    @apply h3 inline-flex justify-center rounded-[4px] py-xxs px-s border-2 border-current;
+    @apply h3 inline-flex justify-center rounded-[4px] border-2 border-current px-s py-xxs;
   }
 
   .button-primary {
-    @apply h3 inline-flex justify-center rounded-[4px] py-s px-s;
+    @apply h3 inline-flex justify-center rounded-[4px] px-s py-s;
   }
 
   .paginator-current {
     @apply rounded-full bg-Blue text-Black;
   }
   .paginator-other {
-    @apply rounded-full border-Blue border-2 text-White;
+    @apply rounded-full border-2 border-Blue text-White;
   }
 }
 table.lined tbody tr {
@@ -74,3 +82,12 @@ table.lined tbody tr {
 table.lined td {
   @apply py-xs pr-xs align-top laptop:align-middle;
 }
+
+/* Uncomment to show outlines around everything to detect overflow */
+/* * {
+  outline: 1px solid #f00 !important;
+} */
+
+/* section {
+  outline: 1px solid #f00 !important;
+} */

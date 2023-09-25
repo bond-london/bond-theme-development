@@ -1,9 +1,9 @@
 import { BondVisual, IBondVisual } from "@bond-london/gatsby-theme";
 import React from "react";
 import {
-  PlayButton,
-  PauseButton,
   MuteButton,
+  PauseButton,
+  PlayButton,
   UnmuteButton,
 } from "./VideoControls";
 
@@ -19,7 +19,7 @@ export const SectionVisual: React.FC<{
       visual={visual}
       autoPlay={autoPlay}
       muted={!autoPlay}
-      className={className}
+      className={className ?? "col-span-full"}
       showControls={true}
       playButton={PlayButton}
       pauseButton={PauseButton}

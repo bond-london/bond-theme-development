@@ -5,12 +5,7 @@ export const ConstrainedImageAssetFragment = graphql`
   fragment ConstrainedImageAsset on GraphCMS_Asset {
     id
     mimeType
-    gatsbyImage(
-      width: 3840
-      placeholder: BLURRED
-      cropFocus: FACES
-      layout: CONSTRAINED
-    )
+    gatsbyImageData(width: 3840, placeholder: BLURRED, layout: CONSTRAINED)
     localFile {
       ...ConstrainedSvgFile
     }
@@ -21,12 +16,7 @@ export const FixedImageAssetFragment = graphql`
   fragment FixedImageAsset on GraphCMS_Asset {
     id
     mimeType
-    gatsbyImage(
-      width: 3840
-      placeholder: BLURRED
-      cropFocus: FACES
-      layout: FIXED
-    )
+    gatsbyImageData(width: 3840, placeholder: BLURRED, layout: FIXED)
     localFile {
       ...FixedSvgFile
     }
@@ -37,12 +27,7 @@ export const FullWidthImageAssetFragment = graphql`
   fragment FullWidthImageAsset on GraphCMS_Asset {
     id
     mimeType
-    gatsbyImage(
-      width: 3840
-      placeholder: BLURRED
-      cropFocus: FACES
-      layout: FULL_WIDTH
-    )
+    gatsbyImageData(width: 3840, placeholder: BLURRED, layout: FULL_WIDTH)
     localFile {
       ...FullWidthSvgFile
     }
@@ -125,7 +110,7 @@ export const SeoImageAssetFragment = graphql`
 export const EmbedFeaturedImageAssetFragment = graphql`
   fragment EmbedFeaturedImageAsset on GraphCMS_Asset {
     id
-    gatsbyImage(layout: FULL_WIDTH, width: 3840, placeholder: BLURRED)
+    gatsbyImageData(layout: FULL_WIDTH, width: 3840, placeholder: BLURRED)
   }
 `;
 

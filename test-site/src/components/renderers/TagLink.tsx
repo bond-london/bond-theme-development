@@ -1,5 +1,5 @@
 import { getTagPath } from "@/cms/CmsTag";
-import { convertCmsImageToImageData } from "@bond-london/gatsby-theme";
+import { convertCmsAssetToImageData } from "@bond-london/gatsby-theme";
 import { Link } from "gatsby";
 import React from "react";
 import { EmbedLink } from "./EmbedLink";
@@ -7,7 +7,11 @@ import { EmbedLink } from "./EmbedLink";
 export const TagLink: React.FC<{ fragment: Queries.CmsTagLinkFragment }> = ({
   fragment,
 }) => {
-  return <Link to={getTagPath(fragment)?.to}>{fragment.title}</Link>;
+  return (
+    <Link className="link" to={getTagPath(fragment)?.to}>
+      {fragment.title}
+    </Link>
+  );
 };
 
 export const TagEmbedLink: React.FC<{
@@ -15,7 +19,7 @@ export const TagEmbedLink: React.FC<{
   isInline?: boolean;
   fragment: Queries.CmsTagLinkFragment;
 }> = ({ fragment, className, isInline }) => {
-  const image = convertCmsImageToImageData(fragment.embedImage);
+  const image = convertCmsAssetToImageData(fragment.embedImage);
   if (!isInline && image) {
     return (
       <EmbedLink

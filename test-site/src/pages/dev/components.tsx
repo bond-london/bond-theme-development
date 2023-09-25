@@ -1,9 +1,9 @@
+import { SectionHeading } from "@/components/SectionHeading";
+import { DevPageLayout } from "@/layouts/DevPageLayout";
 import { Section } from "@bond-london/gatsby-theme";
 import slugify from "@sindresorhus/slugify";
 import { graphql, Link, PageProps } from "gatsby";
 import React from "react";
-import { SectionHeading } from "@/components/SectionHeading";
-import { DevPageLayout } from "@/layouts/DevPageLayout";
 
 const ComponentsPage: React.FC<PageProps<Queries.ComponentsQuery>> = (
   props,

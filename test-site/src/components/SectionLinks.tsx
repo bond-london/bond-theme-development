@@ -8,7 +8,13 @@ export const SectionLinks: React.FC<{
   separator?: boolean;
   iconHeightClassName?: string;
   className?: string;
-}> = ({ links, vertical, separator, iconHeightClassName, className }) => {
+}> = ({
+  links,
+  vertical,
+  separator,
+  iconHeightClassName,
+  className = "col-span-full",
+}) => {
   if (links.length === 0) return null;
 
   return (

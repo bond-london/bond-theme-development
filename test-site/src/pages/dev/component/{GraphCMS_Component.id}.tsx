@@ -1,7 +1,7 @@
-import React from "react";
-import { graphql, PageProps } from "gatsby";
 import { CmsComponent } from "@/cms/CmsComponent";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
+import { graphql, PageProps } from "gatsby";
+import React from "react";
 
 const SingleComponentPage: React.FC<
   PageProps<

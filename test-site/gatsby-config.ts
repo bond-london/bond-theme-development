@@ -1,6 +1,6 @@
-import type { GatsbyConfig } from "gatsby";
 import type { IBondThemeOptions } from "@bond-london/gatsby-theme";
-import { siteUrl, allowIndex, isProduction, showDevPages } from "./gatsby-env";
+import type { GatsbyConfig } from "gatsby";
+import { allowIndex, isProduction, showDevPages, siteUrl } from "./gatsby-env";
 
 function readEnvVar(envVarName: string): string {
   // eslint-disable-next-line node/no-process-env

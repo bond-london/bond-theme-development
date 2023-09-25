@@ -1,6 +1,6 @@
+import { convertText } from "@/utils";
 import classNames from "classnames";
 import React from "react";
-import { convertText } from "@/utils";
 
 export const SectionHeading: React.FC<{
   className?: string;

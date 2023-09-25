@@ -1,7 +1,7 @@
-import { BondVisual, Section } from "@bond-london/gatsby-theme";
-import React from "react";
 import { calculateArticleLinkPath } from "@/cms/CmsArticle";
+import { BondVisual, Section } from "@bond-london/gatsby-theme";
 import { ColourName, lookupColourClassNames } from "@colors";
+import React from "react";
 import { SimpleLink } from "./LinkOrButton";
 
 const ArticleListEntry: React.FC<{

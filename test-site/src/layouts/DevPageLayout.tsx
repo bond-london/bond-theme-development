@@ -1,9 +1,9 @@
-import { Section } from "@bond-london/gatsby-theme";
-import { Link, Slice } from "gatsby";
-import React, { PropsWithChildren } from "react";
 import { CmsFooter } from "@/cms/CmsFooter";
 import { CmsNavigationMenu } from "@/cms/CmsNavigationMenu";
 import { SectionHeading } from "@/components/SectionHeading";
+import { Section } from "@bond-london/gatsby-theme";
+import { Link, Slice } from "gatsby";
+import React, { PropsWithChildren } from "react";
 
 const pages: Array<{ title: string; path: string }> = [
   { title: "Development", path: "/dev" },

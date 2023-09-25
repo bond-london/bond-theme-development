@@ -1,8 +1,8 @@
+import { LinkOrButton } from "@/components/LinkOrButton";
 import { Section } from "@bond-london/gatsby-theme";
+import { lookupColourClassNames } from "@colors";
 import classNames from "classnames";
 import React from "react";
-import { lookupColourClassNames } from "@colors";
-import { LinkOrButton } from "@/components/LinkOrButton";
 import { INavigation } from "./NavigationBar";
 import { INavigationItem } from "./NavigationMenu";
 

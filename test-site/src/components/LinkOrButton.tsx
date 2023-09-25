@@ -1,14 +1,13 @@
 "use client";
 import { IBondImage, IBondVisual } from "@bond-london/gatsby-theme";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
+import { ColourName, lookupColourClassNames } from "@colors";
 import classNames from "classnames";
 import { Link } from "gatsby";
 import React, { ButtonHTMLAttributes, PropsWithChildren } from "react";
-import { ColourName, lookupColourClassNames } from "@colors";
-import { SectionIcon } from "./SectionIcon";
 import { ICoreComponent } from "./GenericComponent";
+import { SectionIcon } from "./SectionIcon";
 
-// eslint-disable-next-line import/no-unused-modules
 export interface ILinkInformation {
   id: string;
   internal?: string;
@@ -106,7 +105,7 @@ export const LinkOrButton: React.FC<{
   allowEmpty,
   isButton: setIsButton,
   isOutlined: setIsOutlined,
-  linkClassName,
+  linkClassName = "link",
   iconFirst,
   type,
   sameTab,

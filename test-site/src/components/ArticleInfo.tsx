@@ -1,13 +1,13 @@
-import { Section } from "@bond-london/gatsby-theme";
-import { IComponentInformation } from "./GenericComponent";
-import React, { useContext } from "react";
-import { lookupColourClassNames } from "@colors";
 import { ArticleContext } from "@/cms/CmsArticleLayout";
-import { Link } from "gatsby";
 import { getTagPath } from "@/cms/CmsTag";
+import { Section } from "@bond-london/gatsby-theme";
 import { IRichTextInformation } from "@bond-london/graphcms-rich-text";
-import { RTF } from "./RTF";
+import { lookupColourClassNames } from "@colors";
 import classNames from "classnames";
+import { Link } from "gatsby";
+import React, { useContext } from "react";
+import { IComponentInformation } from "./GenericComponent";
+import { RTF } from "./RTF";
 
 const ArticleDetails: React.FC<{
   client: string;
@@ -56,19 +56,13 @@ const ArticleDetails: React.FC<{
 
 const ArticleInfoComponent: React.FC<{
   information: IComponentInformation;
-}> = ({
-  information: {
-    name,
-    heading,
-    postHeading,
-    textColour,
-    backgroundColour,
-    body,
-  },
-}) => {
+}> = ({ information }) => {
+  const { name, heading, postHeading, textColour, backgroundColour, body } =
+    information;
   return (
     <Section
       componentName="Article info"
+      information={information}
       sectionClassName={lookupColourClassNames(backgroundColour, textColour)}
       contentClassName="my-m laptop:my-xl"
     >

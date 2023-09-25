@@ -17,6 +17,9 @@ const Hero: React.FC<{
     links,
     backgroundColour,
     textColour,
+    index,
+    isFirst,
+    isLast,
   } = information;
   if (information.visual) {
     return <VisualHero information={information} isGrey={isGrey} />;
@@ -33,6 +36,9 @@ const Hero: React.FC<{
       textColour={textColour}
       backgroundColour={backgroundColour}
       isGrey={isGrey}
+      index={index}
+      isFirst={isFirst}
+      isLast={isLast}
     />
   );
 };

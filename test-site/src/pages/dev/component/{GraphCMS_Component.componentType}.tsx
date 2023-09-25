@@ -1,10 +1,10 @@
-import React, { Fragment } from "react";
-import { graphql, Link, PageProps } from "gatsby";
-import { DevPageLayout } from "@/layouts/DevPageLayout";
 import { CmsComponent } from "@/cms/CmsComponent";
-import { Section } from "@bond-london/gatsby-theme";
 import { SectionHeading } from "@/components/SectionHeading";
+import { DevPageLayout } from "@/layouts/DevPageLayout";
+import { Section } from "@bond-london/gatsby-theme";
 import slugify from "@sindresorhus/slugify";
+import { graphql, Link, PageProps } from "gatsby";
+import React, { Fragment } from "react";
 
 const ComponentTypePage: React.FC<
   PageProps<

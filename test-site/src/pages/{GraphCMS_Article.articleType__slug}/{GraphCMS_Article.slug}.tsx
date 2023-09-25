@@ -1,7 +1,7 @@
 import { CmsArticleLayout } from "@/cms/CmsArticleLayout";
 import { PageHead } from "@/components/PageHead";
 import {
-  convertCmsImageToImageData,
+  convertCmsAssetToImageData,
   IPageMetadata,
 } from "@bond-london/gatsby-theme";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
@@ -24,7 +24,7 @@ export const Head: HeadFC<Queries.SingleArticleQuery> = (props) => {
     title: graphCmsArticle.title,
     noIndex: !graphCmsArticle.indexed,
     description: graphCmsArticle.description,
-    image: convertCmsImageToImageData(graphCmsArticle.seoImage),
+    image: convertCmsAssetToImageData(graphCmsArticle.seoImage),
   };
 
   return <PageHead headProps={props} page={pageMetadata} />;

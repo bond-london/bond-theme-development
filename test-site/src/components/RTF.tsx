@@ -15,12 +15,12 @@ import {
   ArticleTypeEmbedLink,
   ArticleTypeLink,
 } from "./renderers/ArticleTypeLink";
-import { PageEmbedLink, PageLink } from "./renderers/PageLink";
-import { TagEmbedLink, TagLink } from "./renderers/TagLink";
-import { Link } from "./renderers/Link";
-import { RenderSpecial } from "./renderers/RenderSpecialTable";
 import { CodeOrActionRenderer } from "./renderers/CodeOrActionRenderer";
+import { Link } from "./renderers/Link";
+import { PageEmbedLink, PageLink } from "./renderers/PageLink";
+import { RenderSpecial } from "./renderers/RenderSpecialTable";
 import { RenderVisual } from "./renderers/RenderVisual";
+import { TagEmbedLink, TagLink } from "./renderers/TagLink";
 
 export const defaultProjectClassNameOverrides: ClassNameOverrides = {
   a: "text-Blue underline decoration-Blue",

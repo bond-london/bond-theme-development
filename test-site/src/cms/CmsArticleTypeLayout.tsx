@@ -4,7 +4,7 @@ import { SimpleHero } from "@/components/SimpleHero";
 import { combineComponents } from "@/utils";
 import {
   convertCmsAssetToBondVisual,
-  convertCmsImageToImageData,
+  convertCmsAssetToImageData,
   IPageMetadata,
 } from "@bond-london/gatsby-theme";
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
@@ -28,7 +28,7 @@ export const CmsArticleTypeHead: HeadFC<Queries.ArticleTypeListQuery> = (
   const pageMetadata: IPageMetadata = {
     title: graphCmsArticleType.title,
     description: graphCmsArticleType.description,
-    image: convertCmsImageToImageData(graphCmsArticleType.seoImage),
+    image: convertCmsAssetToImageData(graphCmsArticleType.seoImage),
   };
 
   return <PageHead headProps={props} page={pageMetadata} />;
@@ -87,6 +87,8 @@ export const CmsArticleTypeLayout: React.FC<
         <>
           <CmsContent
             fragment={combineComponents(topContent, template?.preContent)}
+            offset={0}
+            isFirst={true}
             isLast={false}
           />
         </>
@@ -96,6 +98,9 @@ export const CmsArticleTypeLayout: React.FC<
           visual={convertCmsAssetToBondVisual(featuredImage)}
           backgroundColour={backgroundColour}
           textColour={textColour}
+          index={0}
+          isFirst={true}
+          isLast={false}
         />
       )}
 
@@ -110,7 +115,12 @@ export const CmsArticleTypeLayout: React.FC<
         currentPage={currentPage}
         buildLink={buildLink}
       />
-      <CmsContent fragment={template?.postContent} offset={1} />
+      <CmsContent
+        fragment={template?.postContent}
+        offset={1}
+        isFirst={false}
+        isLast={true}
+      />
 
       <CmsFooter page={footer ?? template?.footer} />
     </div>

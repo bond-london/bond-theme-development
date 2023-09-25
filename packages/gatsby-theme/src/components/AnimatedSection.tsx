@@ -9,6 +9,8 @@ import { createIntersectionObserver } from "../hooks";
 import {
   calculateSectionContainerClassNames,
   calculateSectionContentClassNames,
+  expandInformation,
+  ISectionInformation,
 } from "./Section";
 
 function triggerAnimation(element: HTMLElement): void {
@@ -18,7 +20,6 @@ function triggerAnimation(element: HTMLElement): void {
 
 export const AnimatedSection: React.FC<
   PropsWithChildren<{
-    id?: string;
     componentName: string;
     animationClassName?: string;
     sectionGridClassName?: string;
@@ -33,9 +34,9 @@ export const AnimatedSection: React.FC<
     element?: keyof JSX.IntrinsicElements;
     preChildren?: React.ReactNode;
     postChildren?: React.ReactNode;
+    information?: ISectionInformation | null;
   }>
 > = ({
-  id,
   componentName,
   sectionGridClassName,
   sectionClassName,
@@ -51,6 +52,7 @@ export const AnimatedSection: React.FC<
   preChildren,
   postChildren,
   animationClassName,
+  information,
 }) => {
   const ref = useRef<HTMLElement>(null);
   useEffect(() => {
@@ -70,10 +72,8 @@ export const AnimatedSection: React.FC<
   return createElement(
     element,
     {
-      id,
       ref,
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      "data-component": componentName,
+      ...expandInformation(componentName, information),
       className: calculateSectionContainerClassNames(
         {
           sectionGridClassName,

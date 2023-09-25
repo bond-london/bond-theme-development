@@ -1,19 +1,14 @@
-import { convertCmsAssetToBondVisual } from "@bond-london/gatsby-theme";
-import { graphql } from "gatsby";
 import { INavigation } from "@/components/Navigation/NavigationBar";
 import { INavigationItem } from "@/components/Navigation/NavigationMenu";
+import { arrayOrUndefined } from "@/utils";
+import { convertCmsAssetToBondVisual } from "@bond-london/gatsby-theme";
+import { graphql } from "gatsby";
 import { convertCMSInternalLink } from "./CmsLink";
 
 type NavigationItemFragment = Queries.CmsNavigationItemCoreFragment & {
   navigationItems: ReadonlyArray<Queries.CmsNavigationItemCoreFragment> | null;
 };
 
-function arrayOrUndefined<T>(array?: ReadonlyArray<T>) {
-  if (array && array.length > 0) {
-    return array;
-  }
-  return undefined;
-}
 function convertCmsNavigationItem({
   id,
   title,
@@ -83,7 +78,15 @@ export const CmsNavigationItemCoreFragment = graphql`
     isButton
     isOutlined
     icon {
-      ...ConstrainedImageAsset
+      id
+      mimeType
+      gatsbyImageData(layout: CONSTRAINED, width: 256, placeholder: NONE)
+      localFile {
+        internal {
+          mediaType
+        }
+        ...ConstrainedSvgFile
+      }
       ...ConstrainedAnimationAsset
     }
   }

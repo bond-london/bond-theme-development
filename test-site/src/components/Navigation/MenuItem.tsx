@@ -1,6 +1,6 @@
-import React from "react";
-import { ColourName } from "@colors";
 import { LinkOrButton } from "@/components/LinkOrButton";
+import { ColourName } from "@colors";
+import React from "react";
 import { INavigationItem } from "./NavigationMenu";
 import { NestedMenu } from "./NestedMenu";
 

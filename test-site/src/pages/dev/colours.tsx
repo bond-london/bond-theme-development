@@ -1,11 +1,11 @@
 import React from "react";
 
+import { PageHead } from "@/components/PageHead";
+import { colours } from "@/design";
+import { DevPageLayout } from "@/layouts/DevPageLayout";
+import { IPageMetadata, Section } from "@bond-london/gatsby-theme";
 import classNames from "classnames";
 import { HeadFC } from "gatsby";
-import { colours } from "@/design";
-import { IPageMetadata, Section } from "@bond-london/gatsby-theme";
-import { PageHead } from "@/components/PageHead";
-import { DevPageLayout } from "@/layouts/DevPageLayout";
 
 const name = "Website Color Palette";
 
@@ -18,7 +18,7 @@ const Colours: React.FC = () => {
             key={key}
             className={classNames(
               "aspect-w-1 aspect-h-1 col-span-2",
-              key === "grey-900" && "text-Black",
+              key === "grey-900" && "text-[#000]",
             )}
             style={{ backgroundColor: value }}
           >

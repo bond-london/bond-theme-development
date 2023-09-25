@@ -1,7 +1,7 @@
 import { Unsupported } from "@bond-london/graphcms-rich-text/src/Unsupported";
+import { lookupColourClassNames } from "@colors";
 import classNames from "classnames";
 import React from "react";
-import { lookupColourClassNames } from "@colors";
 import { ArticleLink } from "./ArticleLink";
 import { ArticleTypeLink } from "./ArticleTypeLink";
 import { PageLink } from "./PageLink";

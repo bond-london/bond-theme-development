@@ -1,10 +1,10 @@
-import { graphql, PageProps } from "gatsby";
-import React from "react";
 import {
   CmsArticleTypeHead,
   CmsArticleTypeLayout,
 } from "@/cms/CmsArticleTypeLayout";
 import { ArticleList } from "@/components/ArticleList";
+import { PageProps, graphql } from "gatsby";
+import React from "react";
 
 const Layout: React.FC<PageProps<Queries.ArticleTypeListQuery>> = (props) => (
   <CmsArticleTypeLayout {...props} noHero={true}>

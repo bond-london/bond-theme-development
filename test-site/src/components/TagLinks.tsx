@@ -1,20 +1,21 @@
-import React from "react";
 import { Section } from "@bond-london/gatsby-theme";
+import { lookupColourClassNames } from "@colors";
+import { Link } from "gatsby";
+import React from "react";
 import {
   GenericComponentInside,
   IComponentInformation,
 } from "./GenericComponent";
-import { lookupColourClassNames } from "@colors";
 import { SectionBody } from "./SectionBody";
 import { SectionHeading } from "./SectionHeading";
 import { SectionIcon } from "./SectionIcon";
 import { SectionLinks } from "./SectionLinks";
 import { SectionVisual } from "./SectionVisual";
-import { Link } from "gatsby";
 
 const TagLinksComponent: React.FC<{ information: IComponentInformation }> = ({
-  information: {
-    anchor,
+  information,
+}) => {
+  const {
     backgroundColour,
     textColour,
     heading,
@@ -26,12 +27,11 @@ const TagLinksComponent: React.FC<{ information: IComponentInformation }> = ({
     contents,
     visual,
     icon,
-  },
-}) => {
+  } = information;
   return (
     <Section
       componentName="Tag links"
-      id={anchor ?? undefined}
+      information={information}
       sectionClassName={lookupColourClassNames(backgroundColour, textColour)}
       sectionColumnsClassName="grid col-start-2 laptop:columns-3 grid-gap"
       contentClassName="my-l laptop:my-3xl"

@@ -1,24 +1,24 @@
 // Try not to change this file. For new components edit tryHandleCustomComponent
-import { graphql } from "gatsby";
-import React from "react";
 import {
   GenericComponent,
   IComponentInformation,
   IContentComponent,
   ICoreComponent,
 } from "@/components/GenericComponent";
-import { getRTFInformation } from "@bond-london/graphcms-rich-text";
-import {
-  convertCmsAssetToBondVisual,
-  convertCmsVisualToBondVisual,
-} from "@bond-london/gatsby-theme";
-import { convertCmsLink, convertCmsReference } from "./CmsLink";
-import { tryHandleCustomComponent } from "./CustomCmsComponent";
 import {
   TextConverter,
   defaultTextConverter,
   usePageContext,
 } from "@/components/PageContext";
+import {
+  convertCmsAssetToBondVisual,
+  convertCmsVisualToBondVisual,
+} from "@bond-london/gatsby-theme";
+import { getRTFInformation } from "@bond-london/graphcms-rich-text";
+import { graphql } from "gatsby";
+import React from "react";
+import { convertCmsLink, convertCmsReference } from "./CmsLink";
+import { tryHandleCustomComponent } from "./CustomCmsComponent";
 
 export function convertCmsCoreComponent(
   {
@@ -48,6 +48,9 @@ export function convertCmsCoreComponent(
 function convertCmsContentComponent(
   fragment: Omit<Queries.CmsContentComponentFragment, "__typename">,
   convertText: TextConverter,
+  index: number,
+  isFirst: boolean,
+  isLast: boolean,
 ): IContentComponent {
   const { anchor, body, icon, links } = fragment;
   return {
@@ -58,21 +61,41 @@ function convertCmsContentComponent(
       dontCrop: true,
     }),
     links: links?.length ? links.map(convertCmsLink) : undefined,
+    index,
+    isFirst,
+    isLast,
   };
 }
 
 function convertCmsComponentInformation(
   fragment: Queries.CmsComponentFragment,
   convertText: TextConverter,
+  index: number,
+  isFirst: boolean,
+  isLast: boolean,
 ): IComponentInformation {
   const { contents, internalReferences } = fragment;
   return {
-    ...convertCmsContentComponent(fragment, convertText),
+    ...convertCmsContentComponent(
+      fragment,
+      convertText,
+      index,
+      isFirst,
+      isLast,
+    ),
     internalReferences: internalReferences?.length
       ? internalReferences.map(convertCmsReference)
       : undefined,
     contents: contents?.length
-      ? contents.map((f) => convertCmsContentComponent(f, convertText))
+      ? contents.map((f, index, array) =>
+          convertCmsContentComponent(
+            f,
+            convertText,
+            index,
+            isFirst && index === 0,
+            isLast && index === array.length - 1,
+          ),
+        )
       : undefined,
   };
 }
@@ -84,17 +107,17 @@ export const CmsComponent: React.FC<{
   isLast: boolean;
 }> = ({ fragment, index, isFirst, isLast }) => {
   const { convertText } = usePageContext();
-  const converted = convertCmsComponentInformation(fragment, convertText);
-  const componentType = fragment.componentType;
-  const element = tryHandleCustomComponent(
-    converted,
-    componentType,
+  const converted = convertCmsComponentInformation(
+    fragment,
+    convertText,
     index,
     isFirst,
     isLast,
   );
+  const componentType = fragment.componentType;
+  const element = tryHandleCustomComponent(converted, componentType);
   if (typeof element === "undefined") {
-    switch (componentType) {
+    switch (componentType as string) {
       case "Unknown":
         return (
           <GenericComponent

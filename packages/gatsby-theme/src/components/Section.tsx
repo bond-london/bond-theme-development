@@ -8,7 +8,7 @@ function calculateSectionGridClassName(
   if (sectionGridClassName) return sectionGridClassName;
   if (collapse)
     return "relative w-full container-rows-grid bond-row-1-0 bond-row-6-0 container-cols-grid";
-  return "relative w-full container-rows-grid container-cols-grid";
+  return "relative w-full container-rows-grid container-cols-grid section-spacing";
 }
 
 export function calculateSectionContainerClassNames(

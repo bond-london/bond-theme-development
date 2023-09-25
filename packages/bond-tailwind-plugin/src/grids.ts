@@ -19,17 +19,14 @@ function addContainerGrid(
       .map(v => v.breakpoint)
       .filter(v => v) as ReadonlyArray<number>),
   );
-  if (typeof config.spacing.section === "undefined") {
-    throw new Error("Need a config spacing section defined");
-  }
   helpers.addUtilities({
     ".container-rows-grid": {
-      "--bond-container-row-1": calculateRemSize(config.spacing.section),
+      "--bond-container-row-1": "0fr",
       "--bond-container-row-2": "1fr",
       "--bond-container-row-3": "1fr",
       "--bond-container-row-4": "1fr",
       "--bond-container-row-5": "1fr",
-      "--bond-container-row-6": calculateRemSize(config.spacing.section),
+      "--bond-container-row-6": "0fr",
       "grid-template-rows": `var(--bond-container-row-1) var(--bond-container-row-2) var(--bond-container-row-3) var(--bond-container-row-4) var(--bond-container-row-5) var(--bond-container-row-6)`,
     },
   });

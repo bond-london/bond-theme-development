@@ -35,7 +35,7 @@ export interface IBondConfigurationOptions {
   colorOpposites?: Record<string, string>;
   sizes: Record<string, ISizeInformation>;
   fontTable: Record<string, IFontTableEntry & Record<string, string | number>>;
-  spacing: { section: number; [spacing: string]: number };
+  spacing: { section: number };
   lineHeight?: number;
 }
 

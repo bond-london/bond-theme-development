@@ -13,6 +13,13 @@ import { configureTheme } from "./theme";
 import { buildTypography } from "./typography";
 import { addExtraVariants } from "./variants";
 
+export type ExtendedPluginAPI = PluginAPI & {
+  addDefaults: (
+    group: string,
+    declarations: Record<string, string | Array<string>>,
+  ) => void;
+};
+
 export interface ISizeInformation {
   breakpoint?: number;
   margin?: number;
@@ -35,7 +42,7 @@ export interface IBondConfigurationOptions {
   colorOpposites?: Record<string, string>;
   sizes: Record<string, ISizeInformation>;
   fontTable: Record<string, IFontTableEntry & Record<string, string | number>>;
-  spacing: { section: number };
+  spacing: Record<string, number>;
   lineHeight?: number;
 }
 
@@ -46,8 +53,13 @@ const configure = withOptions(
     helpers.addBase({
       ".icon-container > :first-child": { width: "auto", height: "100%" },
     });
+    (helpers as ExtendedPluginAPI).addDefaults("bond-spacing", {
+      "--bond-line-height": "1rem",
+      "--bond-font-size": "1rem",
+      "--bond-bottom-font-offset": "0.1rem",
+    });
     /* eslint-enable @typescript-eslint/naming-convention */
-    buildGrid(helpers, config);
+    buildGrid(helpers as ExtendedPluginAPI, config);
     addFontSizes(helpers, config);
     addAnimationUtilities(helpers);
     addBorderSpacing(helpers);

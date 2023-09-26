@@ -92,6 +92,7 @@ function addFontEntry(
   results[`.text-${name}`] = {
     "font-size": sizeRem,
     "line-height": lineHeightRem,
+    "@defaults bond-spacing": {},
     "--bond-line-height": lineHeightRem,
     "--bond-font-size": sizeRem,
     "--bond-bottom-font-offset": bottomFontOffsetRem,
@@ -104,6 +105,7 @@ function addFontEntry(
     results[`.text-max-${name}`] = {
       "font-size": `${round(ratio)}vw`,
       "line-height": `${round(lineHeightRatio)}vw`,
+      "@defaults bond-spacing": {},
       "--bond-line-height": `${round(ratio)}vw`,
       "--bond-font-size": `${round(ratio)}vw`,
       "--bond-bottom-font-offset": `${round(bottomFontOffsetRatio)}vw`,

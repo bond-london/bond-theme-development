@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { CSSRuleObject, PluginAPI } from "tailwindcss/types/config";
-import { IBondConfigurationOptions } from ".";
+import { CSSRuleObject } from "tailwindcss/types/config";
+import { ExtendedPluginAPI, IBondConfigurationOptions } from ".";
 import {
   calculateNumbers,
   calculateRemSize,
@@ -10,7 +10,7 @@ import {
 } from "./utils";
 
 function addContainerGrid(
-  helpers: PluginAPI,
+  helpers: ExtendedPluginAPI,
   config: IBondConfigurationOptions,
 ): void {
   const noMax = !Object.values(config.sizes).find(v => v.max);
@@ -19,14 +19,17 @@ function addContainerGrid(
       .map(v => v.breakpoint)
       .filter(v => v) as ReadonlyArray<number>),
   );
+  helpers.addDefaults("container-rows", {
+    "--bond-container-row-1": "0fr",
+    "--bond-container-row-2": "1fr",
+    "--bond-container-row-3": "1fr",
+    "--bond-container-row-4": "1fr",
+    "--bond-container-row-5": "1fr",
+    "--bond-container-row-6": "0fr",
+  });
   helpers.addUtilities({
     ".container-rows-grid": {
-      "--bond-container-row-1": "0fr",
-      "--bond-container-row-2": "1fr",
-      "--bond-container-row-3": "1fr",
-      "--bond-container-row-4": "1fr",
-      "--bond-container-row-5": "1fr",
-      "--bond-container-row-6": "0fr",
+      "@defaults container-rows": {},
       "grid-template-rows": `var(--bond-container-row-1) var(--bond-container-row-2) var(--bond-container-row-3) var(--bond-container-row-4) var(--bond-container-row-5) var(--bond-container-row-6)`,
     },
   });
@@ -77,7 +80,7 @@ function addContainerGrid(
 }
 
 export function buildGrid(
-  helpers: PluginAPI,
+  helpers: ExtendedPluginAPI,
   config: IBondConfigurationOptions,
 ): void {
   addContainerGrid(helpers, config);

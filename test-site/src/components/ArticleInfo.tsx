@@ -20,7 +20,7 @@ const ArticleDetails: React.FC<{
   return (
     <div
       className={classNames(
-        "col-span-full border-t border-t-current grid grid-cols-1 mt-xs pt-xxs grid-gap gap-y-s",
+        "grid-gap col-span-full mt-xs grid grid-cols-1 gap-y-s border-t border-t-current pt-xxs",
         body ? "laptop:grid-cols-[1fr_1fr]" : "laptop:grid-cols-[1fr_2fr]",
       )}
     >
@@ -29,16 +29,16 @@ const ArticleDetails: React.FC<{
         {body ? (
           <RTF
             content={body}
-            className="p2 lighter laptop:mr-laptop-half-col"
+            className="lighter p2 laptop:mr-laptop-half-col"
           />
         ) : (
-          <p className="p2 lighter">{client}</p>
+          <p className="lighter p2">{client}</p>
         )}
       </div>
       {hasTags && (
         <div className="laptop:col-start-2">
           <h3 className="p2">Contributions</h3>
-          <ul className="laptop:columns-2 laptop:grid-gap p2 no-underline">
+          <ul className="p2 no-underline laptop:grid-gap laptop:columns-2">
             {tags.map((tag) => {
               const { to } = getTagPath(tag);
               return (
@@ -68,7 +68,7 @@ const ArticleInfoComponent: React.FC<{
     >
       {heading && <h1 className="h1 col-span-full">{heading}</h1>}
       {postHeading && (
-        <h2 className="h1 lighter col-span-full">{postHeading}</h2>
+        <h2 className="lighter h1 col-span-full">{postHeading}</h2>
       )}
       <ArticleDetails client={name} body={body} />
     </Section>

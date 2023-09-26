@@ -34,7 +34,7 @@ export const NestedMenu: React.FC<{
     <div
       data-component="Nested menu"
       className={classNames(
-        "inline-flex flex-col laptop:flex-row items-start gap-y-xs",
+        "inline-flex flex-col items-start gap-y-xs laptop:flex-row",
         className,
       )}
       onMouseEnter={handleMouseEnter}
@@ -46,12 +46,12 @@ export const NestedMenu: React.FC<{
       </button>
       <div
         className={classNames(
-          "relative laptop:absolute flex items-start transition-all laptop:top-m laptop:right-0 laptop:justify-end overflow-hidden",
+          "relative flex items-start overflow-hidden transition-all laptop:absolute laptop:right-0 laptop:top-m laptop:justify-end",
           lookupColourClassNames(backgroundColour, textColour),
           active ? "laptop:max-h-screen" : "laptop:max-h-0",
         )}
       >
-        <ul className="flex flex-col laptop:flex-row gap-y-xs ml-xs">
+        <ul className="ml-xs flex flex-col gap-y-xs laptop:flex-row">
           {item.entries?.map((i) => (
             <li key={i.name} className="laptop:px-s laptop:py-xs">
               <LinkOrButton onClick={closeMenu} information={i} />

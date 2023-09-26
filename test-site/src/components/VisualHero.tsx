@@ -29,15 +29,15 @@ export const VisualHero: React.FC<{
       information={information}
       className={classNames(
         lookupColourClassNames(backgroundColour, textColour),
-        "h-0 relative w-full container-cols-grid",
+        "container-cols-grid relative h-0 w-full",
       )}
       style={{
         paddingBottom: `${Math.floor(100 * (size.height / size.width))}%`,
       }}
     >
-      <div className="absolute top-0 left-0 bottom-0 right-0 grid container-cols-grid">
+      <div className="container-cols-grid absolute bottom-0 left-0 right-0 top-0 grid">
         {visual && <HeroBackground visual={visual} isGrey={isGrey} />}
-        <div className="relative flex flex-col gap-y-s laptop:gap-y-m col-start-2 justify-center">
+        <div className="relative col-start-2 flex flex-col justify-center gap-y-s laptop:gap-y-m">
           <HeroText
             preHeading={preHeading}
             heading={heading}

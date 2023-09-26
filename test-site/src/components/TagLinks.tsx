@@ -58,7 +58,7 @@ const TagLinksComponent: React.FC<{ information: IComponentInformation }> = ({
       )}
 
       {internalReferences && (
-        <ul className="laptop:columns-2 grid-gap laptop:col-start-2 laptop:col-span-2 em-dash h2 list-inside laptop:list-outside">
+        <ul className="em-dash grid-gap h2 list-inside laptop:col-span-2 laptop:col-start-2 laptop:list-outside laptop:columns-2">
           {internalReferences.map((ir) => (
             <li key={ir.id} className="lighter">
               <Link to={ir.internal!}>{ir.name}</Link>

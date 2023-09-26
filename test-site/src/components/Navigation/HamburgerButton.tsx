@@ -8,7 +8,7 @@ const SingleHamburgerLine: React.FC<{ className: string }> = ({
     <svg
       viewBox="0 0 26 2"
       className={classNames(
-        "fill-current absolute block transform transition duration-500 ease-in-out w-[30px]",
+        "absolute block w-[30px] transform fill-current transition duration-500 ease-in-out",
         className,
       )}
       xmlns="http://www.w3.org/2000/svg"

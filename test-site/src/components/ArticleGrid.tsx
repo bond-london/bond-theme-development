@@ -62,7 +62,7 @@ const ArticleGrid: React.FC<{ information: IComponentInformation }> = ({
       {body && <SectionBody content={body} className="col-span-full" />}
       {icon && <SectionIcon icon={icon} />}
       {visual && <SectionVisual visual={visual} className="col-span-full" />}
-      <div className="grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-4 gap-x-xs gap-y-xs laptop:gap-y-s laptop:gap-x-s">
+      <div className="grid grid-cols-1 gap-x-xs gap-y-xs tablet:grid-cols-2 laptop:grid-cols-4 laptop:gap-x-s laptop:gap-y-s">
         {links?.map((link) => <LinkSummary key={link.id} link={link} />)}
         {internalReferences?.map((link) => (
           <LinkSummary key={link.id} link={link} />

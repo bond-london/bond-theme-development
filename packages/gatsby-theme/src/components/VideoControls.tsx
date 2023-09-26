@@ -79,7 +79,7 @@ VideoControls.defaultProps = {
   playButton: ({ playVideo }): JSX.Element => (
     <button
       onClick={playVideo}
-      className="text-[white] p-[0.5rem] bg-[black] text-[3rem]"
+      className="bg-[black] p-[0.5rem] text-[3rem] text-[white]"
     >
       Play
     </button>
@@ -87,7 +87,7 @@ VideoControls.defaultProps = {
   pauseButton: ({ pauseVideo }): JSX.Element => (
     <button
       onClick={pauseVideo}
-      className="text-[white] p-[0.5rem] bg-[black] text-[3rem]"
+      className="bg-[black] p-[0.5rem] text-[3rem] text-[white]"
     >
       Pause
     </button>
@@ -95,7 +95,7 @@ VideoControls.defaultProps = {
   muteButton: ({ muteVideo }): JSX.Element => (
     <button
       onClick={muteVideo}
-      className="text-[white] p-[0.5rem] bg-[black] text-[3rem]"
+      className="bg-[black] p-[0.5rem] text-[3rem] text-[white]"
     >
       Mute
     </button>
@@ -103,7 +103,7 @@ VideoControls.defaultProps = {
   unmuteButton: ({ unmuteVideo }): JSX.Element => (
     <button
       onClick={unmuteVideo}
-      className="text-[white] p-[0.5rem] bg-[black] text-[3rem]"
+      className="bg-[black] p-[0.5rem] text-[3rem] text-[white]"
     >
       Unmute
     </button>

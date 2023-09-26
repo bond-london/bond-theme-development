@@ -10,7 +10,7 @@ export const EmbedLink: React.FC<{
   to: string;
 }> = ({ className, image, title, to }) => {
   return (
-    <div className={classNames(className, "gap-y-xxs flex flex-col")}>
+    <div className={classNames(className, "flex flex-col gap-y-xxs")}>
       <GatsbyImage image={image} alt={title} />
       <Link className="link" to={to}>
         {title}

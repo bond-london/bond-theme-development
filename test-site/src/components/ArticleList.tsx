@@ -13,7 +13,7 @@ const ArticleListEntry: React.FC<{
   return (
     <SimpleLink
       link={{ id, name: title, internal: to }}
-      className="flex flex-col gap-y-xs my-xxs"
+      className="my-xxs flex flex-col gap-y-xs"
     >
       {visual && (
         <BondVisual visual={visual} simple={true} imgClassName="w-full" />

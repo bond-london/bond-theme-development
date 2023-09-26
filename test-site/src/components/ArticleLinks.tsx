@@ -63,7 +63,7 @@ const ArticleLinks: React.FC<{ information: IComponentInformation }> = ({
       {body && <SectionBody content={body} className="col-span-full" />}
       {icon && <SectionIcon icon={icon} />}
       {visual && <SectionVisual visual={visual} className="col-span-full" />}
-      <div className="grid grid-cols-1 tablet:grid-cols-2 grid-gap gap-y-s mt-s">
+      <div className="grid-gap mt-s grid grid-cols-1 gap-y-s tablet:grid-cols-2">
         {links?.map((link) => <LinkSummary key={link.id} link={link} />)}
         {internalReferences?.map((link) => (
           <LinkSummary key={link.id} link={link} />

@@ -32,7 +32,7 @@ export const NavigationMenu: React.FC<{
     <ul
       ref={containerRef}
       className={classNames(
-        "flex flex-col laptop:flex-row gap-s laptop:items-center",
+        "flex flex-col gap-s laptop:flex-row laptop:items-center",
         className,
       )}
     >

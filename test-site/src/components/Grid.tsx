@@ -65,18 +65,18 @@ const Grid: React.FC<{
         headingElement={index === 0 ? "h1" : "h2"}
         postHeadingElement={index === 0 ? "h2" : "h3"}
       />
-      {body && <SectionBody content={body} className="gap-y-xs mt-xxs mb-xl" />}
+      {body && <SectionBody content={body} className="mb-xl mt-xxs gap-y-xs" />}
       {links && (
         <SectionLinks
           links={links}
           vertical={false}
-          className="col-span-full h2 mt-s laptop:mt-l mb-m laptop:mb-xl"
+          className="h2 col-span-full mb-m mt-s laptop:mb-xl laptop:mt-l"
         />
       )}
       {visual && (
         <SectionVisual
           visual={visual}
-          className="w-full my-xs laptop:my-s"
+          className="my-xs w-full laptop:my-s"
           sizes="(max-width: 640px) 100vw, (max-width:1024px) 60vw, 60vw"
           loading="eager"
           autoPlay={true}
@@ -105,19 +105,19 @@ const Grid: React.FC<{
               <div
                 key={id}
                 className={classNames(
-                  "relative overflow-hidden tablet:aspect-w-4 tablet:aspect-h-5",
+                  "relative overflow-hidden tablet:aspect-h-5 tablet:aspect-w-4",
                   lookupColourClassNames(backgroundColour, textColour),
                 )}
               >
                 <div
                   className={classNames(
                     "flex flex-col",
-                    !visual && "my-l laptop:my-xxxl",
+                    !visual && "laptop:my-xxxl my-l",
                   )}
                 >
                   {icon && <SectionIcon icon={icon} />}
                   <SectionHeading
-                    className="laptop:w-laptop-4-cols laptop:mr-laptop-half-col"
+                    className="laptop:mr-laptop-half-col laptop:w-laptop-4-cols"
                     preHeading={preHeading}
                     heading={heading}
                     postHeading={postHeading}
@@ -131,7 +131,7 @@ const Grid: React.FC<{
                   {body && (
                     <SectionBody
                       content={body}
-                      className="gap-y-xs lighter laptop:w-laptop-4-cols laptop:mr-laptop-half-col"
+                      className="lighter gap-y-xs laptop:mr-laptop-half-col laptop:w-laptop-4-cols"
                       fontClassName="p2"
                     />
                   )}

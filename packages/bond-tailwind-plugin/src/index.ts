@@ -7,6 +7,7 @@ import { withOptions } from "tailwindcss/plugin";
 import { PluginAPI } from "tailwindcss/types/config";
 import { addAnimationUtilities } from "./animations";
 import { addBorderSpacing } from "./borders";
+import { buildGradients } from "./colours";
 import { addFontSizes } from "./fonts";
 import { buildGrid } from "./grids";
 import { configureTheme } from "./theme";
@@ -39,6 +40,7 @@ export interface IFontTableEntry {
 export interface IBondConfigurationOptions {
   colorFile?: string;
   colorOptions: Record<string, string>;
+  gradients?: Record<string, string>;
   colorOpposites?: Record<string, string>;
   sizes: Record<string, ISizeInformation>;
   fontTable: Record<string, IFontTableEntry & Record<string, string | number>>;
@@ -65,6 +67,7 @@ const configure = withOptions(
     addBorderSpacing(helpers);
     addExtraVariants(helpers);
     buildTypography(helpers, config);
+    buildGradients(helpers, config);
   },
   (config: IBondConfigurationOptions) => configureTheme(config),
 );

@@ -1,11 +1,32 @@
 import { createHash } from "crypto";
 import { readFileSync, writeFileSync } from "fs-extra";
 import { pascalCase } from "pascal-case";
-import { KeyValuePair } from "tailwindcss/types/config";
+import {
+  CSSRuleObject,
+  KeyValuePair,
+  PluginAPI,
+} from "tailwindcss/types/config";
 import { IBondConfigurationOptions } from ".";
 import { forEachObject } from "./utils";
 
 let cachedContents = "";
+
+export function buildGradients(
+  { addUtilities }: PluginAPI,
+  config: IBondConfigurationOptions,
+): void {
+  if (config.gradients) {
+    const utilities: CSSRuleObject = {};
+
+    forEachObject(config.gradients, ({ key: gradient, value: definition }) => {
+      utilities[`.gradient-${gradient}`] = {
+        [`@apply ${definition}`]: {},
+      };
+    });
+
+    addUtilities(utilities);
+  }
+}
 
 export function buildColours(
   config: IBondConfigurationOptions,
@@ -29,6 +50,7 @@ export function buildColorTable(config: IBondConfigurationOptions): void {
   if (!colorFile) return undefined;
 
   const colors = buildColours(config);
+  const gradients = config.gradients;
 
   const code: Array<string> = [
     `/* eslint-disable */`,
@@ -54,6 +76,46 @@ export function lookupColourString(colour: ColourName, type:ColourType): string 
 }  
 `);
 
+  if (gradients) {
+    code.push("export const gradientTable = {");
+    forEachObject(gradients, ({ key: gradient }) => {
+      code.push(`  "${gradient}": "gradient-${gradient}",`);
+    });
+    code.push("};");
+    code.push(`
+export type GradientName = keyof typeof gradientTable;
+export function lookupGradientString(gradient: GradientName): string {
+  const entry = gradientTable[gradient];
+  if (!entry) throw new Error("No gradient for " + gradient);
+  return entry;
+}
+function isGradientName(
+  value: ColourName | GradientName,
+): value is GradientName {
+  return gradientTable[value as GradientName] !== undefined;
+}
+function isColourName(value: ColourName | GradientName): value is ColourName {
+  return colourTable[value as ColourName] !== undefined;
+}
+
+export function lookupGradientOrColourString(
+  key: ColourName | GradientName,
+  type: ColourType,
+): string {
+  if (type === "bg" && isGradientName(key)) return lookupGradientString(key);
+  if (isColourName(key)) return lookupColourString(key, type);
+  throw new Error(
+    "Failed to find gradient or colour string '" + key + "' for '" + type + "'",
+  );
+}
+        `);
+  } else {
+    code.push(`
+export type GradientName = "Transparent";
+export const lookupGradientOrColourString = lookupColourString;
+`);
+  }
+
   if (colorOpposites) {
     code.push("export const colourOpposites= {");
     forEachObject(colorOpposites, ({ key: color, value: opposite }) => {
@@ -77,16 +139,16 @@ export function lookupOpposite(colour: ColourName): ColourName {
     `);
 
     code.push(`
-export function lookupColourClassNames(backgroundColour?: ColourName | null, textColour?: ColourName | null): string|undefined {
+export function lookupColourClassNames(backgroundColour?: ColourName | GradientName | null, textColour?: ColourName | null): string|undefined {
   if (backgroundColour) {
-    const backgroundColourClassName = lookupColourString(backgroundColour, "bg");
+    const backgroundColourClassName = lookupGradientOrColourString(backgroundColour, "bg");
     if (textColour) {
       const textColourClassName = lookupColourString(textColour, "text");
       return classNames(backgroundColourClassName, textColourClassName);
     }
-      const opposite = lookupOpposite(backgroundColour as OppositeName);
-      const textColourClassName = lookupColourString(opposite, "text");
-      return classNames(backgroundColourClassName, textColourClassName);
+    const opposite = lookupOpposite(backgroundColour as OppositeName);
+    const textColourClassName = lookupColourString(opposite, "text");
+    return classNames(backgroundColourClassName, textColourClassName);
   }
   if (textColour) {
     const textColourClassName = lookupColourString(textColour, "text");
@@ -97,9 +159,9 @@ export function lookupColourClassNames(backgroundColour?: ColourName | null, tex
 `);
   } else {
     code.push(`
-export function lookupColourClassNames(backgroundColour?: ColourName | null, textColour?: ColourName | null): string|undefined {
+export function lookupColourClassNames(backgroundColour?: ColourName | GradientName | null, textColour?: ColourName | null): string|undefined {
   if (backgroundColour) {
-    const backgroundColourClassName = lookupColourString(backgroundColour, "bg");
+    const backgroundColourClassName = lookupGradientOrColourString(backgroundColour, "bg");
     if (textColour) {
       const textColourClassName = lookupColourString(textColour, "text");
       return classNames(backgroundColourClassName, textColourClassName);

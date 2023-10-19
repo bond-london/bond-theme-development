@@ -1,5 +1,6 @@
 "use client";
 import { GatsbyVideo } from "@bond-london/gatsby-transformer-video";
+import classNames from "classnames";
 import React, {
   CSSProperties,
   lazy,
@@ -19,7 +20,6 @@ const BondExternalVideoInside: React.FC<
     external: string;
     showFullRequest: boolean;
     onFullRequested: () => void;
-    fullRequested: boolean;
     onFullLoaded: () => void;
     fullHasLoaded: boolean;
     playButton?: React.FC<{ playVideo?: () => void }>;
@@ -39,7 +39,6 @@ const BondExternalVideoInside: React.FC<
   external,
   showFullRequest,
   onFullRequested,
-  fullRequested,
   onFullLoaded,
   fullHasLoaded,
   playButton,
@@ -53,9 +52,9 @@ const BondExternalVideoInside: React.FC<
   showAudioControls,
   showControls,
   controls,
-  ...videoProps
+  playsInline,
 }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
   const [fullHasStarted, setFullHasStarted] = useState(false);
 
@@ -64,8 +63,8 @@ const BondExternalVideoInside: React.FC<
   const pauseVideo = useCallback(() => setIsPlaying(false), []);
   const muteVideo = useCallback(() => setIsMuted(true), []);
   const unmuteVideo = useCallback(() => setIsMuted(false), []);
+  const onError = useCallback(() => setIsPlaying(false), []);
 
-  const fullShouldPlay = isPlaying || (fullRequested && !fullHasStarted);
   const controlsClassName = "absolute inset-0";
 
   return (
@@ -89,13 +88,14 @@ const BondExternalVideoInside: React.FC<
             className="inside absolute inset-0"
             onReady={onFullLoaded}
             onPlay={onFullStarted}
+            onError={onError}
             width="100%"
             height="100%"
             controls={controls}
-            playing={fullShouldPlay}
+            playing={isPlaying}
             muted={isMuted}
             loop={loop}
-            playsinline={videoProps.playsInline}
+            playsinline={playsInline}
           />
         </Suspense>
       )}
@@ -161,6 +161,7 @@ export const BondExternalVideo: React.FC<
     posterSrc,
     loading,
     muted,
+    className,
     ...videoProps
   } = props;
   const {
@@ -187,6 +188,7 @@ export const BondExternalVideo: React.FC<
     return (
       <GatsbyVideo
         {...videoProps}
+        className={classNames("relative", className)}
         data-component="Bond External Video"
         posterSrc={realPosterSrc}
         loop={true}
@@ -203,7 +205,6 @@ export const BondExternalVideo: React.FC<
           external={external}
           showFullRequest={showFullRequest}
           onFullRequested={onFullRequested}
-          fullRequested={fullRequested}
           onFullLoaded={onFullLoaded}
           fullHasLoaded={fullHasLoaded}
           loop={loop ?? videoLoop}
@@ -230,7 +231,7 @@ export const BondExternalVideo: React.FC<
       onLoaded={onPreviewHasStarted}
       objectFit={objectFit}
       objectPosition={objectPosition}
-      className={videoProps.className}
+      className={classNames("relative", className)}
       posterClassName={fullHasLoaded ? "opacity-0" : "opacity-100"}
       loading={loading}
     >
@@ -238,7 +239,6 @@ export const BondExternalVideo: React.FC<
         external={external}
         showFullRequest={showFullRequest}
         onFullRequested={onFullRequested}
-        fullRequested={fullRequested}
         onFullLoaded={onFullLoaded}
         fullHasLoaded={fullHasLoaded}
         loop={loop ?? videoLoop}

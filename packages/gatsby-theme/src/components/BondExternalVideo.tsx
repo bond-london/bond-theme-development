@@ -66,11 +66,16 @@ const BondExternalVideoInside: React.FC<
   const unmuteVideo = useCallback(() => setIsMuted(false), []);
 
   const fullShouldPlay = isPlaying || (fullRequested && !fullHasStarted);
+  const controlsClassName = "absolute inset-0";
 
   return (
     <>
       {showFullRequest && (
-        <VideoControls playVideo={onFullRequested} playButton={playButton} />
+        <VideoControls
+          playVideo={onFullRequested}
+          playButton={playButton}
+          className={controlsClassName}
+        />
       )}
       {loadFull && (
         <Suspense>
@@ -81,7 +86,7 @@ const BondExternalVideoInside: React.FC<
               objectPosition,
               opacity: fullHasStarted ? 1 : 0,
             }}
-            className="inside"
+            className="inside absolute inset-0"
             onReady={onFullLoaded}
             onPlay={onFullStarted}
             width="100%"
@@ -107,6 +112,7 @@ const BondExternalVideoInside: React.FC<
           muteButton={muteButton}
           unmuteButton={unmuteButton}
           showAudioControls={showAudioControls}
+          className={controlsClassName}
         />
       )}
     </>

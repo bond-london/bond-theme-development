@@ -1,5 +1,5 @@
 import { createHash } from "crypto";
-import { readFileSync, writeFileSync } from "fs-extra";
+import { readFileSync, writeFileSync } from "fs";
 import { pascalCase } from "pascal-case";
 import {
   CSSRuleObject,

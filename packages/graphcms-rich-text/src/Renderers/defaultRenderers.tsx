@@ -6,7 +6,7 @@ import { DefaultRenderer } from "./DefaultRenderer";
 import { EmbedRenderer } from "./EmbedRenderer";
 import { IFrameRenderer } from "./IFrameRenderer";
 import { ImageRenderer } from "./ImageRenderer";
-import { LinkRenderer } from "./LinkRenderer";
+import { DefaultInternalLinkRenderer, LinkRenderer } from "./LinkRenderer";
 import { VideoRenderer } from "./VideoRenderer";
 
 export const defaultRenderers: IFullNodeRenderer = {
@@ -21,6 +21,7 @@ export const defaultRenderers: IFullNodeRenderer = {
   h4: props => <DefaultRenderer {...props} element="h4" />,
   h5: props => <DefaultRenderer {...props} element="h5" />,
   h6: props => <DefaultRenderer {...props} element="h6" />,
+  internalLink: props => <DefaultInternalLinkRenderer {...props} />,
   a: props => <LinkRenderer {...props} />,
   img: props => <ImageRenderer {...props} />,
   iframe: props => <IFrameRenderer {...props} />,

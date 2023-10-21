@@ -33,6 +33,7 @@ export interface IGenericRichTextNode {
 }
 
 export interface INodeRenderer {
+  internalLink: InternalLinkRenderer;
   p: DefaultNodeRenderer;
   bold: DefaultNodeRenderer;
   italic: DefaultNodeRenderer;
@@ -200,6 +201,10 @@ export interface ILinkNodeRendererProps
 }
 
 export type LinkNodeRenderer = (props: ILinkNodeRendererProps) => JSX.Element;
+
+export type InternalLinkRenderer = (
+  props: PropsWithChildren<LinkProps>,
+) => JSX.Element;
 
 export interface IIframeNodeRendererProps
   extends IDefaultNodeRendererProps,

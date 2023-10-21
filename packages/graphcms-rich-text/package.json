@@ -10,7 +10,6 @@
   "license": "MIT",
   "keywords": [
     "react",
-    "gatsby",
     "graphcms",
     "rich-text"
   ],
@@ -36,7 +35,6 @@
     "clean": "del-cli dist/*"
   },
   "peerDependencies": {
-    "gatsby": "^5",
     "react": "^18",
     "react-dom": "^18"
   },

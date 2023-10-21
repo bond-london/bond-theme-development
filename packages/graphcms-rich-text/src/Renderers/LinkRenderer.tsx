@@ -1,4 +1,4 @@
-import { Link } from "gatsby";
+import { LinkProps } from "@graphcms/rich-text-types";
 import React, { PropsWithChildren } from "react";
 import { RenderEmbedProps } from "../RenderEmbed";
 import { RenderLinkTo, RenderLinkToProps } from "../RenderLinkTo";
@@ -16,6 +16,7 @@ const BasicLinkRenderer: React.FC<
   classNameOverrides,
   style,
   role,
+  renderers,
   children,
 }) => {
   const aProps: React.AnchorHTMLAttributes<HTMLAnchorElement> = {
@@ -35,16 +36,24 @@ const BasicLinkRenderer: React.FC<
   }
 
   if (href?.startsWith("/")) {
-    return (
-      <Link to={href} {...aProps}>
-        {children}
-      </Link>
-    );
+    return renderers.internalLink({
+      href,
+      className,
+      rel,
+      id,
+      title,
+      openInNewTab,
+      children,
+    });
   }
 
   if (href) aProps.href = encodeURI(href);
   return <a {...aProps}>{children}</a>;
 };
+
+export const DefaultInternalLinkRenderer: React.FC<
+  PropsWithChildren<LinkProps>
+> = ({ children, ...props }) => <a {...props}>{children}</a>;
 
 export const LinkRenderer: React.FC<
   ILinkNodeRendererProps | RenderEmbedProps

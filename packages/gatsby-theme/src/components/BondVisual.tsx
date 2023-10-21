@@ -4,8 +4,11 @@ import React, {
   ImgHTMLAttributes,
   VideoHTMLAttributes,
 } from "react";
+// eslint-disable-next-line import/no-named-as-default
 import BondAnimation, { isBondAnimation } from "./BondAnimation";
+// eslint-disable-next-line import/no-named-as-default
 import BondImage, { isBondImage } from "./BondImage";
+// eslint-disable-next-line import/no-named-as-default
 import BondVideo, { isBondVideo } from "./BondVideo";
 import type { IBondVisual } from "./utils";
 

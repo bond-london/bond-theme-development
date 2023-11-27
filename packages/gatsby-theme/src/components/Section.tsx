@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { CSSProperties, PropsWithChildren } from "react";
+import React, { CSSProperties, LegacyRef, PropsWithChildren } from "react";
 
 export interface ISectionInformation {
   anchor?: string | null;
@@ -150,10 +150,11 @@ export const Section: React.FC<
     bottomSpacing?: boolean;
     collapse?: boolean;
     fullWidth?: boolean;
-    element?: keyof JSX.IntrinsicElements;
+    element?: "section" | "div";
     preChildren?: React.ReactNode;
     postChildren?: React.ReactNode;
     information?: ISectionInformation | null;
+    ref?: LegacyRef<HTMLDivElement>;
   }>
 > = ({
   componentName,
@@ -171,8 +172,10 @@ export const Section: React.FC<
   preChildren,
   postChildren,
   information,
+  ref,
 }) => (
   <Element
+    ref={ref}
     {...expandInformation(componentName, information)}
     className={calculateSectionContainerClassNames({
       sectionGridClassName,

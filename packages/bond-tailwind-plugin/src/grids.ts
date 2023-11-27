@@ -51,6 +51,9 @@ function addContainerGrid(
 
   const containerGrid = ["grid"];
   const contentGrid = ["grid"];
+  const wideContainerGrid = ["grid"];
+  const wideContentGrid = ["grid"];
+  const wideInnerFull: Array<string> = [];
   const gridGap: Array<string> = [];
   forEachObject(
     config.sizes,
@@ -59,14 +62,18 @@ function addContainerGrid(
       const prefix = index === 0 ? "" : `${key}:`;
       if (cols ?? max ?? isLargest) {
         containerGrid.push(`${prefix}grid-cols-${key}-container`);
+        wideContainerGrid.push(`${prefix}grid-cols-${key}-wide-container`);
       }
 
       if (cols) {
         contentGrid.push(`${prefix}grid-cols-${key}-content`);
+        wideContentGrid.push(`${prefix}grid-cols-${key}-wide-content`);
+        wideInnerFull.push(`${prefix}col-start-2 ${prefix}col-span-${cols}`);
       }
       if (gap ?? noMax) {
         const gapClassName = `${prefix}gap-x-${key}-gap`;
         contentGrid.push(gapClassName);
+        wideContentGrid.push(gapClassName);
         gridGap.push(gapClassName);
       }
     },
@@ -74,6 +81,9 @@ function addContainerGrid(
   components[`.container-cols-grid`] = createApplyEntry(containerGrid);
   components[".content-cols-grid"] = createApplyEntry(contentGrid);
   components[".grid-gap"] = createApplyEntry(gridGap);
+  components[`.wide-container-cols-grid`] = createApplyEntry(wideContainerGrid);
+  components[".wide-content-cols-grid"] = createApplyEntry(wideContentGrid);
+  components[".wide-inner-full"] = createApplyEntry(wideInnerFull);
 
   helpers.addUtilities(utilities);
   helpers.addComponents(components);
@@ -167,13 +177,11 @@ export function buildGridSpacing(
       results[`${name}-half-col`] = `calc(${calculateColSize} * 0.5)`;
 
       for (let i = 1; i <= cols; i++) {
-        results[
-          `${name}-${i}-cols`
-        ] = `calc((${calculateColSize} * ${i}) + (${gapSize} * ${i - 1}))`;
+        results[`${name}-${i}-cols`] =
+          `calc((${calculateColSize} * ${i}) + (${gapSize} * ${i - 1}))`;
 
-        results[
-          `${name}-${i}-gap-cols`
-        ] = `calc((${calculateColSize} * ${i}) + (${gapSize} * ${i}))`;
+        results[`${name}-${i}-gap-cols`] =
+          `calc((${calculateColSize} * ${i}) + (${gapSize} * ${i}))`;
       }
     },
   );
@@ -191,16 +199,25 @@ export function createGridCols(
       .filter(v => v) as ReadonlyArray<number>),
   );
   let lastMargin: number | undefined;
+  let lastGap: number | undefined;
   forEachObject(
     config.sizes,
     ({
       key: name,
-      value: { breakpoint, margin: possibleMargin, cols, max: maxWidth },
+      value: {
+        breakpoint,
+        margin: possibleMargin,
+        cols,
+        max: maxWidth,
+        gap: possibleGap,
+      },
     }) => {
       const margin = possibleMargin ?? lastMargin ?? 0;
+      const gap = possibleGap ?? lastGap ?? 0;
       const isLargest = breakpoint === largest;
       const useVw = noMax && isLargest;
       const marginSize = calculateSize(breakpoint, margin, useVw);
+      const marginLessGapSize = calculateSize(breakpoint, margin - gap, useVw);
       // console.log({
       //   name,
       //   breakpoint,
@@ -213,6 +230,7 @@ export function createGridCols(
       //   useVw,
       // });
       lastMargin = margin;
+      lastGap = gap;
       if (cols) {
         Object.assign(
           grids,
@@ -233,19 +251,25 @@ export function createGridCols(
           ),
         );
 
-        grids[
-          `${name}-full`
-        ] = `${marginSize} repeat(${cols}, 1fr) ${marginSize}`;
+        grids[`${name}-full`] =
+          `${marginSize} repeat(${cols}, 1fr) ${marginSize}`;
         grids[`${name}-content`] = `repeat(${cols}, 1fr)`;
+        grids[`${name}-wide-content`] =
+          `${marginLessGapSize} repeat(${cols}, 1fr) ${marginLessGapSize}`;
       }
       if (maxWidth) {
-        grids[
-          `${name}-container`
-        ] = `minmax(${marginSize},1fr) minmax(auto, ${calculateRemSize(
-          maxWidth,
-        )}) minmax(${marginSize},1fr)`;
+        grids[`${name}-container`] =
+          `minmax(${marginSize},1fr) minmax(auto, ${calculateRemSize(
+            maxWidth,
+          )}) minmax(${marginSize},1fr)`;
+        grids[`${name}-wide-container`] =
+          `1fr ${marginSize} minmax(auto, ${calculateRemSize(
+            maxWidth,
+          )}) ${marginSize} 1fr`;
       } else {
         grids[`${name}-container`] = `${marginSize} auto ${marginSize}`;
+        grids[`${name}-wide-container`] =
+          `0 ${marginSize} auto ${marginSize} 0`;
       }
     },
   );

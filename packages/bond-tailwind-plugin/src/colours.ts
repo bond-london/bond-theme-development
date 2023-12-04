@@ -39,7 +39,7 @@ export function buildColours(
   forEachObject(
     config.colorOptions,
     ({ key: colorName, value: colorValue }) => {
-      colors[colorName] = colorValue;
+      colors[pascalCase(colorName)] = colorValue;
     },
   );
   return colors;
@@ -60,7 +60,7 @@ export function buildColorTable(config: IBondConfigurationOptions): void {
   ];
   forEachObject(colors, ({ key: color }) => {
     const colorName = pascalCase(color);
-    code.push(`  "${colorName}": ["text-${color}", "bg-${color}"],`);
+    code.push(`  "${colorName}": ["text-${colorName}", "bg-${colorName}"],`);
   });
   code.push("};");
   code.push(`export type ColourName = keyof typeof colourTable;

@@ -40,8 +40,11 @@
     "typescript": "^5.0.4"
   },
   "peerDependencies": {
-    "prettier-plugin-tailwindcss": "^0.2.2",
+    "prettier-plugin-tailwindcss": "latest",
     "tailwindcss": "^3.1.8"
   },
-  "gitHead": "f5bb8b653fb7b6a1f9698f78bfaf0f5336c0bf06"
+  "gitHead": "f5bb8b653fb7b6a1f9698f78bfaf0f5336c0bf06",
+  "dependencies": {
+    "change-case": "^5.3.0"
+  }
 }

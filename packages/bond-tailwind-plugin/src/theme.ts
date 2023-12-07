@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Config, KeyValuePair, ThemeConfig } from "tailwindcss/types/config";
+import {
+  Config,
+  CustomThemeConfig,
+  KeyValuePair,
+} from "tailwindcss/types/config";
 import { IBondConfigurationOptions } from ".";
 import { buildColorTable, buildColours } from "./colours";
 import { buildGridSpacing, createGridCols } from "./grids";
@@ -68,7 +72,7 @@ export function configureTheme(
       .filter(notEmpty),
   );
 
-  const theme: Partial<ThemeConfig> = {
+  const theme: Partial<CustomThemeConfig> = {
     screens: {
       ...mapObject(
         config.sizes,

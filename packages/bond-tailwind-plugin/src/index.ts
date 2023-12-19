@@ -38,6 +38,7 @@ export interface IFontTableEntry {
 }
 
 export interface IBondConfigurationOptions {
+  extendOnly?: boolean;
   colorFile?: string;
   colorOptions: Record<string, string>;
   gradients?: Record<string, string>;

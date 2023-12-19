@@ -3,6 +3,7 @@ import {
   Config,
   CustomThemeConfig,
   KeyValuePair,
+  ThemeConfig,
 } from "tailwindcss/types/config";
 import { IBondConfigurationOptions } from ".";
 import { buildColorTable, buildColours } from "./colours";
@@ -134,21 +135,22 @@ export function configureTheme(
       ...calculateNumbers(1, maximumColumns, defaultKeyFn, defaultKeyFn),
       auto: "auto",
     },
-    extend: {
-      maxWidth: {
-        maxWidth: calculateRemSize(maximumWidth),
-      },
-      borderWidth: {
-        ...mapObject(config.spacing, defaultKeyFn, remValueFn),
-      },
-      fontWeight: {
-        ...mapNumbers(
-          [100, 200, 300, 400, 500, 600, 700, 800, 900],
-          defaultKeyFn,
-          defaultKeyFn,
-        ),
-        regular: "400",
-      },
+  };
+
+  const extend: Partial<ThemeConfig> = {
+    maxWidth: {
+      maxWidth: calculateRemSize(maximumWidth),
+    },
+    borderWidth: {
+      ...mapObject(config.spacing, defaultKeyFn, remValueFn),
+    },
+    fontWeight: {
+      ...mapNumbers(
+        [100, 200, 300, 400, 500, 600, 700, 800, 900],
+        defaultKeyFn,
+        defaultKeyFn,
+      ),
+      regular: "400",
     },
   };
 
@@ -157,8 +159,23 @@ export function configureTheme(
     theme.letterSpacing = letterSpacing;
   }
 
+  if (config.extendOnly) {
+    const result: Partial<Config> = {
+      theme: {
+        extend: {
+          ...extend,
+          ...theme,
+        },
+      },
+    };
+    return result;
+  }
+
   const result: Partial<Config> = {
-    theme,
+    theme: {
+      ...theme,
+      extend,
+    },
   };
   return result;
 }

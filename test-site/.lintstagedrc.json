@@ -1,4 +1,0 @@
-{
-  "(!*d.).ts": ["eslint --max-warnings 0"],
-  "*.tsx": ["eslint --max-warnings 0"]
-}

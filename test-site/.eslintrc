@@ -1,4 +1,0 @@
-// .eslintrc
-{
-  "extends": "@bond-london/eslint-config-bond-gatsby"
-}

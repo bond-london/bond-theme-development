@@ -1,10 +1,16 @@
 {
   "private": true,
   "license": "MIT",
+  "engineStrict": true,
+  "engines": {
+    "npm": ">=10.0.0",
+    "node": ">=18.0.0 <21.0.0",
+    "yarn": "please use npm"
+  },
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "format": "yarn run format:code",
-    "format:code": "yarn run lint:code --fix",
+    "format": "npm run format:code",
+    "format:code": "npm run lint:code --fix",
     "lint:code": "eslint --ext .ts,.tsx --quiet packages",
     "lerna": "lerna",
     "build": "lerna run build  --stream --concurrency=0",
@@ -17,8 +23,7 @@
     "publish:packages": "lerna publish from-package"
   },
   "workspaces": [
-    "packages/*",
-    "test-site"
+    "packages/*"
   ],
   "name": "bond-theme-development",
   "devDependencies": {
@@ -29,10 +34,10 @@
     "eslint-plugin-filenames": "^1.3.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.0.0",
-    "lerna": "^7.1.1"
-  },
-  "engines": {
-    "node": ">=18.0.0"
+    "lerna": "^7.1.1",
+    "gatsby": "^5",
+    "react": "^18",
+    "react-dom": "^18"
   },
   "dependencies": {
     "eslint-import-resolver-typescript": "^3.6.0"

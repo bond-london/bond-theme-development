@@ -29,7 +29,7 @@ const HubspotSelectField: React.FC<IFieldProps> = ({
       <select
         id={makeInputId(formName, field.name)}
         name={field.name ?? undefined}
-        placeholder={field.placeholder ? field.placeholder : undefined}
+        // placeholder={field.placeholder ? field.placeholder : undefined}
         hidden={field.hidden ?? undefined}
         required={field.required ?? undefined}
         className={options.fieldClassName}

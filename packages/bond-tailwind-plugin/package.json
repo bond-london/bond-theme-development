@@ -29,19 +29,19 @@
     "build:tsc": "tsc --outDir dist/",
     "build": "npm-run-all -s clean build:*",
     "watch": "npm-run-all -s watch:*",
-    "watch:tsc": "yarn build:tsc -w",
-    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "watch:tsc": "npm run build:tsc -w",
+    "prepare": "cross-env NODE_ENV=production npm run build",
     "clean": "del-cli dist/*"
   },
   "devDependencies": {
-    "change-case": "^4",
+    "change-case": "^5.4.0",
     "cross-env": "^7.0.3",
     "del-cli": "^5.0.0",
     "npm-run-all": "^4.1.5",
     "typescript": "^5.0.4"
   },
   "peerDependencies": {
-    "change-case": "^4",
+    "change-case": "^5.4.0",
     "prettier-plugin-tailwindcss": "^0",
     "tailwindcss": "^3.1.8"
   },

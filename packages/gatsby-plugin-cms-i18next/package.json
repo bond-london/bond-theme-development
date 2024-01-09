@@ -41,9 +41,9 @@
     "build:tsc": "tsc --noEmit",
     "build": "npm-run-all -s clean build:*",
     "watch": "npm-run-all -s watch:*",
-    "watch:gatsby-node": "yarn build:gatsby-node -w",
-    "watch:tsc": "yarn build:tsc -w",
-    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "watch:gatsby-node": "npm run build:gatsby-node -w",
+    "watch:tsc": "npm run build:tsc -w",
+    "prepare": "cross-env NODE_ENV=production npm run build",
     "clean": "del-cli dist/*"
   },
   "devDependencies": {

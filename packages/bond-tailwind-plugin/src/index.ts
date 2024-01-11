@@ -31,7 +31,7 @@ export interface ISizeInformation {
 
 export interface IFontTableEntry {
   default: string | number;
-  weight: string;
+  weight: string|number;
   font?: string;
   letterSpacing?: string | number;
   additional?: string;

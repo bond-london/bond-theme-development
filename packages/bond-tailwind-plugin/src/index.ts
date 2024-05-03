@@ -7,7 +7,7 @@ import { withOptions } from "tailwindcss/plugin";
 import { PluginAPI } from "tailwindcss/types/config";
 import { addAnimationUtilities } from "./animations";
 import { addBorderSpacing } from "./borders";
-import { buildGradients } from "./colours";
+import { buildColourVariables, buildGradients } from "./colours";
 import { addFontSizes } from "./fonts";
 import { buildGrid } from "./grids";
 import { configureTheme } from "./theme";
@@ -69,6 +69,7 @@ const configure = withOptions(
     addExtraVariants(helpers);
     buildTypography(helpers, config);
     buildGradients(helpers, config);
+    buildColourVariables(helpers, config);
   },
   (config: IBondConfigurationOptions) => configureTheme(config),
 );

@@ -35,15 +35,43 @@ export function buildColours(
   const colors: KeyValuePair<string, string> = {
     transparent: "transparent",
     current: "currentColor",
+    inherit: "inherit",
   };
 
   forEachObject(
     config.colorOptions,
-    ({ key: colorName, value: colorValue }) => {
-      colors[pascalCase(colorName)] = colorValue;
+    ({ key: colorName }) => {
+      const cleanName = pascalCase(colorName);
+      colors[cleanName] = `var(--color-${cleanName})`;
     },
   );
   return colors;
+}
+
+export function buildColourVariables(helpers: PluginAPI, config: IBondConfigurationOptions) {
+  const lightColours: Record<string,string> = {}
+  const darkColours: Record<string, string> = {}
+
+  const { colorOpposites, colorOptions} = config;
+  forEachObject(colorOptions, ({key: colorName, value}) => {
+    const cleanName = pascalCase(colorName);
+    lightColours[`--color-${cleanName}`] = value;
+
+  })
+  if (colorOpposites) {
+    forEachObject(colorOpposites, ({key: colorName, value: oppositeName}) => {
+      const cleanName = pascalCase(colorName);
+      const darkColour = colorOptions[oppositeName];
+      if (darkColour) {
+        darkColours[`--color-${cleanName}`] = darkColour;
+      }
+    })
+
+    helpers.addBase({":root": lightColours});
+    helpers.addBase({":root": {"@media (prefers-color-scheme: dark)": darkColours}})
+    helpers.addBase({".dark": darkColours})
+
+  }
 }
 
 export function buildColorTable(config: IBondConfigurationOptions): void {

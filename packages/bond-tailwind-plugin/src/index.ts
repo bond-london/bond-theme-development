@@ -31,7 +31,7 @@ export interface ISizeInformation {
 
 export interface IFontTableEntry {
   default: string | number;
-  weight: string|number;
+  weight: string | number;
   font?: string;
   letterSpacing?: string | number;
   additional?: string;
@@ -41,6 +41,7 @@ export interface IBondConfigurationOptions {
   extendOnly?: boolean;
   colorFile?: string;
   colorOptions: Record<string, string>;
+  darkLightColors?: Record<string, string>;
   gradients?: Record<string, string>;
   colorOpposites?: Record<string, string>;
   sizes: Record<string, ISizeInformation>;

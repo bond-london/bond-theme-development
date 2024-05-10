@@ -39,6 +39,7 @@ export interface IFontTableEntry {
 
 export interface IBondConfigurationOptions {
   extendOnly?: boolean;
+  enableDarkColors?: boolean;
   colorFile?: string;
   colorOptions: Record<string, string>;
   darkLightColors?: Record<string, string>;

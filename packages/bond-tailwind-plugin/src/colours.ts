@@ -40,7 +40,8 @@ export function buildColours(
 
   forEachObject(config.colorOptions, ({ key: colorName }) => {
     const cleanName = camelCase(colorName);
-    colors[cleanName] = `var(--color-${cleanName})`;
+    colors[cleanName] =
+      `rgb(from var(--color-${cleanName}) r g b / <alpha-value>)`;
   });
   return colors;
 }
@@ -52,18 +53,22 @@ export function buildColourVariables(
   const lightColours: Record<string, string> = {};
   const darkColours: Record<string, string> = {};
 
-  const { colorOpposites, colorOptions, darkLightColors } = config;
-  const allDarkLight = [
-    ...Object.entries(colorOpposites ?? {}),
-    ...Object.entries(darkLightColors ?? {}),
-  ];
+  const { colorOpposites, colorOptions, darkLightColors, enableDarkColors } =
+    config;
+  const writeOutDarkColours =
+    enableDarkColors ?? typeof darkLightColors !== "undefined";
 
   forEachObject(colorOptions, ({ key: colorName, value }) => {
     const cleanName = camelCase(colorName);
     lightColours[`--color-${cleanName}`] = value;
   });
 
-  if (allDarkLight.length > 0) {
+  helpers.addBase({ ":root": lightColours });
+  if (writeOutDarkColours) {
+    const allDarkLight = [
+      ...Object.entries(colorOpposites ?? {}),
+      ...Object.entries(darkLightColors ?? {}),
+    ];
     for (const [colorName, oppositeName] of allDarkLight) {
       const cleanName = camelCase(colorName);
       const darkColour = colorOptions[oppositeName];
@@ -72,30 +77,11 @@ export function buildColourVariables(
       }
     }
 
-    helpers.addBase({ ":root": lightColours });
     helpers.addBase({
       ":root": { "@media (prefers-color-scheme: dark)": darkColours },
     });
     helpers.addBase({ ".dark": darkColours });
   }
-
-  helpers.addBase([
-    { ".background-inherit": { backgroundColor: "inherit" } },
-    { ".background-current": { backgroundColor: "currentColor" } },
-    { ".background-transparent": { backgroundColor: "transparent" } },
-    { ".background-parent": { backgroundColor: "var(--current-background)" } },
-  ]);
-
-  forEachObject(colorOptions, ({ key: colorName }) => {
-    const cleanName = camelCase(colorName);
-    const rule: CSSRuleObject = {
-      [`.background-${cleanName}`]: {
-        backgroundColor: `var(--color-${cleanName})`,
-        "--current-background": `var(--color-${cleanName})`,
-      },
-    };
-    helpers.addBase(rule);
-  });
 }
 
 export function buildColorTable(config: IBondConfigurationOptions): void {
@@ -114,9 +100,7 @@ export function buildColorTable(config: IBondConfigurationOptions): void {
   ];
   forEachObject(colors, ({ key: color }) => {
     const colorName = camelCase(color);
-    code.push(
-      `  "${colorName}": ["text-${colorName}", "background-${colorName}"],`,
-    );
+    code.push(`  "${colorName}": ["text-${colorName}", "bg-${colorName}"],`);
   });
   code.push("};");
   code.push(`export type ColourName = keyof typeof colourTable;

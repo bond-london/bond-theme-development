@@ -2,7 +2,6 @@
 import {
   Config,
   CustomThemeConfig,
-  KeyValuePair,
   ThemeConfig,
 } from "tailwindcss/types/config";
 import { IBondConfigurationOptions } from ".";
@@ -13,7 +12,6 @@ import {
   calculateNumbers,
   calculateRemSize,
   defaultKeyFn,
-  forEachObject,
   mapNumbers,
   mapObject,
   notEmpty,
@@ -25,37 +23,6 @@ export const defaultNumbers = {
   full: "100%",
   unset: "unset",
 };
-
-export function buildLetterSpacingName(name: string): string {
-  return name.replace("-", "minus");
-}
-
-function buildLetterSpacing(
-  config: IBondConfigurationOptions,
-): KeyValuePair<string, string> | undefined {
-  const letterSpacingsValues = new Set<number>();
-  const letterSpacingNames = new Set<string>();
-  forEachObject(config.fontTable, ({ value: { letterSpacing } }) => {
-    if (letterSpacing) {
-      if (typeof letterSpacing === "string") {
-        letterSpacingNames.add(letterSpacing);
-      } else if (typeof letterSpacing === "number") {
-        letterSpacingsValues.add(letterSpacing);
-      }
-    }
-  });
-  if (letterSpacingsValues.size + letterSpacingNames.size > 0) {
-    const results: KeyValuePair<string, string> = {};
-    letterSpacingsValues.forEach(value => {
-      results[buildLetterSpacingName(`${value}`)] = calculateRemSize(value);
-    });
-    letterSpacingNames.forEach(
-      value => (results[buildLetterSpacingName(value)] = value),
-    );
-    return results;
-  }
-  return undefined;
-}
 
 export function configureTheme(
   config: IBondConfigurationOptions,
@@ -153,11 +120,6 @@ export function configureTheme(
       regular: "400",
     },
   };
-
-  const letterSpacing = buildLetterSpacing(config);
-  if (letterSpacing) {
-    theme.letterSpacing = letterSpacing;
-  }
 
   if (config.extendOnly) {
     const result: Partial<Config> = {

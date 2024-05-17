@@ -29,13 +29,29 @@ export interface ISizeInformation {
   max?: number;
 }
 
-export interface IFontTableEntry {
-  default: string | number;
-  weight: string | number;
-  font?: string;
-  letterSpacing?: string | number;
-  additional?: string;
+export interface IFontTableEntry extends IFontEntry {
+  default: string | number | IFontEntry;
 }
+
+export interface IFontEntry extends IFontTableBase {
+  sizePixels?: number;
+}
+
+export interface IFontTableBase {
+  font?: string;
+  style?: string;
+  weight?: string | number;
+  lineHeight?: string | number;
+  letterSpacing?: string | number;
+  additional?: Record<string, string>;
+}
+
+export type FontTable = IFontTableBase & {
+  styles: Record<
+    string,
+    IFontTableEntry & Record<string, string | number | IFontEntry>
+  >;
+};
 
 export interface IBondConfigurationOptions {
   extendOnly?: boolean;
@@ -46,7 +62,7 @@ export interface IBondConfigurationOptions {
   gradients?: Record<string, string>;
   colorOpposites?: Record<string, string>;
   sizes: Record<string, ISizeInformation>;
-  fontTable: Record<string, IFontTableEntry & Record<string, string | number>>;
+  fontTable: FontTable;
   spacing: Record<string, number>;
   lineHeight?: number;
 }

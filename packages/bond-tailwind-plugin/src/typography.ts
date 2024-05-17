@@ -1,73 +1,48 @@
 import { CSSRuleObject, PluginAPI } from "tailwindcss/types/config";
 import { IBondConfigurationOptions } from ".";
-import { buildLetterSpacingName } from "./theme";
-import { createApplyEntry, forEachObject } from "./utils";
+import { parseFontTable } from "./fonts";
+import { createApplyEntry } from "./utils";
 
-function getFontName(size: string | number): string | undefined {
-  if (typeof size === "string") {
-    let split = size.split("/");
-    if (split.length === 1) {
-      split = size.split("-");
-    }
-    if (split.length > 2) {
-      const fontName = split[2];
-      return fontName;
-    }
-  }
-  return undefined;
-}
+// // eslint-disable-next-line @typescript-eslint/no-unused-vars
+// function getFontName(size: string | number): string | undefined {
+//   if (typeof size === "string") {
+//     let split = size.split("/");
+//     if (split.length === 1) {
+//       split = size.split("-");
+//     }
+//     if (split.length > 2) {
+//       const fontName = split[2];
+//       return fontName;
+//     }
+//   }
+//   return undefined;
+// }
 
 export function buildTypography(
   { addComponents }: PluginAPI,
   config: IBondConfigurationOptions,
-): void {
+) {
   const components: CSSRuleObject = {};
   const noMax = !Object.values(config.sizes).find(v => v.max);
-  forEachObject(
-    config.fontTable,
-    ({
-      key: name,
-      value: {
-        font,
-        weight,
-        default: defaults,
-        letterSpacing,
-        additional,
-        ...other
-      },
-    }) => {
-      const classes = [`font-${weight}`, `text-${defaults}`];
-      if (font) {
-        classes.push(`font-${font}`);
-      } else {
-        const fontName = getFontName(defaults);
-        if (fontName) {
-          classes.push(`font-${fontName}`);
-        }
+  const parsed = parseFontTable(config.fontTable);
+  Object.entries(parsed).forEach(([name, information]) => {
+    const classes: Array<string> = [];
+    let currentFont: string | undefined;
+    Object.entries(information).forEach(([size, entry], index, array) => {
+      const font = entry.font;
+      const isFirst = index === 0;
+      const isLast = index === array.length - 1;
+      const prefix = isFirst ? "" : `${size}:`;
+      const baseName = `${name}-${size}`;
+      const fullName =
+        noMax && isLast ? `text-max-${baseName}` : `text-${baseName}`;
+      classes.push(`${prefix}${fullName}`);
+      if (font && font !== currentFont) {
+        currentFont = font;
+        classes.push(`${prefix}font-${font}`);
       }
-      if (letterSpacing) {
-        classes.push(`tracking-${buildLetterSpacingName(`${letterSpacing}`)}`);
-      }
-      if (additional) {
-        classes.push(additional);
-      }
-      forEachObject(config.sizes, ({ key }) => {
-        const size = other[key];
-        if (size) {
-          classes.push(`${key}:text-${size}`);
-          const fontName = getFontName(size);
-          if (fontName) {
-            classes.push(`${key}:font-${fontName}`);
-          }
-        }
-      });
-      if (noMax) {
-        const last = classes.pop()!;
-        const max = last.replace(":text-", ":text-max-");
-        classes.push(max);
-      }
-      components[`.${name}`] = createApplyEntry(classes);
-    },
-  );
+    });
+    components[`.${name}`] = createApplyEntry(classes);
+  });
   addComponents(components);
 }
